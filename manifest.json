@@ -18,6 +18,10 @@
             "matches" : [ "*://play.spotify.com/*" ],
             "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "spotify_controller.js" ],
             "all_frames" : true
+        },
+        {
+            "matches" : [ "*://www.youtube.com/*" ],
+            "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "youtube_controller.js" ]
         }
     ],
     "browser_action" : {
