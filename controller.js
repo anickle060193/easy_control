@@ -13,14 +13,14 @@ function Controller( name, color )
     {
         if( message.type === Message.types.from_background.PAUSE )
         {
-            if( controller.checkIfPaused() )
+            if( !controller.checkIfPaused() )
             {
                 controller.pause();
             }
         }
         else if( message.type === Message.types.from_background.PLAY )
         {
-            if( !controller.checkIfPaused() )
+            if( controller.checkIfPaused() )
             {
                 controller.play();
             }

@@ -200,7 +200,7 @@ function play()
 }
 
 
-chrome.browserAction.onClicked.addListener( function( tab )
+function handlePlayPause()
 {
     if( paused )
     {
@@ -211,5 +211,19 @@ chrome.browserAction.onClicked.addListener( function( tab )
     {
         console.log( 'Click: Pause' );
         pause();
+    }
+}
+
+
+chrome.browserAction.onClicked.addListener( function( tag )
+{
+    handlePlayPause();
+} );
+
+chrome.commands.onCommand.addListener( function( command )
+{
+    if( command === 'play_pause' )
+    {
+        handlePlayPause();
     }
 } );
