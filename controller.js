@@ -1,11 +1,9 @@
 var POLLING_INTERVAL = 100;
 
-function Controller( name, color, hasProgress, hasControls )
+function Controller( name, color )
 {
     this.name = name
     this.color = color;
-    this.hasProgress = hasProgress;
-    this.hasControls = hasControls;
 
     this.paused = null;
     this.port = chrome.runtime.connect( null, { name : name } );
@@ -15,14 +13,14 @@ function Controller( name, color, hasProgress, hasControls )
     {
         if( message.type === Message.types.from_background.PAUSE )
         {
-            if( controller.hasControls )
+            if( controller.checkIfPaused() )
             {
                 controller.pause();
             }
         }
         else if( message.type === Message.types.from_background.PLAY )
         {
-            if( controller.hasControls )
+            if( !controller.checkIfPaused() )
             {
                 controller.play();
             }
@@ -47,22 +45,17 @@ Controller.prototype.startPolling = function()
     var controller = this;
     var interval = setInterval( function()
     {
-        if( controller.hasControls )
-        {
-            var paused = controller.checkIfPaused();
+        var paused = controller.checkIfPaused();
 
-            if( paused !== controller.paused )
-            {
-                controller.paused = paused;
-                console.log( 'Reporting Paused: ' + controller.paused );
-                controller.reportPaused( controller.paused );
-            }
+        if( paused !== controller.paused )
+        {
+            controller.paused = paused;
+            console.log( 'Reporting Paused: ' + controller.paused );
+            controller.reportPaused( controller.paused );
         }
 
-        if( controller.hasProgress )
-        {
-            controller.reportProgress( controller.getProgress() );
-        }
+        controller.reportProgress( controller.getProgress() );
+
     }, POLLING_INTERVAL );
 };
 

@@ -2,7 +2,7 @@ var ICON_WIDTH = 38;
 var ICON_HEIGHT = 38;
 var ICON_PROGRESS_BAR_THICKNESS = ICON_HEIGHT * 0.1;
 
-var ports = { };
+var ports = [ ];
 var lastPort = null;
 var paused = true;
 
@@ -78,28 +78,21 @@ function updateBrowserActionIcon( paused, progress, color )
 
 function handleMessage( message, port )
 {
-    if( !ports[ port.name ] )
-    {
-        console.log( 'Refused message!' );
-        console.log( port );
-        return;
-    }
-
     if( message.type === Message.types.to_background.INITIALIZE )
     {
         console.log( 'Port Initialized: ' + port.name );
-        ports[ port.name ].color = message.data.color;
+        port.color = message.data.color;
     }
     else if( message.type === Message.types.to_background.PAUSE_REPORT )
     {
-        ports[ port.name ].paused = message.data;
+        port.paused = message.data;
 
         if( !lastPort )
         {
             console.log( 'Pause Report: No last Port' );
             lastPort = port;
             paused = message.data;
-            updateBrowserActionIcon( paused, ports[ port.name ].progress, ports[ port.name ].color );
+            updateBrowserActionIcon( paused, port.progress, port.color );
         }
         else if( port.name === lastPort.name )
         {
@@ -108,7 +101,7 @@ function handleMessage( message, port )
                 console.log( 'Pause Report: LastPort: ' + paused );
                 paused = message.data;
 
-                updateBrowserActionIcon( paused, ports[ port.name ].progress, ports[ port.name ].color )
+                updateBrowserActionIcon( paused, port.progress, port.color )
             }
         }
         else
@@ -125,11 +118,11 @@ function handleMessage( message, port )
     }
     else if( message.type === Message.types.to_background.PROGRESS_REPORT )
     {
-        ports[ port.name ].progress = message.progress;
+        port.progress = message.progress;
 
         if( lastPort && port.name === lastPort.name )
         {
-            updateBrowserActionIcon( paused, message.data, ports[ port.name ].color );
+            updateBrowserActionIcon( paused, message.data, port.color );
         }
     }
 }
@@ -137,7 +130,7 @@ function handleMessage( message, port )
 
 function handleDisconnect( port )
 {
-    delete ports[ port.name ];
+    ports.splice( ports.indexOf( port ), 1 );
 
     console.log( 'Port Disconnect: ' + port.name );
 
@@ -152,34 +145,34 @@ function handleDisconnect( port )
 
 chrome.runtime.onConnect.addListener( function( port )
 {
-    console.log( 'Port Connect: ' + port.name );
-    if( !ports[ port.name ] )
+    for( var i = 0; i < ports.length; i++ )
     {
-        ports[ port.name ] = { ports : [ ], paused : true, progress : 0.0, color : 'red' };
+        if( ports[ i ].name == port.name )
+        {
+            console.log( 'Refused Duplicate Connection: ' + port.name );
+            return;
+        }
     }
-    ports[ port.name ].ports.push( port );
+
+    console.log( 'Port Connect: ' + port.name );
+    port.paused = true;
+    port.progress = 0.0;
+    port.color = 'red';
+
+    ports.push( port );
 
     port.onMessage.addListener( handleMessage );
     port.onDisconnect.addListener( handleDisconnect );
-    console.log( ports );
 } );
 
 
 function pause( exclusion )
 {
-    for( var name in ports )
+    for( var i = 0; i < ports.length; i++ )
     {
-        if( !ports.hasOwnProperty( name ) )
+        if( !exclusion || ports[ i ].name !== exclusion.name )
         {
-            continue;
-        }
-
-        if( !exclusion || name !== exclusion.name )
-        {
-            for( var i = 0; i < ports[ name ].ports.length; i++ )
-            {
-                ports[ name ].ports[ i ].postMessage( new Message( Message.types.from_background.PAUSE ) )
-            }
+            ports[ i ].postMessage( new Message( Message.types.from_background.PAUSE ) )
         }
     }
 }
@@ -195,9 +188,13 @@ function play()
 
     if( port )
     {
-        for( var i = 0; i < ports[ port.name ].ports.length; i++ )
+        for( var i = 0; i < ports.length; i++ )
         {
-            ports[ port.name ].ports[ i ].postMessage( new Message( Message.types.from_background.PLAY ) );
+            if( ports[ i ].name == lastPort.name )
+            {
+                ports[ i ].postMessage( new Message( Message.types.from_background.PLAY ) );
+                break;
+            }
         }
     }
 }
