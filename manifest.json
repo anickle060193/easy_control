@@ -1,9 +1,10 @@
 {
     "manifest_version" : 2,
 
-    "name" : "Media Controls",
+    "name" : "Control All the Things!",
     "version" : "1.0",
-    "description" : "An extension to control media.",
+    "icons" : { "48" : "icon.png" },
+    "description" : "An extension to control different streaming sites: Pandora, Spotfiy, Youtube.",
     "permissions" : [ "notifications" ],
     "background" : {
         "persistent" : false,
@@ -22,6 +23,10 @@
         {
             "matches" : [ "*://www.youtube.com/*" ],
             "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "youtube_controller.js" ]
+        },
+        {
+            "matches" : [ "*://play.google.com/music/listen/*" ],
+            "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "google_play_music_controller.js" ]
         }
     ],
     "browser_action" : {

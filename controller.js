@@ -53,18 +53,15 @@ Controller.prototype.startPolling = function()
             controller.paused = paused;
             console.log( 'Reporting Paused: ' + controller.paused );
             controller.reportPaused( controller.paused );
+        }
 
-            if( !controller.paused )
-            {
-                var contentInfo = controller.getContentInfo();
-                if( contentInfo && ( !controller.currentContent || contentInfo.track !== controller.currentContent.track ) )
-                {
-                    console.log( 'Started New Content' );
-                    console.log( contentInfo );
-                    controller.currentContent = contentInfo;
-                    controller.port.postMessage( new Message( Message.types.to_background.NEW_CONTENT, controller.currentContent ) );
-                }
-            }
+        var contentInfo = controller.getContentInfo();
+        if( contentInfo && ( !controller.currentContent || contentInfo.track !== controller.currentContent.track ) )
+        {
+            console.log( 'Started New Content' );
+            console.log( contentInfo );
+            controller.currentContent = contentInfo;
+            controller.port.postMessage( new Message( Message.types.to_background.NEW_CONTENT, controller.currentContent ) );
         }
 
         controller.reportProgress( controller.getProgress() );

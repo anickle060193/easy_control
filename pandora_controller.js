@@ -36,12 +36,12 @@ PandoraController.prototype.checkIfPaused = function()
 PandoraController.prototype.getContentInfo = function()
 {
     var track = $( '.songTitle' ).text();
-    var album = $( '.albumTitle' ).text();
     var artist = $( '.artistSummary' ).text();
+    var album = $( '.albumTitle' ).text();
     var artwork = $( 'img.art[src]' ).attr( 'src' );
     if( track )
     {
-        return new ContentInfo( track, album, artist, artwork );
+        return new ContentInfo( track, artist, album, artwork );
     }
     else
     {
