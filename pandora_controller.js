@@ -33,6 +33,22 @@ PandoraController.prototype.checkIfPaused = function()
     return $( '.playButton' ).is( ':visible' );
 };
 
+PandoraController.prototype.getContentInfo = function()
+{
+    var track = $( '.songTitle' ).text();
+    var album = $( '.albumTitle' ).text();
+    var artist = $( '.artistSummary' ).text();
+    var artwork = $( 'img.art[src]' ).attr( 'src' );
+    if( track )
+    {
+        return new ContentInfo( track, album, artist, artwork );
+    }
+    else
+    {
+        return null;
+    }
+};
+
 $( window ).ready( function()
 {
     var controller = new PandoraController();

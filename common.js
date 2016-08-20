@@ -8,12 +8,22 @@ Message.types = {
     to_background : {
         INITIALIZE : 'INITIALIZE',
         PAUSE_REPORT : 'PAUSE_REPORT',
-        PROGRESS_REPORT : 'PROGRESS_REPORT'
+        PROGRESS_REPORT : 'PROGRESS_REPORT',
+        NEW_CONTENT : 'NEW_CONTENT'
     },
     from_background : {
         PAUSE : 'PAUSE',
         PLAY : 'PLAY'
     }
+}
+
+
+function ContentInfo( title, caption, subcaption, image )
+{
+    this.title = $.trim( title );
+    this.caption = $.trim( caption );
+    this.subcaption = $.trim( subcaption );
+    this.image = $.trim( image );
 }
 
 

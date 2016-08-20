@@ -31,6 +31,24 @@ SpotifyController.prototype.checkIfPaused = function()
     return !$( '#play-pause' ).hasClass( 'playing' );
 };
 
+SpotifyController.prototype.getContentInfo = function()
+{
+    var track = $( '#track-name>a' ).text();
+    var artist = $( '#track-artist>a' ).map( function()
+        {
+            return $( this ).text();
+        } ).get().join( ', ' );
+    var artwork = $( '#cover-art div.sp-image-img' ).css( 'background-image' ).replace( /^.*\s*url\(\s*[\'\"]?/, '' ).replace( /[\'\"]?\s*\).*/, '' );
+    if( track )
+    {
+        return new ContentInfo( track, artist, "", artwork );
+    }
+    else
+    {
+        return null;
+    }
+};
+
 
 $( window ).ready( function()
 {

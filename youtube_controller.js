@@ -31,6 +31,21 @@ YoutubeController.prototype.checkIfPaused = function()
     return $( '.ytp-play-button' ).attr( 'aria-label' ) !== 'Pause';
 };
 
+YoutubeController.prototype.getContentInfo = function()
+{
+    var videoTitle = $( '.watch-title' ).text();
+    var channel = $( '.spf-link a' ).text();
+    var thumbnail = $( '.spf-link img' ).attr( 'src' );
+    if( videoTitle )
+    {
+        return new ContentInfo( videoTitle, channel, "", thumbnail );
+    }
+    else
+    {
+        return null;
+    }
+};
+
 $( window ).ready( function()
 {
     var controller = new YoutubeController();

@@ -6,6 +6,7 @@ function Controller( name, color )
     this.color = color;
 
     this.paused = null;
+    this.currentSong = null;
     this.port = chrome.runtime.connect( null, { name : name } );
 
     var controller = this;
@@ -52,6 +53,18 @@ Controller.prototype.startPolling = function()
             controller.paused = paused;
             console.log( 'Reporting Paused: ' + controller.paused );
             controller.reportPaused( controller.paused );
+
+            if( !controller.paused )
+            {
+                var contentInfo = controller.getContentInfo();
+                if( contentInfo && ( !controller.currentContent || contentInfo.track !== controller.currentContent.track ) )
+                {
+                    console.log( 'Started New Content' );
+                    console.log( contentInfo );
+                    controller.currentContent = contentInfo;
+                    controller.port.postMessage( new Message( Message.types.to_background.NEW_CONTENT, controller.currentContent ) );
+                }
+            }
         }
 
         controller.reportProgress( controller.getProgress() );
@@ -63,3 +76,4 @@ Controller.prototype.play = function() { throw 'Unimplemented: play()' };
 Controller.prototype.pause = function() { throw 'Unimplemented: pause()' };
 Controller.prototype.checkIfPaused = function() { throw 'Unimplemented: checkIfPaused()' };
 Controller.prototype.getProgress = function() { throw 'Unimplemented: getProgress()' };
+Controller.prototype.getContentInfo = function() { throw 'Unimplemented: getContentInfo()' };

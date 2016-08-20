@@ -125,6 +125,22 @@ function handleMessage( message, port )
             updateBrowserActionIcon( paused, message.data, port.color );
         }
     }
+    else if( message.type == Message.types.to_background.NEW_CONTENT )
+    {
+        if( port.name === lastPort.name )
+        {
+            var contentInfo = message.data;
+            var notificationOptions = {
+                type : 'basic',
+                //iconUrl : contentInfo.image,
+                iconUrl : 'icon.png',
+                title : contentInfo.title,
+                message : contentInfo.caption,
+                contextMessage : contentInfo.subcaption
+            };
+            chrome.notifications.create( null, notificationOptions );
+        }
+    }
 }
 
 
