@@ -6,7 +6,7 @@ function Controller( name, color )
     this.color = color;
 
     this.paused = null;
-    this.currentSong = null;
+    this.currentContent = null;
     this.port = chrome.runtime.connect( null, { name : name } );
 
     var controller = this;
@@ -56,7 +56,7 @@ Controller.prototype.startPolling = function()
         }
 
         var contentInfo = controller.getContentInfo();
-        if( contentInfo && ( !controller.currentContent || contentInfo.track !== controller.currentContent.track ) )
+        if( contentInfo !== null && ( controller.currentContent === null || contentInfo.title !== controller.currentContent.title ) )
         {
             console.log( 'Started New Content' );
             console.log( contentInfo );

@@ -133,7 +133,7 @@ function handleMessage( message, port )
             var notificationOptions = {
                 type : 'basic',
                 //iconUrl : contentInfo.image,
-                iconUrl : 'icon.png',
+                iconUrl : 'res/icon128.png',
                 title : contentInfo.title,
                 message : contentInfo.caption,
                 contextMessage : contentInfo.subcaption
@@ -154,7 +154,7 @@ function handleDisconnect( port )
     {
         console.log( 'Port Disconnect: Was last port' );
         lastPort = null;
-        chrome.browserAction.setIcon( { path : { 38 : 'icon.png' } } );
+        chrome.browserAction.setIcon( { path : { '19' : 'res/icon19.png', '38' : 'res/icon38.png' } } );
     }
 }
 

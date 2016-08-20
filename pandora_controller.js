@@ -35,9 +35,9 @@ PandoraController.prototype.checkIfPaused = function()
 
 PandoraController.prototype.getContentInfo = function()
 {
-    var track = $( '.songTitle' ).text();
-    var artist = $( '.artistSummary' ).text();
-    var album = $( '.albumTitle' ).text();
+    var track = $( '.playerBarSong' ).text();
+    var artist = $( '.playerBarArtist' ).text();
+    var album = $( '.playerBarAlbum' ).text();
     var artwork = $( 'img.art[src]' ).attr( 'src' );
     if( track )
     {

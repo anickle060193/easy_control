@@ -3,8 +3,12 @@
 
     "name" : "Control All the Things!",
     "version" : "1.0",
-    "icons" : { "48" : "icon.png" },
-    "description" : "An extension to control different streaming sites: Pandora, Spotfiy, Youtube.",
+    "icons" : {
+        "16" : "res/icon16.png",
+        "48" : "res/icon48.png",
+        "128" : "res/icon128.png"
+    },
+    "description" : "An extension to control different streaming sites: Pandora, Spotfiy, Youtube, Google Play Music.",
     "permissions" : [ "notifications" ],
     "background" : {
         "persistent" : false,
@@ -30,7 +34,9 @@
         }
     ],
     "browser_action" : {
-        "default_icon" : { "38" : "icon.png" }
+        "default_icon" : {
+            "19" : "res/icon19.png",
+            "38" : "res/icon38.png" }
     },
     "commands" : {
         "play_pause" : {
