@@ -1,0 +1,26 @@
+{
+    "manifest_version" : 2,
+
+    "name" : "Media Controls",
+    "version" : "1.0",
+    "description" : "An extension to control media.",
+    "permissions" : [ ],
+    "background" : {
+        "persistent" : false,
+        "scripts" : [ "common.js", "background.js" ]
+    },
+    "content_scripts" : [
+        {
+            "matches" : [ "*://www.pandora.com/*" ],
+            "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "pandora_controller.js" ]
+        },
+        {
+            "matches" : [ "*://play.spotify.com/*" ],
+            "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "spotify_controller.js" ],
+            "all_frames" : true
+        }
+    ],
+    "browser_action" : {
+        "default_icon" : { "38" : "icon.png" }
+    }
+}
