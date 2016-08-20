@@ -129,16 +129,27 @@ function handleMessage( message, port )
     {
         if( port.name === lastPort.name )
         {
-            var contentInfo = message.data;
-            var notificationOptions = {
-                type : 'basic',
-                //iconUrl : contentInfo.image,
-                iconUrl : 'res/icon128.png',
-                title : contentInfo.title,
-                message : contentInfo.caption,
-                contextMessage : contentInfo.subcaption
-            };
-            chrome.notifications.create( null, notificationOptions );
+            chrome.storage.sync.get( null, function( items )
+            {
+                if( items[ Settings.Notifications[ port.name ] ] )
+                {
+                    console.log( 'Showing notification for ' + port.name );
+                    var contentInfo = message.data;
+                    var notificationOptions = {
+                        type : 'basic',
+                        //iconUrl : contentInfo.image,
+                        iconUrl : 'res/icon128.png',
+                        title : contentInfo.title,
+                        message : contentInfo.caption,
+                        contextMessage : contentInfo.subcaption
+                    };
+                    chrome.notifications.create( null, notificationOptions );
+                }
+                else
+                {
+                    console.log( 'Not showing notification for ' + port.name );
+                }
+            } );
         }
     }
 }
@@ -154,6 +165,7 @@ function handleDisconnect( port )
     {
         console.log( 'Port Disconnect: Was last port' );
         lastPort = null;
+        paused = true;
         chrome.browserAction.setIcon( { path : { '19' : 'res/icon19.png', '38' : 'res/icon38.png' } } );
     }
 }
@@ -204,14 +216,7 @@ function play()
 
     if( port )
     {
-        for( var i = 0; i < ports.length; i++ )
-        {
-            if( ports[ i ].name == lastPort.name )
-            {
-                ports[ i ].postMessage( new Message( Message.types.from_background.PLAY ) );
-                break;
-            }
-        }
+        port.postMessage( new Message( Message.types.from_background.PLAY ) );
     }
 }
 

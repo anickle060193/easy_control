@@ -1,3 +1,13 @@
+var Settings = {
+    Notifications : {
+        Pandora : 'key__notifications__pandora',
+        Spotify : 'key__notifications__spotify',
+        Youtube : 'key__notifications__youtube',
+        GooglePlayMusic : 'key__notifications__google_play_music'
+    }
+};
+
+
 function Message( type, data )
 {
     this.type = type;

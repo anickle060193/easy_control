@@ -8,8 +8,13 @@
         "48" : "res/icon48.png",
         "128" : "res/icon128.png"
     },
-    "description" : "An extension to control different streaming sites: Pandora, Spotfiy, Youtube, Google Play Music.",
-    "permissions" : [ "notifications" ],
+    "description" : "An extension to control different streaming sites: Pandora, Spotify, Youtube, Google Play Music.",
+    "permissions" : [ "notifications", "storage" ],
+    "content_security_policy" : "default-src 'self' https://maxcdn.bootstrapcdn.com https://maxcdn.com https://*.googleapis.com; img-src data: blob: ",
+    "options_ui" : {
+        "page" : "options.html",
+        "chrome_style" : true
+    },
     "background" : {
         "persistent" : false,
         "scripts" : [ "common.js", "background.js" ]

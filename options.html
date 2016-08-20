@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My Test Extension Options</title>
+    <style>
+      body: { padding: 10px; }
+    </style>
+  </head>
+  <body>
+
+    <table class="table table-condensed">
+      <tr>
+        <th></th>
+        <th>Pandora</th>
+        <th>Spotify</th>
+        <th>Youtube</th>
+        <th>Google Play Music</th>
+      </tr>
+      <tr>
+        <td>Display notifications on content change?</td>
+        <td><input type="checkbox" id="notificationsPandora" name="notifications"></td>
+        <td><input type="checkbox" id="notificationsSpotify" name="notifications"></td>
+        <td><input type="checkbox" id="notificationsYoutube" name="notifications"></td>
+        <td><input type="checkbox" id="notificationsGooglePlayMusic" name="notifications"></td>
+      </tr>
+    </table>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="common.js"></script>
+    <script src="options.js"></script>
+  </body>
+</html>
