@@ -1,16 +1,16 @@
 {
     "manifest_version" : 2,
 
-    "name" : "Control All the Things!",
+    "name" : "Easy Control",
     "version" : "1.0",
     "icons" : {
         "16" : "res/icon16.png",
         "48" : "res/icon48.png",
         "128" : "res/icon128.png"
     },
-    "description" : "An extension to control different streaming sites: Pandora, Spotify, Youtube, Google Play Music.",
+    "description" : "An extension that allows easy control of various media streaming websites.",
     "permissions" : [ "notifications", "storage" ],
-    "content_security_policy" : "default-src 'self' https://maxcdn.bootstrapcdn.com https://maxcdn.com https://*.googleapis.com; img-src data: blob: ",
+    "content_security_policy" : "default-src 'self' https://*.googleapis.com; img-src data: blob: ",
     "options_ui" : {
         "page" : "options.html",
         "chrome_style" : true
