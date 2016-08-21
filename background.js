@@ -223,7 +223,18 @@ function play()
 
 function handlePlayPause()
 {
-    if( paused )
+    if( ports.length === 0 )
+    {
+        chrome.storage.sync.get( Settings.DefaultSite, function( settings )
+        {
+            var defaultSite = settings[ Settings.DefaultSite ];
+            if( siteToURL[ defaultSite ] )
+            {
+                chrome.tabs.create( { url : siteToURL[ defaultSite ] } );
+            }
+        } );
+    }
+    else if( paused )
     {
         console.log( 'Click: Play' );
         play();
@@ -246,5 +257,24 @@ chrome.commands.onCommand.addListener( function( command )
     if( command === 'play_pause' )
     {
         handlePlayPause();
+    }
+} );
+
+chrome.runtime.onInstalled.addListener( function( details )
+{
+    var version = chrome.runtime.getManifest().version;
+    
+    if( version === "1.0" )
+    {
+        console.log( 'Installing/Updating to version ' + version );
+        
+        var settings = { };
+        settings[ Settings.Notifications.Pandora ] = false;
+        settings[ Settings.Notifications.Spotify ] = false;
+        settings[ Settings.Notifications.Youtube ] = false;
+        settings[ Settings.Notifications.GooglePlayMusic ] = false;
+        
+        settings[ Settings.DefaultSite ] = "Pandora";
+        chrome.storage.sync.set( settings );
     }
 } );

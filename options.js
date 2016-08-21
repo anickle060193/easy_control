@@ -2,27 +2,50 @@ var keys = [
     Settings.Notifications.Pandora,
     Settings.Notifications.Spotify,
     Settings.Notifications.Youtube,
-    Settings.Notifications.GooglePlayMusic
+    Settings.Notifications.GooglePlayMusic,
+    Settings.DefaultSite
     ];
-
-var idToSetting = {
-    'notificationsPandora' : Settings.Notifications.Pandora,
-    'notificationsSpotify' : Settings.Notifications.Spotify,
-    'notificationsYoutube' : Settings.Notifications.Youtube,
-    'notificationsGooglePlayMusic' : Settings.Notifications.GooglePlayMusic
-}
 
 
 var settings = null
 
 
-$( 'input[name="notifications"]' ).change( function()
+function saveSettings()
 {
-    settings[ idToSetting[ this.id ] ] = this.checked;
     chrome.storage.sync.set( settings, function()
     {
         console.log( 'Saved!' );
     } );
+}
+
+$( 'input[name="notifications"]' ).change( function()
+{
+    if( this.id.endsWith( 'Pandora' ) )
+    {
+        settings[ Settings.Notifications.Pandora ] = this.checked;
+    }
+    else if( this.id.endsWith( 'Spotify' ) )
+    {
+        settings[ Settings.Notifications.Spotify ] = this.checked;
+    }
+    else if( this.id.endsWith( 'Youtube' ) )
+    {
+        settings[ Settings.Notifications.Youtube ] = this.checked;
+    }
+    else if( this.id.endsWith( 'GooglePlayMusic' ) )
+    {
+        settings[ Settings.Notifications.GooglePlayMusic ] = this.checked;
+    }
+    
+    saveSettings();
+} );
+
+
+$( '#defaultSite' ).change( function()
+{
+    settings[ Settings.DefaultSite ] = this.value;
+    
+    saveSettings();
 } );
 
 
@@ -33,14 +56,12 @@ $().ready( function()
         settings = items;
 
         console.log( settings );
-
-        for( var id in idToSetting )
-        {
-            if( idToSetting.hasOwnProperty( id ) )
-            {
-                console.log( id + ' : ' + idToSetting[ id ] + ' : ' + settings[ idToSetting[ id ] ] );
-                $( '#' + id ).prop( 'checked', settings[ idToSetting[ id ] ] );
-            }
-        }
+        
+        $( '#notificationsPandora' ).prop( 'checked', settings[ Settings.Notifications.Pandora ] );
+        $( '#notificationsSpotify' ).prop( 'checked', settings[ Settings.Notifications.Spotify ] );
+        $( '#notificationsYoutube' ).prop( 'checked', settings[ Settings.Notifications.Youtube ] );
+        $( '#notificationsGooglePlayMusic' ).prop( 'checked', settings[ Settings.Notifications.GooglePlayMusic ] );
+        
+        $( '#defaultSite' ).val( settings[ Settings.DefaultSite ] );
     } );
 } );

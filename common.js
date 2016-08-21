@@ -4,7 +4,16 @@ var Settings = {
         Spotify : 'key__notifications__spotify',
         Youtube : 'key__notifications__youtube',
         GooglePlayMusic : 'key__notifications__google_play_music'
-    }
+    },
+    DefaultSite : 'key__default_site'
+};
+
+
+var siteToURL = {
+    Pandora : "http://www.pandora.com/",
+    Spotify : "https://play.spotify.com/",
+    Youtube : "https://www.youtube.com/",
+    GooglePlayMusic : "https://play.google.com/music/"
 };
 
 
