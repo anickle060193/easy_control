@@ -3,7 +3,10 @@ var keys = [
     Settings.Notifications.Spotify,
     Settings.Notifications.Youtube,
     Settings.Notifications.GooglePlayMusic,
-    Settings.DefaultSite
+    Settings.DefaultSite,
+    Settings.PauseOnLock,
+    Settings.PauseOnInactivity,
+    Settings.InactivityTimeout
     ];
 
 
@@ -18,8 +21,27 @@ function saveSettings()
     } );
 }
 
-$( 'input[name="notifications"]' ).change( function()
+
+function updateUI()
 {
+    $( '#notificationsPandora' ).prop( 'checked', settings[ Settings.Notifications.Pandora ] );
+    $( '#notificationsSpotify' ).prop( 'checked', settings[ Settings.Notifications.Spotify ] );
+    $( '#notificationsYoutube' ).prop( 'checked', settings[ Settings.Notifications.Youtube ] );
+    $( '#notificationsGooglePlayMusic' ).prop( 'checked', settings[ Settings.Notifications.GooglePlayMusic ] );
+    
+    $( '#defaultSite' ).val( settings[ Settings.DefaultSite ] );
+    
+    $( '#pauseOnLock' ).prop( 'checked', settings[ Settings.PauseOnLock ] );
+    $( '#pauseOnInactivity' ).prop( 'checked', settings[ Settings.PauseOnInactivity ] );
+    $( '#inactivityTimeout' ).val( settings[ Settings.InactivityTimeout ] );
+    $( '#inactivityTimeout' ).prop( 'disabled', !settings[ Settings.PauseOnInactivity ] );
+}
+
+
+$( 'input, select' ).change( function()
+{
+    var save = true;
+    
     if( this.id.endsWith( 'Pandora' ) )
     {
         settings[ Settings.Notifications.Pandora ] = this.checked;
@@ -36,16 +58,37 @@ $( 'input[name="notifications"]' ).change( function()
     {
         settings[ Settings.Notifications.GooglePlayMusic ] = this.checked;
     }
+    else if( this.id === 'defaultSite' )
+    {
+        settings[ Settings.DefaultSite ] = this.value;
+    }
+    else if( this.id === 'pauseOnLock' )
+    {
+        settings[ Settings.PauseOnLock ] = this.checked;
+    }
+    else if( this.id === 'pauseOnInactivity' )
+    {
+        settings[ Settings.PauseOnInactivity ] = this.checked;
+    }
+    else if( this.id === 'inactivityTimeout' )
+    {
+        var timeout = parseInt( this.value );
+        if( timeout >= 15 )
+        {
+            settings[ Settings.InactivityTimeout ] = timeout;
+        }
+        else
+        {
+            save = false;
+        }
+    }
     
-    saveSettings();
-} );
-
-
-$( '#defaultSite' ).change( function()
-{
-    settings[ Settings.DefaultSite ] = this.value;
+    if( save )
+    {
+        saveSettings();
+    }
     
-    saveSettings();
+    updateUI();
 } );
 
 
@@ -53,15 +96,9 @@ $().ready( function()
 {
     chrome.storage.sync.get( keys, function( items )
     {
+        console.log( items );
+        
         settings = items;
-
-        console.log( settings );
-        
-        $( '#notificationsPandora' ).prop( 'checked', settings[ Settings.Notifications.Pandora ] );
-        $( '#notificationsSpotify' ).prop( 'checked', settings[ Settings.Notifications.Spotify ] );
-        $( '#notificationsYoutube' ).prop( 'checked', settings[ Settings.Notifications.Youtube ] );
-        $( '#notificationsGooglePlayMusic' ).prop( 'checked', settings[ Settings.Notifications.GooglePlayMusic ] );
-        
-        $( '#defaultSite' ).val( settings[ Settings.DefaultSite ] );
+        updateUI();
     } );
 } );

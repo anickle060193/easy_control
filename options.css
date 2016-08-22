@@ -1,4 +1,10 @@
 body
 {
-	padding: 10px;
+    padding: 10px;
+    min-width: 500px;
+}
+
+#inactivityTimeout
+{
+    width: 50px;
 }

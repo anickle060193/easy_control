@@ -6,6 +6,9 @@ var ports = [ ];
 var lastPort = null;
 var paused = true;
 
+var pauseOnLock = false;
+var pauseOnInactivity = false;
+
 
 function drawPause( context, color )
 {
@@ -263,18 +266,102 @@ chrome.commands.onCommand.addListener( function( command )
 chrome.runtime.onInstalled.addListener( function( details )
 {
     var version = chrome.runtime.getManifest().version;
+
+    var installing = ( details.reason === 'install' );
+    var updating = ( details.reason === 'update' );
     
-    if( version === "1.0" )
+    if( installing )
     {
-        console.log( 'Installing/Updating to version ' + version );
+        console.log( 'Installing version ' + version );
+    }
+    else if( updating )
+    {
+        console.log( 'Updating to version ' + version );
+    }
+    else
+    {
+        return;
+    }
+    
+    var settings = { };
+
+    if( installing || ( updating && version === '1.0' ) )
+    {
+        console.log( 'Installing/Updating version ' + version );
         
-        var settings = { };
         settings[ Settings.Notifications.Pandora ] = false;
         settings[ Settings.Notifications.Spotify ] = false;
         settings[ Settings.Notifications.Youtube ] = false;
         settings[ Settings.Notifications.GooglePlayMusic ] = false;
         
         settings[ Settings.DefaultSite ] = "Pandora";
-        chrome.storage.sync.set( settings );
+    }
+    
+    if( installing || ( updating && version === '1.1' ) )
+    {
+        settings[ Settings.PauseOnLock ] = true;
+        settings[ Settings.PauseOnInactivity ] = false;
+        settings[ Settings.InactivityTimeout ] = 60 * 5;
+    }
+    
+    console.log( settings );
+        
+    chrome.storage.sync.set( settings );
+} );
+
+chrome.idle.onStateChanged.addListener( function( newState )
+{
+    console.log( 'State Changed: ' + newState );
+    if( newState === 'locked' )
+    {
+        if( !paused && pauseOnLock )
+        {
+            console.log( 'Pausing due to Lock' );
+            pause();
+        }
+    }
+    else if( newState === 'idle' )
+    {
+        if( !paused && pauseOnInactivity )
+        {
+            console.log( 'Pausing due to Inactivity' );
+            pause();
+        }
     }
 } );
+
+chrome.storage.onChanged.addListener( function( changes, ns )
+{
+    if( changes[ Settings.PauseOnLock ] )
+    {
+        pauseOnLock = changes[ Settings.PauseOnLock ].newValue;
+        console.log( 'Pause on Lock: ' + pauseOnLock );
+    }
+    else if( changes[ Settings.PauseOnInactivity ] || changes[ Settings.InactivityTimeout ] )
+    {
+        chrome.storage.sync.get( [ Settings.PauseOnInactivity, Settings.InactivityTimeout ], function( items )
+        {
+            pauseOnInactivity = items[ Settings.PauseOnInactivity ];
+            console.log( 'Pause on Inactivity: ' + pauseOnInactivity );
+            if( pauseOnInactivity )
+            {
+                chrome.idle.setDetectionInterval( items[ Settings.InactivityTimeout ] );
+                console.log( 'Inactivity Timeout: ' + items[ Settings.InactivityTimeout ] );
+            }
+        } );
+    }
+} );
+
+( function onStart()
+{
+    chrome.storage.sync.get( [ Settings.PauseOnLock, Settings.PauseOnInactivity, Settings.InactivityTimeout ], function( items )
+    {
+        pauseOnLock = items[ Settings.PauseOnLock ];
+        pauseOnInactivity = items[ Settings.PauseOnInactivity ];
+        if( pauseOnInactivity )
+        {
+            chrome.idle.setDetectionInterval( items[ Settings.InactivityTimeout ] );
+        }
+        console.log( 'Start - Pause on Lock: ' + pauseOnLock + ' Pause on Inactivity: ' + pauseOnInactivity + ' Inactivity Timeout: ' + items[ Settings.InactivityTimeout ] );
+    } );
+} )();

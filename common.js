@@ -5,7 +5,10 @@ var Settings = {
         Youtube : 'key__notifications__youtube',
         GooglePlayMusic : 'key__notifications__google_play_music'
     },
-    DefaultSite : 'key__default_site'
+    DefaultSite : 'key__default_site',
+    PauseOnLock : 'key__pause_on_lock',
+    PauseOnInactivity : 'key__pause_on_inactivity',
+    InactivityTimeout : 'key__inactivity_timeout'
 };
 
 
