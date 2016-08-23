@@ -10,7 +10,7 @@
     },
     "description" : "An extension that allows easy control of various media streaming websites.",
     "permissions" : [ "idle", "notifications", "storage", "http://*.p-cdn.com/", "https://*.scdn.co/", "https://*.cloudfront.net/", "https://*.googleusercontent.com/", "https://*.ggpht.com/" ],
-    "content_security_policy" : "default-src 'self' https://*.googleapis.com; img-src 'self' http://*.p-cdn.com/ https://*.scdn.co/ https://*.cloudfront.net/ https://*.googleusercontent.com/ https://*.ggpht.com/",
+    "content_security_policy" : "default-src 'self' https://*.googleapis.com; img-src 'self' data: blob: http://*.p-cdn.com/ https://*.scdn.co/ https://*.cloudfront.net/ https://*.googleusercontent.com/ https://*.ggpht.com/",
     "options_ui" : {
         "page" : "options.html",
         "chrome_style" : true
