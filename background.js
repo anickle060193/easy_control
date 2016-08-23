@@ -142,13 +142,13 @@ function handleMessage( message, port )
                     var contentInfo = message.data;
                     var notificationOptions = {
                         type : 'basic',
-                        //iconUrl : contentInfo.image,
-                        iconUrl : 'res/icon128.png',
+                        iconUrl : contentInfo.image ? contentInfo.image : 'res/icon128.png',
                         title : contentInfo.title,
                         message : contentInfo.caption,
                         contextMessage : contentInfo.subcaption,
                         buttons : [ { title : 'Next' } ]
                     };
+                    console.log( notificationOptions );
                     chrome.notifications.create( null, notificationOptions, function( notificationId )
                     {
                         lastNotification = notificationId;
