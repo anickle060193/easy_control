@@ -34,7 +34,7 @@
             "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "youtube_controller.js" ]
         },
         {
-            "matches" : [ "*://play.google.com/music/listen/*" ],
+            "matches" : [ "*://play.google.com/music/*" ],
             "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "google_play_music_controller.js" ]
         }
     ],
