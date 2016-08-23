@@ -224,6 +224,60 @@ function play()
 }
 
 
+function next()
+{
+    if( lastPort )
+    {
+        lastPort.postMessage( new Message( Message.types.from_background.NEXT ) );
+    }
+}
+
+
+function previous()
+{
+    if( lastPort )
+    {
+        lastPort.postMessage( new Message( Message.types.from_background.PREVIOUS ) );
+    }
+}
+
+
+function like()
+{
+    if( lastPort )
+    {
+        lastPort.postMessage( new Message( Message.types.from_background.LIKE ) );
+    }
+}
+
+
+function unlike()
+{
+    if( lastPort )
+    {
+        lastPort.postMessage( new Message( Message.types.from_background.UNLIKE ) );
+    }
+}
+
+
+function dislike()
+{
+    if( lastPort )
+    {
+        lastPort.postMessage( new Message( Message.types.from_background.DISLIKE ) );
+    }
+}
+
+
+function undislike()
+{
+    if( lastPort )
+    {
+        lastPort.postMessage( new Message( Message.types.from_background.UNDISLIKE ) );
+    }
+}
+
+
 function handlePlayPause()
 {
     if( ports.length === 0 )
@@ -252,6 +306,7 @@ function handlePlayPause()
 
 chrome.browserAction.onClicked.addListener( function( tag )
 {
+    console.log( 'BrowserAction clicked' );
     handlePlayPause();
 } );
 
@@ -263,13 +318,52 @@ chrome.commands.onCommand.addListener( function( command )
     }
 } );
 
+chrome.runtime.onMessage.addListener( function( message, sender, sendResponse )
+{
+    if( message.type === Message.types.from_popup.PLAY )
+    {
+        console.log( 'Recieved: PLAY' );
+        handlePlayPause();
+    }
+    else if( message.type === Message.types.from_popup.NEXT )
+    {
+        console.log( 'Recieved: NEXT' );
+        next();
+    }
+    else if( message.type === Message.types.from_popup.PREVIOUS )
+    {
+        console.log( 'Recieved: PREVIOUS' );
+        previous();
+    }
+    else if( message.type === Message.types.from_popup.DISLIKE )
+    {
+        console.log( 'Recieved: DISLIKE' );
+        dislike();
+    }
+    else if( message.type === Message.types.from_popup.UNDISLIKE )
+    {
+        console.log( 'Recieved: UNDISLIKE' );
+        undislike();
+    }
+    else if( message.type === Message.types.from_popup.LIKE )
+    {
+        console.log( 'Recieved: LIKE' );
+        like();
+    }
+    else if( message.type === Message.types.from_popup.UNLIKE )
+    {
+        console.log( 'Recieved: UNLIKE' );
+        unlike();
+    }
+} );
+
 chrome.runtime.onInstalled.addListener( function( details )
 {
     var version = chrome.runtime.getManifest().version;
 
     var installing = ( details.reason === 'install' );
     var updating = ( details.reason === 'update' );
-    
+
     if( installing )
     {
         console.log( 'Installing version ' + version );
@@ -282,30 +376,30 @@ chrome.runtime.onInstalled.addListener( function( details )
     {
         return;
     }
-    
+
     var settings = { };
 
     if( installing || ( updating && version === '1.0' ) )
     {
         console.log( 'Installing/Updating version ' + version );
-        
+
         settings[ Settings.Notifications.Pandora ] = false;
         settings[ Settings.Notifications.Spotify ] = false;
         settings[ Settings.Notifications.Youtube ] = false;
         settings[ Settings.Notifications.GooglePlayMusic ] = false;
-        
+
         settings[ Settings.DefaultSite ] = "Pandora";
     }
-    
+
     if( installing || ( updating && version === '1.1' ) )
     {
         settings[ Settings.PauseOnLock ] = true;
         settings[ Settings.PauseOnInactivity ] = false;
         settings[ Settings.InactivityTimeout ] = 60 * 5;
     }
-    
+
     console.log( settings );
-        
+
     chrome.storage.sync.set( settings );
 } );
 

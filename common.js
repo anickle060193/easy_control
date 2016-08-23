@@ -28,24 +28,42 @@ function Message( type, data )
 
 Message.types = {
     to_background : {
-        INITIALIZE : 'INITIALIZE',
-        PAUSE_REPORT : 'PAUSE_REPORT',
-        PROGRESS_REPORT : 'PROGRESS_REPORT',
-        NEW_CONTENT : 'NEW_CONTENT'
+        INITIALIZE : 'to_background.initialize',
+        PAUSE_REPORT : 'to_background.pause_report',
+        PROGRESS_REPORT : 'to_background.progress_report',
+        NEW_CONTENT : 'to_background.new_content',
     },
     from_background : {
-        PAUSE : 'PAUSE',
-        PLAY : 'PLAY'
+        PAUSE : 'from_background.pause',
+        PLAY : 'from_background.play',
+        NEXT : 'from_background.next',
+        PREVIOUS : 'from_background.previous',
+        LIKE : 'from_background.like',
+        UNLIKE : 'from_background.unlike',
+        DISLIKE : 'from_background.dislike',
+        UNDISLIKE : 'from_background.undislike'
+    },
+    from_popup : {
+        PAUSE : 'from_popup.pause',
+        PLAY : 'from_popup.play',
+        NEXT : 'from_popup.next',
+        PREVIOUS : 'from_popup.previous',
+        LIKE : 'from_popup.like',
+        UNLIKE : 'from_popup.unlike',
+        DISLIKE : 'from_popup.dislike',
+        UNDISLIKE : 'from_popup.undislike'
     }
 }
 
 
-function ContentInfo( title, caption, subcaption, image )
+function ContentInfo( title, caption, subcaption, image, isLiked, isDisliked )
 {
     this.title = $.trim( title );
     this.caption = $.trim( caption );
     this.subcaption = $.trim( subcaption );
     this.image = $.trim( image );
+    this.isLiked = !!isLiked;
+    this.isDisliked = !!isDisliked;
 }
 
 

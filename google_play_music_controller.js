@@ -6,17 +6,57 @@ function GooglePlayMusicController()
 GooglePlayMusicController.prototype = Object.create( Controller.prototype );
 GooglePlayMusicController.prototype.constructor = GooglePlayMusicController;
 
-GooglePlayMusicController.prototype.play = function()
+GooglePlayMusicController.prototype._play = function()
 {
     $( '#player-bar-play-pause' ).click();
 };
 
-GooglePlayMusicController.prototype.pause = function()
+GooglePlayMusicController.prototype._pause = function()
 {
     $( '#player-bar-play-pause' ).click();
 };
 
-GooglePlayMusicController.prototype.getProgress = function()
+GooglePlayMusicController.prototype._previous = function()
+{
+    $( '#player-bar-rewind' ).click();
+};
+
+GooglePlayMusicController.prototype._next = function()
+{
+    $( '#player-bar-forward' ).click();
+};
+
+GooglePlayMusicController.prototype._like = function()
+{
+    $( '.rating-container > paper-icon-button[data-rating="5"]' ).click();
+};
+
+GooglePlayMusicController.prototype._unlike = function()
+{
+    $( '.rating-container > paper-icon-button[data-rating="5"]' ).click();
+};
+
+GooglePlayMusicController.prototype._dislike = function()
+{
+    $( '.rating-container > paper-icon-button[data-rating="1"]' ).click();
+};
+
+GooglePlayMusicController.prototype._undislike = function()
+{
+    $( '.rating-container > paper-icon-button[data-rating="1"]' ).click();
+};
+
+GooglePlayMusicController.prototype._isLiked = function()
+{
+    return $( '.rating-container > paper-icon-button[data-rating="5"]' ).prop( 'title' ).startsWith( 'Undo' );
+};
+
+GooglePlayMusicController.prototype._isDisliked = function()
+{
+    return $( '.rating-container > paper-icon-button[data-rating="1"]' ).prop( 'title' ).startsWith( 'Undo' );
+};
+
+GooglePlayMusicController.prototype._getProgress = function()
 {
     var elapsedTime = trackTimeToSeconds( $( '#time_container_current' ).text() );
     var totalTime = trackTimeToSeconds( $( '#time_container_duration' ).text() );
@@ -26,12 +66,12 @@ GooglePlayMusicController.prototype.getProgress = function()
     return progress
 };
 
-GooglePlayMusicController.prototype.checkIfPaused = function()
+GooglePlayMusicController.prototype._isPaused = function()
 {
     return !$( '#player-bar-play-pause' ).hasClass( 'playing' );
 };
 
-GooglePlayMusicController.prototype.getContentInfo = function()
+GooglePlayMusicController.prototype._getContentInfo = function()
 {
     var track = $( '#currently-playing-title' ).text();
     var artist = $( '#player-artist' ).text();
@@ -49,6 +89,6 @@ GooglePlayMusicController.prototype.getContentInfo = function()
 
 $( window ).ready( function()
 {
-    var controller = new GooglePlayMusicController();
-    controller.startPolling();
+    window.controller = new GooglePlayMusicController();
+    window.controller.startPolling();
 } );

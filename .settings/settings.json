@@ -1,0 +1,11 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+    // Controls if the editor will insert spaces for tabs. Accepted values:  "auto", true, false. If set to "auto", the value will be guessed when a file is opened.
+    "editor.insertSpaces": true,
+
+    // Controls whether the editor should render whitespace characters
+    "editor.renderWhitespace": true,
+
+    // When enabled, will trim trailing whitespace when you save a file.
+    "files.trimTrailingWhitespace": true
+}
