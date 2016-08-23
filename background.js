@@ -6,6 +6,8 @@ var ports = [ ];
 var lastPort = null;
 var paused = true;
 
+var lastNotification = null;
+
 var pauseOnLock = false;
 var pauseOnInactivity = false;
 
@@ -144,9 +146,13 @@ function handleMessage( message, port )
                         iconUrl : 'res/icon128.png',
                         title : contentInfo.title,
                         message : contentInfo.caption,
-                        contextMessage : contentInfo.subcaption
+                        contextMessage : contentInfo.subcaption,
+                        buttons : [ { title : 'Next' } ]
                     };
-                    chrome.notifications.create( null, notificationOptions );
+                    chrome.notifications.create( null, notificationOptions, function( notificationId )
+                    {
+                        lastNotification = notificationId;
+                    } );
                 }
                 else
                 {
@@ -315,6 +321,20 @@ chrome.commands.onCommand.addListener( function( command )
     if( command === 'play_pause' )
     {
         handlePlayPause();
+    }
+} );
+
+chrome.notifications.onButtonClicked.addListener( function( notificationId, buttonIndex )
+{
+    console.log( 'Notification Button Clicked - Notification: ' + notificationId + ' Button: ' + buttonIndex );
+    if( notificationId === lastNotification )
+    {
+        if( buttonIndex === 0 )
+        {
+            next();
+            chrome.notifications.clear( lastNotification );
+            lastNotification = null;
+        }
     }
 } );
 

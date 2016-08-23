@@ -80,13 +80,16 @@ Controller.prototype.startPolling = function()
             controller.reportPaused( controller.paused );
         }
 
-        var contentInfo = controller.getContentInfo();
-        if( contentInfo !== null && ( controller.currentContent === null || contentInfo.title !== controller.currentContent.title ) )
+        if( !controller.paused )
         {
-            console.log( 'Started New Content' );
-            console.log( contentInfo );
-            controller.currentContent = contentInfo;
-            controller.port.postMessage( new Message( Message.types.to_background.NEW_CONTENT, controller.currentContent ) );
+            var contentInfo = controller.getContentInfo();
+            if( contentInfo !== null && contentInfo.title && ( controller.currentContent === null || contentInfo.title !== controller.currentContent.title ) )
+            {
+                console.log( 'Started New Content' );
+                console.log( contentInfo );
+                controller.currentContent = contentInfo;
+                controller.port.postMessage( new Message( Message.types.to_background.NEW_CONTENT, controller.currentContent ) );
+            }
         }
 
         controller.reportProgress( controller.getProgress() );
