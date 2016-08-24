@@ -115,6 +115,8 @@ function handleMessage( message, port )
             if( !otherPaused )
             {
                 console.log( 'Pause Report: Other Port Unpaused' );
+                ports.splice( ports.indexOf( port ), 1 );
+                ports.push( port )
                 lastPort = port;
                 paused = false;
                 pause( lastPort );
@@ -182,9 +184,19 @@ function handleDisconnect( port )
     if( port.name === lastPort.name )
     {
         console.log( 'Port Disconnect: Was last port' );
-        lastPort = null;
-        paused = true;
-        chrome.browserAction.setIcon( { path : { '19' : 'res/icon19.png', '38' : 'res/icon38.png' } } );
+
+        if( ports.length > 0 )
+        {
+            lastPort = ports[ ports.length - 1 ];
+            paused = true;
+            updateBrowserActionIcon( paused, lastPort.progress, lastPort.color );
+        }
+        else
+        {
+            lastPort = null;
+            paused = true;
+            chrome.browserAction.setIcon( { path : { '19' : 'res/icon19.png', '38' : 'res/icon38.png' } } );
+        }
     }
 }
 
@@ -206,7 +218,7 @@ chrome.runtime.onConnect.addListener( function( port )
     port.progress = 0.0;
     port.color = 'red';
 
-    ports.push( port );
+    ports.splice( 0, 0, port );
 
     port.onMessage.addListener( handleMessage );
     port.onDisconnect.addListener( handleDisconnect );
@@ -230,7 +242,7 @@ function play()
     var port = lastPort;
     if( port === null && ports.length !== 0 )
     {
-        port = ports[ 0 ];
+        port = ports[ ports.length - 1 ];
     }
 
     if( port )
