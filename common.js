@@ -5,6 +5,7 @@ var Settings = {
         Youtube : 'key__notifications__youtube',
         GooglePlayMusic : 'key__notifications__google_play_music'
     },
+    NoActiveWindowNotifications : 'key__no_active_window_notifications',
     DefaultSite : 'key__default_site',
     PauseOnLock : 'key__pause_on_lock',
     PauseOnInactivity : 'key__pause_on_inactivity',

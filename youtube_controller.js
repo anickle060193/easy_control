@@ -88,6 +88,6 @@ YoutubeController.prototype._getContentInfo = function()
 
 $( window ).ready( function()
 {
-    window.controller = new YoutubeController();
-    window.controller.startPolling();
+    var controller = new YoutubeController();
+    controller.startPolling();
 } );

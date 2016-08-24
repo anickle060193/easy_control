@@ -91,6 +91,6 @@ PandoraController.prototype._getContentInfo = function()
 
 $( window ).ready( function()
 {
-    window.controller = new PandoraController();
-    window.controller.startPolling();
+    var controller = new PandoraController();
+    controller.startPolling();
 } );

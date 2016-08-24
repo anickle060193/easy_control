@@ -134,29 +134,38 @@ function handleMessage( message, port )
     {
         if( port.name === lastPort.name )
         {
-            chrome.storage.sync.get( null, function( items )
+            chrome.storage.sync.get( null, function( settings )
             {
-                if( items[ Settings.Notifications[ port.name ] ] )
+                if( settings[ Settings.Notifications[ port.name ] ] )
                 {
-                    console.log( 'Showing notification for ' + port.name );
-                    var contentInfo = message.data;
-                    var notificationOptions = {
-                        type : 'basic',
-                        iconUrl : contentInfo.image ? contentInfo.image : 'res/icon128.png',
-                        title : contentInfo.title,
-                        message : contentInfo.caption,
-                        contextMessage : contentInfo.subcaption,
-                        buttons : [ { title : 'Next' } ]
-                    };
-                    console.log( notificationOptions );
-                    chrome.notifications.create( null, notificationOptions, function( notificationId )
+                    chrome.tabs.query( { active: true, currentWindow: true }, function( tabs )
                     {
-                        lastNotification = notificationId;
+                        if( tabs.length === 0
+                        || tabs[ 0 ].id !== port.sender.tab.id
+                        || !settings[ Settings.NoActiveWindowNotifications ] )
+                        {
+                            var contentInfo = message.data;
+                            var notificationOptions = {
+                                type : 'basic',
+                                iconUrl : contentInfo.image ? contentInfo.image : 'res/icon128.png',
+                                title : contentInfo.title,
+                                message : contentInfo.caption,
+                                contextMessage : contentInfo.subcaption,
+                                buttons : [ { title : 'Next' } ]
+                            };
+                            console.log( 'Showing notification for ' + port.name );
+                            console.log( contentInfo );
+                            console.log( notificationOptions );
+                            chrome.notifications.create( null, notificationOptions, function( notificationId )
+                            {
+                                lastNotification = notificationId;
+                            } );
+                        }
+                        else
+                        {
+                            console.log( 'Not showing notification due to NoActiveWindowNotifications.' );
+                        }
                     } );
-                }
-                else
-                {
-                    console.log( 'Not showing notification for ' + port.name );
                 }
             } );
         }
@@ -192,6 +201,7 @@ chrome.runtime.onConnect.addListener( function( port )
     }
 
     console.log( 'Port Connect: ' + port.name );
+    console.log( port );
     port.paused = true;
     port.progress = 0.0;
     port.color = 'red';
@@ -394,6 +404,8 @@ chrome.runtime.onInstalled.addListener( function( details )
     }
     else
     {
+        console.log( 'Not installing or updating:' );
+        console.log( details );
         return;
     }
 
@@ -416,6 +428,11 @@ chrome.runtime.onInstalled.addListener( function( details )
         settings[ Settings.PauseOnLock ] = true;
         settings[ Settings.PauseOnInactivity ] = false;
         settings[ Settings.InactivityTimeout ] = 60 * 5;
+    }
+
+    if( installing || ( updating && version === '1.2.0' ) )
+    {
+        settings[ Settings.NoActiveWindowNotifications ] = false;
     }
 
     console.log( settings );

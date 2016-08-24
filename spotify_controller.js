@@ -104,8 +104,8 @@ $( window ).ready( function()
      && $( '#previous' ).length !== 0
      && $( '#next' ).length !== 0 )
     {
-        window.controller = new SpotifyController();
-        window.controller.startPolling();
+        var controller = new SpotifyController();
+        controller.startPolling();
     }
     else
     {

@@ -89,6 +89,6 @@ GooglePlayMusicController.prototype._getContentInfo = function()
 
 $( window ).ready( function()
 {
-    window.controller = new GooglePlayMusicController();
-    window.controller.startPolling();
+    var controller = new GooglePlayMusicController();
+    controller.startPolling();
 } );
