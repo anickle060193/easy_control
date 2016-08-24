@@ -413,8 +413,6 @@ chrome.runtime.onInstalled.addListener( function( details )
 
     if( installing || ( updating && version === '1.0' ) )
     {
-        console.log( 'Installing/Updating version ' + version );
-
         settings[ Settings.Notifications.Pandora ] = false;
         settings[ Settings.Notifications.Spotify ] = false;
         settings[ Settings.Notifications.Youtube ] = false;
@@ -433,6 +431,11 @@ chrome.runtime.onInstalled.addListener( function( details )
     if( installing || ( updating && version === '1.2.0' ) )
     {
         settings[ Settings.NoActiveWindowNotifications ] = false;
+    }
+
+    if( installing || ( updating && version === '1.3.0' ) )
+    {
+        settings[ Settings.Notifications.Bandcamp ] = false;
     }
 
     console.log( settings );
@@ -468,7 +471,8 @@ chrome.storage.onChanged.addListener( function( changes, ns )
         pauseOnLock = changes[ Settings.PauseOnLock ].newValue;
         console.log( 'Pause on Lock: ' + pauseOnLock );
     }
-    else if( changes[ Settings.PauseOnInactivity ] || changes[ Settings.InactivityTimeout ] )
+
+    if( changes[ Settings.PauseOnInactivity ] || changes[ Settings.InactivityTimeout ] )
     {
         chrome.storage.sync.get( [ Settings.PauseOnInactivity, Settings.InactivityTimeout ], function( items )
         {

@@ -48,13 +48,11 @@ SpotifyController.prototype._undislike = function()
 
 SpotifyController.prototype._isLiked = function()
 {
-    console.log( 'Like not supported on Spotify.' );
     return false;
 };
 
 SpotifyController.prototype._isDisliked = function()
 {
-    console.log( 'Dislike not supported on Spotify.' );
     return false;
 };
 

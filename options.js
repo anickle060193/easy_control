@@ -16,6 +16,7 @@ function updateUI()
     $( '#notificationsSpotify' ).prop( 'checked', settings[ Settings.Notifications.Spotify ] );
     $( '#notificationsYoutube' ).prop( 'checked', settings[ Settings.Notifications.Youtube ] );
     $( '#notificationsGooglePlayMusic' ).prop( 'checked', settings[ Settings.Notifications.GooglePlayMusic ] );
+    $( '#notificationsBandcamp' ).prop( 'checked', settings[ Settings.Notifications.Bandcamp ] );
 
     $( '#noActiveWindowNotifications' ).prop( 'checked', settings[ Settings.NoActiveWindowNotifications ] );
 
@@ -32,21 +33,25 @@ $( 'input, select' ).change( function()
 {
     var save = true;
 
-    if( this.id.endsWith( 'Pandora' ) )
+    if( this.id === 'notificationsPandora' )
     {
         settings[ Settings.Notifications.Pandora ] = this.checked;
     }
-    else if( this.id.endsWith( 'Spotify' ) )
+    else if( this.id === 'notificationsSpotify' )
     {
         settings[ Settings.Notifications.Spotify ] = this.checked;
     }
-    else if( this.id.endsWith( 'Youtube' ) )
+    else if( this.id === 'notificationsYoutube' )
     {
         settings[ Settings.Notifications.Youtube ] = this.checked;
     }
-    else if( this.id.endsWith( 'GooglePlayMusic' ) )
+    else if( this.id === 'notificationsGooglePlayMusic' )
     {
         settings[ Settings.Notifications.GooglePlayMusic ] = this.checked;
+    }
+    else if( this.id === 'notificationsBandcamp' )
+    {
+        settings[ Settings.Notifications.Bandcamp ] = this.checked;
     }
     else if( this.id === 'defaultSite' )
     {

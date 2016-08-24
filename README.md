@@ -6,3 +6,4 @@ Provides control of:
 * [Spotify](https://play.spotify.com/)
 * [Youtube](https://www.youtube.com/)
 * [Google Play Music](https://play.google.com/music/)
+* [Bandcamp](https://bandcamp.com)

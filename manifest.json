@@ -9,8 +9,8 @@
         "128" : "res/icon128.png"
     },
     "description" : "An extension that allows easy control of various media streaming websites.",
-    "permissions" : [ "idle", "notifications", "storage", "tabs", "http://*.p-cdn.com/", "https://*.scdn.co/", "https://*.cloudfront.net/", "https://*.googleusercontent.com/", "https://*.ggpht.com/" ],
-    "content_security_policy" : "default-src 'self' https://*.googleapis.com; img-src 'self' data: blob: http://*.p-cdn.com/ https://*.scdn.co/ https://*.cloudfront.net/ https://*.googleusercontent.com/ https://*.ggpht.com/",
+    "permissions" : [ "idle", "notifications", "storage", "tabs", "http://*.p-cdn.com/", "https://*.scdn.co/", "https://*.cloudfront.net/", "https://*.googleusercontent.com/", "https://*.ggpht.com/", "https://*.bcbits.com/" ],
+    "content_security_policy" : "default-src 'self' https://*.googleapis.com; img-src 'self' data: blob: http://*.p-cdn.com/ https://*.scdn.co/ https://*.cloudfront.net/ https://*.googleusercontent.com/ https://*.ggpht.com/ https://*.bcbits.com/",
     "options_ui" : {
         "page" : "options.html",
         "chrome_style" : true
@@ -21,21 +21,25 @@
     },
     "content_scripts" : [
         {
-            "matches" : [ "*://www.pandora.com/*" ],
+            "matches" : [ "http://www.pandora.com/*" ],
             "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "pandora_controller.js" ]
         },
         {
-            "matches" : [ "*://play.spotify.com/*" ],
+            "matches" : [ "https://play.spotify.com/*" ],
             "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "spotify_controller.js" ],
             "all_frames" : true
         },
         {
-            "matches" : [ "*://www.youtube.com/*" ],
+            "matches" : [ "https://www.youtube.com/*" ],
             "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "youtube_controller.js" ]
         },
         {
-            "matches" : [ "*://play.google.com/music/*" ],
+            "matches" : [ "https://play.google.com/music/*" ],
             "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "google_play_music_controller.js" ]
+        },
+        {
+            "matches" : [ "https://*.bandcamp.com/*" ],
+            "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "bandcamp_controller.js" ]
         }
     ],
     "browser_action" : {

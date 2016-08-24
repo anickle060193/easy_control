@@ -3,7 +3,8 @@ var Settings = {
         Pandora : 'key__notifications__pandora',
         Spotify : 'key__notifications__spotify',
         Youtube : 'key__notifications__youtube',
-        GooglePlayMusic : 'key__notifications__google_play_music'
+        GooglePlayMusic : 'key__notifications__google_play_music',
+        Bandcamp : 'key__notifications__bandcamp'
     },
     NoActiveWindowNotifications : 'key__no_active_window_notifications',
     DefaultSite : 'key__default_site',
@@ -17,7 +18,8 @@ var siteToURL = {
     Pandora : "http://www.pandora.com/",
     Spotify : "https://play.spotify.com/",
     Youtube : "https://www.youtube.com/",
-    GooglePlayMusic : "https://play.google.com/music/"
+    GooglePlayMusic : "https://play.google.com/music/",
+    Bandcamp : 'https://bandcamp.com/'
 };
 
 
