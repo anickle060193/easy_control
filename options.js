@@ -91,6 +91,18 @@ $( 'input, select' ).change( function()
 } );
 
 
+$( '#setKeyboardShortcuts' ).click( function()
+{
+    chrome.tabs.query( { active : true, currentWindow : true }, function( tabs )
+    {
+        if( tabs.length === 1 )
+        {
+            chrome.tabs.update( tabs[ 0 ].id, { url : 'chrome://extensions/configureCommands' } );
+        }
+    } );
+} );
+
+
 $().ready( function()
 {
     chrome.storage.sync.get( null, function( items )
