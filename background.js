@@ -50,14 +50,14 @@ function handleMessage( message, controller )
     {
         controller.progress = message.data;
 
-        if( currentController && controller.name === currentController.name )
+        if( currentController && currentController.name === controller.name )
         {
             updateBrowserActionIcon( controller );
         }
     }
     else if( message.type === Message.types.to_background.NEW_CONTENT )
     {
-        if( controller.name === currentController.name )
+        if( currentController && currentController.name === controller.name )
         {
             chrome.storage.sync.get( null, function( settings )
             {
@@ -107,7 +107,7 @@ function handleDisconnect( controller )
 
     console.log( 'Controller Disconnect: ' + controller.name );
 
-    if( controller.name === currentController.name )
+    if( currentController && currentController.name === controller.name )
     {
         console.log( 'Controller Disconnect: Was last port' );
 
@@ -146,6 +146,7 @@ chrome.runtime.onConnect.addListener( function( port )
     {
         handleMessage( message, controller );
     } );
+
     controller.port.onDisconnect.addListener( function()
     {
         handleDisconnect( controller );
@@ -367,7 +368,7 @@ chrome.runtime.onInstalled.addListener( function( details )
 chrome.idle.onStateChanged.addListener( function( newState )
 {
     console.log( 'State Changed: ' + newState );
-    if( currentController && !controller.paused )
+    if( currentController && !currentController.paused )
     {
         if( newState === 'locked' )
         {

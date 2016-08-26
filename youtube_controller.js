@@ -1,20 +1,10 @@
-function YoutubeController()
+function YoutubeController( video )
 {
-    Controller.call( this, 'Youtube', '#f12b24' );
+    MediaController.call( this, video, 'Youtube', '#f12b24' );
 }
 
-YoutubeController.prototype = Object.create( Controller.prototype );
+YoutubeController.prototype = Object.create( MediaController.prototype );
 YoutubeController.prototype.constructor = YoutubeController;
-
-YoutubeController.prototype._play = function()
-{
-    $( '.ytp-play-button' ).click();
-};
-
-YoutubeController.prototype._pause = function()
-{
-    $( '.ytp-play-button' ).click();
-};
 
 YoutubeController.prototype._previous = function()
 {
@@ -56,21 +46,6 @@ YoutubeController.prototype._isDisliked = function()
     return !$( 'button.like-button-renderer-dislike-button.like-button-renderer-dislike-button-clicked' ).hasClass( 'hid' );
 };
 
-YoutubeController.prototype._getProgress = function()
-{
-    var elapsedTime = trackTimeToSeconds( $( '.ytp-time-current' ).text() );
-    var totalTime = trackTimeToSeconds( $( '.ytp-time-duration' ).text() );
-
-    var progress = totalTime === 0 ? 0 : elapsedTime / totalTime;
-
-    return progress
-};
-
-YoutubeController.prototype._isPaused = function()
-{
-    return $( '.ytp-play-button' ).attr( 'aria-label' ) !== 'Pause';
-};
-
 YoutubeController.prototype._getContentInfo = function()
 {
     var videoTitle = $( '.watch-title' ).text();
@@ -88,6 +63,6 @@ YoutubeController.prototype._getContentInfo = function()
 
 $( window ).ready( function()
 {
-    var controller = new YoutubeController();
+    var controller = new YoutubeController( $( 'video' )[ 0 ] );
     controller.startPolling();
 } );

@@ -31,7 +31,7 @@
         },
         {
             "matches" : [ "https://www.youtube.com/*" ],
-            "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "youtube_controller.js" ]
+            "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "media_controller.js", "youtube_controller.js" ]
         },
         {
             "matches" : [ "https://play.google.com/music/*" ],

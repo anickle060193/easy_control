@@ -1,5 +1,3 @@
-var POLLING_INTERVAL = 100;
-
 function Controller( name, color )
 {
     this.name = name
@@ -94,7 +92,7 @@ Controller.prototype.startPolling = function()
 
         controller.reportProgress( controller.getProgress() );
 
-    }, POLLING_INTERVAL );
+    }, 50 );
 };
 
 Controller.prototype.play = function()
