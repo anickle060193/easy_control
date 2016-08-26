@@ -17,7 +17,7 @@
     },
     "background" : {
         "persistent" : false,
-        "scripts" : [ "common.js", "background.js" ]
+        "scripts" : [ "common.js", "background_controller.js", "background_icon.js", "background.js", "background_commands.js" ]
     },
     "content_scripts" : [
         {
@@ -49,12 +49,26 @@
         }
     },
     "commands" : {
-        "play_pause" : {
-            "suggested_key" : {
-                "default" : "Ctrl+Shift+9"
-            },
-            "description" : "Plays/pauses the current music service.",
-            "global" : true
+        "1_play_pause" : {
+            "description" : "Plays/Pause"
+        },
+        "2_next" : {
+            "description" : "Next"
+        },
+        "3_previous" : {
+            "description" : "Previous"
+        },
+        "4_like" : {
+            "description" : "Like"
+        },
+        "5_unlike" : {
+            "description" : "Unlike"
+        },
+        "6_dislike" : {
+            "description" : "Dislike"
+        },
+        "7_undislike" : {
+            "description" : "Undislike"
         }
     }
 }

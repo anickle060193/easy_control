@@ -1,10 +1,5 @@
-var ICON_WIDTH = 38;
-var ICON_HEIGHT = 38;
-var ICON_PROGRESS_BAR_THICKNESS = ICON_HEIGHT * 0.1;
-
-var ports = [ ];
-var lastPort = null;
-var paused = true;
+var controllers = [ ];
+var currentController = null;
 
 var lastNotification = null;
 
@@ -12,138 +7,66 @@ var pauseOnLock = false;
 var pauseOnInactivity = false;
 
 
-function drawPause( context, color )
-{
-    var pauseBarWidth = 0.16 * ICON_WIDTH;
-    var pauseBarHeight = 0.68 * ICON_HEIGHT;
-
-    var pauseBarY = ( ICON_HEIGHT - ICON_PROGRESS_BAR_THICKNESS - pauseBarHeight ) / 2.0;
-    var xCenter = ICON_WIDTH / 2.0;
-
-    context.fillStyle = color;
-    context.rect( xCenter - pauseBarWidth * 1.5, pauseBarY, pauseBarWidth, pauseBarHeight );
-    context.rect( xCenter + pauseBarWidth * 0.5, pauseBarY, pauseBarWidth, pauseBarHeight );
-    context.fill();
-}
-
-
-function drawPlay( context, color )
-{
-    var playHeight = ( ICON_HEIGHT - ICON_PROGRESS_BAR_THICKNESS );
-
-    var playLeft = 0.21 * ICON_WIDTH;
-    var playRight = 0.79 * ICON_WIDTH;
-    var playTop = 0.1 * playHeight;
-    var playBottom = 0.9 * playHeight;
-
-    context.fillStyle = color;
-    context.beginPath();
-    context.moveTo( playLeft, playTop );
-    context.lineTo( playRight, ( playTop + playBottom ) / 2.0 );
-    context.lineTo( playLeft, playBottom );
-    context.fill();
-}
-
-
-function updateBrowserActionIcon( paused, progress, color )
-{
-    var canvas = document.createElement( 'canvas' );
-    canvas.width = ICON_WIDTH;
-    canvas.height = ICON_HEIGHT;
-
-    var context = canvas.getContext( '2d' );
-
-    if( paused )
-    {
-        drawPlay( context, color );
-    }
-    else
-    {
-        drawPause( context, color );
-    }
-
-    context.lineWidth = ICON_PROGRESS_BAR_THICKNESS;
-
-    context.strokeStyle = 'white';
-    context.beginPath();
-    context.moveTo( 0, ICON_HEIGHT );
-    context.lineTo( ICON_WIDTH, ICON_HEIGHT );
-    context.stroke();
-
-    context.strokeStyle = color;
-    context.beginPath();
-    context.moveTo( 0, ICON_HEIGHT );
-    context.lineTo( ICON_WIDTH * progress, ICON_HEIGHT );
-    context.stroke();
-
-    var imageData = context.getImageData( 0, 0, ICON_WIDTH, ICON_HEIGHT );
-    chrome.browserAction.setIcon( { imageData : imageData } );
-}
-
-
-function handleMessage( message, port )
+function handleMessage( message, controller )
 {
     if( message.type === Message.types.to_background.INITIALIZE )
     {
-        console.log( 'Port Initialized: ' + port.name );
-        port.color = message.data.color;
+        console.log( 'Controller Initialized: ' + controller.name );
+        controller.color = message.data.color;
     }
     else if( message.type === Message.types.to_background.PAUSE_REPORT )
     {
-        port.paused = message.data;
+        var changed = controller.paused != message.data;
+        controller.paused = message.data;
 
-        if( !lastPort )
+        if( !currentController )
         {
-            console.log( 'Pause Report: No last Port' );
-            lastPort = port;
-            paused = message.data;
-            updateBrowserActionIcon( paused, port.progress, port.color );
+            console.log( 'Pause Report: No last Controller' );
+            currentController = controller;
+            updateBrowserActionIcon( controller );
         }
-        else if( port.name === lastPort.name )
+        else if( controller.name === currentController.name )
         {
-            if( message.data !== paused )
+            if( changed )
             {
-                console.log( 'Pause Report: LastPort: ' + paused );
-                paused = message.data;
+                console.log( 'Pause Report: currentController: ' + controller.paused );
 
-                updateBrowserActionIcon( paused, port.progress, port.color )
+                updateBrowserActionIcon( controller )
             }
         }
         else
         {
-            var otherPaused = message.data;
-            if( !otherPaused )
+            if( !controller.paused )
             {
-                console.log( 'Pause Report: Other Port Unpaused' );
-                ports.splice( ports.indexOf( port ), 1 );
-                ports.push( port )
-                lastPort = port;
-                paused = false;
-                pause( lastPort );
+                console.log( 'Pause Report: Other Controller Unpaused' );
+                controllers.splice( controllers.indexOf( controller ), 1 );
+                controllers.push( controller )
+                currentController = controller;
+                pause( currentController );
             }
         }
     }
     else if( message.type === Message.types.to_background.PROGRESS_REPORT )
     {
-        port.progress = message.progress;
+        controller.progress = message.data;
 
-        if( lastPort && port.name === lastPort.name )
+        if( currentController && controller.name === currentController.name )
         {
-            updateBrowserActionIcon( paused, message.data, port.color );
+            updateBrowserActionIcon( controller );
         }
     }
-    else if( message.type == Message.types.to_background.NEW_CONTENT )
+    else if( message.type === Message.types.to_background.NEW_CONTENT )
     {
-        if( port.name === lastPort.name )
+        if( controller.name === currentController.name )
         {
             chrome.storage.sync.get( null, function( settings )
             {
-                if( settings[ Settings.Notifications[ port.name ] ] )
+                if( settings[ Settings.Notifications[ controller.name ] ] )
                 {
                     chrome.tabs.query( { active: true, currentWindow: true }, function( tabs )
                     {
                         if( tabs.length === 0
-                        || tabs[ 0 ].id !== port.sender.tab.id
+                        || tabs[ 0 ].id !== controller.port.sender.tab.id
                         || !settings[ Settings.NoActiveWindowNotifications ] )
                         {
                             var contentInfo = message.data;
@@ -155,7 +78,7 @@ function handleMessage( message, port )
                                 contextMessage : contentInfo.subcaption,
                                 buttons : [ { title : 'Next' } ]
                             };
-                            console.log( 'Showing notification for ' + port.name );
+                            console.log( 'Showing notification for ' + controller.name );
                             console.log( contentInfo );
                             console.log( notificationOptions );
                             chrome.notifications.create( null, notificationOptions, function( notificationId )
@@ -175,37 +98,34 @@ function handleMessage( message, port )
 }
 
 
-function handleDisconnect( port )
+function handleDisconnect( controller )
 {
-    ports.splice( ports.indexOf( port ), 1 );
+    controllers.splice( controllers.indexOf( controller ), 1 );
 
-    console.log( 'Port Disconnect: ' + port.name );
+    console.log( 'Controller Disconnect: ' + controller.name );
 
-    if( port.name === lastPort.name )
+    if( controller.name === currentController.name )
     {
-        console.log( 'Port Disconnect: Was last port' );
+        console.log( 'Controller Disconnect: Was last port' );
 
-        if( ports.length > 0 )
+        if( controllers.length > 0 )
         {
-            lastPort = ports[ ports.length - 1 ];
-            paused = true;
-            updateBrowserActionIcon( paused, lastPort.progress, lastPort.color );
+            currentController = controllers[ controllers.length - 1 ];
         }
         else
         {
-            lastPort = null;
-            paused = true;
-            chrome.browserAction.setIcon( { path : { '19' : 'res/icon19.png', '38' : 'res/icon38.png' } } );
+            currentController = null;
         }
+        updateBrowserActionIcon( currentController );
     }
 }
 
 
 chrome.runtime.onConnect.addListener( function( port )
 {
-    for( var i = 0; i < ports.length; i++ )
+    for( var i = 0; i < controllers.length; i++ )
     {
-        if( ports[ i ].name == port.name )
+        if( controllers[ i ].name == port.name )
         {
             console.log( 'Refused Duplicate Connection: ' + port.name );
             return;
@@ -214,24 +134,29 @@ chrome.runtime.onConnect.addListener( function( port )
 
     console.log( 'Port Connect: ' + port.name );
     console.log( port );
-    port.paused = true;
-    port.progress = 0.0;
-    port.color = 'red';
 
-    ports.splice( 0, 0, port );
+    var controller = new BackgroundController( port );
 
-    port.onMessage.addListener( handleMessage );
-    port.onDisconnect.addListener( handleDisconnect );
+    controllers.splice( 0, 0, controller );
+
+    controller.port.onMessage.addListener( function( message )
+    {
+        handleMessage( message, controller );
+    } );
+    controller.port.onDisconnect.addListener( function()
+    {
+        handleDisconnect( controller );
+    } );
 } );
 
 
 function pause( exclusion )
 {
-    for( var i = 0; i < ports.length; i++ )
+    for( var i = 0; i < controllers.length; i++ )
     {
-        if( !exclusion || ports[ i ].name !== exclusion.name )
+        if( !exclusion || controllers[ i ].name !== exclusion.name )
         {
-            ports[ i ].postMessage( new Message( Message.types.from_background.PAUSE ) )
+            controllers[ i ].pause();
         }
     }
 }
@@ -239,76 +164,81 @@ function pause( exclusion )
 
 function play()
 {
-    var port = lastPort;
-    if( port === null && ports.length !== 0 )
+    if( currentController )
     {
-        port = ports[ ports.length - 1 ];
-    }
-
-    if( port )
-    {
-        port.postMessage( new Message( Message.types.from_background.PLAY ) );
+        currentController.play();
     }
 }
 
 
 function next()
 {
-    if( lastPort )
+    if( currentController )
     {
-        lastPort.postMessage( new Message( Message.types.from_background.NEXT ) );
+        currentController.next();
     }
 }
 
 
 function previous()
 {
-    if( lastPort )
+    if( currentController )
     {
-        lastPort.postMessage( new Message( Message.types.from_background.PREVIOUS ) );
+        currentController.previous();
     }
 }
 
 
 function like()
 {
-    if( lastPort )
+    if( currentController )
     {
-        lastPort.postMessage( new Message( Message.types.from_background.LIKE ) );
+        currentController.like();
     }
 }
 
 
 function unlike()
 {
-    if( lastPort )
+    if( currentController )
     {
-        lastPort.postMessage( new Message( Message.types.from_background.UNLIKE ) );
+        currentController.unlike();
     }
 }
 
 
 function dislike()
 {
-    if( lastPort )
+    if( currentController )
     {
-        lastPort.postMessage( new Message( Message.types.from_background.DISLIKE ) );
+        currentController.dislike();
     }
 }
 
 
 function undislike()
 {
-    if( lastPort )
+    if( currentController )
     {
-        lastPort.postMessage( new Message( Message.types.from_background.UNDISLIKE ) );
+        currentController.undislike();
     }
 }
 
 
-function handlePlayPause()
+function playPause()
 {
-    if( ports.length === 0 )
+    if( currentController )
+    {
+        if( currentController.paused )
+        {
+            currentController.play();
+        }
+        else
+        {
+            currentController.pause();
+        }
+    }
+    else if( controllers.length === 0 )
     {
         chrome.storage.sync.get( Settings.DefaultSite, function( settings )
         {
@@ -319,32 +249,7 @@ function handlePlayPause()
             }
         } );
     }
-    else if( paused )
-    {
-        console.log( 'Click: Play' );
-        play();
-    }
-    else
-    {
-        console.log( 'Click: Pause' );
-        pause();
-    }
 }
-
-
-chrome.browserAction.onClicked.addListener( function( tag )
-{
-    console.log( 'BrowserAction clicked' );
-    handlePlayPause();
-} );
-
-chrome.commands.onCommand.addListener( function( command )
-{
-    if( command === 'play_pause' )
-    {
-        handlePlayPause();
-    }
-} );
 
 chrome.notifications.onButtonClicked.addListener( function( notificationId, buttonIndex )
 {
@@ -353,9 +258,10 @@ chrome.notifications.onButtonClicked.addListener( function( notificationId, butt
     {
         if( buttonIndex === 0 )
         {
-            next();
             chrome.notifications.clear( lastNotification );
             lastNotification = null;
+
+            next();
         }
     }
 } );
@@ -364,37 +270,37 @@ chrome.runtime.onMessage.addListener( function( message, sender, sendResponse )
 {
     if( message.type === Message.types.from_popup.PLAY )
     {
-        console.log( 'Recieved: PLAY' );
-        handlePlayPause();
+        console.log( 'Recieved from Popup: PLAY' );
+        playPause();
     }
     else if( message.type === Message.types.from_popup.NEXT )
     {
-        console.log( 'Recieved: NEXT' );
+        console.log( 'Recieved from Popup: NEXT' );
         next();
     }
     else if( message.type === Message.types.from_popup.PREVIOUS )
     {
-        console.log( 'Recieved: PREVIOUS' );
+        console.log( 'Recieved from Popup: PREVIOUS' );
         previous();
     }
     else if( message.type === Message.types.from_popup.DISLIKE )
     {
-        console.log( 'Recieved: DISLIKE' );
+        console.log( 'Recieved from Popup: DISLIKE' );
         dislike();
     }
     else if( message.type === Message.types.from_popup.UNDISLIKE )
     {
-        console.log( 'Recieved: UNDISLIKE' );
+        console.log( 'Recieved from Popup: UNDISLIKE' );
         undislike();
     }
     else if( message.type === Message.types.from_popup.LIKE )
     {
-        console.log( 'Recieved: LIKE' );
+        console.log( 'Recieved from Popup: LIKE' );
         like();
     }
     else if( message.type === Message.types.from_popup.UNLIKE )
     {
-        console.log( 'Recieved: UNLIKE' );
+        console.log( 'Recieved from Popup: UNLIKE' );
         unlike();
     }
 } );
@@ -458,26 +364,32 @@ chrome.runtime.onInstalled.addListener( function( details )
 chrome.idle.onStateChanged.addListener( function( newState )
 {
     console.log( 'State Changed: ' + newState );
-    if( newState === 'locked' )
+    if( currentController && !controller.paused )
     {
-        if( !paused && pauseOnLock )
+        if( newState === 'locked' )
         {
-            console.log( 'Pausing due to Lock' );
-            pause();
+            if( pauseOnLock )
+            {
+                console.log( 'Pausing due to Lock' );
+                pause();
+            }
         }
-    }
-    else if( newState === 'idle' )
-    {
-        if( !paused && pauseOnInactivity )
+        else if( newState === 'idle' )
         {
-            console.log( 'Pausing due to Inactivity' );
-            pause();
+            if( pauseOnInactivity )
+            {
+                console.log( 'Pausing due to Inactivity' );
+                pause();
+            }
         }
     }
 } );
 
 chrome.storage.onChanged.addListener( function( changes, ns )
 {
+    console.log( 'Settings Changed:' );
+    console.log( changes );
+
     if( changes[ Settings.PauseOnLock ] )
     {
         pauseOnLock = changes[ Settings.PauseOnLock ].newValue;
