@@ -103,6 +103,12 @@ $( '#setKeyboardShortcuts' ).click( function()
 } );
 
 
+$( '#createGithubIssue' ).click( function()
+{
+    chrome.tabs.create( { url : 'https://github.com/anickle060193/easy_control/issues/new' } );
+} );
+
+
 $().ready( function()
 {
     chrome.storage.sync.get( null, function( items )
