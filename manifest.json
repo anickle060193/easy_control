@@ -9,8 +9,8 @@
         "128" : "res/icon128.png"
     },
     "description" : "An extension that allows easy control of various media streaming websites.",
-    "permissions" : [ "idle", "notifications", "storage", "tabs", "http://*.p-cdn.com/", "https://*.scdn.co/", "https://*.cloudfront.net/", "https://*.googleusercontent.com/", "https://*.ggpht.com/", "https://*.bcbits.com/" ],
-    "content_security_policy" : "default-src 'self' https://*.googleapis.com; img-src 'self' data: blob: http://*.p-cdn.com/ https://*.scdn.co/ https://*.cloudfront.net/ https://*.googleusercontent.com/ https://*.ggpht.com/ https://*.bcbits.com/",
+    "permissions" : [ "idle", "notifications", "storage", "tabs", "http://*.pandora.com/", "http://*.p-cdn.com/", "https://*.scdn.co/", "https://*.cloudfront.net/", "https://*.googleusercontent.com/", "https://*.ggpht.com/", "https://*.bcbits.com/" ],
+    "content_security_policy" : "default-src 'self' https://*.googleapis.com; img-src 'self' data: blob: http://*.pandora.com/ http://*.p-cdn.com/ https://*.scdn.co/ https://*.cloudfront.net/ https://*.googleusercontent.com/ https://*.ggpht.com/ https://*.bcbits.com/",
     "options_ui" : {
         "page" : "options.html",
         "chrome_style" : true

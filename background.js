@@ -70,6 +70,9 @@ function handleMessage( message, controller )
                         || !settings[ Settings.NoActiveWindowNotifications ] )
                         {
                             var contentInfo = message.data;
+                            console.log( 'Content Info:' );
+                            console.log( contentInfo );
+
                             var notificationOptions = {
                                 type : 'basic',
                                 iconUrl : contentInfo.image ? contentInfo.image : 'res/icon128.png',
@@ -78,8 +81,8 @@ function handleMessage( message, controller )
                                 contextMessage : contentInfo.subcaption,
                                 buttons : [ { title : 'Next' } ]
                             };
+
                             console.log( 'Showing notification for ' + controller.name );
-                            console.log( contentInfo );
                             console.log( notificationOptions );
                             chrome.notifications.create( null, notificationOptions, function( notificationId )
                             {
