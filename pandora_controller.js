@@ -89,7 +89,7 @@ PandoraController.prototype._getContentInfo = function()
     }
 };
 
-$( window ).ready( function()
+$( function()
 {
     var controller = new PandoraController();
     controller.startPolling();

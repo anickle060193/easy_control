@@ -4,55 +4,57 @@ function Controller( name, color )
     this.color = color;
 
     this.currentContent = null;
+    this.interval = null;
     this.port = chrome.runtime.connect( null, { name : name } );
 
-    var controller = this;
-    this.port.onMessage.addListener( function( message )
-    {
-        if( message.type === Message.types.from_background.PAUSE )
-        {
-            console.log( 'Recieved: PAUSE' );
-            controller.pause();
-        }
-        else if( message.type === Message.types.from_background.PLAY )
-        {
-            console.log( 'Recieved: PLAY' );
-            controller.play();
-        }
-        else if( message.type === Message.types.from_background.NEXT )
-        {
-            console.log( 'Recieved: NEXT' );
-            controller.next();
-        }
-        else if( message.type === Message.types.from_background.PREVIOUS )
-        {
-            console.log( 'Recieved: PREVIOUS' );
-            controller.previous();
-        }
-        else if( message.type === Message.types.from_background.DISLIKE )
-        {
-            console.log( 'Recieved: DISLIKE' );
-            controller.dislike();
-        }
-        else if( message.type == Message.types.from_background.UNDISLIKE )
-        {
-            console.log( 'Recieved: UNDISLIKE' );
-            controller.undislike();
-        }
-        else if( message.type === Message.types.from_background.LIKE )
-        {
-            console.log( 'Recieved: LIKE' );
-            controller.like();
-        }
-        else if( message.type === Message.types.from_background.UNLIKE )
-        {
-            console.log( 'Recieved: UNLIKE' );
-            controller.unlike();
-        }
-    } );
+    this.port.onMessage.addListener( this.handleMessage.bind( this ) );
 
     this.port.postMessage( new Message( Message.types.to_background.INITIALIZE, { color : this.color } ) );
 }
+
+Controller.prototype.handleMessage = function( message )
+{
+    if( message.type === Message.types.from_background.PAUSE )
+    {
+        console.log( 'Recieved: PAUSE' );
+        this.pause();
+    }
+    else if( message.type === Message.types.from_background.PLAY )
+    {
+        console.log( 'Recieved: PLAY' );
+        this.play();
+    }
+    else if( message.type === Message.types.from_background.NEXT )
+    {
+        console.log( 'Recieved: NEXT' );
+        this.next();
+    }
+    else if( message.type === Message.types.from_background.PREVIOUS )
+    {
+        console.log( 'Recieved: PREVIOUS' );
+        this.previous();
+    }
+    else if( message.type === Message.types.from_background.DISLIKE )
+    {
+        console.log( 'Recieved: DISLIKE' );
+        this.dislike();
+    }
+    else if( message.type == Message.types.from_background.UNDISLIKE )
+    {
+        console.log( 'Recieved: UNDISLIKE' );
+        this.undislike();
+    }
+    else if( message.type === Message.types.from_background.LIKE )
+    {
+        console.log( 'Recieved: LIKE' );
+        this.like();
+    }
+    else if( message.type === Message.types.from_background.UNLIKE )
+    {
+        console.log( 'Recieved: UNLIKE' );
+        this.unlike();
+    }
+};
 
 Controller.prototype.reportPaused = function( paused )
 {
@@ -64,35 +66,49 @@ Controller.prototype.reportProgress = function( progress )
     this.port.postMessage( new Message( Message.types.to_background.PROGRESS_REPORT, progress ) );
 };
 
+Controller.prototype.poll = function()
+{
+    var paused = this.isPaused();
+
+    if( paused !== this.paused )
+    {
+        this.paused = paused;
+        console.log( 'Reporting Paused: ' + this.paused );
+        this.reportPaused( this.paused );
+    }
+
+    if( !this.paused )
+    {
+        var contentInfo = this.getContentInfo();
+        if( contentInfo !== null && contentInfo.title && ( this.currentContent === null || contentInfo.title !== this.currentContent.title ) )
+        {
+            console.log( 'Started New Content' );
+            console.log( contentInfo );
+            this.currentContent = contentInfo;
+            this.port.postMessage( new Message( Message.types.to_background.NEW_CONTENT, this.currentContent ) );
+        }
+    }
+
+    this.reportProgress( this.getProgress() );
+};
+
 Controller.prototype.startPolling = function()
 {
-    var controller = this;
-    var interval = setInterval( function()
-    {
-        var paused = controller.isPaused();
+    console.log( 'Start polling' );
+    this.interval = setInterval( this.poll.bind( this ), 100 );
+};
 
-        if( paused !== controller.paused )
-        {
-            controller.paused = paused;
-            console.log( 'Reporting Paused: ' + controller.paused );
-            controller.reportPaused( controller.paused );
-        }
+Controller.prototype.stopPolling = function()
+{
+    console.log( 'Stop polling' );
+    clearInterval( this.interval );
+};
 
-        if( !controller.paused )
-        {
-            var contentInfo = controller.getContentInfo();
-            if( contentInfo !== null && contentInfo.title && ( controller.currentContent === null || contentInfo.title !== controller.currentContent.title ) )
-            {
-                console.log( 'Started New Content' );
-                console.log( contentInfo );
-                controller.currentContent = contentInfo;
-                controller.port.postMessage( new Message( Message.types.to_background.NEW_CONTENT, controller.currentContent ) );
-            }
-        }
-
-        controller.reportProgress( controller.getProgress() );
-
-    }, 50 );
+Controller.prototype.disconnect = function()
+{
+    console.log( 'Disconnect' );
+    this.stopPolling();
+    this.port.disconnect();
 };
 
 Controller.prototype.play = function()

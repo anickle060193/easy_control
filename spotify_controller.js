@@ -95,7 +95,7 @@ SpotifyController.prototype._getContentInfo = function()
 };
 
 
-$( window ).ready( function()
+$( function()
 {
     if( $( '#progress' ).length !== 0
      && $( '#play-pause' ).length !== 0

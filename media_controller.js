@@ -2,7 +2,6 @@ function MediaController( media, name, color )
 {
     Controller.call( this, name, color );
     this.media = media;
-    console.log( this.media );
 }
 
 MediaController.prototype = Object.create( Controller.prototype );

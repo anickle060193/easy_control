@@ -61,8 +61,29 @@ YoutubeController.prototype._getContentInfo = function()
     }
 };
 
-$( window ).ready( function()
+$( function()
 {
-    var controller = new YoutubeController( $( 'video' )[ 0 ] );
-    controller.startPolling();
+    var videoSource = null;
+    var youtubeController = null;
+
+    setInterval( function()
+    {
+        var videos = $( 'video[src]' );
+
+        if( youtubeController !== null && ( videos.length === 0 || videos[ 0 ].src !== videoSource ) )
+        {
+            youtubeController.disconnect();
+            youtubeController = null;
+        }
+
+        if( youtubeController === null )
+        {
+            if( videos.length > 0 )
+            {
+                videoSource = videos[ 0 ].src;
+                youtubeController = new YoutubeController( videos[ 0 ] );
+                youtubeController.startPolling();
+            }
+        }
+    }, 100 );
 } );

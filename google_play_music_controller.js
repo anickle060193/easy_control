@@ -87,7 +87,7 @@ GooglePlayMusicController.prototype._getContentInfo = function()
     }
 };
 
-$( window ).ready( function()
+$( function()
 {
     var controller = new GooglePlayMusicController();
     controller.startPolling();

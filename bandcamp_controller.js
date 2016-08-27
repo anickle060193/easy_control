@@ -99,7 +99,7 @@ BandcampController.prototype._getContentInfo = function()
     }
 };
 
-$( window ).ready( function()
+$( function()
 {
     var controller = new BandcampController();
     controller.startPolling();
