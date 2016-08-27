@@ -1,6 +1,8 @@
 function YoutubeController( video )
 {
     MediaController.call( this, video, 'Youtube', '#f12b24' );
+
+    this.allowLockOnInactivity = false;
 }
 
 YoutubeController.prototype = Object.create( MediaController.prototype );

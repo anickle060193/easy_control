@@ -13,6 +13,7 @@ function handleMessage( message, controller )
     {
         console.log( 'Controller Initialized: ' + controller.name );
         controller.color = message.data.color;
+        controller.allowLockOnInactivity = message.data.allowLockOnInactivity;
     }
     else if( message.type === Message.types.to_background.PAUSE_REPORT )
     {
@@ -380,7 +381,7 @@ chrome.idle.onStateChanged.addListener( function( newState )
         }
         else if( newState === 'idle' )
         {
-            if( pauseOnInactivity )
+            if( pauseOnInactivity && currentController.allowLockOnInactivity )
             {
                 console.log( 'Pausing due to Inactivity' );
                 pause();

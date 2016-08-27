@@ -2,15 +2,23 @@ function Controller( name, color )
 {
     this.name = name
     this.color = color;
+    this.allowLockOnInactivity = true;
 
     this.currentContent = null;
     this.interval = null;
     this.port = chrome.runtime.connect( null, { name : name } );
 
     this.port.onMessage.addListener( this.handleMessage.bind( this ) );
-
-    this.port.postMessage( new Message( Message.types.to_background.INITIALIZE, { color : this.color } ) );
 }
+
+Controller.prototype.initialize = function()
+{
+    var data = {
+        color : this.color,
+        allowLockOnInactivity : this.allowLockOnInactivity
+    };
+    this.port.postMessage( new Message( Message.types.to_background.INITIALIZE, data ) );
+};
 
 Controller.prototype.handleMessage = function( message )
 {
@@ -95,7 +103,8 @@ Controller.prototype.poll = function()
 Controller.prototype.startPolling = function()
 {
     console.log( 'Start polling' );
-    this.interval = setInterval( this.poll.bind( this ), 100 );
+    this.initialize();
+    this.interval = setInterval( this.poll.bind( this ), 50 );
 };
 
 Controller.prototype.stopPolling = function()
