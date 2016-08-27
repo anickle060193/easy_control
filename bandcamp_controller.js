@@ -61,9 +61,14 @@ BandcampController.prototype._getProgress = function()
     var elapsedTime = trackTimeToSeconds( $( '.time_elapsed' ).text() );
     var totalTime = trackTimeToSeconds( $( '.time_total' ).text() );
 
-    var progress = totalTime === 0 ? 0 : elapsedTime / totalTime;
-
-    return progress
+    if( totalTime === 0 )
+    {
+        return 0;
+    }
+    else
+    {
+        return elapsedTime / totalTime;
+    }
 };
 
 BandcampController.prototype._isPaused = function()

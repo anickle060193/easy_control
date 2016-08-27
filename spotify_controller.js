@@ -61,9 +61,14 @@ SpotifyController.prototype._getProgress = function()
     var currentTrackTime = trackTimeToSeconds( $( '#track-current' ).text() );
     var trackLength = trackTimeToSeconds( $( '#track-length' ).text() );
 
-    var progress = trackLength === 0 ? 0 : currentTrackTime / trackLength;
-
-    return progress
+    if( trackLength === 0 )
+    {
+        return 0;
+    }
+    else
+    {
+        return currentTrackTime / trackLength;
+    }
 };
 
 SpotifyController.prototype._isPaused = function()

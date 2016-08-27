@@ -70,8 +70,18 @@ function ContentInfo( title, caption, subcaption, image, isLiked, isDisliked )
 }
 
 
-function trackTimeToSeconds( time_text )
+function trackTimeToSeconds( timeText )
 {
-    var timeSplit = time_text.split( ':', 2 );
-    return parseFloat( timeSplit[ 0 ] ) * 60 + parseFloat( timeSplit[ 1 ] );
+    var strippedTimeText = $.trim( timeText );
+    var timeSplit = timeText.split( ':', 2 );
+    if( timeSplit.length === 2 )
+    {
+        var minutes = Math.abs( parseFloat( timeSplit[ 0 ] ) );
+        var seconds = Math.abs( parseFloat( timeSplit[ 1 ] ) );
+        return minutes * 60 + seconds;
+    }
+    else
+    {
+        return 0;
+    }
 }

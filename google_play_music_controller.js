@@ -61,9 +61,14 @@ GooglePlayMusicController.prototype._getProgress = function()
     var elapsedTime = trackTimeToSeconds( $( '#time_container_current' ).text() );
     var totalTime = trackTimeToSeconds( $( '#time_container_duration' ).text() );
 
-    var progress = totalTime === 0 ? 0 : elapsedTime / totalTime;
-
-    return progress
+    if( totalTime === 0 )
+    {
+        return 0;
+    }
+    else
+    {
+        return elapsedTime / totalTime;
+    }
 };
 
 GooglePlayMusicController.prototype._isPaused = function()

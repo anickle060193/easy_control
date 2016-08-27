@@ -58,14 +58,19 @@ PandoraController.prototype._isDisliked = function()
 
 PandoraController.prototype._getProgress = function()
 {
-    var elapsedTime = -trackTimeToSeconds( $( '.elapsedTime' ).text() );
+    var elapsedTime = trackTimeToSeconds( $( '.elapsedTime' ).text() );
     var remainingTime = trackTimeToSeconds( $( '.remainingTime' ).text() );
 
     var totalTime = elapsedTime + remainingTime;
 
-    var progress = totalTime === 0 ? 0 : elapsedTime / totalTime;
-
-    return progress
+    if( totalTime === 0 )
+    {
+        return 0;
+    }
+    else
+    {
+        return elapsedTime / totalTime;
+    }
 };
 
 PandoraController.prototype._isPaused = function()
