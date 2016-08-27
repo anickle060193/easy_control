@@ -32,9 +32,8 @@ function Message( type, data )
 Message.types = {
     to_background : {
         INITIALIZE : 'to_background.initialize',
-        PAUSE_REPORT : 'to_background.pause_report',
-        PROGRESS_REPORT : 'to_background.progress_report',
         NEW_CONTENT : 'to_background.new_content',
+        STATUS : 'to_background.status'
     },
     from_background : {
         PAUSE : 'from_background.pause',

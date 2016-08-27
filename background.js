@@ -15,86 +15,79 @@ function handleMessage( message, controller )
         controller.color = message.data.color;
         controller.allowLockOnInactivity = message.data.allowLockOnInactivity;
     }
-    else if( message.type === Message.types.to_background.PAUSE_REPORT )
+    else if( message.type === Message.types.to_background.STATUS )
     {
-        var changed = controller.paused != message.data;
-        controller.paused = message.data;
+        console.log( message.data );
+        var progressChanged = controller.progress !== message.data.progress;
+        var pausedChanged = controller.paused !== message.data.paused;
 
-        if( !currentController )
+        controller.paused = message.data.paused;
+        controller.progress = message.data.progress;
+        controller.active = message.data.active;
+
+        if( currentController === null )
         {
-            console.log( 'Pause Report: No last Controller' );
-            currentController = controller;
-            updateBrowserActionIcon( controller );
-        }
-        else if( controller.name === currentController.name )
-        {
-            if( changed )
+            if( pausedChanged && !controller.paused )
             {
-                console.log( 'Pause Report: currentController: ' + controller.paused );
-
-                updateBrowserActionIcon( controller )
+                console.log( 'Status - No Current Controller - Unpaused - ' + controller.name );
+                currentController = controller;
             }
         }
-        else
+        else if( currentController !== controller )
         {
-            if( !controller.paused )
+            if( pausedChanged && !controller.paused )
             {
-                console.log( 'Pause Report: Other Controller Unpaused' );
+                console.log( 'Status - Not Current Controller - Other Unpaused - ' + controller.name );
                 controllers.splice( controllers.indexOf( controller ), 1 );
-                controllers.push( controller )
+                controllers.push( controller );
                 currentController = controller;
                 pause( currentController );
             }
         }
-    }
-    else if( message.type === Message.types.to_background.PROGRESS_REPORT )
-    {
-        controller.progress = message.data;
 
-        if( currentController && currentController.name === controller.name )
+        if( currentController === controller )
         {
-            updateBrowserActionIcon( controller );
+            if( progressChanged || pausedChanged )
+            {
+                updateBrowserActionIcon( currentController );
+            }
         }
     }
     else if( message.type === Message.types.to_background.NEW_CONTENT )
     {
-        if( currentController && currentController.name === controller.name )
+        if( currentController === controller )
         {
             chrome.storage.sync.get( null, function( settings )
             {
                 if( settings[ Settings.Notifications[ controller.name ] ] )
                 {
-                    chrome.tabs.query( { active: true, currentWindow: true }, function( tabs )
+                    if( !controller.active
+                    || !settings[ Settings.NoActiveWindowNotifications ] )
                     {
-                        if( tabs.length === 0
-                        || tabs[ 0 ].id !== controller.port.sender.tab.id
-                        || !settings[ Settings.NoActiveWindowNotifications ] )
-                        {
-                            var contentInfo = message.data;
-                            console.log( 'Content Info:' );
-                            console.log( contentInfo );
+                        var contentInfo = message.data;
+                        console.log( 'Content Info:' );
+                        console.log( contentInfo );
 
-                            var notificationOptions = {
-                                type : 'basic',
-                                iconUrl : contentInfo.image ? contentInfo.image : 'res/icon128.png',
-                                title : contentInfo.title,
-                                message : contentInfo.caption,
-                                contextMessage : contentInfo.subcaption,
-                                buttons : [ { title : 'Next' } ]
-                            };
+                        var notificationOptions = {
+                            type : 'basic',
+                            iconUrl : contentInfo.image ? contentInfo.image : 'res/icon128.png',
+                            title : contentInfo.title,
+                            message : contentInfo.caption,
+                            contextMessage : contentInfo.subcaption,
+                            buttons : [ { title : 'Next' } ]
+                        };
 
-                            console.log( 'Showing notification for ' + controller.name );
-                            console.log( notificationOptions );
-                            chrome.notifications.create( null, notificationOptions, function( notificationId )
-                            {
-                                lastNotification = notificationId;
-                            } );
-                        }
-                        else
+                        console.log( 'Showing notification for ' + controller.name );
+                        console.log( notificationOptions );
+                        chrome.notifications.create( null, notificationOptions, function( notificationId )
                         {
-                            console.log( 'Not showing notification due to NoActiveWindowNotifications.' );
-                        }
-                    } );
+                            lastNotification = notificationId;
+                        } );
+                    }
+                    else
+                    {
+                        console.log( 'Not showing notification due to NoActiveWindowNotifications.' );
+                    }
                 }
             } );
         }
@@ -108,17 +101,19 @@ function handleDisconnect( controller )
 
     console.log( 'Controller Disconnect: ' + controller.name );
 
-    if( currentController && currentController.name === controller.name )
+    if( currentController === controller )
     {
         console.log( 'Controller Disconnect: Was last port' );
 
         if( controllers.length > 0 )
         {
             currentController = controllers[ controllers.length - 1 ];
+            console.log( currentController.name + ' promoted to currentController' );
         }
         else
         {
             currentController = null;
+            console.log( 'No other controllers to promote' );
         }
         updateBrowserActionIcon( currentController );
     }
@@ -159,8 +154,9 @@ function pause( exclusion )
 {
     for( var i = 0; i < controllers.length; i++ )
     {
-        if( !exclusion || controllers[ i ].name !== exclusion.name )
+        if( controllers[ i ] !== exclusion )
         {
+            console.log( 'Pausing ' + controllers[ i ].name );
             controllers[ i ].pause();
         }
     }

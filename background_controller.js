@@ -5,6 +5,7 @@ function BackgroundController( port )
     this.paused = true;
     this.color = '';
     this.progress = 0.0;
+    this.active = false;
     this.allowLockOnInactivity = true;
 }
 

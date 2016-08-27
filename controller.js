@@ -3,12 +3,25 @@ function Controller( name, color )
     this.name = name
     this.color = color;
     this.allowLockOnInactivity = true;
+    this.active = false;
 
     this.currentContent = null;
     this.interval = null;
     this.port = chrome.runtime.connect( null, { name : name } );
 
     this.port.onMessage.addListener( this.handleMessage.bind( this ) );
+
+    $( window ).focus( function()
+    {
+        console.log( 'Controller Active: True' );
+        this.active = true;
+    }.bind( this ) );
+
+    $( window ).blur( function()
+    {
+        console.log( 'Controller Active: False' );
+        this.active = false;
+    }.bind( this ) );
 }
 
 Controller.prototype.initialize = function()
@@ -64,28 +77,21 @@ Controller.prototype.handleMessage = function( message )
     }
 };
 
-Controller.prototype.reportPaused = function( paused )
+Controller.prototype.reportStatus = function()
 {
-    this.port.postMessage( new Message( Message.types.to_background.PAUSE_REPORT, paused ) );
-};
-
-Controller.prototype.reportProgress = function( progress )
-{
-    this.port.postMessage( new Message( Message.types.to_background.PROGRESS_REPORT, progress ) );
+    var data = {
+        paused : this.isPaused(),
+        progress : this.getProgress(),
+        active : this.active
+    };
+    this.port.postMessage( new Message( Message.types.to_background.STATUS, data ) );
 };
 
 Controller.prototype.poll = function()
 {
-    var paused = this.isPaused();
+    this.reportStatus();
 
-    if( paused !== this.paused )
-    {
-        this.paused = paused;
-        console.log( 'Reporting Paused: ' + this.paused );
-        this.reportPaused( this.paused );
-    }
-
-    if( !this.paused )
+    if( !this.isPaused() )
     {
         var contentInfo = this.getContentInfo();
         if( contentInfo !== null && contentInfo.title && ( this.currentContent === null || contentInfo.title !== this.currentContent.title ) )
@@ -96,8 +102,6 @@ Controller.prototype.poll = function()
             this.port.postMessage( new Message( Message.types.to_background.NEW_CONTENT, this.currentContent ) );
         }
     }
-
-    this.reportProgress( this.getProgress() );
 };
 
 Controller.prototype.startPolling = function()
