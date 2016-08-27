@@ -17,7 +17,6 @@ function handleMessage( message, controller )
     }
     else if( message.type === Message.types.to_background.STATUS )
     {
-        console.log( message.data );
         var progressChanged = controller.progress !== message.data.progress;
         var pausedChanged = controller.paused !== message.data.paused;
 
@@ -55,6 +54,8 @@ function handleMessage( message, controller )
     }
     else if( message.type === Message.types.to_background.NEW_CONTENT )
     {
+        console.log( 'New Content - ' + controller.name );
+
         if( currentController === controller )
         {
             chrome.storage.sync.get( null, function( settings )
@@ -122,15 +123,6 @@ function handleDisconnect( controller )
 
 chrome.runtime.onConnect.addListener( function( port )
 {
-    for( var i = 0; i < controllers.length; i++ )
-    {
-        if( controllers[ i ].name == port.name )
-        {
-            console.log( 'Refused Duplicate Connection: ' + port.name );
-            return;
-        }
-    }
-
     console.log( 'Port Connect: ' + port.name );
     console.log( port );
 
@@ -303,6 +295,11 @@ chrome.runtime.onMessage.addListener( function( message, sender, sendResponse )
     {
         console.log( 'Recieved from Popup: UNLIKE' );
         unlike();
+    }
+    else if( message.type === Message.types.to_background.NAME_REQUEST )
+    {
+        console.log( 'Recieved: NAME REQUEST' );
+        sendResponse( 'window_' + sender.tab.windowId + '_frame_' + sender.frameId + '_tab_' + sender.tab.id );
     }
 } );
 
