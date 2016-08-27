@@ -11,17 +11,8 @@ function Controller( name, color )
 
     this.port.onMessage.addListener( this.handleMessage.bind( this ) );
 
-    $( window ).focus( function()
-    {
-        console.log( 'Controller Active: True' );
-        this.active = true;
-    }.bind( this ) );
-
-    $( window ).blur( function()
-    {
-        console.log( 'Controller Active: False' );
-        this.active = false;
-    }.bind( this ) );
+    $( window ).focus( $.proxy( this.activate, this ) );
+    $( window ).blur( $.proxy( this.deactivate, this ) );
 }
 
 Controller.prototype.initialize = function()
@@ -31,6 +22,18 @@ Controller.prototype.initialize = function()
         allowLockOnInactivity : this.allowLockOnInactivity
     };
     this.port.postMessage( new Message( Message.types.to_background.INITIALIZE, data ) );
+};
+
+Controller.prototype.activate = function()
+{
+    console.log( 'Controller Active: True' );
+    this.active = true;
+};
+
+Controller.prototype.deactivate = function()
+{
+    console.log( 'Controller Active: False' );
+    this.active = false;
 };
 
 Controller.prototype.handleMessage = function( message )
@@ -115,6 +118,9 @@ Controller.prototype.stopPolling = function()
 {
     console.log( 'Stop polling' );
     clearInterval( this.interval );
+
+    $( window ).off( 'focus', this.activate );
+    $( window ).off( 'blur', this.deactivate );
 };
 
 Controller.prototype.disconnect = function()
