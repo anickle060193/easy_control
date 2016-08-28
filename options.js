@@ -18,6 +18,8 @@ function updateUI()
     $( '#notificationsGooglePlayMusic' ).prop( 'checked', settings[ Settings.Notifications.GooglePlayMusic ] );
     $( '#notificationsBandcamp' ).prop( 'checked', settings[ Settings.Notifications.Bandcamp ] );
     $( '#notificationsNetflix' ).prop( 'checked', settings[ Settings.Notifications.Netflix ] );
+    $( '#notificationsAmazonVideo' ).prop( 'checked', settings[ Settings.Notifications.AmazonVideo ] );
+    $( '#notificationsAmazonMusic' ).prop( 'checked', settings[ Settings.Notifications.AmazonMusic ] );
 
     $( '#noActiveWindowNotifications' ).prop( 'checked', settings[ Settings.NoActiveWindowNotifications ] );
 
@@ -57,6 +59,14 @@ $( 'input, select' ).change( function()
     else if( this.id === 'notificationsNetflix' )
     {
         settings[ Settings.Notifications.Netflix ] = this.checked;
+    }
+    else if( this.id === 'notificationsAmazonVideo' )
+    {
+        settings[ Settings.Notifications.AmazonVideo ] = this.checked;
+    }
+    else if( this.id === 'notificationsAmazonMusic' )
+    {
+        settings[ Settings.Notifications.AmazonMusic ] = this.checked;
     }
     else if( this.id === 'defaultSite' )
     {

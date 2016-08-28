@@ -5,7 +5,9 @@ var Settings = {
         Youtube : 'key__notifications__youtube',
         GooglePlayMusic : 'key__notifications__google_play_music',
         Bandcamp : 'key__notifications__bandcamp',
-        Netflix : 'key__notifications__netflix'
+        Netflix : 'key__notifications__netflix',
+        AmazonVideo : 'key__notifications__amazon_video',
+        AmazonMusic : 'key__notifications__amazon_music'
     },
     NoActiveWindowNotifications : 'key__no_active_window_notifications',
     DefaultSite : 'key__default_site',
@@ -21,7 +23,9 @@ var siteToURL = {
     Youtube : "https://www.youtube.com/",
     GooglePlayMusic : "https://play.google.com/music/",
     Bandcamp : 'https://bandcamp.com/',
-    Netflix : 'https://www.netflix.com/'
+    Netflix : 'https://www.netflix.com/',
+    AmazonVideo : 'https://www.amazon.com/gp/video/getstarted/',
+    AmazonMusic : 'https://music.amazon.com/'
 };
 
 

@@ -357,6 +357,8 @@ chrome.runtime.onInstalled.addListener( function( details )
     if( installing || ( updating && version === '1.7.0' ) )
     {
         settings[ Settings.Notifications.Netflix ] = false;
+        settings[ Settings.Notifications.AmazonVideo ] = false;
+        settings[ Settings.Notifications.AmazonMusic ] = false;
     }
 
     console.log( settings );

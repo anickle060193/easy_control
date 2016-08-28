@@ -9,8 +9,8 @@
         "128" : "res/icon128.png"
     },
     "description" : "An extension that allows easy control of various media streaming websites.",
-    "permissions" : [ "idle", "notifications", "storage", "tabs", "http://*.pandora.com/", "http://*.p-cdn.com/", "https://*.scdn.co/", "https://*.cloudfront.net/", "https://*.googleusercontent.com/", "https://*.ggpht.com/", "https://*.bcbits.com/" ],
-    "content_security_policy" : "default-src 'self' https://*.googleapis.com; img-src 'self' data: blob: http://*.pandora.com/ http://*.p-cdn.com/ https://*.scdn.co/ https://*.cloudfront.net/ https://*.googleusercontent.com/ https://*.ggpht.com/ https://*.bcbits.com/",
+    "permissions" : [ "idle", "notifications", "storage", "tabs", "http://*.pandora.com/", "http://*.p-cdn.com/", "https://*.scdn.co/", "https://*.cloudfront.net/", "https://*.googleusercontent.com/", "https://*.ggpht.com/", "https://*.bcbits.com/", "https://*.ssl-images-amazon.com/" ],
+    "content_security_policy" : "default-src 'self' https://*.googleapis.com; img-src 'self' data: blob: http://*.pandora.com/ http://*.p-cdn.com/ https://*.scdn.co/ https://*.cloudfront.net/ https://*.googleusercontent.com/ https://*.ggpht.com/ https://*.bcbits.com/ https://*.ssl-images-amazon.com/",
     "options_ui" : {
         "page" : "options.html",
         "chrome_style" : true
@@ -46,8 +46,25 @@
             "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "media_controller.js", "netflix_controller.js" ]
         },
         {
+            "matches" : [ "https://www.amazon.com/*" ],
+            "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "media_controller.js", "amazon_video_controller.js" ]
+        },
+        {
+            "matches" : [ "https://music.amazon.com/*" ],
+            "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "media_controller.js", "amazon_music_controller.js" ]
+        },
+        {
             "matches" : [ "<all_urls>" ],
-            "exclude_matches" : [ "http://www.pandora.com/*", "https://play.spotify.com/*", "https://www.youtube.com/*", "https://play.google.com/music/*", "https://*.bandcamp.com/*", "https://www.netflix.com/*" ],
+            "exclude_matches" : [
+                "http://www.pandora.com/*",
+                "https://play.spotify.com/*",
+                "https://www.youtube.com/*",
+                "https://play.google.com/music/*",
+                "https://*.bandcamp.com/*",
+                "https://www.netflix.com/*",
+                "https://www.amazon.com/*",
+                "https://music.amazon.com/*"
+            ],
             "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "media_controller.js", "audio_video_controller.js" ],
             "all_frames" : true
         }
