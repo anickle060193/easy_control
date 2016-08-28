@@ -17,6 +17,7 @@ function updateUI()
     $( '#notificationsYoutube' ).prop( 'checked', settings[ Settings.Notifications.Youtube ] );
     $( '#notificationsGooglePlayMusic' ).prop( 'checked', settings[ Settings.Notifications.GooglePlayMusic ] );
     $( '#notificationsBandcamp' ).prop( 'checked', settings[ Settings.Notifications.Bandcamp ] );
+    $( '#notificationsNetflix' ).prop( 'checked', settings[ Settings.Notifications.Netflix ] );
 
     $( '#noActiveWindowNotifications' ).prop( 'checked', settings[ Settings.NoActiveWindowNotifications ] );
 
@@ -52,6 +53,10 @@ $( 'input, select' ).change( function()
     else if( this.id === 'notificationsBandcamp' )
     {
         settings[ Settings.Notifications.Bandcamp ] = this.checked;
+    }
+    else if( this.id === 'notificationsNetflix' )
+    {
+        settings[ Settings.Notifications.Netflix ] = this.checked;
     }
     else if( this.id === 'defaultSite' )
     {

@@ -4,7 +4,8 @@ var Settings = {
         Spotify : 'key__notifications__spotify',
         Youtube : 'key__notifications__youtube',
         GooglePlayMusic : 'key__notifications__google_play_music',
-        Bandcamp : 'key__notifications__bandcamp'
+        Bandcamp : 'key__notifications__bandcamp',
+        Netflix : 'key__notifications__netflix'
     },
     NoActiveWindowNotifications : 'key__no_active_window_notifications',
     DefaultSite : 'key__default_site',
@@ -19,7 +20,8 @@ var siteToURL = {
     Spotify : "https://play.spotify.com/",
     Youtube : "https://www.youtube.com/",
     GooglePlayMusic : "https://play.google.com/music/",
-    Bandcamp : 'https://bandcamp.com/'
+    Bandcamp : 'https://bandcamp.com/',
+    Netflix : 'https://www.netflix.com/'
 };
 
 

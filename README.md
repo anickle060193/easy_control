@@ -1,4 +1,4 @@
-# easy_control
+# Easy Control
 A Chrome extension that allows easy control of various media streaming websites.
 
 Provides control of:
@@ -7,3 +7,4 @@ Provides control of:
 * [Youtube](https://www.youtube.com/)
 * [Google Play Music](https://play.google.com/music/)
 * [Bandcamp](https://bandcamp.com)
+* [Netflix](https://www.netflix.com)

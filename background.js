@@ -354,6 +354,11 @@ chrome.runtime.onInstalled.addListener( function( details )
         settings[ Settings.Notifications.Bandcamp ] = false;
     }
 
+    if( installing || ( updating && version === '1.7.0' ) )
+    {
+        settings[ Settings.Notifications.Netflix ] = false;
+    }
+
     console.log( settings );
 
     chrome.storage.sync.set( settings );
