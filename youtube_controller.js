@@ -52,8 +52,10 @@ YoutubeController.prototype._getContentInfo = function()
 {
     var videoTitle = $( '.watch-title' ).text();
     var channel = $( '.spf-link a' ).text();
-    var thumbnail = $( '#watch-header img' ).attr( 'data-thumb' );
-    if( videoTitle )
+    var thumbnailImg = $( '#watch-header img' )[ 0 ];
+    var thumbnail = thumbnailImg.src;
+
+    if( videoTitle && thumbnailImg.naturalHeight > 10 )
     {
         return new ContentInfo( videoTitle, channel, "", thumbnail );
     }
