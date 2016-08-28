@@ -15,8 +15,8 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="icon.svg"
-   inkscape:export-filename="D:\Users\Adam\Desktop\easy_control\res\icon128.png"
+   sodipodi:docname="promotional_icon.svg"
+   inkscape:export-filename="D:\Users\Adam\Desktop\easy_control\extra\promotional_icon.png"
    inkscape:export-xdpi="45"
    inkscape:export-ydpi="45">
   <defs
@@ -43,7 +43,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2.8284271"
-     inkscape:cx="0.27826022"
+     inkscape:cx="86.889204"
      inkscape:cy="140.33116"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -68,7 +68,8 @@
      inkscape:window-height="1017"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
-     inkscape:window-maximized="1" />
+     inkscape:window-maximized="1"
+     inkscape:snap-global="false" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -87,7 +88,8 @@
      id="layer1"
      transform="translate(0,-796.36216)">
     <g
-       id="g4141">
+       id="g4141"
+       transform="matrix(0.88258233,0,0,0.88258233,14.79109,108.91947)">
       <path
          transform="matrix(0.97367441,0,0,0.96519911,6.818358,35.536018)"
          id="path4288"

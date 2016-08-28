@@ -9,9 +9,9 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="640"
-   height="400"
-   viewBox="0 0 640 400"
+   width="1280"
+   height="800"
+   viewBox="0 0 1280 800"
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
@@ -56,8 +56,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="-54.706048"
-     inkscape:cy="29.324915"
+     inkscape:cx="558.24584"
+     inkscape:cy="473.76658"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -98,17 +98,17 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-652.36216)">
+     transform="translate(0,-252.36216)">
     <rect
        style="opacity:1;fill:#444444;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
        id="rect4193"
-       width="640"
-       height="400"
+       width="1280"
+       height="800"
        x="0"
-       y="652.36218" />
+       y="252.36217" />
     <g
        id="g4141"
-       transform="matrix(0.9370254,0,0,0.9370254,36.45451,-13.38202)">
+       transform="matrix(1.8740509,0,0,1.8740509,72.909022,-1079.1263)">
       <path
          transform="matrix(0.97367441,0,0,0.96519911,6.818358,35.536018)"
          id="path4288"
@@ -128,7 +128,7 @@
     </g>
     <g
        id="g4195"
-       transform="matrix(1.2904027,0,0,1.2904027,55.628471,-325.85592)">
+       transform="matrix(2.5808055,0,0,2.5808055,111.25695,-1704.0741)">
       <text
          xml:space="preserve"
          style="font-style:normal;font-weight:normal;font-size:40px;line-height:100%;font-family:sans-serif;letter-spacing:-0.06px;word-spacing:0px;fill:#000000;fill-opacity:0.48837208;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter4183)"
