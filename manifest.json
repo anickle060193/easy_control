@@ -9,8 +9,20 @@
         "128" : "res/icon128.png"
     },
     "description" : "An extension that allows easy control of various media streaming websites.",
-    "permissions" : [ "idle", "notifications", "storage", "tabs", "http://*.pandora.com/", "http://*.p-cdn.com/", "https://*.scdn.co/", "https://*.cloudfront.net/", "https://*.googleusercontent.com/", "https://*.ggpht.com/", "https://*.bcbits.com/", "https://*.ssl-images-amazon.com/" ],
-    "content_security_policy" : "default-src 'self' https://*.googleapis.com; img-src 'self' data: blob: http://*.pandora.com/ http://*.p-cdn.com/ https://*.scdn.co/ https://*.cloudfront.net/ https://*.googleusercontent.com/ https://*.ggpht.com/ https://*.bcbits.com/ https://*.ssl-images-amazon.com/",
+    "permissions" : [
+        "idle",
+        "notifications",
+        "storage",
+        "tabs",
+        "http://*.pandora.com/", "http://*.p-cdn.com/",
+        "https://*.scdn.co/",
+        "https://*.cloudfront.net/",
+        "https://*.googleusercontent.com/", "https://*.ggpht.com/",
+        "https://*.bcbits.com/",
+        "https://*.ssl-images-amazon.com/",
+        "http://*.huluim.com/"
+    ],
+    "content_security_policy" : "default-src 'self' https://*.googleapis.com; img-src 'self' data: blob: http://*.pandora.com/ http://*.p-cdn.com/ https://*.scdn.co/ https://*.cloudfront.net/ https://*.googleusercontent.com/ https://*.ggpht.com/ https://*.bcbits.com/ https://*.ssl-images-amazon.com/ http://*.huluim.com/",
     "options_ui" : {
         "page" : "options.html",
         "chrome_style" : true
@@ -51,7 +63,11 @@
         },
         {
             "matches" : [ "https://music.amazon.com/*" ],
-            "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "media_controller.js", "amazon_music_controller.js" ]
+            "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "amazon_music_controller.js" ]
+        },
+        {
+            "matches" : [ "http://www.hulu.com/*" ],
+            "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "media_controller.js", "hulu_controller.js" ]
         },
         {
             "matches" : [ "<all_urls>" ],
@@ -63,7 +79,8 @@
                 "https://*.bandcamp.com/*",
                 "https://www.netflix.com/*",
                 "https://www.amazon.com/*",
-                "https://music.amazon.com/*"
+                "https://music.amazon.com/*",
+                "http://www.hulu.com/*"
             ],
             "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "media_controller.js", "audio_video_controller.js" ],
             "all_frames" : true

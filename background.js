@@ -359,6 +359,7 @@ chrome.runtime.onInstalled.addListener( function( details )
         settings[ Settings.Notifications.Netflix ] = false;
         settings[ Settings.Notifications.AmazonVideo ] = false;
         settings[ Settings.Notifications.AmazonMusic ] = false;
+        settings[ Settings.Notifications.Hulu ] = false;
     }
 
     console.log( settings );

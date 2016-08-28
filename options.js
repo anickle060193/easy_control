@@ -68,6 +68,10 @@ $( 'input, select' ).change( function()
     {
         settings[ Settings.Notifications.AmazonMusic ] = this.checked;
     }
+    else if( this.id === 'notificationsHulu' )
+    {
+        settings[ Settings.Notifications.Hulu ] = this.checked;
+    }
     else if( this.id === 'defaultSite' )
     {
         settings[ Settings.DefaultSite ] = this.value;
