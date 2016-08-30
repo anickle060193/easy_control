@@ -10,4 +10,6 @@ Provides control of:
 * [Netflix](https://www.netflix.com/)
 * [Amazon Video](https://www.amazon.com/gp/video/getstarted/)
 * [Amazon Music](https://music.amazon.com/)
-* [hulu](http://www.hulu.com/)
+* [Hulu](http://www.hulu.com/)
+
+Chrome Web Store: [Easy Control](https://chrome.google.com/webstore/detail/easy-control/oanebiaiakkpfipgnkpmcpkjfnclbgfi)
