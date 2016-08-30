@@ -41,6 +41,7 @@ function updateBrowserActionIcon( controller )
     if( !controller )
     {
         chrome.browserAction.setIcon( { path : { '19' : 'res/icon19.png', '38' : 'res/icon38.png' } } );
+        chrome.browserAction.setTitle( { title : 'Easy Control' } );
     }
     else
     {
@@ -75,5 +76,6 @@ function updateBrowserActionIcon( controller )
 
         var imageData = context.getImageData( 0, 0, ICON_WIDTH, ICON_HEIGHT );
         chrome.browserAction.setIcon( { imageData : imageData } );
+        chrome.browserAction.setTitle( { title : controller.name } );
     }
 }

@@ -20,6 +20,7 @@ function updateUI()
     $( '#notificationsNetflix' ).prop( 'checked', settings[ Settings.Notifications.Netflix ] );
     $( '#notificationsAmazonVideo' ).prop( 'checked', settings[ Settings.Notifications.AmazonVideo ] );
     $( '#notificationsAmazonMusic' ).prop( 'checked', settings[ Settings.Notifications.AmazonMusic ] );
+    $( '#notificationsHulu' ).prop( 'checked', settings[ Settings.Notifications.Hulu ] );
 
     $( '#noActiveWindowNotifications' ).prop( 'checked', settings[ Settings.NoActiveWindowNotifications ] );
 
