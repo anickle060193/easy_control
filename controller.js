@@ -79,6 +79,16 @@ Controller.prototype.handleMessage = function( message )
         console.log( 'Recieved: UNLIKE' );
         this.unlike();
     }
+    else if( message.type === Message.types.from_background.VOLUME_UP )
+    {
+        console.log( 'Recieved: VOLUME UP' );
+        this.volumeUp();
+    }
+    else if( message.type === Message.types.from_background.VOLUME_DOWN )
+    {
+        console.log( 'Recieved: VOLUME DOWN' );
+        this.volumeDown();
+    }
 };
 
 Controller.prototype.reportStatus = function()
@@ -245,6 +255,16 @@ Controller.prototype.getContentInfo = function()
     return contentInfo;
 };
 
+Controller.prototype.volumeUp = function()
+{
+    this._volumeUp();
+};
+
+Controller.prototype.volumeDown = function()
+{
+    this._volumeDown();
+};
+
 Controller.prototype._play = function()
 {
     console.log( 'play not supported.' );
@@ -308,4 +328,14 @@ Controller.prototype._getProgress = function()
 Controller.prototype._getContentInfo = function()
 {
     return null;
+};
+
+Controller.prototype._volumeUp = function()
+{
+    console.log( 'volumeUp not supported.' );
+};
+
+Controller.prototype._volumeDown = function()
+{
+    console.log( 'volumeDown not supported.' );
 };

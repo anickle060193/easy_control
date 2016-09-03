@@ -189,3 +189,13 @@ MediaController.prototype._isPaused = function()
 {
     return this.media.paused;
 };
+
+MediaController.prototype._volumeUp = function()
+{
+    this.media.volume = Math.min( 1.0, this.media.volume + 0.05 );
+};
+
+MediaController.prototype._volumeDown = function()
+{
+    this.media.volume = Math.max( 0.0, this.media.volume - 0.05 );
+};

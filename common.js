@@ -63,7 +63,9 @@ Message.types = {
         LIKE : 'from_background.like',
         UNLIKE : 'from_background.unlike',
         DISLIKE : 'from_background.dislike',
-        UNDISLIKE : 'from_background.undislike'
+        UNDISLIKE : 'from_background.undislike',
+        VOLUME_UP : 'from_background.volume_up',
+        VOLUME_DOWN : 'from_background.volume_down'
     },
     from_popup : {
         PAUSE : 'from_popup.pause',

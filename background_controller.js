@@ -48,3 +48,13 @@ BackgroundController.prototype.undislike = function()
 {
     this.port.postMessage( new Message( Message.types.from_background.UNDISLIKE ) );
 };
+
+BackgroundController.prototype.volumeUp = function()
+{
+    this.port.postMessage( new Message( Message.types.from_background.VOLUME_UP ) );
+};
+
+BackgroundController.prototype.volumeDown = function()
+{
+    this.port.postMessage( new Message( Message.types.from_background.VOLUME_DOWN ) );
+};

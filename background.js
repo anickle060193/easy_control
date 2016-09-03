@@ -218,6 +218,24 @@ function undislike()
 }
 
 
+function volumeUp()
+{
+    if( currentController )
+    {
+        currentController.volumeUp();
+    }
+}
+
+
+function volumeDown()
+{
+    if( currentController )
+    {
+        currentController.volumeDown();
+    }
+}
+
+
 function playPause()
 {
     if( currentController )

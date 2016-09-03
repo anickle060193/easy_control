@@ -121,6 +121,12 @@
         },
         "7_undislike" : {
             "description" : "Undislike"
+        },
+        "8_volume_up" : {
+            "description" : "Volume Up"
+        },
+        "9_volume_down" : {
+            "description" : "Volume Down"
         }
     }
 }

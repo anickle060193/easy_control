@@ -37,4 +37,12 @@ chrome.commands.onCommand.addListener( function( command )
     {
         undislike();
     }
+    else if( command === '8_volume_up' )
+    {
+        volumeUp();
+    }
+    else if( command === '9_volume_down' )
+    {
+        volumeDown();
+    }
 } );
