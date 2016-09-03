@@ -26,36 +26,6 @@ SpotifyController.prototype._next = function()
     $( '#next' ).click();
 };
 
-SpotifyController.prototype._like = function()
-{
-    console.log( 'Like not supported on Spotify.' );
-};
-
-SpotifyController.prototype._unlike = function()
-{
-    console.log( 'Unlike not supported on Spotify.' );
-};
-
-SpotifyController.prototype._dislike = function()
-{
-    console.log( 'Dislike not supported on Spotify.' );
-};
-
-SpotifyController.prototype._undislike = function()
-{
-    console.log( 'Undislike not supported on Spotify.' );
-};
-
-SpotifyController.prototype._isLiked = function()
-{
-    return false;
-};
-
-SpotifyController.prototype._isDisliked = function()
-{
-    return false;
-};
-
 SpotifyController.prototype._getProgress = function()
 {
     var currentTrackTime = trackTimeToSeconds( $( '#track-current' ).text() );

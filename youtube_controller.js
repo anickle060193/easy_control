@@ -8,11 +8,6 @@ function YoutubeController( video )
 YoutubeController.prototype = Object.create( MediaController.prototype );
 YoutubeController.prototype.constructor = YoutubeController;
 
-YoutubeController.prototype._previous = function()
-{
-    console.log( 'Youtube does not support previous.' );
-};
-
 YoutubeController.prototype._next = function()
 {
     $( '.ytp-next-button' ).click();

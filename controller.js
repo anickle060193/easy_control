@@ -245,16 +245,67 @@ Controller.prototype.getContentInfo = function()
     return contentInfo;
 };
 
-Controller.prototype._play = function(){ throw 'Unimplemented: _play()' };
-Controller.prototype._pause = function() { throw 'Unimplemented: _pause()' };
-Controller.prototype._previous = function() { throw 'Unimplemented: _previous()' };
-Controller.prototype._next = function() { throw 'Unimplemented: _next()' };
-Controller.prototype._like = function() { throw 'Unimplemented: _like()' };
-Controller.prototype._unlike = function() { throw 'Unimplemented: _unlike()' };
-Controller.prototype._dislike = function() { throw 'Unimplemented: _dislike()' };
-Controller.prototype._undislike = function() { throw 'Unimplemented: _undislike()' };
-Controller.prototype._isLiked = function() { throw 'Unimplemented: _isLiked()' };
-Controller.prototype._isDisliked = function() { throw 'Unimplemented: _isDisliked()' };
-Controller.prototype._isPaused = function() { throw 'Unimplemented: _isPaused()' };
-Controller.prototype._getProgress = function() { throw 'Unimplemented: _getProgress()' };
-Controller.prototype._getContentInfo = function() { throw 'Unimplemented: _getContentInfo()' };
+Controller.prototype._play = function()
+{
+    console.log( 'play not supported.' );
+};
+
+Controller.prototype._pause = function()
+{
+    console.log( 'pause not supported.' );
+};
+
+Controller.prototype._previous = function()
+{
+    console.log( 'previous not supported.' );
+};
+
+Controller.prototype._next = function()
+{
+    console.log( 'next not supported.' );
+};
+
+Controller.prototype._like = function()
+{
+    console.log( 'like not supported.' );
+};
+
+Controller.prototype._unlike = function()
+{
+    console.log( 'unlike not supported.' );
+};
+
+Controller.prototype._dislike = function()
+{
+    console.log( 'dislike not supported.' );
+};
+
+Controller.prototype._undislike = function()
+{
+    console.log( 'undislike not supported.' );
+};
+
+Controller.prototype._isLiked = function()
+{
+    return false;
+};
+
+Controller.prototype._isDisliked = function()
+{
+    return false;
+};
+
+Controller.prototype._isPaused = function()
+{
+    return true;
+};
+
+Controller.prototype._getProgress = function()
+{
+    return 0.0;
+};
+
+Controller.prototype._getContentInfo = function()
+{
+    return null;
+};

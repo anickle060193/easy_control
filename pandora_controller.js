@@ -16,11 +16,6 @@ PandoraController.prototype._pause = function()
     $( '.pauseButton' ).click();
 };
 
-PandoraController.prototype._previous = function()
-{
-    console.log( 'Pandora does not support previous().' );
-};
-
 PandoraController.prototype._next = function()
 {
     $( '.skipButton' ).click();

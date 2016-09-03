@@ -18,44 +18,9 @@ NetflixController.prototype._pause = function()
     $( '.player-control-button.player-play-pause' ).click();
 };
 
-NetflixController.prototype._previous = function()
-{
-    console.log( 'Netflix does not support previous.' );
-};
-
 NetflixController.prototype._next = function()
 {
     $( '.player-control-button.player-next-episode' ).click();
-};
-
-NetflixController.prototype._like = function()
-{
-    console.log( 'Netflix does not support like.' );
-};
-
-NetflixController.prototype._unlike = function()
-{
-    console.log( 'Netflix does not support unlike.' );
-};
-
-NetflixController.prototype._dislike = function()
-{
-    console.log( 'Netflix does not support dislike.' );
-};
-
-NetflixController.prototype._undislike = function()
-{
-    console.log( 'Netflix does not support undislike.' );
-};
-
-NetflixController.prototype._isLiked = function()
-{
-    return false;
-};
-
-NetflixController.prototype._isDisliked = function()
-{
-    return false;
 };
 
 NetflixController.prototype._getContentInfo = function()

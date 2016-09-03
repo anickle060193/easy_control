@@ -26,36 +26,6 @@ AmazonMusicController.prototype._next = function()
     $( '.playbackControlsView .nextButton' ).click();
 };
 
-AmazonMusicController.prototype._like = function()
-{
-    console.log( 'Amazon Music does not support like.' );
-};
-
-AmazonMusicController.prototype._unlike = function()
-{
-    console.log( 'Amazon Music does not support unlike.' );
-}
-
-AmazonMusicController.prototype._dislike = function()
-{
-    console.log( 'Amazon Music does not support dislike.' );
-};
-
-AmazonMusicController.prototype._undislike = function()
-{
-    console.log( 'Amazon Music does not support undislike.' );
-}
-
-AmazonMusicController.prototype._isLiked = function()
-{
-    return false;
-};
-
-AmazonMusicController.prototype._isDisliked = function()
-{
-    return false;
-};
-
 AmazonMusicController.prototype._getProgress = function()
 {
     var scrubberBackgroundWidth = $( '.playbackControlsView .scrubberBackground' )[ 0 ].style.width;

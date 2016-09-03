@@ -26,36 +26,6 @@ BandcampController.prototype._next = function()
     $( '.nextbutton' ).click();
 };
 
-BandcampController.prototype._like = function()
-{
-    console.log( 'Bandcamp does not support like.' );
-};
-
-BandcampController.prototype._unlike = function()
-{
-    console.log( 'Bandcamp does not support unlike.' );
-};
-
-BandcampController.prototype._dislike = function()
-{
-    console.log( 'Bandcamp does not support dislike.' );
-};
-
-BandcampController.prototype._undislike = function()
-{
-    console.log( 'Bandcamp does not support undislike.' );
-};
-
-BandcampController.prototype._isLiked = function()
-{
-    return false;
-};
-
-BandcampController.prototype._isDisliked = function()
-{
-    return false;
-};
-
 BandcampController.prototype._getProgress = function()
 {
     var elapsedTime = trackTimeToSeconds( $( '.time_elapsed' ).text() );
@@ -73,7 +43,7 @@ BandcampController.prototype._getProgress = function()
 
 BandcampController.prototype._isPaused = function()
 {
-    return !$( '.playbutton' ).hasClass( 'playing' );;
+    return !$( '.playbutton' ).hasClass( 'playing' );
 };
 
 BandcampController.prototype._getContentInfo = function()

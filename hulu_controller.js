@@ -28,36 +28,6 @@ HuluController.prototype._next = function()
     $( '.controls-bar .next-video-button' ).click();
 };
 
-HuluController.prototype._like = function()
-{
-    console.log( 'Hulu does not support like.' );
-};
-
-HuluController.prototype._unlike = function()
-{
-    console.log( 'Hulu does not support unlike.' );
-};
-
-HuluController.prototype._dislike = function()
-{
-    console.log( 'Hulu does not support dislike.' );
-};
-
-HuluController.prototype._undislike = function()
-{
-    console.log( 'Hulu does not support undislike.' );
-};
-
-HuluController.prototype._isLiked = function()
-{
-    return false;
-};
-
-HuluController.prototype._isDisliked = function()
-{
-    return false;
-};
-
 HuluController.prototype._getContentInfo = function()
 {
     var episodeTitle = $( '.video-description .episode-title' ).text();
