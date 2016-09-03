@@ -6,8 +6,8 @@
   </head>
   <body>
 
-    <input type="button" id="setKeyboardShortcuts" value="Set Keyboard Shortucts"/>
-    <input type="button" id="createGithubIssue" value="Suggest Feature/Report Issue"/>
+    <input type="button" id="setKeyboardShortcuts" value="Set Keyboard Shortucts"></input>
+    <input type="button" id="createGithubIssue" value="Suggest Feature/Report Issue"></input>
 
     <h1>Focused Content Controls:</h1>
 
@@ -50,37 +50,41 @@
         <th><h1>Notification Settings</h1></th><th>Display<br>Notifications?</th>
       </tr>
       <tr>
-        <td>Pandora</td><td><input type="checkbox" id="notificationsPandora" name="notifications"></td>
+        <td>Pandora</td><td><input type="checkbox" id="notificationsPandora" name="notifications"></input></td>
       </tr>
       <tr>
-        <td>Spotify</td><td><input type="checkbox" id="notificationsSpotify" name="notifications"></td>
+        <td>Spotify</td><td><input type="checkbox" id="notificationsSpotify" name="notifications"></input></td>
       </tr>
       <tr>
-        <td>Youtube</td><td><input type="checkbox" id="notificationsYoutube" name="notifications"></td>
+        <td>Youtube</td><td><input type="checkbox" id="notificationsYoutube" name="notifications"></input></td>
       </tr>
       <tr>
-        <td>Google Play Music</td><td><input type="checkbox" id="notificationsGooglePlayMusic" name="notifications"></td>
+        <td>Google Play Music</td><td><input type="checkbox" id="notificationsGooglePlayMusic" name="notifications"></input></td>
       </tr>
       <tr>
-        <td>Bandcamp</td><td><input type="checkbox" id="notificationsBandcamp" name="notifications"></td>
+        <td>Bandcamp</td><td><input type="checkbox" id="notificationsBandcamp" name="notifications"></input></td>
       </tr>
       <tr>
-        <td>Netflix</td><td><input type="checkbox" id="notificationsNetflix" name="notifications"></td>
+        <td>Netflix</td><td><input type="checkbox" id="notificationsNetflix" name="notifications"></input></td>
       </tr>
       <tr>
-        <td>Amazon Video</td><td><input type="checkbox" id="notificationsAmazonVideo" name="notifications"></td>
+        <td>Amazon Video</td><td><input type="checkbox" id="notificationsAmazonVideo" name="notifications"></input></td>
       </tr>
       <tr>
-        <td>Amazon Music</td><td><input type="checkbox" id="notificationsAmazonMusic" name="notifications"></td>
+        <td>Amazon Music</td><td><input type="checkbox" id="notificationsAmazonMusic" name="notifications"></input></td>
       </tr>
       <tr>
-        <td>Hulu</td><td><input type="checkbox" id="notificationsHulu" name="notifications"></td>
+        <td>Hulu</td><td><input type="checkbox" id="notificationsHulu" name="notifications"></input></td>
       </tr>
     </table>
 
     <br>
 
-    <label>Don't show notifications if content window is active? <input type="checkbox" id="noActiveWindowNotifications"></label>
+    <label>Notification length: <input type="number" min="1" id="notificationLength"></input> (seconds)</label>
+
+    <br>
+
+    <label>Don't show notifications if content window is active? <input type="checkbox" id="noActiveWindowNotifications"></input></label>
 
 
     <h1>Other Settings</h1>
@@ -101,13 +105,13 @@
     <br>
     <br>
 
-    <label>Pause content when computer is locked? <input type="checkbox" id="pauseOnLock"></label>
+    <label>Pause content when computer is locked? <input type="checkbox" id="pauseOnLock"></input></label>
 
     <br>
     <br>
 
-    <label>Pause content when after inactivity? <input type="checkbox" id="pauseOnInactivity"></label>
-    <label>Inactivity timeout: <input type="number" min="15" id="inactivityTimeout"> (seconds) (&#8805;15 seconds)</label>
+    <label>Pause content when after inactivity? <input type="checkbox" id="pauseOnInactivity"></input></label>
+    <label>Inactivity timeout: <input type="number" min="15" id="inactivityTimeout"></input> (seconds) (&#8805;15 seconds)</label>
 
     <script src="jquery-3.1.0.min.js"></script>
     <script src="common.js"></script>

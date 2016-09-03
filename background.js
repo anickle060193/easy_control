@@ -75,7 +75,8 @@ function handleMessage( message, controller )
                             title : contentInfo.title,
                             message : contentInfo.caption,
                             contextMessage : contentInfo.subcaption,
-                            buttons : [ { title : 'Next' } ]
+                            buttons : [ { title : 'Next' } ],
+                            requireInteraction : true
                         };
 
                         console.log( 'Showing notification for ' + controller.name );
@@ -83,6 +84,16 @@ function handleMessage( message, controller )
                         chrome.notifications.create( null, notificationOptions, function( notificationId )
                         {
                             lastNotification = notificationId;
+                            var notificationLength = settings[ Settings.NotificationLength ];
+                            if( notificationLength < 1 )
+                            {
+                                notificationLength = 10;
+                            }
+
+                            setTimeout( function()
+                            {
+                                chrome.notifications.clear( notificationId );
+                            }, notificationLength * 1000 );
                         } );
                     }
                     else
@@ -270,10 +281,16 @@ chrome.notifications.onButtonClicked.addListener( function( notificationId, butt
         if( buttonIndex === 0 )
         {
             chrome.notifications.clear( lastNotification );
-            lastNotification = null;
-
             next();
         }
+    }
+} );
+
+chrome.notifications.onClosed.addListener( function( notificationId )
+{
+    if( notificationId === lastNotification )
+    {
+        lastNotification = null;
     }
 } );
 
@@ -389,6 +406,11 @@ chrome.runtime.onInstalled.addListener( function( details )
         settings[ Settings.Controls.PlaybackSpeed.Faster ] = 'd';
         settings[ Settings.Controls.PlaybackSpeed.MuchFaster ] = '';
         settings[ Settings.Controls.PlaybackSpeed.Reset ] = 'r';
+    }
+
+    if( installing || ( updating && version === '1.9.0' ) )
+    {
+        settings[ Settings.NotificationLength ] = 10;
     }
 
     console.log( 'Updating settings:' );

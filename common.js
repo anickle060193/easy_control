@@ -10,6 +10,7 @@ var Settings = {
         AmazonMusic : 'key__notifications__amazon_music',
         Hulu : 'key__notifications__hulu'
     },
+    NotificationLength : 'key__notification_length',
     NoActiveWindowNotifications : 'key__no_active_window_notifications',
     DefaultSite : 'key__default_site',
     PauseOnLock : 'key__pause_on_lock',

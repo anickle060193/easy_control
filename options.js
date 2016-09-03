@@ -45,6 +45,7 @@ function updateUI()
     $( '#notificationsAmazonMusic' ).prop( 'checked', settings[ Settings.Notifications.AmazonMusic ] );
     $( '#notificationsHulu' ).prop( 'checked', settings[ Settings.Notifications.Hulu ] );
 
+    $( '#notificationLength' ).val( settings[ Settings.NotificationLength ] );
     $( '#noActiveWindowNotifications' ).prop( 'checked', settings[ Settings.NoActiveWindowNotifications ] );
 
     $( '#defaultSite' ).val( settings[ Settings.DefaultSite ] );
@@ -114,6 +115,18 @@ $( 'input, select' ).change( function()
         if( timeout >= 15 )
         {
             settings[ Settings.InactivityTimeout ] = timeout;
+        }
+        else
+        {
+            save = false;
+        }
+    }
+    else if( this.id === 'notificationLength' )
+    {
+        var length = parseInt( this.value );
+        if( length >= 1 )
+        {
+            settings[ Settings.NotificationLength ] = length;
         }
         else
         {
