@@ -43,7 +43,8 @@
         },
         {
             "matches" : [ "https://www.youtube.com/*" ],
-            "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "media_controller.js", "youtube_controller.js" ]
+            "js" : [ "jquery-3.1.0.min.js", "jquery-ui-1.12.0.min.js", "common.js", "controller.js", "media_controller.js", "youtube_controller.js" ],
+            "css" : [ "media_control_overlay.css" ]
         },
         {
             "matches" : [ "https://play.google.com/music/*" ],
@@ -55,11 +56,13 @@
         },
         {
             "matches" : [ "https://www.netflix.com/*" ],
-            "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "media_controller.js", "netflix_controller.js" ]
+            "js" : [ "jquery-3.1.0.min.js", "jquery-ui-1.12.0.min.js", "common.js", "controller.js", "media_controller.js", "netflix_controller.js" ],
+            "css" : [ "media_control_overlay.css" ]
         },
         {
             "matches" : [ "https://www.amazon.com/*" ],
-            "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "media_controller.js", "amazon_video_controller.js" ]
+            "js" : [ "jquery-3.1.0.min.js", "jquery-ui-1.12.0.min.js", "common.js", "controller.js", "media_controller.js", "amazon_video_controller.js" ],
+            "css" : [ "media_control_overlay.css" ]
         },
         {
             "matches" : [ "https://music.amazon.com/*" ],
@@ -67,7 +70,8 @@
         },
         {
             "matches" : [ "http://www.hulu.com/*" ],
-            "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "media_controller.js", "hulu_controller.js" ]
+            "js" : [ "jquery-3.1.0.min.js", "jquery-ui-1.12.0.min.js", "common.js", "controller.js", "media_controller.js", "hulu_controller.js" ],
+            "css" : [ "media_control_overlay.css" ]
         },
         {
             "matches" : [ "<all_urls>" ],
@@ -82,9 +86,13 @@
                 "https://music.amazon.com/*",
                 "http://www.hulu.com/*"
             ],
-            "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "media_controller.js", "audio_video_controller.js" ],
+            "js" : [ "jquery-3.1.0.min.js", "jquery-ui-1.12.0.min.js", "common.js", "controller.js", "media_controller.js", "audio_video_controller.js" ],
+            "css" : [ "media_control_overlay.css" ],
             "all_frames" : true
         }
+    ],
+    "web_accessible_resources" : [
+        "media_control_overlay.html"
     ],
     "browser_action" : {
         "default_icon" : {

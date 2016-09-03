@@ -4,18 +4,23 @@ body
     min-width: 600px;
 }
 
+h1
+{
+    text-align: left;
+}
+
 #inactivityTimeout
 {
     width: 50px;
 }
 
-table
+table.notificationSettingsTable
 {
     width: 100%;
     border-collapse: collapse;
 }
 
-th, td
+.notificationSettingsTable th, .notificationSettingsTable td
 {
     padding: 5px;
     border-bottom: 1px solid #ddd;
@@ -27,12 +32,18 @@ td > input[type=checkbox]
     margin-left: 5px;
 }
 
-tr:nth-child(even)
+.notificationSettingsTable tr:nth-child(even)
 {
     background-color: #f2f2f2;
 }
 
-td:first-child
+.notificationSettingsTable td:first-child
 {
     width:100%;
+}
+
+.keyboardShortcutEntry
+{
+    width: 60px;
+    text-align: center;
 }

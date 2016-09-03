@@ -9,9 +9,45 @@
     <input type="button" id="setKeyboardShortcuts" value="Set Keyboard Shortucts"/>
     <input type="button" id="createGithubIssue" value="Suggest Feature/Report Issue"/>
 
+    <h1>Focused Content Controls:</h1>
+
     <table>
       <tr>
-        <th></th><th>Display<br>Notifications?</th>
+        <td><label for="controlsDisplayControls">Display content controls overlay? </label></td>
+        <td><input type="checkbox" id="controlsDisplayControls"></input></td>
+      </tr>
+      <tr>
+        <td><label for="controlsAlwaysDisplayPlaybackSpeed">Always display playback speed overlay? </label></td>
+        <td><input type="checkbox" id="controlsAlwaysDisplayPlaybackSpeed"></input></td>
+      </tr>
+    </table>
+
+    <table>
+      <tr>
+        <td><label for="controlsPlaybackSpeedMuchSlower">Playback Speed Much Slower: </label></td>
+        <td><input type="text" maxlength="1" class="keyboardShortcutEntry" placeholder="Press key" id="controlsPlaybackSpeedMuchSlower"></input></td>
+      </tr>
+      <tr>
+        <td><label for="controlsPlaybackSpeedSlower">Playback Speed Slower: </label></td>
+        <td><input type="text" maxlength="1" class="keyboardShortcutEntry" placeholder="Press key" id="controlsPlaybackSpeedSlower"></input></td>
+      </tr>
+      <tr>
+        <td><label for="controlsPlaybackSpeedFaster">Playback Speed Faster: </label></td>
+        <td><input type="text" maxlength="1" class="keyboardShortcutEntry" placeholder="Press key" id="controlsPlaybackSpeedFaster"></input></td>
+      </tr>
+      <tr>
+        <td><label for="controlsPlaybackSpeedMuchFaster">Playback Speed Much Faster: </label></td>
+        <td><input type="text" maxlength="1" class="keyboardShortcutEntry" placeholder="Press key" id="controlsPlaybackSpeedMuchFaster"></input></td>
+      </tr>
+      <tr>
+        <td><label for="controlsPlaybackSpeedReset">Reset Playback Speed: </label></td>
+        <td><input type="text" maxlength="1" class="keyboardShortcutEntry" placeholder="Press key" id="controlsPlaybackSpeedReset"></input></td>
+      </tr>
+    </table>
+
+    <table class="notificationSettingsTable">
+      <tr>
+        <th><h1>Notification Settings</h1></th><th>Display<br>Notifications?</th>
       </tr>
       <tr>
         <td>Pandora</td><td><input type="checkbox" id="notificationsPandora" name="notifications"></td>
@@ -46,8 +82,8 @@
 
     <label>Don't show notifications if content window is active? <input type="checkbox" id="noActiveWindowNotifications"></label>
 
-    <br>
-    <br>
+
+    <h1>Other Settings</h1>
 
     <label for="defaultSite">Default streaming site: </label>
     <select id="defaultSite">

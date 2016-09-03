@@ -10,8 +10,31 @@ function saveSettings()
 }
 
 
+function getKeyboardShortcutKey( input )
+{
+    var shortcut = input.value;
+    if( shortcut.length > 0 )
+    {
+        return shortcut[ 0 ];
+    }
+    else
+    {
+        return '';
+    }
+}
+
+
 function updateUI()
 {
+    $( '#controlsDisplayControls' ).prop( 'checked', settings[ Settings.Controls.DisplayControls ] );
+    $( '#controlsAlwaysDisplayPlaybackSpeed' ).prop( 'disabled', !settings[ Settings.Controls.DisplayControls ] );
+    $( '#controlsAlwaysDisplayPlaybackSpeed' ).prop( 'checked', settings[ Settings.Controls.AlwaysDisplayPlaybackSpeed ] );
+    $( '#controlsPlaybackSpeedMuchSlower' ).val( settings[ Settings.Controls.PlaybackSpeed.MuchSlower ] );
+    $( '#controlsPlaybackSpeedSlower' ).val( settings[ Settings.Controls.PlaybackSpeed.Slower ] );
+    $( '#controlsPlaybackSpeedFaster' ).val( settings[ Settings.Controls.PlaybackSpeed.Faster ] );
+    $( '#controlsPlaybackSpeedMuchFaster' ).val( settings[ Settings.Controls.PlaybackSpeed.MuchFaster ] );
+    $( '#controlsPlaybackSpeedReset' ).val( settings[ Settings.Controls.PlaybackSpeed.Reset ] );
+
     $( '#notificationsPandora' ).prop( 'checked', settings[ Settings.Notifications.Pandora ] );
     $( '#notificationsSpotify' ).prop( 'checked', settings[ Settings.Notifications.Spotify ] );
     $( '#notificationsYoutube' ).prop( 'checked', settings[ Settings.Notifications.Youtube ] );
@@ -101,6 +124,38 @@ $( 'input, select' ).change( function()
     {
         settings[ Settings.NoActiveWindowNotifications ] = this.checked;
     }
+    else if( this.id === 'controlsDisplayControls' )
+    {
+        settings[ Settings.Controls.DisplayControls ] = this.checked;
+    }
+    else if( this.id === 'controlsAlwaysDisplayPlaybackSpeed' )
+    {
+        settings[ Settings.Controls.AlwaysDisplayPlaybackSpeed ] = this.checked;
+    }
+    else if( this.id === 'controlsPlaybackSpeedMuchSlower' )
+    {
+        settings[ Settings.Controls.PlaybackSpeed.MuchSlower ] = getKeyboardShortcutKey( this );
+    }
+    else if( this.id === 'controlsPlaybackSpeedSlower' )
+    {
+        settings[ Settings.Controls.PlaybackSpeed.Slower ] = getKeyboardShortcutKey( this );
+    }
+    else if( this.id === 'controlsPlaybackSpeedFaster' )
+    {
+        settings[ Settings.Controls.PlaybackSpeed.Faster ] = getKeyboardShortcutKey( this );
+    }
+    else if( this.id === 'controlsPlaybackSpeedMuchFaster' )
+    {
+        settings[ Settings.Controls.PlaybackSpeed.MuchFaster ] = getKeyboardShortcutKey( this );
+    }
+    else if( this.id === 'controlsPlaybackSpeedReset' )
+    {
+        settings[ Settings.Controls.PlaybackSpeed.Reset ] = getKeyboardShortcutKey( this );
+    }
+    else
+    {
+        save = false;
+    }
 
     if( save )
     {
@@ -108,6 +163,20 @@ $( 'input, select' ).change( function()
     }
 
     updateUI();
+} );
+
+
+$( '.keyboardShortcutEntry' ).click( function()
+{
+    this.value = '';
+} );
+
+
+$( '.keyboardShortcutEntry' ).keypress( function( event )
+{
+    event.preventDefault();
+    this.value = String.fromCharCode( event.charCode );
+    $( this ).change();
 } );
 
 

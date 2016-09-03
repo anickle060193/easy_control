@@ -1,0 +1,29 @@
+.easy-control-media-control-overlay
+{
+    position: absolute;
+    display: inline-block;
+    background: rgba( 150, 150, 150, 0.2 );
+    padding: 4px;
+    border-radius: 2px;
+}
+
+.easy-control-media-control-overlay button
+{
+    background: none;
+    border: none;
+    overflow: hidden;
+    outline: none;
+    color: rgba( 0, 0, 0, 0.5 );
+    font-size: 20px;
+    font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+
+    text-align: center;
+    vertical-align: middle;
+    height: 30px;
+}
+
+.easy-control-media-control-overlay button > span
+{
+    position: relative;
+    top: -2.75px;
+}

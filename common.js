@@ -14,7 +14,18 @@ var Settings = {
     DefaultSite : 'key__default_site',
     PauseOnLock : 'key__pause_on_lock',
     PauseOnInactivity : 'key__pause_on_inactivity',
-    InactivityTimeout : 'key__inactivity_timeout'
+    InactivityTimeout : 'key__inactivity_timeout',
+    Controls : {
+        DisplayControls : 'key__controls__display_controls',
+        AlwaysDisplayPlaybackSpeed : 'key__controls__always_display_playback_speed',
+        PlaybackSpeed : {
+            MuchSlower : 'key__controls__playback_speed__much_slower',
+            Slower : 'key__controls__playback_speed__slower',
+            Faster : 'key__controls__playback_speed__faster',
+            MuchFaster : 'key__controls__playback_speed__much_faster',
+            Reset : 'key__controls__playback_speed__reset'
+        }
+    }
 };
 
 

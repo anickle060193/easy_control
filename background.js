@@ -362,6 +362,18 @@ chrome.runtime.onInstalled.addListener( function( details )
         settings[ Settings.Notifications.Hulu ] = false;
     }
 
+    if( installing || ( updating && version === '1.8.0' ) )
+    {
+        settings[ Settings.Controls.DisplayControls ] = true;
+        settings[ Settings.Controls.AlwaysDisplayPlaybackSpeed ] = true;
+        settings[ Settings.Controls.PlaybackSpeed.MuchSlower ] = '';
+        settings[ Settings.Controls.PlaybackSpeed.Slower ] = 's';
+        settings[ Settings.Controls.PlaybackSpeed.Faster ] = 'd';
+        settings[ Settings.Controls.PlaybackSpeed.MuchFaster ] = '';
+        settings[ Settings.Controls.PlaybackSpeed.Reset ] = 'r';
+    }
+
+    console.log( 'Updating settings:' );
     console.log( settings );
 
     chrome.storage.sync.set( settings );
