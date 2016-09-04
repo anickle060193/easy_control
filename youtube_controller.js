@@ -48,11 +48,10 @@ YoutubeController.prototype._getContentInfo = function()
     var videoTitle = $( '.watch-title' ).text();
     var channel = $( '.spf-link a' ).text();
     var thumbnailImg = $( '#watch-header img' )[ 0 ];
-    var thumbnail = thumbnailImg.src;
 
-    if( videoTitle && thumbnailImg.naturalHeight > 10 )
+    if( videoTitle && thumbnailImg && thumbnailImg.naturalHeight > 10 )
     {
-        return new ContentInfo( videoTitle, channel, "", thumbnail );
+        return new ContentInfo( videoTitle, channel, "", thumbnailImg.src );
     }
     else
     {

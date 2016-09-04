@@ -2,6 +2,7 @@ function MediaController( media, name, color )
 {
     Controller.call( this, name, color );
     this.media = media;
+    this.controls = null;
 
     this.settings = { };
 
@@ -26,7 +27,7 @@ MediaController.prototype.initializeMediaControls = function()
 {
     $.get( chrome.extension.getURL( 'media_control_overlay.html' ), function( data )
     {
-        var controls = $( data )
+        this.controls = $( data )
             .prependTo( this.media.parentElement )
             .css( 'zIndex', Number.MAX_SAFE_INTEGER )
             .position( {
@@ -38,20 +39,20 @@ MediaController.prototype.initializeMediaControls = function()
 
         if( this.settings[ Settings.Controls.AlwaysDisplayPlaybackSpeed ] )
         {
-            controls.find( 'button[name="control"]' ).hide();
+            this.controls.find( 'button[name="control"]' ).hide();
         }
         else
         {
-            controls.hide();
+            this.controls.hide();
         }
 
-        controls.dblclick( function( e )
+        this.controls.dblclick( function( e )
         {
             e.stopPropagation();
             e.preventDefault();
         } );
 
-        controls.on( 'click', 'button', function( e )
+        this.controls.on( 'click', 'button', function( e )
         {
             if( e.currentTarget.id === 'media-control-overlay-much-slower' )
             {
@@ -80,24 +81,31 @@ MediaController.prototype.initializeMediaControls = function()
 
         this.media.onratechange = function()
         {
-            controls.find( '#media-control-overlay-reset' ).text( this.media.playbackRate.toFixed( 1 ) );
+            this.controls.find( '#media-control-overlay-reset' ).text( this.media.playbackRate.toFixed( 1 ) );
         }.bind( this );
 
         $( this.media.parentElement ).hover( function()
         {
-            controls.show().children().show();
-        }, function()
+            this.controls.show().children().show();
+        }.bind( this ), function()
         {
             if( this.settings[ Settings.Controls.AlwaysDisplayPlaybackSpeed ] )
             {
-                controls.find( 'button[name="control"]' ).hide();
+                this.controls.find( 'button[name="control"]' ).hide();
             }
             else
             {
-                controls.hide();
+                this.controls.hide();
             }
         }.bind( this ) );
     }.bind( this ) );
+};
+
+MediaController.prototype.disconnect = function()
+{
+    Controller.prototype.disconnect.call( this );
+
+    this.controls.remove();
 };
 
 MediaController.prototype.handleStorageChanged = function( changes )
