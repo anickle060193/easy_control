@@ -1,5 +1,7 @@
 .easy-control-media-control-overlay
 {
+    all: initial;
+
     position: absolute;
     display: inline-block;
     background: black;
@@ -21,15 +23,12 @@
     outline: none;
     color: white;
     font-size: 14px;
+    line-height: 14px;
     font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
 
     text-align: center;
     vertical-align: middle;
     height: 16px;
-}
-
-.easy-control-media-control-overlay button > span
-{
-    position: relative;
-    top: -2.75px;
+    padding: 0;
+    margin: 0;
 }
