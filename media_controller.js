@@ -32,7 +32,7 @@ MediaController.prototype.initializeMediaControls = function()
             .css( 'zIndex', Number.MAX_SAFE_INTEGER )
             .position( {
                 my : 'left top',
-                at : 'left+3 top+3',
+                at : 'left+6 top+6',
                 of : this.media,
                 collision : 'none'
             } );
