@@ -10,6 +10,7 @@
     },
     "description" : "An extension that allows easy control of various media streaming websites.",
     "permissions" : [
+        "contextMenus",
         "idle",
         "notifications",
         "storage",

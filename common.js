@@ -16,6 +16,7 @@ var Settings = {
     PauseOnLock : 'key__pause_on_lock',
     PauseOnInactivity : 'key__pause_on_inactivity',
     InactivityTimeout : 'key__inactivity_timeout',
+    AutoPauseEnabled : 'key__auto_pause_enabled',
     Controls : {
         DisplayControls : 'key__controls__display_controls',
         AlwaysDisplayPlaybackSpeed : 'key__controls__always_display_playback_speed',

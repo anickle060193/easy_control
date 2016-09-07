@@ -40,7 +40,13 @@ function handleMessage( message, controller )
                 controllers.splice( controllers.indexOf( controller ), 1 );
                 controllers.push( controller );
                 currentController = controller;
-                pause( currentController );
+                chrome.storage.sync.get( [ Settings.AutoPauseEnabled ], function( settings )
+                {
+                    if( settings[ Settings.AutoPauseEnabled ] )
+                    {
+                        pause( currentController );
+                    }
+                } );
             }
         }
 
@@ -377,6 +383,7 @@ chrome.runtime.onInstalled.addListener( function( details )
         defaults[ Settings.PauseOnLock ] = true;
         defaults[ Settings.PauseOnInactivity ] = false;
         defaults[ Settings.InactivityTimeout ] = 60 * 5;
+        defaults[ Settings.AutoPauseEnabled ] = true;
 
         defaults[ Settings.Controls.DisplayControls ] = true;
         defaults[ Settings.Controls.AlwaysDisplayPlaybackSpeed ] = true;
@@ -443,18 +450,41 @@ chrome.storage.onChanged.addListener( function( changes, ns )
             }
         } );
     }
+
+    if( changes[ Settings.AutoPauseEnabled ] )
+    {
+        chrome.contextMenus.update( 'auto_pause_enabled', { checked : changes[ Settings.AutoPauseEnabled ].newValue } );
+    }
+} );
+
+chrome.contextMenus.onClicked.addListener( function( info, tab )
+{
+    if( info.menuItemId === 'auto_pause_enabled' )
+    {
+        console.log( 'Auto-Pause Enabled: ' + info.checked );
+        chrome.storage.sync.set( { [ Settings.AutoPauseEnabled ] : info.checked } );
+    }
 } );
 
 ( function onStart()
 {
-    chrome.storage.sync.get( [ Settings.PauseOnLock, Settings.PauseOnInactivity, Settings.InactivityTimeout ], function( items )
+    chrome.storage.sync.get( null, function( settings )
     {
-        pauseOnLock = items[ Settings.PauseOnLock ];
-        pauseOnInactivity = items[ Settings.PauseOnInactivity ];
+        pauseOnLock = settings[ Settings.PauseOnLock ];
+        pauseOnInactivity = settings[ Settings.PauseOnInactivity ];
         if( pauseOnInactivity )
         {
-            chrome.idle.setDetectionInterval( items[ Settings.InactivityTimeout ] );
+            chrome.idle.setDetectionInterval( settings[ Settings.InactivityTimeout ] );
         }
-        console.log( 'Start - Pause on Lock: ' + pauseOnLock + ' Pause on Inactivity: ' + pauseOnInactivity + ' Inactivity Timeout: ' + items[ Settings.InactivityTimeout ] );
+        console.log( 'Start - Pause on Lock: ' + pauseOnLock + ' Pause on Inactivity: ' + pauseOnInactivity + ' Inactivity Timeout: ' + settings[ Settings.InactivityTimeout ] );
+
+        var contextMenuProperties = {
+            type : 'checkbox',
+            id : 'auto_pause_enabled',
+            title : 'Auto-Pause Enabled',
+            checked : settings[ Settings.AutoPauseEnabled ],
+            contexts : [ 'browser_action' ]
+        };
+        chrome.contextMenus.create( contextMenuProperties );
     } );
 } )();
