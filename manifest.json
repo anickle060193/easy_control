@@ -29,7 +29,7 @@
     },
     "background" : {
         "persistent" : false,
-        "scripts" : [ "common.js", "background_controller.js", "background_icon.js", "background.js", "background_commands.js" ]
+        "scripts" : [ "jquery-3.1.0.min.js", "common.js", "background_controller.js", "background_icon.js", "background.js", "background_commands.js" ]
     },
     "content_scripts" : [
         {

@@ -342,14 +342,11 @@ chrome.runtime.onInstalled.addListener( function( details )
 {
     var version = chrome.runtime.getManifest().version;
 
-    var installing = ( details.reason === 'install' );
-    var updating = ( details.reason === 'update' );
-
-    if( installing )
+    if( details.reason === 'install' )
     {
         console.log( 'Installing version ' + version );
     }
-    else if( updating )
+    else if( details.reason === 'update' )
     {
         console.log( 'Updating to version ' + version );
     }
@@ -360,63 +357,42 @@ chrome.runtime.onInstalled.addListener( function( details )
         return;
     }
 
-    var settings = { };
-
-    if( installing || ( updating && version === '1.0' ) )
+    chrome.storage.sync.get( null, function( settings )
     {
-        settings[ Settings.Notifications.Pandora ] = false;
-        settings[ Settings.Notifications.Spotify ] = false;
-        settings[ Settings.Notifications.Youtube ] = false;
-        settings[ Settings.Notifications.GooglePlayMusic ] = false;
+        var defaults = { };
 
-        settings[ Settings.DefaultSite ] = "Pandora";
-    }
+        defaults[ Settings.Notifications.Pandora ] = false;
+        defaults[ Settings.Notifications.Spotify ] = false;
+        defaults[ Settings.Notifications.Youtube ] = false;
+        defaults[ Settings.Notifications.GooglePlayMusic ] = false;
+        defaults[ Settings.Notifications.Bandcamp ] = false;
+        defaults[ Settings.Notifications.Netflix ] = false;
+        defaults[ Settings.Notifications.AmazonVideo ] = false;
+        defaults[ Settings.Notifications.AmazonMusic ] = false;
+        defaults[ Settings.Notifications.Hulu ] = false;
 
-    if( installing || ( updating && version === '1.1' ) )
-    {
-        settings[ Settings.PauseOnLock ] = true;
-        settings[ Settings.PauseOnInactivity ] = false;
-        settings[ Settings.InactivityTimeout ] = 60 * 5;
-    }
+        defaults[ Settings.NotificationLength ] = 10;
+        defaults[ Settings.NoActiveWindowNotifications ] = false;
+        defaults[ Settings.DefaultSite ] = "Pandora";
+        defaults[ Settings.PauseOnLock ] = true;
+        defaults[ Settings.PauseOnInactivity ] = false;
+        defaults[ Settings.InactivityTimeout ] = 60 * 5;
 
-    if( installing || ( updating && version === '1.2.0' ) )
-    {
-        settings[ Settings.NoActiveWindowNotifications ] = false;
-    }
+        defaults[ Settings.Controls.DisplayControls ] = true;
+        defaults[ Settings.Controls.AlwaysDisplayPlaybackSpeed ] = true;
+        defaults[ Settings.Controls.PlaybackSpeed.MuchSlower ] = '';
+        defaults[ Settings.Controls.PlaybackSpeed.Slower ] = 's';
+        defaults[ Settings.Controls.PlaybackSpeed.Faster ] = 'd';
+        defaults[ Settings.Controls.PlaybackSpeed.MuchFaster ] = '';
+        defaults[ Settings.Controls.PlaybackSpeed.Reset ] = 'r';
 
-    if( installing || ( updating && version === '1.3.0' ) )
-    {
-        settings[ Settings.Notifications.Bandcamp ] = false;
-    }
+        var updatedSettings = $.extend( { }, defaults, settings );
 
-    if( installing || ( updating && version === '1.7.0' ) )
-    {
-        settings[ Settings.Notifications.Netflix ] = false;
-        settings[ Settings.Notifications.AmazonVideo ] = false;
-        settings[ Settings.Notifications.AmazonMusic ] = false;
-        settings[ Settings.Notifications.Hulu ] = false;
-    }
+        console.log( 'Updating settings:' );
+        console.log( updatedSettings );
 
-    if( installing || ( updating && version === '1.8.0' ) )
-    {
-        settings[ Settings.Controls.DisplayControls ] = true;
-        settings[ Settings.Controls.AlwaysDisplayPlaybackSpeed ] = true;
-        settings[ Settings.Controls.PlaybackSpeed.MuchSlower ] = '';
-        settings[ Settings.Controls.PlaybackSpeed.Slower ] = 's';
-        settings[ Settings.Controls.PlaybackSpeed.Faster ] = 'd';
-        settings[ Settings.Controls.PlaybackSpeed.MuchFaster ] = '';
-        settings[ Settings.Controls.PlaybackSpeed.Reset ] = 'r';
-    }
-
-    if( installing || ( updating && version === '1.9.0' ) )
-    {
-        settings[ Settings.NotificationLength ] = 10;
-    }
-
-    console.log( 'Updating settings:' );
-    console.log( settings );
-
-    chrome.storage.sync.set( settings );
+        chrome.storage.sync.set( updatedSettings );
+    } );
 } );
 
 chrome.idle.onStateChanged.addListener( function( newState )
