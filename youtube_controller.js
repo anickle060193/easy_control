@@ -3,14 +3,36 @@ function YoutubeController( video )
     MediaController.call( this, video, 'Youtube', '#f12b24' );
 
     this.allowLockOnInactivity = false;
+
+    this.hasBeenActivated = this.active;
 }
 
 YoutubeController.prototype = Object.create( MediaController.prototype );
 YoutubeController.prototype.constructor = YoutubeController;
 
+YoutubeController.prototype.activate = function()
+{
+    MediaController.prototype.activate.call( this );
+
+    this.hasBeenActivated = true;
+};
+
+YoutubeController.prototype._pause = function()
+{
+    if( this.hasBeenActivated )
+    {
+        MediaController.prototype._pause.call( this );
+    }
+};
+
 YoutubeController.prototype._next = function()
 {
     $( '.ytp-next-button' ).click();
+};
+
+YoutubeController.prototype._isPaused = function()
+{
+    return !this.hasBeenActivated || MediaController.prototype._isPaused.call( this );
 };
 
 YoutubeController.prototype._like = function()

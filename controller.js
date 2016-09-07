@@ -3,7 +3,9 @@ function Controller( name, color )
     this.name = name
     this.color = color;
     this.allowLockOnInactivity = true;
-    this.active = false;
+    this.active = !document.hidden;
+    console.log( 'Initial active: ' + this.active );
+    console.log( 'Initial visibility state: ' + document.visibilityState );
 
     this.currentContent = null;
     this.lastProgress = 0.0;
