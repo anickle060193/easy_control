@@ -384,6 +384,7 @@ chrome.runtime.onInstalled.addListener( function( details )
         defaults[ Settings.PauseOnInactivity ] = false;
         defaults[ Settings.InactivityTimeout ] = 60 * 5;
         defaults[ Settings.AutoPauseEnabled ] = true;
+        defaults[ Settings.ShowChangeLogOnUpdate ] = true;
 
         defaults[ Settings.Controls.DisplayControls ] = true;
         defaults[ Settings.Controls.AlwaysDisplayPlaybackSpeed ] = true;
@@ -399,9 +400,12 @@ chrome.runtime.onInstalled.addListener( function( details )
         console.log( updatedSettings );
 
         chrome.storage.sync.set( updatedSettings );
-    } );
 
-    chrome.tabs.create( { url : 'change_log.html' } );
+        if( updatedSettings[ Settings.ShowChangeLogOnUpdate ] )
+        {
+            chrome.tabs.create( { url : 'change_log.html' } );
+        }
+    } );
 } );
 
 chrome.idle.onStateChanged.addListener( function( newState )

@@ -54,6 +54,7 @@ function updateUI()
     $( '#pauseOnInactivity' ).prop( 'checked', settings[ Settings.PauseOnInactivity ] );
     $( '#inactivityTimeout' ).val( settings[ Settings.InactivityTimeout ] );
     $( '#inactivityTimeout' ).prop( 'disabled', !settings[ Settings.PauseOnInactivity ] );
+    $( '#showChangeLogOnUpdate' ).prop( 'checked', settings[ Settings.ShowChangeLogOnUpdate ] );
 }
 
 
@@ -165,6 +166,10 @@ $( 'input, select' ).change( function()
     {
         settings[ Settings.Controls.PlaybackSpeed.Reset ] = getKeyboardShortcutKey( this );
     }
+    else if( this.id === 'showChangeLogOnUpdate' )
+    {
+        settings[ Settings.ShowChangeLogOnUpdate ] = this.checked;
+    }
     else
     {
         save = false;
@@ -217,7 +222,7 @@ $( '#viewChangeLog' ).click( function()
 } );
 
 
-$().ready( function()
+$( function()
 {
     chrome.storage.sync.get( null, function( items )
     {
