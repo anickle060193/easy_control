@@ -34,46 +34,74 @@
     },
     "content_scripts" : [
         {
-            "matches" : [ "http://www.pandora.com/*" ],
-            "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "pandora_controller.js" ]
-        },
-        {
-            "matches" : [ "https://play.spotify.com/*" ],
-            "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "spotify_controller.js" ],
+            "matches" : [
+                "http://www.pandora.com/*",
+                "https://play.spotify.com/*",
+                "https://www.youtube.com/*",
+                "https://play.google.com/music/*",
+                "https://*.bandcamp.com/*",
+                "https://www.netflix.com/*",
+                "https://www.amazon.com/*",
+                "https://music.amazon.com/*",
+                "http://www.hulu.com/*"
+            ],
+            "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js" ],
             "all_frames" : true
         },
         {
-            "matches" : [ "https://www.youtube.com/*" ],
-            "js" : [ "jquery-3.1.0.min.js", "jquery-ui-1.12.0.min.js", "common.js", "controller.js", "media_controller.js", "youtube_controller.js" ],
+            "matches" : [
+                "https://www.youtube.com/*",
+                "https://www.amazon.com/*",
+                "http://www.hulu.com/*"
+
+            ],
+            "js" : [ "jquery-ui-1.12.0.min.js", "media_controller.js" ],
             "css" : [ "media_control_overlay.css" ],
             "all_frames" : true
         },
         {
+            "matches" : [ "http://www.pandora.com/*" ],
+            "js" : [ "pandora_controller.js" ]
+        },
+        {
+            "matches" : [ "https://play.spotify.com/*" ],
+            "js" : [ "spotify_controller.js" ],
+            "all_frames" : true
+        },
+        {
+            "matches" : [ "https://www.youtube.com/*" ],
+            "js" : [ "youtube_controller.js" ],
+            "all_frames" : true
+        },
+        {
             "matches" : [ "https://play.google.com/music/*" ],
-            "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "google_play_music_controller.js" ]
+            "js" : [ "google_play_music_controller.js" ],
+            "all_frames" : true
         },
         {
             "matches" : [ "https://*.bandcamp.com/*" ],
-            "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "bandcamp_controller.js" ]
+            "js" : [ "bandcamp_controller.js" ],
+            "all_frames" : true
         },
         {
             "matches" : [ "https://www.netflix.com/*" ],
-            "js" : [ "jquery-3.1.0.min.js", "jquery-ui-1.12.0.min.js", "common.js", "controller.js", "media_controller.js", "netflix_controller.js" ],
-            "css" : [ "media_control_overlay.css" ]
+            "js" : [ "netflix_controller.js" ],
+            "all_frames" : true
         },
         {
             "matches" : [ "https://www.amazon.com/*" ],
-            "js" : [ "jquery-3.1.0.min.js", "jquery-ui-1.12.0.min.js", "common.js", "controller.js", "media_controller.js", "amazon_video_controller.js" ],
-            "css" : [ "media_control_overlay.css" ]
+            "js" : [ "amazon_video_controller.js" ],
+            "all_frames" : true
         },
         {
             "matches" : [ "https://music.amazon.com/*" ],
-            "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js", "amazon_music_controller.js" ]
+            "js" : [ "amazon_music_controller.js" ],
+            "all_frames" : true
         },
         {
             "matches" : [ "http://www.hulu.com/*" ],
-            "js" : [ "jquery-3.1.0.min.js", "jquery-ui-1.12.0.min.js", "common.js", "controller.js", "media_controller.js", "hulu_controller.js" ],
-            "css" : [ "media_control_overlay.css" ]
+            "js" : [ "hulu_controller.js" ],
+            "all_frames" : true
         },
         {
             "matches" : [ "<all_urls>" ],
