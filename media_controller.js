@@ -19,7 +19,7 @@ function MediaController( media, name, color )
         }
     }.bind( this ) );
 
-    $( document ).keypress( this.handleMediaKeypress.bind( this ) );
+    $( document.body ).keydown( $.proxy( this.handleKeyDown, this ) );
 }
 
 MediaController.prototype = Object.create( Controller.prototype );
@@ -60,7 +60,7 @@ MediaController.prototype.initializeMediaControls = function()
             {
                 this.playbackMuchSlower();
             }
-            if( e.currentTarget.id === 'media-control-overlay-slower' )
+            else if( e.currentTarget.id === 'media-control-overlay-slower' )
             {
                 this.playbackSlower();
             }
@@ -164,11 +164,10 @@ MediaController.prototype.handleStorageChanged = function( changes )
     }
 };
 
-MediaController.prototype.handleMediaKeypress = function( event )
+MediaController.prototype.handleKeyDown = function( event )
 {
     if( $( event.target ).find( this.media ).length !== 0 )
     {
-        console.log( 'Keypress on Media: ' + event.key );
         if( event.key === this.settings[ Settings.Controls.PlaybackSpeed.MuchSlower ] )
         {
             this.playbackMuchSlower();
@@ -189,8 +188,6 @@ MediaController.prototype.handleMediaKeypress = function( event )
         {
             this.playbackReset();
         }
-        event.stopPropagation();
-        event.preventDefault();
     }
 };
 
