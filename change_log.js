@@ -1,0 +1,1 @@
+$( 'body' ).scrollspy( { target : '#versions-sidebar', offset : 50 } );

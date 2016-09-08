@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="Easy Control Change Log">
+
+    <title>Easy Control - Change Log</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="bootstrap/bootstrap-3.3.7.min.css">
+    <link rel="stylesheet" href="change_log.css">
+</head>
+
+<body data-spy="scroll" data-target="#versions">
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <a class="navbar-brand" href="https://github.com/anickle060193/easy_control"><img src="res/icon48.png" width="20" height="20" alt="Easy Control"></a>
+                <a class="navbar-brand" href="https://github.com/anickle060193/easy_control">Easy Control</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="https://github.com/anickle060193/easy_control/">Github</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-sm-3 col-md-2 sidebar">
+                <nav id="versions-sidebar">
+                    <ul class="nav nav-sidebar">
+                        <li class="active"><a href="#change-log">Change Log</a></li>
+                    </ul>
+                    <ul class="nav nav-sidebar">
+                        <li><a href="#version-1-11-0">Version 1.11.0</a></li>
+                        <li><a href="#version-1-10-0">Version 1.10.0</a></li>
+                        <li><a href="#version-1-9-1">Version 1.9.1</a></li>
+                        <li><a href="#version-1-9-0">Version 1.9.0</a></li>
+                        <li><a href="#version-1-8-0">Version 1.8.0</a></li>
+                        <li><a href="#version-1-7-0">Version 1.7.0</a></li>
+                        <li><a href="#version-1-6-0">Version 1.6.0</a></li>
+                        <li><a href="#version-1-5-0">Version 1.5.0</a></li>
+                        <li><a href="#version-1-4-0">Version 1.4.0</a></li>
+                        <li><a href="#version-1-3-0">Version 1.3.0</a></li>
+                        <li><a href="#version-1-2-0">Version 1.2.0</a></li>
+                        <li><a href="#version-1-1-2">Version 1.1.2</a></li>
+                        <li><a href="#version-1-1-1">Version 1.1.1</a></li>
+                        <li><a href="#version-1-1-0">Version 1.1.0</a></li>
+                        <li><a href="#version-1-0-0">Version 1.0.0</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main change-log" data-spy="scroll" data-target="#versions-sidebar">
+                <h1 id="change-log" class="page-header">Change Log</h1>
+
+                <div class="row">
+                    <h2 id="version-1-11-0" class="sub-header">Version 1.11.0</h2>
+                    <ul>
+                        <li>Created this change log. <a href="https://github.com/anickle060193/easy_control/issues/42">[Issue #42]</a></li>
+                        <li>Fixed embedded Youtube videos not being recognized.</li>
+                        <li>Fixed playback speed controls displaying badly on full-screened video. <a href="https://github.com/anickle060193/easy_control/issues/46">[Issue #46]</a></li>
+                        <li>Fixed how playback speed controls looked on generic sites. <a href="https://github.com/anickle060193/easy_control/issues/45">[Issue #45]</a></li>
+                        <li>Fixed issue with pausing Youtube videos in newly-opened tabs before video had auto-played. <a href="https://github.com/anickle060193/easy_control/issues/32">[Issue #32]</a></li>
+                    </ul>
+                </div>
+
+                <div class="row">
+                    <h2 id="version-1-10-0" class="sub-header">Version 1.10.0</h2>
+                    <ul>
+                        <li>
+                            Added ability to disable pausing of currently playing content when new content starts playing. <a href="https://github.com/anickle060193/easy_control/issues/37">[Issue #37]</a>
+                            <i>(Right click browser action icon.)</i>
+                        </li>
+                        <li>Improved how default settings are set upon install/update. <a href="https://github.com/anickle060193/easy_control/issues/40">[Issue #40]</a></li>
+                        <li>Made the playback speed controls easier to see. <a href="https://github.com/anickle060193/easy_control/issues/39">[Issue #39]</a></li>
+                    </ul>
+                </div>
+
+                <div class="row">
+                    <h2 id="version-1-9-1" class="sub-header">Version 1.9.1</h2>
+                    <ul>
+                        <li>Fixed an issue where multiple playback speed controls were being appended to the document.</li>
+                    </ul>
+                </div>
+
+                <div class="row">
+                    <h2 id="version-1-9-0" class="sub-header">Version 1.9.0</h2>
+                    <ul>
+                        <li>
+                            Added a configurable option to change how long content change notifications last. <a href="https://github.com/anickle060193/easy_control/issues/36">[Issue #36]</a>
+                        </li>
+                        <li>Added rudimentary volume controls. <a href="https://github.com/anickle060193/easy_control/issues/30">[Issue #30]</a></li>
+                        <ul>
+                            <li>Currently only supports HTML content providers.</li>
+                        </ul>
+                        <li>Code clean up regarding extended Controllers and unsupported functions.</li>
+                    </ul>
+                </div>
+
+                <div class="row">
+                    <h2 id="version-1-8-0" class="sub-header">Version 1.8.0</h2>
+                    <ul>
+                        <li>
+                            Added initial implementation of playback speed controls. <a href="https://github.com/anickle060193/easy_control/issues/29">[Issue #29]</a>
+                            <ul>
+                                <li>Only supports HTML content providers.</li>
+                            </ul>
+                        </li>
+                        <li>Fixed Hulu notification option not staying selected. <a href="https://github.com/anickle060193/easy_control/issues/31">[Issue #31]</a></li>
+                        <li>Updated README.md to link to extension in Chrome Web Store.</li>
+                    </ul>
+                </div>
+
+                <div class="row">
+                    <h2 id="version-1-7-0" class="sub-header">Version 1.7.0</h2>
+                    <ul>
+                        <li>Added support for <a href="http://www.hulu.com/">Hulu</a>. <a href="https://github.com/anickle060193/easy_control/issues/27">[Issue #27]</a></li>
+                        <li>Added support for <a href="https://www.amazon.com/gp/video/getstarted/">Amazon Video</a>. <a href="https://github.com/anickle060193/easy_control/issues/24">[Issue #24]</a></li>
+                        <li>Added support for <a href="https://music.amazon.com/">Amazon Music</a>. <a href="https://github.com/anickle060193/easy_control/issues/24">[Issue #24]</a></li>
+                        <li>Added support for <a href="https://www.netflix.com/">Netflix</a>. <a href="https://github.com/anickle060193/easy_control/issues/23">[Issue #23]</a></li>
+                    </ul>
+                </div>
+
+                <div class="row">
+                    <h2 id="version-1-6-0" class="sub-header">Version 1.6.0</h2>
+                    <ul>
+                        <li>Updated promotional materials.</li>
+                        <li>Fixed issue where notifications for Youtube would not have a thumbnail.</li>
+                        <li>A notification is now shown when the same content is played again. <a href="https://github.com/anickle060193/easy_control/issues/6">[Issue #6]</a></li>
+                        <li>Now only retrieve tab/frame name when content is found. <a href="https://github.com/anickle060193/easy_control/issues/16">[Issue #16]</a></li>
+                        <li>
+                            Reformatted notifications table in options page. <a href="https://github.com/anickle060193/easy_control/issues/18">[Issue #18]</a>
+                        </li>
+                        <li>Add ability to support generic HTML audio and video elements on any webpage. <a href="https://github.com/anickle060193/easy_control/issues/22">[Issue #22]</a> <a href="https://github.com/anickle060193/easy_control/issues/16">[Issue #16]</a> <a href="https://github.com/anickle060193/easy_control/issues/8">[Issue #8]</a></li>
+                        <li>Fixed issue where focus/blur was being handled multiple times on the same page. <a href="https://github.com/anickle060193/easy_control/issues/12">[Issue #12]</a></li>
+                        <li>Added a more reliable way to check if a controller is playing in the active tab. <a href="https://github.com/anickle060193/easy_control/issues/12">[Issue #12]</a></li>
+                        <li>Prevent locking due to inactivity on Youtube. <a href="https://github.com/anickle060193/easy_control/issues/20">[Issue #20]</a></li>
+                        <li>Fixed Youtube not recognizing that a new Youtube video was opened. <a href="https://github.com/anickle060193/easy_control/issues/21">[Issue #21]</a></li>
+                    </ul>
+                </div>
+
+                <div class="row">
+                    <h2 id="version-1-5-0" class="sub-header">Version 1.5.0</h2>
+                    <ul>
+                        <li>Fixed new controls and generalized YoutubeController. <a href="https://github.com/anickle060193/easy_control/issues/16">[Issue #16]</a></li>
+                        <li>Added link to create an Github issue from the options page. <a href="https://github.com/anickle060193/easy_control/issues/3">[Issue #3]</a></li>
+                        <li>Added Pandora CDN to permissions. <a href="https://github.com/anickle060193/easy_control/issues/13">[Issue #13]</a></li>
+                        <li>
+                            Added more controls and keyboard shortcuts for each. <a href="https://github.com/anickle060193/easy_control/issues/1">[Issue #1]</a>
+                        </li>
+                        <li>Added a way to open the Chrome keyboard shortcuts from the options page.</li>
+                    </ul>
+                </div>
+
+                <div class="row">
+                    <h2 id="version-1-4-0" class="sub-header">Version 1.4.0</h2>
+                    <ul>
+                        <li>When the currently playing content is closed, the last-playing content is made the current content. <a href="https://github.com/anickle060193/easy_control/issues/11">[Issue #11]</a></li>
+                    </ul>
+                </div>
+
+                <div class="row">
+                    <h2 id="version-1-3-0" class="sub-header">Version 1.3.0</h2>
+                    <ul>
+                        <li>Added support for <a href="https://bandcamp.com/">Bandcamp</a>. <a href="https://github.com/anickle060193/easy_control/issues/9">[Issue #9]</a></li>
+                    </ul>
+                </div>
+
+                <div class="row">
+                    <h2 id="version-1-2-0" class="sub-header">Version 1.2.0</h2>
+                    <ul>
+                        <li>
+                            Added option to not show notifications for the active content tab. <a href="https://github.com/anickle060193/easy_control/issues/4">[Issue #4]</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="row">
+                    <h2 id="version-1-1-2" class="sub-header">Version 1.1.2</h2>
+                    <ul>
+                        <li>Fixed check in checkboxes on options page not displaying when checked. <a href="https://github.com/anickle060193/easy_control/issues/7">[Issue #7]</a></li>
+                    </ul>
+                </div>
+
+                <div class="row">
+                    <h2 id="version-1-1-1" class="sub-header">Version 1.1.1</h2>
+                    <ul>
+                        <li>Fixed issue with Google Play Music not being recognized by <i>some</i> people.</li>
+                        <li>
+                            Content change notifications now display artwork. <a href="https://github.com/anickle060193/easy_control/issues/2">[Issue #2]</a>
+                            <ul>
+                                <li>Required adding permission for each content provider's CDN.</li>
+                            </ul>
+                        </li>
+                        <li>
+                            Added 'Next' button to content change notification. <a href="https://github.com/anickle060193/easy_control/issues/5">[Issue #5]</a>
+                        </li>
+                        <li>Initial addition of more content controls. <a href="https://github.com/anickle060193/easy_control/issues/1">[Issue #1]</a></li>
+                        <ul>
+                            <li>Previous, Next, Like, Unlike, Dislike, Undislike</li>
+                            <li>Support for various controls depends on the content provider.</li>
+                        </ul>
+                    </ul>
+                </div>
+
+                <div class="row">
+                    <h2 id="version-1-1-0" class="sub-header">Version 1.1.0</h2>
+                    <ul>
+                        <li>
+                            Added option to pause content when the computer is locked or after a set period of inactivity.
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="row">
+                    <h2 id="version-1-0-0" class="sub-header">Version 1.0.0</h2>
+                    <ul>
+                        <li>Uploaded to <a href="https://chrome.google.com/webstore/detail/easy-control/oanebiaiakkpfipgnkpmcpkjfnclbgfi">Chrome Web Store</a>.</li>
+                        <li>Created promotional images.</li>
+                        <li>Updated options page to use include jQuery instead of CDN.</li>
+                        <li>
+                            Added 'Default Site' option.
+                            <ul>
+                                <li>Clicking the browser action when no content is playing will open the default site in a new tab.</li>
+                            </ul>
+                        </li>
+                        <li>Renamed extension to 'Easy Control'.</li>
+                        <li>Created README.md.</li>
+                        <li>Added options page.</li>
+                        <li>
+                            Added better icon.
+                        </li>
+                        <li>Fixed issue with notifications only showing up the first time.</li>
+                        <li>Fixed artist name issue with Pandora.</li>
+                        <li>Added support for <a href="https://play.google.com/music/">Google Play Music</a>.</li>
+                        <li>
+                            Added notifications on content change.
+                        </li>
+                        <li>Added keyboard shortcut to pause/play content.</li>
+                        <li>Added support for <a href="https://www.youtube.com/">Youtube</a>.</li>
+                        <li>Code cleanup.</li>
+                        <li>Added support for <a href="https://play.spotify.com/">Spotify</a>.</li>
+                        <li>Added support for <a href="http://www.pandora.com/">Pandora</a>.</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="jquery-3.1.0.min.js"></script>
+    <script src="bootstrap/bootstrap-3.3.7.min.js"></script>
+    <script src="change_log.js"></script>
+</body>
+
+</html>

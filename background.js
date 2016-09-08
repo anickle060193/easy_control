@@ -400,6 +400,8 @@ chrome.runtime.onInstalled.addListener( function( details )
 
         chrome.storage.sync.set( updatedSettings );
     } );
+
+    chrome.tabs.create( { url : 'change_log.html' } );
 } );
 
 chrome.idle.onStateChanged.addListener( function( newState )
