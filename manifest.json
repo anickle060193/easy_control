@@ -45,7 +45,8 @@
         {
             "matches" : [ "https://www.youtube.com/*" ],
             "js" : [ "jquery-3.1.0.min.js", "jquery-ui-1.12.0.min.js", "common.js", "controller.js", "media_controller.js", "youtube_controller.js" ],
-            "css" : [ "media_control_overlay.css" ]
+            "css" : [ "media_control_overlay.css" ],
+            "all_frames" : true
         },
         {
             "matches" : [ "https://play.google.com/music/*" ],
