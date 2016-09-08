@@ -211,6 +211,12 @@ $( '#createGithubIssue' ).click( function()
 } );
 
 
+$( '#viewChangeLog' ).click( function()
+{
+    chrome.tabs.create( { url : 'change_log.html' } );
+} );
+
+
 $().ready( function()
 {
     chrome.storage.sync.get( null, function( items )
