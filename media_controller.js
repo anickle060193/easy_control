@@ -100,6 +100,7 @@ MediaController.prototype.disconnect = function()
 
     this.controls.remove();
     $( document ).off( 'webkitfullscreenchange', this.handleFullscreenChange );
+    $( document.body ).off( 'keydown', this.handleKeyDown );
 };
 
 MediaController.prototype.showControls = function()
