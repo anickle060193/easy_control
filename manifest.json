@@ -56,7 +56,7 @@
 
             ],
             "js" : [ "jquery-ui-1.12.0.min.js", "media_controller.js" ],
-            "css" : [ "media_control_overlay.css" ],
+            "css" : [ "bootstrap/bootstrap-3.3.7.min.css", "media_control_overlay.css" ],
             "all_frames" : true
         },
         {
@@ -122,7 +122,8 @@
         }
     ],
     "web_accessible_resources" : [
-        "media_control_overlay.html"
+        "media_control_overlay.html",
+        "bootstrap/glyphicons-halflings-regular-3.3.7.woff2"
     ],
     "browser_action" : {
         "default_icon" : {
