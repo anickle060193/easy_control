@@ -6,6 +6,8 @@ function MediaController( media, name, color )
 
     this.settings = { };
 
+    this.fullscreen = false;
+
     chrome.storage.onChanged.addListener( this.handleStorageChanged.bind( this ) );
     chrome.storage.sync.get( null, function( settings )
     {
@@ -28,7 +30,7 @@ MediaController.prototype.initializeMediaControls = function()
     $.get( chrome.extension.getURL( 'media_control_overlay.html' ), function( data )
     {
         this.controls = $( data )
-            .prependTo( this.media.parentElement )
+            .appendTo( document.body )
             .css( 'zIndex', Number.MAX_SAFE_INTEGER )
             .position( {
                 my : 'left top',
@@ -84,20 +86,11 @@ MediaController.prototype.initializeMediaControls = function()
             this.controls.find( '#media-control-overlay-reset' ).text( this.media.playbackRate.toFixed( 1 ) );
         }.bind( this );
 
-        $( this.media.parentElement ).hover( function()
-        {
-            this.controls.show().children().show();
-        }.bind( this ), function()
-        {
-            if( this.settings[ Settings.Controls.AlwaysDisplayPlaybackSpeed ] )
-            {
-                this.controls.find( 'button[name="control"]' ).hide();
-            }
-            else
-            {
-                this.controls.hide();
-            }
-        }.bind( this ) );
+        this.controls.hover( $.proxy( this.showControls, this ), $.proxy( this.showControls, this ) );
+        $( this.media ).hover( $.proxy( this.showControls, this ), $.proxy( this.hideControls, this ) );
+
+        $( document ).on( 'webkitfullscreenchange', $.proxy( this.handleFullscreenChange, this ) );
+
     }.bind( this ) );
 };
 
@@ -106,6 +99,61 @@ MediaController.prototype.disconnect = function()
     Controller.prototype.disconnect.call( this );
 
     this.controls.remove();
+    $( document ).off( 'webkitfullscreenchange', this.handleFullscreenChange );
+};
+
+MediaController.prototype.showControls = function()
+{
+    this.controls.show().children().show();
+};
+
+MediaController.prototype.handleFullscreenChange = function()
+{
+    if( document.webkitIsFullScreen )
+    {
+        if( $( document.webkitFullscreenElement ).find( this.media ) !== 0 )
+        {
+            this.fullscreen = true;
+            this.controls
+                .detach()
+                .appendTo( document.webkitFullscreenElement )
+                .position( {
+                    my : 'left top',
+                    at : 'left+6 top+6',
+                    of : document.webkitFullscreenElement,
+                    collision : 'none'
+                } );
+        }
+    }
+    else
+    {
+        if( this.fullscreen )
+        {
+            this.fullscreen = false;
+
+            this.controls
+                .detach()
+                .appendTo( document.body )
+                .position( {
+                    my : 'left top',
+                    at : 'left+6 top+6',
+                    of : this.media,
+                    collision : 'none'
+                } );
+        }
+    }
+};
+
+MediaController.prototype.hideControls = function()
+{
+    if( this.settings[ Settings.Controls.AlwaysDisplayPlaybackSpeed ] )
+    {
+        this.controls.find( 'button[name="control"]' ).hide();
+    }
+    else
+    {
+        this.controls.hide();
+    }
 };
 
 MediaController.prototype.handleStorageChanged = function( changes )
