@@ -333,6 +333,7 @@ function playPause()
     }
 }
 
+
 chrome.notifications.onButtonClicked.addListener( function( notificationId, buttonIndex )
 {
     console.log( 'Notification Button Clicked - Notification: ' + notificationId + ' Button: ' + buttonIndex );
@@ -357,6 +358,7 @@ chrome.notifications.onButtonClicked.addListener( function( notificationId, butt
     }
 } );
 
+
 chrome.notifications.onClosed.addListener( function( notificationId )
 {
     if( notificationId === lastContentChangeNotification )
@@ -368,6 +370,7 @@ chrome.notifications.onClosed.addListener( function( notificationId )
         delete pauseNotifications[ notificationId ];
     }
 } );
+
 
 chrome.runtime.onMessage.addListener( function( message, sender, sendResponse )
 {
@@ -412,6 +415,7 @@ chrome.runtime.onMessage.addListener( function( message, sender, sendResponse )
         sendResponse( 'window_' + sender.tab.windowId + '_frame_' + sender.frameId + '_tab_' + sender.tab.id );
     }
 } );
+
 
 chrome.runtime.onInstalled.addListener( function( details )
 {
@@ -478,6 +482,7 @@ chrome.runtime.onInstalled.addListener( function( details )
     } );
 } );
 
+
 chrome.idle.onStateChanged.addListener( function( newState )
 {
     console.log( 'State Changed: ' + newState );
@@ -501,6 +506,7 @@ chrome.idle.onStateChanged.addListener( function( newState )
         }
     }
 } );
+
 
 chrome.storage.onChanged.addListener( function( changes, ns )
 {
@@ -533,6 +539,13 @@ chrome.storage.onChanged.addListener( function( changes, ns )
     }
 } );
 
+
+chrome.tabs.onActivated.addListener( function( activateInfo )
+{
+    chrome.contextMenus.update( 'auto_pause_enabled_for_tab', { checked : !autoPauseDisabledTabs[ activateInfo.tabId ] } );
+} );
+
+
 chrome.contextMenus.onClicked.addListener( function( info, tab )
 {
     if( info.menuItemId === 'auto_pause_enabled' )
@@ -540,7 +553,13 @@ chrome.contextMenus.onClicked.addListener( function( info, tab )
         console.log( 'Auto-Pause Enabled: ' + info.checked );
         chrome.storage.sync.set( { [ Settings.AutoPauseEnabled ] : info.checked } );
     }
+    else if( info.menuItemId === 'auto_pause_enabled_for_tab' )
+    {
+        console.log( 'Auto-Pause Enabled for Tab: Tab - ' + tab.id + ' : ' + info.checked );
+        autoPauseDisabledTabs[ tab.id ] = !info.checked;
+    }
 } );
+
 
 ( function onStart()
 {
@@ -554,13 +573,22 @@ chrome.contextMenus.onClicked.addListener( function( info, tab )
         }
         console.log( 'Start - Pause on Lock: ' + pauseOnLock + ' Pause on Inactivity: ' + pauseOnInactivity + ' Inactivity Timeout: ' + settings[ Settings.InactivityTimeout ] );
 
-        var contextMenuProperties = {
+        var autoPauseContextMenu = {
             type : 'checkbox',
             id : 'auto_pause_enabled',
             title : 'Auto-Pause Enabled',
             checked : settings[ Settings.AutoPauseEnabled ],
             contexts : [ 'browser_action' ]
         };
-        chrome.contextMenus.create( contextMenuProperties );
+        chrome.contextMenus.create( autoPauseContextMenu );
+
+        var autoPauseTabContextMenu = {
+            type : 'checkbox',
+            id : 'auto_pause_enabled_for_tab',
+            title : 'Auto-Pause Enabled for Tab',
+            checked : false,
+            contexts : [ 'browser_action' ]
+        };
+        chrome.contextMenus.create( autoPauseTabContextMenu );
     } );
 } )();
