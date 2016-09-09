@@ -54,6 +54,7 @@ function updateUI()
     $( '#pauseOnInactivity' ).prop( 'checked', settings[ Settings.PauseOnInactivity ] );
     $( '#inactivityTimeout' ).val( settings[ Settings.InactivityTimeout ] );
     $( '#inactivityTimeout' ).prop( 'disabled', !settings[ Settings.PauseOnInactivity ] );
+    $( '#showAutoPausedNotification' ).prop( 'checked', settings[ Settings.ShowAutoPausedNotification ] );
     $( '#showChangeLogOnUpdate' ).prop( 'checked', settings[ Settings.ShowChangeLogOnUpdate ] );
 }
 
@@ -165,6 +166,10 @@ $( 'input, select' ).change( function()
     else if( this.id === 'controlsPlaybackSpeedReset' )
     {
         settings[ Settings.Controls.PlaybackSpeed.Reset ] = getKeyboardShortcutKey( this );
+    }
+    else if( this.id === 'showAutoPausedNotification' )
+    {
+        settings[ Settings.ShowAutoPausedNotification ] = this.checked;
     }
     else if( this.id === 'showChangeLogOnUpdate' )
     {

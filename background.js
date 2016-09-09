@@ -202,7 +202,10 @@ function autoPause( exclusion )
                     console.log( 'Auto-Pausing ' + controllers[ i ].name );
                     controllers[ i ].pause();
 
-                    showAutoPauseNotification( controllers[ i ], settings[ Settings.NotificationLength ] );
+                    if( settings[ Settings.ShowAutoPausedNotification ] )
+                    {
+                        showAutoPauseNotification( controllers[ i ], settings[ Settings.NotificationLength ] );
+                    }
                 }
             }
         }
@@ -451,6 +454,7 @@ chrome.runtime.onInstalled.addListener( function( details )
         defaults[ Settings.InactivityTimeout ] = 60 * 5;
         defaults[ Settings.AutoPauseEnabled ] = true;
         defaults[ Settings.ShowChangeLogOnUpdate ] = true;
+        defaults[ Settings.ShowAutoPausedNotification ] = false;
 
         defaults[ Settings.Controls.DisplayControls ] = true;
         defaults[ Settings.Controls.AlwaysDisplayPlaybackSpeed ] = true;

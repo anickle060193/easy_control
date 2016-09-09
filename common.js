@@ -18,6 +18,7 @@ var Settings = {
     InactivityTimeout : 'key__inactivity_timeout',
     AutoPauseEnabled : 'key__auto_pause_enabled',
     ShowChangeLogOnUpdate : 'key__show_change_log_on_update',
+    ShowAutoPausedNotification : 'key__show_auto_paused_notification',
     Controls : {
         DisplayControls : 'key__controls__display_controls',
         AlwaysDisplayPlaybackSpeed : 'key__controls__always_display_playback_speed',
