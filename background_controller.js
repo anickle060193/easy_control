@@ -7,6 +7,7 @@ function BackgroundController( port )
     this.progress = 0.0;
     this.active = false;
     this.allowLockOnInactivity = true;
+    this.content = null;
 }
 
 BackgroundController.prototype.play = function()
