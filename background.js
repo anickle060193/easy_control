@@ -440,19 +440,19 @@ chrome.runtime.onInstalled.addListener( function( details )
     {
         var defaults = { };
 
-        defaults[ Settings.Notifications.Pandora ] = false;
-        defaults[ Settings.Notifications.Spotify ] = false;
-        defaults[ Settings.Notifications.Youtube ] = false;
-        defaults[ Settings.Notifications.GooglePlayMusic ] = false;
-        defaults[ Settings.Notifications.Bandcamp ] = false;
-        defaults[ Settings.Notifications.Netflix ] = false;
-        defaults[ Settings.Notifications.AmazonVideo ] = false;
-        defaults[ Settings.Notifications.AmazonMusic ] = false;
-        defaults[ Settings.Notifications.Hulu ] = false;
+        defaults[ Settings.Notifications.Pandora ] = true;
+        defaults[ Settings.Notifications.Spotify ] = true;
+        defaults[ Settings.Notifications.Youtube ] = true;
+        defaults[ Settings.Notifications.GooglePlayMusic ] = true;
+        defaults[ Settings.Notifications.Bandcamp ] = true;
+        defaults[ Settings.Notifications.Netflix ] = true;
+        defaults[ Settings.Notifications.AmazonVideo ] = true;
+        defaults[ Settings.Notifications.AmazonMusic ] = true;
+        defaults[ Settings.Notifications.Hulu ] = true;
 
-        defaults[ Settings.NotificationLength ] = 10;
+        defaults[ Settings.NotificationLength ] = 5;
         defaults[ Settings.NoActiveWindowNotifications ] = false;
-        defaults[ Settings.DefaultSite ] = "Pandora";
+        defaults[ Settings.DefaultSite ] = "Youtube";
         defaults[ Settings.PauseOnLock ] = true;
         defaults[ Settings.PauseOnInactivity ] = false;
         defaults[ Settings.InactivityTimeout ] = 60 * 5;
