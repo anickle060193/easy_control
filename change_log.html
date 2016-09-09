@@ -47,6 +47,7 @@
                         <li class="active"><a href="#change-log">Change Log</a></li>
                     </ul>
                     <ul class="nav nav-sidebar">
+                        <li><a href="#version-1-13-0">Version 1.13.0</a></li>
                         <li><a href="#version-1-12-0">Version 1.12.0</a></li>
                         <li><a href="#version-1-11-0">Version 1.11.0</a></li>
                         <li><a href="#version-1-10-0">Version 1.10.0</a></li>
@@ -69,6 +70,33 @@
 
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main change-log" data-spy="scroll" data-target="#versions-sidebar">
                 <h1 id="change-log" class="page-header">Change Log</h1>
+
+                <div class="row">
+                    <h2 id="version-1-13-0" class="sub-header">Version 1.13.0</h2>
+                    <ul>
+                        <li>
+                            Added option to disable auto-pause on a per-tab basis through browser action context menu. <a href="https://github.com/anickle060193/easy_control/issues/37">[Issue #37]</a>
+                            <i>(Right click browser action icon.)</i>
+                            <img src="res/change_log/disable_auto_pause_for_tab.png" alt="Disable Auto-Pause for Tab">
+                        </li>
+                        <li>
+                            Added option to disable showing auto-paused content notification.
+                            <img src="res/change_log/auto_paused_notification_option.png" alt="Auto-Paused Notification Option">
+                        </li>
+                        <li>
+                            Added notifications to display when content is auto-paused. Notifications include a prompt to disable auto-pause for that content's tab. <a href="https://github.com/anickle060193/easy_control/issues/37">[Issue #37]</a>
+                            <img src="res/change_log/auto_paused_notification.png" alt="Auto-Paused Notification">
+                        </li>
+                        <li>
+                            Made showing change log on update configurable.
+                            <img src="res/change_log/show_change_log_on_update.png" alt="Show Change Log on Update">
+                        </li>
+                        <li>Fixed playback speed control icons not loading correctly on some computers. <a href="https://github.com/anickle060193/easy_control/issues/43">[Issue #43]</a></li>
+                        <li>Abstracted content scripts in manifest.json to make adding new controllers/scripts easier.</li>
+                        <li>Fixed issue where keyboard shortcuts were being handled multiple times after opening multiple videos on Youtube. <a href="https://github.com/anickle060193/easy_control/issues/51">[Issue #51]</a></li>
+                        <li>Fixed playback controls not working when Netflix was full-screened. <a href="https://github.com/anickle060193/easy_control/issues/48">[Issue #48]</a></li>
+                    </ul>
+                </div>
 
                 <div class="row">
                     <h2 id="version-1-12-0" class="sub-header">Version 1.12.0</h2>
@@ -95,7 +123,7 @@
                         <li>
                             Added ability to disable pausing of currently playing content when new content starts playing. <a href="https://github.com/anickle060193/easy_control/issues/37">[Issue #37]</a>
                             <i>(Right click browser action icon.)</i>
-                            <img src="res/change_log/change_log_disable_auto_pause.png" alt="Disable Auto-Pause">
+                            <img src="res/change_log/disable_auto_pause.png" alt="Disable Auto-Pause">
                         </li>
                         <li>Improved how default settings are set upon install/update. <a href="https://github.com/anickle060193/easy_control/issues/40">[Issue #40]</a></li>
                         <li>Made the playback speed controls easier to see. <a href="https://github.com/anickle060193/easy_control/issues/39">[Issue #39]</a></li>
@@ -114,7 +142,7 @@
                     <ul>
                         <li>
                             Added a configurable option to change how long content change notifications last. <a href="https://github.com/anickle060193/easy_control/issues/36">[Issue #36]</a>
-                            <img src="res/change_log/change_log_notification_length.png" alt="Notification Length">
+                            <img src="res/change_log/notification_length.png" alt="Notification Length">
                         </li>
                         <li>Added rudimentary volume controls. <a href="https://github.com/anickle060193/easy_control/issues/30">[Issue #30]</a></li>
                         <ul>
@@ -132,8 +160,8 @@
                             <ul>
                                 <li>Only supports HTML content providers.</li>
                             </ul>
-                            <img src="res/change_log/change_log_playback_speed_controls.png" alt="Playback Speed Controls">
-                            <img src="res/change_log/change_log_playback_speed_controls_options.png" alt="Playback Speed Controls Options">
+                            <img src="res/change_log/playback_speed_controls.png" alt="Playback Speed Controls">
+                            <img src="res/change_log/playback_speed_controls_options.png" alt="Playback Speed Controls Options">
                         </li>
                         <li>Fixed Hulu notification option not staying selected. <a href="https://github.com/anickle060193/easy_control/issues/31">[Issue #31]</a></li>
                         <li>Updated README.md to link to extension in Chrome Web Store.</li>
@@ -159,7 +187,7 @@
                         <li>Now only retrieve tab/frame name when content is found. <a href="https://github.com/anickle060193/easy_control/issues/16">[Issue #16]</a></li>
                         <li>
                             Reformatted notifications table in options page. <a href="https://github.com/anickle060193/easy_control/issues/18">[Issue #18]</a>
-                            <img src="res/change_log/change_log_reformatted_notification_settings.png" alt="Reformatted Notification Settings">
+                            <img src="res/change_log/reformatted_notification_settings.png" alt="Reformatted Notification Settings">
                         </li>
                         <li>Add ability to support generic HTML audio and video elements on any webpage. <a href="https://github.com/anickle060193/easy_control/issues/22">[Issue #22]</a> <a href="https://github.com/anickle060193/easy_control/issues/16">[Issue #16]</a> <a href="https://github.com/anickle060193/easy_control/issues/8">[Issue #8]</a></li>
                         <li>Fixed issue where focus/blur was being handled multiple times on the same page. <a href="https://github.com/anickle060193/easy_control/issues/12">[Issue #12]</a></li>
@@ -177,7 +205,7 @@
                         <li>Added Pandora CDN to permissions. <a href="https://github.com/anickle060193/easy_control/issues/13">[Issue #13]</a></li>
                         <li>
                             Added more controls and keyboard shortcuts for each. <a href="https://github.com/anickle060193/easy_control/issues/1">[Issue #1]</a>
-                            <img src="res/change_log/change_log_keyboard_shortcuts.png" alt="Keyboard Shortcuts">
+                            <img src="res/change_log/keyboard_shortcuts.png" alt="Keyboard Shortcuts">
                         </li>
                         <li>Added a way to open the Chrome keyboard shortcuts from the options page.</li>
                     </ul>
@@ -202,7 +230,7 @@
                     <ul>
                         <li>
                             Added option to not show notifications for the active content tab. <a href="https://github.com/anickle060193/easy_control/issues/4">[Issue #4]</a>
-                            <img src="res/change_log/change_log_no_active_notification.png" alt="No Active Notification">
+                            <img src="res/change_log/no_active_notification.png" alt="No Active Notification">
                         </li>
                     </ul>
                 </div>
@@ -223,11 +251,11 @@
                             <ul>
                                 <li>Required adding permission for each content provider's CDN.</li>
                             </ul>
-                            <img src="res/change_log/change_log_cdn_permissions.png" alt="Additional CDN Permissions">
+                            <img src="res/change_log/cdn_permissions.png" alt="Additional CDN Permissions">
                         </li>
                         <li>
                             Added 'Next' button to content change notification. <a href="https://github.com/anickle060193/easy_control/issues/5">[Issue #5]</a>
-                            <img src="res/change_log/change_log_notification_next.png" alt="Notification Next">
+                            <img src="res/change_log/notification_next.png" alt="Notification Next">
                         </li>
                         <li>Initial addition of more content controls. <a href="https://github.com/anickle060193/easy_control/issues/1">[Issue #1]</a></li>
                         <ul>
@@ -242,7 +270,7 @@
                     <ul>
                         <li>
                             Added option to pause content when the computer is locked or after a set period of inactivity.
-                            <img src="res/change_log/change_log_pause_lock_inactivity.png" alt="Pause on Lock/Inactivity">
+                            <img src="res/change_log/pause_lock_inactivity.png" alt="Pause on Lock/Inactivity">
                         </li>
                     </ul>
                 </div>
@@ -258,7 +286,7 @@
                             <ul>
                                 <li>Clicking the browser action when no content is playing will open the default site in a new tab.</li>
                             </ul>
-                            <img src="res/change_log/change_log_default_site.png" alt="Default Site">
+                            <img src="res/change_log/default_site.png" alt="Default Site">
                         </li>
                         <li>Renamed extension to 'Easy Control'.</li>
                         <li>Created README.md.</li>
@@ -272,7 +300,7 @@
                         <li>Added support for <a href="https://play.google.com/music/">Google Play Music</a>.</li>
                         <li>
                             Added notifications on content change.
-                            <img src="res/change_log/change_log_notification.png" alt="Notification">
+                            <img src="res/change_log/notification.png" alt="Notification">
                         </li>
                         <li>Added keyboard shortcut to pause/play content.</li>
                         <li>Added support for <a href="https://www.youtube.com/">Youtube</a>.</li>
