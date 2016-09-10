@@ -1,6 +1,7 @@
-function MediaController( media, name, color )
+function MediaController( media, name, color, allowLockOnInactivity )
 {
-    Controller.call( this, name, color );
+    Controller.call( this, name, color, allowLockOnInactivity );
+
     this.media = media;
     this.controls = null;
 
@@ -233,6 +234,18 @@ MediaController.prototype._volumeUp = function()
 MediaController.prototype._volumeDown = function()
 {
     this.media.volume = Math.max( 0.0, this.media.volume - 0.05 );
+};
+
+MediaController.prototype.startPolling = function()
+{
+    console.log( 'MediaController - Start polling' );
+    $( this.media ).on( 'play pause playing timeupdate', $.proxy( this.poll, this ) );
+};
+
+MediaController.prototype.stopPolling = function()
+{
+    console.log( 'MediaController - Stop polling' );
+    $( this.media ).off( 'play pause playing timeupdate' );
 };
 
 

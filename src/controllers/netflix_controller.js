@@ -1,8 +1,6 @@
 function NetflixController( video )
 {
-    MediaController.call( this, video, 'Netflix', '#9b0103' );
-
-    this.allowLockOnInactivity = false;
+    MediaController.call( this, video, 'Netflix', '#9b0103', false );
 }
 
 NetflixController.prototype = Object.create( MediaController.prototype );

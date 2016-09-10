@@ -1,8 +1,8 @@
-function Controller( name, color )
+function Controller( name, color, allowLockOnInactivity )
 {
     this.name = name
     this.color = color;
-    this.allowLockOnInactivity = true;
+    this.allowLockOnInactivity = allowLockOnInactivity;
     this.active = !document.hidden;
     console.log( 'Initial active: ' + this.active );
     console.log( 'Initial visibility state: ' + document.visibilityState );
@@ -17,16 +17,13 @@ function Controller( name, color )
 
     $( window ).focus( $.proxy( this.activate, this ) );
     $( window ).blur( $.proxy( this.deactivate, this ) );
-}
 
-Controller.prototype.initialize = function()
-{
     var data = {
         color : this.color,
         allowLockOnInactivity : this.allowLockOnInactivity
     };
     this.port.postMessage( new Message( Message.types.to_background.INITIALIZE, data ) );
-};
+}
 
 Controller.prototype.activate = function()
 {
@@ -144,23 +141,21 @@ Controller.prototype.poll = function()
 
 Controller.prototype.startPolling = function()
 {
-    console.log( 'Start polling' );
-    this.initialize();
-    this.pollingInterval = setInterval( this.poll.bind( this ), 50 );
+    console.log( 'Controller - Start polling' );
+    this.pollingInterval = window.setInterval( this.poll.bind( this ), 50 );
 };
 
 Controller.prototype.stopPolling = function()
 {
-    console.log( 'Stop polling' );
-    clearInterval( this.pollingInterval );
-
-    $( window ).off( 'focus', this.activate );
-    $( window ).off( 'blur', this.deactivate );
+    console.log( 'Controller - Stop polling' );
+    window.clearInterval( this.pollingInterval );
 };
 
 Controller.prototype.disconnect = function()
 {
     console.log( 'Disconnect' );
+    $( window ).off( 'focus', this.activate );
+    $( window ).off( 'blur', this.deactivate );
     this.stopPolling();
     this.port.disconnect();
 };

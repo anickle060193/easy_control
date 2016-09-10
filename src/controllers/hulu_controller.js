@@ -1,8 +1,6 @@
 function HuluController( video )
 {
-    MediaController.call( this, video, 'Hulu', '#66AA33' );
-
-    this.allowLockOnInactivity = false;
+    MediaController.call( this, video, 'Hulu', '#66AA33', false );
 }
 
 HuluController.prototype = Object.create( MediaController.prototype );

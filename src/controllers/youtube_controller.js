@@ -1,8 +1,6 @@
 function YoutubeController( video )
 {
-    MediaController.call( this, video, 'Youtube', '#f12b24' );
-
-    this.allowLockOnInactivity = false;
+    MediaController.call( this, video, 'Youtube', '#f12b24', false );
 
     this.hasBeenActivated = this.active;
 }

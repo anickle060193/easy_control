@@ -1,8 +1,6 @@
 function AmazonVideoController( video )
 {
-    MediaController.call( this, video, 'AmazonVideo', '#FF9900' );
-
-    this.allowLockOnInactivity = false;
+    MediaController.call( this, video, 'AmazonVideo', '#FF9900', false );
 }
 
 AmazonVideoController.prototype = Object.create( MediaController.prototype );

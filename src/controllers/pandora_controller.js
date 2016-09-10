@@ -1,6 +1,6 @@
 function PandoraController()
 {
-    Controller.call( this, 'Pandora', '#455774' );
+    Controller.call( this, 'Pandora', '#455774', true );
 }
 
 PandoraController.prototype = Object.create( Controller.prototype );

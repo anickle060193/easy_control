@@ -1,6 +1,6 @@
 function BandcampController()
 {
-    Controller.call( this, 'Bandcamp', '#639AA9' )
+    Controller.call( this, 'Bandcamp', '#639AA9', true )
 }
 
 BandcampController.prototype = Object.create( Controller.prototype );

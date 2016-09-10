@@ -1,6 +1,6 @@
 function AmazonMusicController()
 {
-    Controller.call( this, 'AmazonMusic', '#fd7c02' );
+    Controller.call( this, 'AmazonMusic', '#fd7c02', true );
 }
 
 AmazonMusicController.prototype = Object.create( Controller.prototype );

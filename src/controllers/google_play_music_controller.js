@@ -1,6 +1,6 @@
 function GooglePlayMusicController()
 {
-    Controller.call( this, 'GooglePlayMusic', '#ff5722' );
+    Controller.call( this, 'GooglePlayMusic', '#ff5722', true );
 }
 
 GooglePlayMusicController.prototype = Object.create( Controller.prototype );

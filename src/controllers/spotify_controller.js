@@ -1,6 +1,6 @@
 function SpotifyController()
 {
-    Controller.call( this, 'Spotify', '#84bd00' );
+    Controller.call( this, 'Spotify', '#84bd00', true );
 }
 
 SpotifyController.prototype = Object.create( Controller.prototype );
