@@ -58,7 +58,7 @@ $( function()
 
         if( netflixController === null )
         {
-            if( videos.length > 0 )
+            if( videos.length > 0 && videos[ 0 ].src )
             {
                 videoSource = videos[ 0 ].src;
                 netflixController = new NetflixController( videos[ 0 ] );
