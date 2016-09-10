@@ -4,21 +4,8 @@ function MediaController( media, name, color )
     this.media = media;
     this.controls = null;
 
-    this.settings = { };
-
     this.fullscreen = false;
     this.dragging = false;
-
-    chrome.storage.onChanged.addListener( this.handleStorageChanged.bind( this ) );
-    chrome.storage.sync.get( null, function( settings )
-    {
-        this.settings = settings;
-
-        if( this.settings[ Settings.Controls.DisplayControls ] )
-        {
-            this.initializeMediaControls();
-        }
-    }.bind( this ) );
 
     $( document.body ).keydown( $.proxy( this.handleKeyDown, this ) );
 }
@@ -148,7 +135,7 @@ MediaController.prototype.hideControls = function()
 {
     if( !this.dragging )
     {
-        if( this.settings[ Settings.Controls.AlwaysDisplayPlaybackSpeed ] )
+        if( Controller.settings[ Settings.Controls.AlwaysDisplayPlaybackSpeed ] )
         {
             this.controls.find( '.control' ).hide();
         }
@@ -159,35 +146,27 @@ MediaController.prototype.hideControls = function()
     }
 };
 
-MediaController.prototype.handleStorageChanged = function( changes )
-{
-    for( key in changes )
-    {
-        this.settings[ key ] = changes[ key ].newValue;
-    }
-};
-
 MediaController.prototype.handleKeyDown = function( event )
 {
     if( $( event.target ).find( this.media ).length !== 0 )
     {
-        if( event.key === this.settings[ Settings.Controls.PlaybackSpeed.MuchSlower ] )
+        if( event.key === Controller.settings[ Settings.Controls.PlaybackSpeed.MuchSlower ] )
         {
             this.playbackMuchSlower();
         }
-        else if( event.key === this.settings[ Settings.Controls.PlaybackSpeed.Slower ] )
+        else if( event.key === Controller.settings[ Settings.Controls.PlaybackSpeed.Slower ] )
         {
             this.playbackSlower();
         }
-        else if( event.key === this.settings[ Settings.Controls.PlaybackSpeed.Faster ] )
+        else if( event.key === Controller.settings[ Settings.Controls.PlaybackSpeed.Faster ] )
         {
             this.playbackFaster();
         }
-        else if( event.key === this.settings[ Settings.Controls.PlaybackSpeed.MuchFaster ] )
+        else if( event.key === Controller.settings[ Settings.Controls.PlaybackSpeed.MuchFaster ] )
         {
             this.playbackMuchFaster();
         }
-        else if( event.key === this.settings[ Settings.Controls.PlaybackSpeed.Reset ] )
+        else if( event.key === Controller.settings[ Settings.Controls.PlaybackSpeed.Reset ] )
         {
             this.playbackReset();
         }
@@ -308,5 +287,10 @@ MediaController.createSingleMediaListener = function( name, controllerCreatorCal
         }
         controller = controllerCreatorCallback( media );
         controller.startPolling();
+
+        if( Controller.settings[ Settings.Controls.DisplayControls ] )
+        {
+            controller.initializeMediaControls();
+        }
     } );
 };

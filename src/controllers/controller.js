@@ -337,3 +337,23 @@ Controller.prototype._volumeDown = function()
 {
     console.log( 'volumeDown not supported.' );
 };
+
+
+( function()
+{
+    Controller.settings = { };
+
+    chrome.storage.sync.get( null, function( settings )
+    {
+        console.log( 'Controller retrieved settings' );
+        Controller.settings = settings;
+    } );
+
+    chrome.storage.onChanged.addListener( function( changes )
+    {
+        for( var setting in changes )
+        {
+            Controller.settings[ setting ] = changes[ setting ].newValue;
+        }
+    } );
+} )();
