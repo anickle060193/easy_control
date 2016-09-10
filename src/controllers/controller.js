@@ -119,24 +119,21 @@ Controller.prototype.poll = function()
             if( this.currentContent === null )
             {
                 isNewContent = true;
-                console.log( 'Current is null' );
+                console.log( 'New Content - Current is null' );
             }
             else if( this.currentContent.title !== contentInfo.title )
             {
                 isNewContent = true;
-                console.log( 'Title\'s don\'t match' );
+                console.log( 'New Content - Title\'s don\'t match' );
             }
-            else if( this.lastProgress >= 0.95 && currentProgress < 0.05 )
+            else if( this.lastProgress >= 0.95 && currentProgress < 0.05 && currentProgress > 0 )
             {
                 isNewContent = true;
-                console.log( 'Progress went from ' + this.lastProgress + ' to ' + currentProgress );
+                console.log( 'New Content - Progress went from ' + this.lastProgress + ' to ' + currentProgress );
             }
 
-            if( this.currentContent === null
-             || this.currentContent.title !== contentInfo.title
-             || this.lastProgress >= 0.95 && currentProgress < 0.05 && currentProgress !== 0 )
+            if( isNewContent )
             {
-                console.log( 'Started New Content' );
                 console.log( contentInfo );
                 this.currentContent = contentInfo;
                 this.port.postMessage( new Message( Message.types.to_background.NEW_CONTENT, this.currentContent ) );
