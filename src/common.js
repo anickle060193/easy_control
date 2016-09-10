@@ -36,12 +36,13 @@ var Settings = {
     Controls : {
         DisplayControls : 'key__controls__display_controls',
         AlwaysDisplayPlaybackSpeed : 'key__controls__always_display_playback_speed',
-        PlaybackSpeed : {
+        MediaControls : {
             MuchSlower : 'key__controls__playback_speed__much_slower',
             Slower : 'key__controls__playback_speed__slower',
             Faster : 'key__controls__playback_speed__faster',
             MuchFaster : 'key__controls__playback_speed__much_faster',
-            Reset : 'key__controls__playback_speed__reset'
+            Reset : 'key__controls__playback_speed__reset',
+            Loop : 'key__controls__playback_speed__loop'
         }
     }
 };

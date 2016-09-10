@@ -14,6 +14,16 @@ var controllerSettings = {
 };
 
 
+var keyboardShortcuts = [
+    { description : 'Playback Speed Much Slower', key : Settings.Controls.MediaControls.MuchSlower },
+    { description : 'Playback Speed Slower', key : Settings.Controls.MediaControls.Slower },
+    { description : 'Playback Speed Faster', key : Settings.Controls.MediaControls.Faster },
+    { description : 'Playback Speed Much Faster', key : Settings.Controls.MediaControls.MuchFaster },
+    { description : 'Playback Speed Reset', key : Settings.Controls.MediaControls.Reset },
+    { description : 'Loop', key : Settings.Controls.MediaControls.Loop }
+];
+
+
 function generateControllerSettingsTable()
 {
     var controllerSettingsTable = $( '#controllerSettingsTable' );
@@ -40,6 +50,27 @@ function generateControllerSettingsTable()
 
         controllerSettingsTable.append( row );
     }
+}
+
+
+function generateKeyboardShortcutTable()
+{
+    var table = $( '#mediaControlsKeyboardShortcuts' );
+
+    keyboardShortcuts.forEach( function( shortcut )
+    {
+        var row = $( '<tr>' ).append( $( '<td>' ).text( shortcut.description ) );
+        var input = $( '<input>', {
+            type : 'text',
+            maxlength : 1,
+            class : [ 'keyboardShortcutEntry' ],
+            placeholder : 'Press Key',
+            'data-key' : shortcut.key
+        } );
+        row.append( $( '<td>' ).append( input ) );
+
+        table.append( row );
+    } );
 }
 
 
@@ -193,6 +224,7 @@ function registerHandlers()
 $( function()
 {
     generateControllerSettingsTable();
+    generateKeyboardShortcutTable();
     registerHandlers();
 
     chrome.storage.sync.get( null, function( items )

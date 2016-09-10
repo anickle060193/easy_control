@@ -470,11 +470,12 @@ chrome.runtime.onInstalled.addListener( function( details )
 
         defaults[ Settings.Controls.DisplayControls ] = true;
         defaults[ Settings.Controls.AlwaysDisplayPlaybackSpeed ] = true;
-        defaults[ Settings.Controls.PlaybackSpeed.MuchSlower ] = '';
-        defaults[ Settings.Controls.PlaybackSpeed.Slower ] = 's';
-        defaults[ Settings.Controls.PlaybackSpeed.Faster ] = 'd';
-        defaults[ Settings.Controls.PlaybackSpeed.MuchFaster ] = '';
-        defaults[ Settings.Controls.PlaybackSpeed.Reset ] = 'r';
+        defaults[ Settings.Controls.MediaControls.MuchSlower ] = '';
+        defaults[ Settings.Controls.MediaControls.Slower ] = 's';
+        defaults[ Settings.Controls.MediaControls.Faster ] = 'd';
+        defaults[ Settings.Controls.MediaControls.MuchFaster ] = '';
+        defaults[ Settings.Controls.MediaControls.Reset ] = 'r';
+        defaults[ Settings.Controls.MediaControls.Loop ] = '';
 
         var updatedSettings = $.extend( { }, defaults, settings );
 

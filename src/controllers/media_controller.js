@@ -33,6 +33,7 @@ MediaController.prototype.initializeMediaControls = function()
         } );
 
         this.hideControls();
+        this.loop( this.media.loop );
 
         this.controls.dblclick( function( e )
         {
@@ -65,6 +66,10 @@ MediaController.prototype.initializeMediaControls = function()
             else if( e.currentTarget.id === 'media-control-overlay-remove' )
             {
                 this.controls.remove();
+            }
+            else if( e.currentTarget.id === 'media-control-overlay-loop' )
+            {
+                this.loop( !this.media.loop );
             }
         }.bind( this ) );
 
@@ -151,25 +156,29 @@ MediaController.prototype.handleKeyDown = function( event )
 {
     if( $( event.target ).find( this.media ).length !== 0 )
     {
-        if( event.key === Controller.settings[ Settings.Controls.PlaybackSpeed.MuchSlower ] )
+        if( event.key === Controller.settings[ Settings.Controls.MediaControls.MuchSlower ] )
         {
             this.playbackMuchSlower();
         }
-        else if( event.key === Controller.settings[ Settings.Controls.PlaybackSpeed.Slower ] )
+        else if( event.key === Controller.settings[ Settings.Controls.MediaControls.Slower ] )
         {
             this.playbackSlower();
         }
-        else if( event.key === Controller.settings[ Settings.Controls.PlaybackSpeed.Faster ] )
+        else if( event.key === Controller.settings[ Settings.Controls.MediaControls.Faster ] )
         {
             this.playbackFaster();
         }
-        else if( event.key === Controller.settings[ Settings.Controls.PlaybackSpeed.MuchFaster ] )
+        else if( event.key === Controller.settings[ Settings.Controls.MediaControls.MuchFaster ] )
         {
             this.playbackMuchFaster();
         }
-        else if( event.key === Controller.settings[ Settings.Controls.PlaybackSpeed.Reset ] )
+        else if( event.key === Controller.settings[ Settings.Controls.MediaControls.Reset ] )
         {
             this.playbackReset();
+        }
+        else if( event.key === Controller.settings[ Settings.Controls.MediaControls.Loop ] )
+        {
+            this.loop( !this.media.loop );
         }
     }
 };
@@ -198,6 +207,22 @@ MediaController.prototype.playbackMuchFaster = function()
 {
     this.media.playbackRate = Math.max( 0, Math.floor( ( this.media.playbackRate + 0.5 ) / 0.5 ) * 0.5 );
 };
+
+MediaController.prototype.loop = function( loop )
+{
+    this.media.loop = loop;
+
+    if( this.media.loop )
+    {
+        $( '#media-control-overlay-loop' ).prop( 'title', 'Do not loop' );
+        $( '#media-control-overlay-loop > span' ).removeClass( 'glyphicon-repeat' ).addClass( 'glyphicon-arrow-right' );
+    }
+    else
+    {
+        $( '#media-control-overlay-loop' ).prop( 'title', 'Loop' );
+        $( '#media-control-overlay-loop > span' ).removeClass( 'glyphicon-arrow-right' ).addClass( 'glyphicon-repeat' );
+    }
+}
 
 MediaController.prototype._play = function()
 {
