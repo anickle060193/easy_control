@@ -25,12 +25,13 @@
     ],
     "content_security_policy" : "default-src 'self' https://*.googleapis.com; img-src 'self' data: blob: http://*.pandora.com/ http://*.p-cdn.com/ https://*.scdn.co/ https://*.cloudfront.net/ https://*.googleusercontent.com/ https://*.ggpht.com/ https://*.bcbits.com/ https://*.ssl-images-amazon.com/ http://*.huluim.com/",
     "options_ui" : {
-        "page" : "options.html",
+        "page" : "options/options.html",
         "chrome_style" : true
     },
     "background" : {
         "persistent" : false,
-        "scripts" : [ "jquery-3.1.0.min.js", "common.js", "background_controller.js", "background_icon.js", "background.js", "background_commands.js" ]
+        "scripts" : [
+            "jquery/jquery-3.1.0.min.js", "common.js", "background/background_controller.js", "background/background_icon.js", "background/background.js", "background/background_commands.js" ]
     },
     "content_scripts" : [
         {
@@ -45,7 +46,7 @@
                 "https://music.amazon.com/*",
                 "http://www.hulu.com/*"
             ],
-            "js" : [ "jquery-3.1.0.min.js", "common.js", "controller.js" ],
+            "js" : [ "jquery/jquery-3.1.0.min.js", "common.js", "controllers/controller.js" ],
             "all_frames" : true
         },
         {
@@ -56,52 +57,52 @@
                 "http://www.hulu.com/*"
 
             ],
-            "js" : [ "jquery-ui-1.12.0.min.js", "media_controller.js" ],
+            "js" : [ "jquery/jquery-ui-1.12.0.min.js", "controllers/media_controller.js" ],
             "css" : [ "bootstrap/bootstrap-3.3.7.min.css", "media_control_overlay.css" ],
             "all_frames" : true
         },
         {
             "matches" : [ "http://www.pandora.com/*" ],
-            "js" : [ "pandora_controller.js" ]
+            "js" : [ "controllers/pandora_controller.js" ]
         },
         {
             "matches" : [ "https://play.spotify.com/*" ],
-            "js" : [ "spotify_controller.js" ],
+            "js" : [ "controllers/spotify_controller.js" ],
             "all_frames" : true
         },
         {
             "matches" : [ "https://www.youtube.com/*" ],
-            "js" : [ "youtube_controller.js" ],
+            "js" : [ "controllers/youtube_controller.js" ],
             "all_frames" : true
         },
         {
             "matches" : [ "https://play.google.com/music/*" ],
-            "js" : [ "google_play_music_controller.js" ],
+            "js" : [ "controllers/google_play_music_controller.js" ],
             "all_frames" : true
         },
         {
             "matches" : [ "https://*.bandcamp.com/*" ],
-            "js" : [ "bandcamp_controller.js" ],
+            "js" : [ "controllers/bandcamp_controller.js" ],
             "all_frames" : true
         },
         {
             "matches" : [ "https://www.netflix.com/*" ],
-            "js" : [ "netflix_controller.js" ],
+            "js" : [ "controllers/netflix_controller.js" ],
             "all_frames" : true
         },
         {
             "matches" : [ "https://www.amazon.com/*" ],
-            "js" : [ "amazon_video_controller.js" ],
+            "js" : [ "controllers/amazon_video_controller.js" ],
             "all_frames" : true
         },
         {
             "matches" : [ "https://music.amazon.com/*" ],
-            "js" : [ "amazon_music_controller.js" ],
+            "js" : [ "controllers/amazon_music_controller.js" ],
             "all_frames" : true
         },
         {
             "matches" : [ "http://www.hulu.com/*" ],
-            "js" : [ "hulu_controller.js" ],
+            "js" : [ "controllers/hulu_controller.js" ],
             "all_frames" : true
         },
         {
@@ -117,7 +118,7 @@
                 "https://music.amazon.com/*",
                 "http://www.hulu.com/*"
             ],
-            "js" : [ "jquery-3.1.0.min.js", "jquery-ui-1.12.0.min.js", "common.js", "controller.js", "media_controller.js", "audio_video_controller.js" ],
+            "js" : [ "jquery/jquery-3.1.0.min.js", "jquery/jquery-ui-1.12.0.min.js", "common.js", "controllers/controller.js", "controllers/media_controller.js", "controllers/audio_video_controller.js" ],
             "css" : [ "media_control_overlay.css" ],
             "all_frames" : true
         }

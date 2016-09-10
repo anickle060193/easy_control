@@ -478,7 +478,7 @@ chrome.runtime.onInstalled.addListener( function( details )
 
         if( updatedSettings[ Settings.ShowChangeLogOnUpdate ] )
         {
-            chrome.tabs.create( { url : 'change_log.html' } );
+            chrome.tabs.create( { url : 'change_log/change_log.html' } );
         }
     } );
 } );
