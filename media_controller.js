@@ -7,6 +7,7 @@ function MediaController( media, name, color )
     this.settings = { };
 
     this.fullscreen = false;
+    this.dragging = false;
 
     chrome.storage.onChanged.addListener( this.handleStorageChanged.bind( this ) );
     chrome.storage.sync.get( null, function( settings )
@@ -29,24 +30,21 @@ MediaController.prototype.initializeMediaControls = function()
 {
     $.get( chrome.extension.getURL( 'media_control_overlay.html' ), function( data )
     {
-        this.controls = $( data )
-            .appendTo( document.body )
-            .css( 'zIndex', Number.MAX_SAFE_INTEGER )
-            .position( {
-                my : 'left top',
-                at : 'left+6 top+6',
-                of : this.media,
-                collision : 'none'
-            } );
+        this.controls = $( data );
+        this.attachControls( document.body, this.media )
+        this.controls.draggable( {
+            handle : '#media-control-overlay-dragger',
+            start : $.proxy( function()
+            {
+                this.dragging = true;
+            }, this ),
+            stop : $.proxy( function()
+            {
+                this.dragging = false;
+            }, this )
+        } );
 
-        if( this.settings[ Settings.Controls.AlwaysDisplayPlaybackSpeed ] )
-        {
-            this.controls.find( 'button[name="control"]' ).hide();
-        }
-        else
-        {
-            this.controls.hide();
-        }
+        this.hideControls();
 
         this.controls.dblclick( function( e )
         {
@@ -76,9 +74,6 @@ MediaController.prototype.initializeMediaControls = function()
             {
                 this.playbackMuchFaster();
             }
-
-            e.stopPropagation();
-            e.preventDefault();
         }.bind( this ) );
 
         this.media.onratechange = function()
@@ -86,7 +81,7 @@ MediaController.prototype.initializeMediaControls = function()
             this.controls.find( '#media-control-overlay-reset' ).text( this.media.playbackRate.toFixed( 1 ) );
         }.bind( this );
 
-        this.controls.hover( $.proxy( this.showControls, this ), $.proxy( this.showControls, this ) );
+        this.controls.hover( $.proxy( this.showControls, this ), $.proxy( this.hideControls, this ) );
         $( this.media ).hover( $.proxy( this.showControls, this ), $.proxy( this.hideControls, this ) );
 
         $( document ).on( 'webkitfullscreenchange', $.proxy( this.handleFullscreenChange, this ) );
@@ -108,6 +103,20 @@ MediaController.prototype.showControls = function()
     this.controls.show().children().show();
 };
 
+MediaController.prototype.attachControls = function( appendToElement, positionOfElement )
+{
+    return this.controls
+        .detach()
+        .appendTo( appendToElement )
+        .css( 'zIndex', Number.MAX_SAFE_INTEGER )
+        .position( {
+            my : 'left top',
+            at : 'left+6 top+6',
+            of : positionOfElement,
+            collision : 'none'
+        } );
+};
+
 MediaController.prototype.handleFullscreenChange = function()
 {
     if( document.webkitIsFullScreen )
@@ -115,15 +124,7 @@ MediaController.prototype.handleFullscreenChange = function()
         if( $( document.webkitFullscreenElement ).find( this.media ) !== 0 )
         {
             this.fullscreen = true;
-            this.controls
-                .detach()
-                .appendTo( document.webkitFullscreenElement )
-                .position( {
-                    my : 'left top',
-                    at : 'left+6 top+6',
-                    of : document.webkitFullscreenElement,
-                    collision : 'none'
-                } );
+            this.attachControls( document.webkitCurrentFullScreenElement, document.webkitCurrentFullScreenElement );
         }
     }
     else
@@ -131,29 +132,23 @@ MediaController.prototype.handleFullscreenChange = function()
         if( this.fullscreen )
         {
             this.fullscreen = false;
-
-            this.controls
-                .detach()
-                .appendTo( document.body )
-                .position( {
-                    my : 'left top',
-                    at : 'left+6 top+6',
-                    of : this.media,
-                    collision : 'none'
-                } );
+            this.attachControls( document.body, this.media );
         }
     }
 };
 
 MediaController.prototype.hideControls = function()
 {
-    if( this.settings[ Settings.Controls.AlwaysDisplayPlaybackSpeed ] )
+    if( !this.dragging )
     {
-        this.controls.find( 'button[name="control"]' ).hide();
-    }
-    else
-    {
-        this.controls.hide();
+        if( this.settings[ Settings.Controls.AlwaysDisplayPlaybackSpeed ] )
+        {
+            this.controls.find( '.control' ).hide();
+        }
+        else
+        {
+            this.controls.hide();
+        }
     }
 };
 
