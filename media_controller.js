@@ -74,6 +74,10 @@ MediaController.prototype.initializeMediaControls = function()
             {
                 this.playbackMuchFaster();
             }
+            else if( e.currentTarget.id === 'media-control-overlay-remove' )
+            {
+                this.controls.remove();
+            }
         }.bind( this ) );
 
         this.media.onratechange = function()
