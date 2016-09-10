@@ -1,6 +1,6 @@
 function AudioVideoController( media, name )
 {
-    MediaController.call( this, media, name, '#5b5b5b', media.nodeName !== 'VIDEO' );
+    MediaController.call( this, media, name, Controller.settings[ Settings.ControllerColors.GenericAudioVideo ], media.nodeName !== 'VIDEO' );
 }
 
 AudioVideoController.prototype = Object.create( MediaController.prototype );

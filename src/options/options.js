@@ -1,16 +1,58 @@
 var settings = null
 
 
+var controllerSettingsHeadings = [ 'Enabled?', 'Color', 'Display Notifications?' ];
 var controllerSettings = {
-    'Pandora' : { notification : Settings.Notifications.Pandora, enabled : Settings.ControllersEnabled.Pandora },
-    'Spotify' : { notification : Settings.Notifications.Spotify, enabled : Settings.ControllersEnabled.Spotify },
-    'Google Play Music' : { notification : Settings.Notifications.GooglePlayMusic, enabled : Settings.ControllersEnabled.GooglePlayMusic },
-    'Bandcamp' : { notification : Settings.Notifications.Bandcamp, enabled : Settings.ControllersEnabled.Bandcamp },
-    'Netflix' : { notification : Settings.Notifications.Netflix, enabled : Settings.ControllersEnabled.Netflix },
-    'Amazon Video' : { notification : Settings.Notifications.AmazonVideo, enabled : Settings.ControllersEnabled.AmazonVideo },
-    'Amazon Music' : { notification : Settings.Notifications.AmazonMusic, enabled : Settings.ControllersEnabled.AmazonMusic },
-    'Hulu' : { notification : Settings.Notifications.Hulu, enabled : Settings.ControllersEnabled.Hulu },
-    'Generic Audio/Video' : { notification : Settings.Notifications.GenericAudioVideo, enabled : Settings.ControllersEnabled.GenericAudioVideo },
+    'Pandora' : {
+        notification : Settings.Notifications.Pandora,
+        color : Settings.ControllerColors.Pandora,
+        enabled : Settings.ControllersEnabled.Pandora
+    },
+    'Spotify' : {
+        notification : Settings.Notifications.Spotify,
+        color : Settings.ControllerColors.Spotify,
+        enabled : Settings.ControllersEnabled.Spotify
+    },
+    'Youtube' : {
+        notification : Settings.Notifications.Youtube,
+        color : Settings.ControllerColors.Youtube,
+        enabled : Settings.ControllersEnabled.Youtube
+    },
+    'Google Play Music' : {
+        notification : Settings.Notifications.GooglePlayMusic,
+        color : Settings.ControllerColors.GooglePlayMusic,
+        enabled : Settings.ControllersEnabled.GooglePlayMusic
+    },
+    'Bandcamp' : {
+        notification : Settings.Notifications.Bandcamp,
+        color : Settings.ControllerColors.Bandcamp,
+        enabled : Settings.ControllersEnabled.Bandcamp
+    },
+    'Netflix' : {
+        notification : Settings.Notifications.Netflix,
+        color : Settings.ControllerColors.Netflix,
+        enabled : Settings.ControllersEnabled.Netflix
+    },
+    'Amazon Video' : {
+        notification : Settings.Notifications.AmazonVideo,
+        color : Settings.ControllerColors.AmazonVideo,
+        enabled : Settings.ControllersEnabled.AmazonVideo
+    },
+    'Amazon Music' : {
+        notification : Settings.Notifications.AmazonMusic,
+        color : Settings.ControllerColors.AmazonMusic,
+        enabled : Settings.ControllersEnabled.AmazonMusic
+    },
+    'Hulu' : {
+        notification : Settings.Notifications.Hulu,
+        color : Settings.ControllerColors.Hulu,
+        enabled : Settings.ControllersEnabled.Hulu
+    },
+    'Generic Audio/Video' : {
+        notification : Settings.Notifications.GenericAudioVideo,
+        color : Settings.ControllerColors.GenericAudioVideo,
+        enabled : Settings.ControllersEnabled.GenericAudioVideo
+    },
 };
 
 
@@ -28,25 +70,32 @@ function generateControllerSettingsTable()
 {
     var controllerSettingsTable = $( '#controllerSettingsTable' );
 
+    var headerRow = $( '<tr>' ).append( $( '<th>' ).append( $( '<h1>' ).text( 'Controller Settings' ) ) );
+    controllerSettingsHeadings.forEach( function( heading )
+    {
+        headerRow.append( $( '<th>' ).text( heading ) );
+    } );
+    controllerSettingsTable.append( headerRow );
+
     for( var controller in controllerSettings )
     {
         var row = $( '<tr>' ).append( $( '<td>' ).text( controller ) );
 
-        var enabledCheckbox = $( '<input>', {
+        $( '<input>', {
             type : 'checkbox',
-            name : 'enabledControllers',
             'data-key' : controllerSettings[ controller ].enabled
-        } );
+        } ).appendTo( $( '<td>' ).appendTo( row ) );
 
-        var notificationCheckbox = $( '<input>', {
+        $( '<input>', {
+            type : 'color',
+            'data-key' : controllerSettings[ controller ].color
+        } ).appendTo( $( '<td>' ).appendTo( row ) );
+
+        $( '<input>', {
             type : 'checkbox',
-            name : 'notifications',
             'data-key' : controllerSettings[ controller ].notification,
             'data-dependency' : controllerSettings[ controller ].enabled
-        } );
-
-        row.append( $( '<td>' ).append( enabledCheckbox ) );
-        row.append( $( '<td>' ).append( notificationCheckbox ) );
+        } ).appendTo( $( '<td>' ).appendTo( row ) );
 
         controllerSettingsTable.append( row );
     }
@@ -115,6 +164,11 @@ function updateUI()
         this.value = settings[ this.dataset.key ];
     } );
 
+    $( 'input[type="color"][data-key]' ).each( function()
+    {
+        this.value = settings[ this.dataset.key ];
+    } );
+
     $( 'select[data-key]' ).each( function()
     {
         this.value = settings[ this.dataset.key ];
@@ -159,6 +213,15 @@ function registerHandlers()
         {
             settings[ this.dataset.key ] = val;
         }
+
+        saveSettings();
+        updateUI();
+    } );
+
+
+    $( 'input[type="color"][data-key]' ).change( function()
+    {
+        settings[ this.dataset.key ] = this.value;
 
         saveSettings();
         updateUI();

@@ -20,7 +20,8 @@ input[type="number"]
     border-collapse: collapse;
 }
 
-#controllerSettingsTable th, #controllerSettingsTable td
+#controllerSettingsTable th,
+#controllerSettingsTable td
 {
     padding: 5px;
     border-bottom: 1px solid #ddd;

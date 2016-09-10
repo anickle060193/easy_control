@@ -457,6 +457,17 @@ chrome.runtime.onInstalled.addListener( function( details )
         defaults[ Settings.ControllersEnabled.Hulu ] = true;
         defaults[ Settings.ControllersEnabled.GenericAudioVideo ] = true;
 
+        defaults[ Settings.ControllerColors.Pandora ] = '#455774';
+        defaults[ Settings.ControllerColors.Spotify ] = '#84bd00';
+        defaults[ Settings.ControllerColors.Youtube ] = '#f12b24';
+        defaults[ Settings.ControllerColors.GooglePlayMusic ] = '#ff5722';
+        defaults[ Settings.ControllerColors.Bandcamp ] = '#639AA9';
+        defaults[ Settings.ControllerColors.Netflix ] = '#9b0103';
+        defaults[ Settings.ControllerColors.AmazonVideo ] = '#FF9900';
+        defaults[ Settings.ControllerColors.AmazonMusic ] = '#fd7c02';
+        defaults[ Settings.ControllerColors.Hulu ] = '#66AA33';
+        defaults[ Settings.ControllerColors.GenericAudioVideo ] = '#5b5b5b';
+
         defaults[ Settings.NotificationLength ] = 5;
         defaults[ Settings.NoActiveWindowNotifications ] = false;
         defaults[ Settings.DefaultSite ] = "Youtube";

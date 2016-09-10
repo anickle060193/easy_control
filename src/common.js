@@ -23,6 +23,18 @@ var Settings = {
         Hulu : 'key__controllers_enabled__hulu',
         GenericAudioVideo : 'key__controllers_enabled__generic_audio_video'
     },
+    ControllerColors : {
+        Pandora : 'key__controller_colors__pandora',
+        Spotify : 'key__controller_colors__spotify',
+        Youtube : 'key__controller_colors__youtube',
+        GooglePlayMusic : 'key__controller_colors__google_play_music',
+        Bandcamp : 'key__controller_colors__bandcamp',
+        Netflix : 'key__controller_colors__netflix',
+        AmazonVideo : 'key__controller_colors__amazon_video',
+        AmazonMusic : 'key__controller_colors__amazon_music',
+        Hulu : 'key__controller_colors__hulu',
+        GenericAudioVideo : 'key__controller_colors__generic_audio_video'
+    },
     NotificationLength : 'key__notification_length',
     NoActiveWindowNotifications : 'key__no_active_window_notifications',
     DefaultSite : 'key__default_site',

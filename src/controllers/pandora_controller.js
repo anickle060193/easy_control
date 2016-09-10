@@ -1,6 +1,6 @@
 function PandoraController()
 {
-    Controller.call( this, 'Pandora', '#455774', true );
+    Controller.call( this, 'Pandora', Controller.settings[ Settings.ControllerColors.Pandora ], true );
 }
 
 PandoraController.prototype = Object.create( Controller.prototype );
