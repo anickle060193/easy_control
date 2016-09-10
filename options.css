@@ -47,3 +47,8 @@ td > input[type=checkbox]
     width: 60px;
     text-align: center;
 }
+
+textarea
+{
+    resize: none;
+}

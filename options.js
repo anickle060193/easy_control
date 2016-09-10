@@ -55,11 +55,12 @@ function updateUI()
     $( '#inactivityTimeout' ).val( settings[ Settings.InactivityTimeout ] );
     $( '#inactivityTimeout' ).prop( 'disabled', !settings[ Settings.PauseOnInactivity ] );
     $( '#showAutoPausedNotification' ).prop( 'checked', settings[ Settings.ShowAutoPausedNotification ] );
+    $( '#siteBlacklist' ).val( settings[ Settings.SiteBlacklist ].join( '\n' ) );
     $( '#showChangeLogOnUpdate' ).prop( 'checked', settings[ Settings.ShowChangeLogOnUpdate ] );
 }
 
 
-$( 'input, select' ).change( function()
+$( 'input, select, textarea' ).change( function()
 {
     var save = true;
 
@@ -170,6 +171,10 @@ $( 'input, select' ).change( function()
     else if( this.id === 'showAutoPausedNotification' )
     {
         settings[ Settings.ShowAutoPausedNotification ] = this.checked;
+    }
+    else if( this.id === 'siteBlacklist' )
+    {
+        settings[ Settings.SiteBlacklist ] = this.value.split( /[\r\n]+/g );
     }
     else if( this.id === 'showChangeLogOnUpdate' )
     {

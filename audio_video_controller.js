@@ -10,28 +10,42 @@ AudioVideoController.prototype.constructor = AudioVideoController;
 
 $( function()
 {
-    var videos = $( 'video' );
-    var audios = $( 'audio' );
-
-    if( videos.length !== 0 || audios.length !== 0 )
+    chrome.storage.sync.get( Settings.SiteBlacklist, function( settings )
     {
-        chrome.runtime.sendMessage( null, new Message( Message.types.to_background.NAME_REQUEST ), function( name )
+        var url = window.location.href;
+        var blacklist = settings[ Settings.SiteBlacklist ];
+        for( var i = 0; i < blacklist.length; i++ )
         {
-            videos.each( function( i, video )
+            if( blacklist[ i ] && url.indexOf( blacklist[ i ] ) !== -1 )
             {
-                var videoName = 'Video_' + i + '_' + name;
-                console.log( 'Video found: ' + videoName );
-                var videoController = new AudioVideoController( video, videoName );
-                videoController.startPolling();
-            } );
+                console.log( 'Easy Control - Blacklisted site: ' + blacklist[ i ] );
+                return;
+            }
+        }
 
-            audios.each( function( i, audio )
+        var videos = $( 'video' );
+        var audios = $( 'audio' );
+
+        if( videos.length !== 0 || audios.length !== 0 )
+        {
+            chrome.runtime.sendMessage( null, new Message( Message.types.to_background.NAME_REQUEST ), function( name )
             {
-                var audioName = 'Audio_' + i + '_' + name;
-                console.log( 'Audio found: ' + audioName );
-                var audioController = new AudioVideoController( audio, audioName );
-                audioController.startPolling();
+                videos.each( function( i, video )
+                {
+                    var videoName = 'Video_' + i + '_' + name;
+                    console.log( 'Video found: ' + videoName );
+                    var videoController = new AudioVideoController( video, videoName );
+                    videoController.startPolling();
+                } );
+
+                audios.each( function( i, audio )
+                {
+                    var audioName = 'Audio_' + i + '_' + name;
+                    console.log( 'Audio found: ' + audioName );
+                    var audioController = new AudioVideoController( audio, audioName );
+                    audioController.startPolling();
+                } );
             } );
-        } );
-    }
+        }
+    } );
 } );

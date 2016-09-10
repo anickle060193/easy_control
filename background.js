@@ -459,6 +459,7 @@ chrome.runtime.onInstalled.addListener( function( details )
         defaults[ Settings.AutoPauseEnabled ] = true;
         defaults[ Settings.ShowChangeLogOnUpdate ] = true;
         defaults[ Settings.ShowAutoPausedNotification ] = false;
+        defaults[ Settings.SiteBlacklist ] = [ 'imgur.com' ];
 
         defaults[ Settings.Controls.DisplayControls ] = true;
         defaults[ Settings.Controls.AlwaysDisplayPlaybackSpeed ] = true;
