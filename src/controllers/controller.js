@@ -30,13 +30,11 @@ Controller.prototype.initialize = function()
 
 Controller.prototype.activate = function()
 {
-    console.log( 'Controller Active: True' );
     this.active = true;
 };
 
 Controller.prototype.deactivate = function()
 {
-    console.log( 'Controller Active: False' );
     this.active = false;
 };
 

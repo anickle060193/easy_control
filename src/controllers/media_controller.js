@@ -97,7 +97,10 @@ MediaController.prototype.disconnect = function()
 {
     Controller.prototype.disconnect.call( this );
 
-    this.controls.remove();
+    if( this.controls )
+    {
+        this.controls.remove();
+    }
     $( document ).off( 'webkitfullscreenchange', this.handleFullscreenChange );
     $( document.body ).off( 'keydown', this.handleKeyDown );
 };
@@ -251,4 +254,59 @@ MediaController.prototype._volumeUp = function()
 MediaController.prototype._volumeDown = function()
 {
     this.media.volume = Math.max( 0.0, this.media.volume - 0.05 );
+};
+
+
+MediaController.onNewMedia = function( callback )
+{
+    $( 'audio, video' ).each( function()
+    {
+        callback( this );
+    } );
+
+    var newMediaElementObserver = new MutationObserver( function( mutations )
+    {
+        mutations.forEach( function( mutation )
+        {
+            mutation.addedNodes.forEach( function( node )
+            {
+                if( node.nodeName === 'VIDEO' || node.nodeName === 'AUDIO' )
+                {
+                    callback( node );
+                }
+            } );
+        } );
+    } );
+    newMediaElementObserver.observe( document.body, {
+        childList : true,
+        subtree : true
+    } );
+};
+
+
+MediaController.createMultiMediaListener = function( name, controllerCreatorCallback )
+{
+    MediaController.onNewMedia( function( media )
+    {
+        console.log( name + ' - New Media Found' );
+        var controller = controllerCreatorCallback( media );
+        controller.startPolling();
+    } );
+}
+
+
+MediaController.createSingleMediaListener = function( name, controllerCreatorCallback )
+{
+    var controller = null;
+    MediaController.onNewMedia( function( media )
+    {
+        console.log( name + ' - New Media Found' );
+        if( controller )
+        {
+            console.log( name + ' - Disconnecting Old Media' );
+            controller.disconnect();
+        }
+        controller = controllerCreatorCallback( media );
+        controller.startPolling();
+    } );
 };

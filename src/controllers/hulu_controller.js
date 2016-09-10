@@ -46,27 +46,9 @@ HuluController.prototype._getContentInfo = function()
 
 $( function()
 {
-    var videoSource = null;
-    var huluController = null;
-
-    setInterval( function()
+    console.log( 'Hulu Controller Injected' );
+    MediaController.createMultiMediaListener( 'Hulu', function( media )
     {
-        var videos = $( 'video[src]' );
-
-        if( huluController !== null && ( videos.length === 0 || videos[ 0 ].src !== videoSource ) )
-        {
-            huluController.disconnect();
-            huluController = null;
-        }
-
-        if( huluController === null )
-        {
-            if( videos.length > 0 )
-            {
-                videoSource = videos[ 0 ].src;
-                huluController = new HuluController( videos[ 0 ] );
-                huluController.startPolling();
-            }
-        }
-    }, 100 );
+        return new HuluController( media );
+    } );
 } );

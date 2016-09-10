@@ -1,6 +1,6 @@
-function AudioVideoController( video, name )
+function AudioVideoController( media, name )
 {
-    MediaController.call( this, video, name, 'blue' );
+    MediaController.call( this, media, name, '#5b5b5b' );
 
     this.allowLockOnInactivity = false;
 }
@@ -23,29 +23,12 @@ $( function()
             }
         }
 
-        var videos = $( 'video' );
-        var audios = $( 'audio' );
-
-        if( videos.length !== 0 || audios.length !== 0 )
+        var name = window.location.hostname.split( '.' ).join( '' );
+        var i = 0;
+        MediaController.createMultiMediaListener( 'Generic Audio/Video', function( media )
         {
-            chrome.runtime.sendMessage( null, new Message( Message.types.to_background.NAME_REQUEST ), function( name )
-            {
-                videos.each( function( i, video )
-                {
-                    var videoName = 'Video_' + i + '_' + name;
-                    console.log( 'Video found: ' + videoName );
-                    var videoController = new AudioVideoController( video, videoName );
-                    videoController.startPolling();
-                } );
-
-                audios.each( function( i, audio )
-                {
-                    var audioName = 'Audio_' + i + '_' + name;
-                    console.log( 'Audio found: ' + audioName );
-                    var audioController = new AudioVideoController( audio, audioName );
-                    audioController.startPolling();
-                } );
-            } );
-        }
+            i++;
+            return new AudioVideoController( media, name + '_' + i.toString() );
+        } );
     } );
 } );

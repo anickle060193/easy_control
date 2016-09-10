@@ -83,27 +83,8 @@ YoutubeController.prototype._getContentInfo = function()
 
 $( function()
 {
-    var videoSource = null;
-    var youtubeController = null;
-
-    setInterval( function()
+    MediaController.createSingleMediaListener( 'Youtube', function( media )
     {
-        var videos = $( 'video[src]' );
-
-        if( youtubeController !== null && ( videos.length === 0 || videos[ 0 ].src !== videoSource ) )
-        {
-            youtubeController.disconnect();
-            youtubeController = null;
-        }
-
-        if( youtubeController === null )
-        {
-            if( videos.length > 0 )
-            {
-                videoSource = videos[ 0 ].src;
-                youtubeController = new YoutubeController( videos[ 0 ] );
-                youtubeController.startPolling();
-            }
-        }
-    }, 100 );
+        return new YoutubeController( media );
+    } );
 } );

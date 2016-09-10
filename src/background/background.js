@@ -409,11 +409,6 @@ chrome.runtime.onMessage.addListener( function( message, sender, sendResponse )
         console.log( 'Recieved from Popup: UNLIKE' );
         unlike();
     }
-    else if( message.type === Message.types.to_background.NAME_REQUEST )
-    {
-        console.log( 'Recieved: NAME REQUEST' );
-        sendResponse( 'window_' + sender.tab.windowId + '_frame_' + sender.frameId + '_tab_' + sender.tab.id );
-    }
 } );
 
 

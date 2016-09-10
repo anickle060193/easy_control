@@ -57,8 +57,7 @@ Message.types = {
     to_background : {
         INITIALIZE : 'to_background.initialize',
         NEW_CONTENT : 'to_background.new_content',
-        STATUS : 'to_background.status',
-        NAME_REQUEST : 'to_background.name_request'
+        STATUS : 'to_background.status'
     },
     from_background : {
         PAUSE : 'from_background.pause',

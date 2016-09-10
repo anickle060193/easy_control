@@ -25,27 +25,8 @@ AmazonVideoController.prototype._getContentInfo = function()
 
 $( function()
 {
-    var videoSource = null;
-    var netflixController = null;
-
-    setInterval( function()
+    MediaController.createSingleMediaListener( 'Amazon Video', function( media )
     {
-        var videos = $( 'video[src]' );
-
-        if( netflixController !== null && ( videos.length === 0 || videos[ 0 ].src !== videoSource ) )
-        {
-            netflixController.disconnect();
-            netflixController = null;
-        }
-
-        if( netflixController === null )
-        {
-            if( videos.length > 0 )
-            {
-                videoSource = videos[ 0 ].src;
-                netflixController = new AmazonVideoController( videos[ 0 ] );
-                netflixController.startPolling();
-            }
-        }
-    }, 100 );
+        return new AmazonVideoController( media );
+    } );
 } );
