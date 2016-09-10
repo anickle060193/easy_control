@@ -9,10 +9,11 @@ function Controller( name, color )
 
     this.currentContent = null;
     this.lastProgress = 0.0;
-    this.interval = null;
+    this.pollingInterval = null;
     this.port = chrome.runtime.connect( null, { name : name } );
 
     this.port.onMessage.addListener( this.handleMessage.bind( this ) );
+    this.port.onDisconnect.addListener( this.disconnect.bind( this ) );
 
     $( window ).focus( $.proxy( this.activate, this ) );
     $( window ).blur( $.proxy( this.deactivate, this ) );
@@ -150,13 +151,13 @@ Controller.prototype.startPolling = function()
 {
     console.log( 'Start polling' );
     this.initialize();
-    this.interval = setInterval( this.poll.bind( this ), 50 );
+    this.pollingInterval = setInterval( this.poll.bind( this ), 50 );
 };
 
 Controller.prototype.stopPolling = function()
 {
     console.log( 'Stop polling' );
-    clearInterval( this.interval );
+    clearInterval( this.pollingInterval );
 
     $( window ).off( 'focus', this.activate );
     $( window ).off( 'blur', this.deactivate );
