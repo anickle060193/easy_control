@@ -14,39 +14,39 @@
 
     <table>
       <tr>
-        <td><label for="controlsDisplayControls">Display content controls overlay? </label></td>
-        <td><input type="checkbox" id="controlsDisplayControls"></input></td>
+        <td>Display content controls overlay?</td>
+        <td><input type="checkbox" data-key="key__controls__display_controls"></input></td>
       </tr>
       <tr>
-        <td><label for="controlsAlwaysDisplayPlaybackSpeed">Always display playback speed overlay? </label></td>
-        <td><input type="checkbox" id="controlsAlwaysDisplayPlaybackSpeed"></input></td>
+        <td>Always display playback speed overlay?</td>
+        <td><input type="checkbox" data-key="key__controls__always_display_playback_speed" data-dependency="key__controls__display_controls"></input></td>
       </tr>
     </table>
 
     <table>
       <tr>
         <td><label for="controlsPlaybackSpeedMuchSlower">Playback Speed Much Slower: </label></td>
-        <td><input type="text" maxlength="1" class="keyboardShortcutEntry" placeholder="Press key" id="controlsPlaybackSpeedMuchSlower"></input></td>
+        <td><input type="text" maxlength="1" class="keyboardShortcutEntry" placeholder="Press key" data-key="key__controls__playback_speed__much_slower"></input></td>
       </tr>
       <tr>
         <td><label for="controlsPlaybackSpeedSlower">Playback Speed Slower: </label></td>
-        <td><input type="text" maxlength="1" class="keyboardShortcutEntry" placeholder="Press key" id="controlsPlaybackSpeedSlower"></input></td>
+        <td><input type="text" maxlength="1" class="keyboardShortcutEntry" placeholder="Press key" data-key="key__controls__playback_speed__slower"></input></td>
       </tr>
       <tr>
         <td><label for="controlsPlaybackSpeedFaster">Playback Speed Faster: </label></td>
-        <td><input type="text" maxlength="1" class="keyboardShortcutEntry" placeholder="Press key" id="controlsPlaybackSpeedFaster"></input></td>
+        <td><input type="text" maxlength="1" class="keyboardShortcutEntry" placeholder="Press key" data-key="key__controls__playback_speed__faster"></input></td>
       </tr>
       <tr>
         <td><label for="controlsPlaybackSpeedMuchFaster">Playback Speed Much Faster: </label></td>
-        <td><input type="text" maxlength="1" class="keyboardShortcutEntry" placeholder="Press key" id="controlsPlaybackSpeedMuchFaster"></input></td>
+        <td><input type="text" maxlength="1" class="keyboardShortcutEntry" placeholder="Press key" data-key="key__controls__playback_speed__much_faster"></input></td>
       </tr>
       <tr>
         <td><label for="controlsPlaybackSpeedReset">Reset Playback Speed: </label></td>
-        <td><input type="text" maxlength="1" class="keyboardShortcutEntry" placeholder="Press key" id="controlsPlaybackSpeedReset"></input></td>
+        <td><input type="text" maxlength="1" class="keyboardShortcutEntry" placeholder="Press key" data-key="key__controls__playback_speed__reset"></input></td>
       </tr>
     </table>
 
-    <table class="notificationSettingsTable">
+    <table id="controllerSettingsTable">
       <tr>
         <th><h1>Notification Settings</h1></th><th>Display<br>Notifications?</th>
       </tr>
@@ -81,44 +81,45 @@
 
     <br>
 
-    <label>Notification length: <input type="number" min="1" id="notificationLength"></input> (seconds)</label>
+    <label>Notification length: <input type="number" min="1" data-key="key__notification_length"></input> (seconds)</label>
 
     <br>
 
-    <label>Don't show notifications if content window is active? <input type="checkbox" id="noActiveWindowNotifications"></input></label>
+    <label>Don't show notifications if content window is active? <input type="checkbox" data-key="key__no_active_window_notifications"></input></label>
 
 
     <h1>Other Settings</h1>
 
-    <label for="defaultSite">Default streaming site: </label>
-    <select id="defaultSite">
-      <option value="Pandora">Pandora</option>
-      <option value="Spotify">Spotify</option>
-      <option value="Youtube">Youtube</option>
-      <option value="GooglePlayMusic">Google Play Music</option>
-      <option value="Bandcamp">Bandcamp</option>
-      <option value="Netflix">Netflix</option>
-      <option value="AmazonVideo">Amazon Video</option>
-      <option value="AmazonMusic">Amazon Music</option>
-      <option value="Hulu">Hulu</option>
-    </select>
+    <label>Default streaming site:
+      <select data-key="key__default_site">
+        <option value="Pandora">Pandora</option>
+        <option value="Spotify">Spotify</option>
+        <option value="Youtube">Youtube</option>
+        <option value="GooglePlayMusic">Google Play Music</option>
+        <option value="Bandcamp">Bandcamp</option>
+        <option value="Netflix">Netflix</option>
+        <option value="AmazonVideo">Amazon Video</option>
+        <option value="AmazonMusic">Amazon Music</option>
+        <option value="Hulu">Hulu</option>
+      </select>
+    </label>
 
     <br>
     <br>
 
-    <label>Pause content when computer is locked? <input type="checkbox" id="pauseOnLock"></input></label>
+    <label>Pause content when computer is locked? <input type="checkbox" data-key="key__pause_on_lock"></input></label>
 
     <br>
     <br>
 
-    <label>Pause content after inactivity timeout? <input type="checkbox" id="pauseOnInactivity"></input></label>
-    <label>Inactivity timeout: <input type="number" min="15" id="inactivityTimeout"></input> (seconds) (&#8805;15 seconds)</label>
+    <label>Pause content after inactivity timeout? <input type="checkbox" data-key="key__pause_on_inactivity"></input></label>
+    <label>Inactivity timeout: <input type="number" min="15" data-key="key__inactivity_timeout" data-dependency="key__pause_on_inactivity"></input> (seconds) (&#8805;15 seconds)</label>
 
     <br>
     <br>
 
     <label>
-      Show notification when content is auto-paused? <input type="checkbox" id="showAutoPausedNotification"></input>
+      Show notification when content is auto-paused? <input type="checkbox" data-key="key__show_auto_paused_notification"></input>
       <br>
       <i>(Shows prompt to disable auto-pause for the content's tab.)</i>
     </label>
@@ -130,13 +131,13 @@
     <label>
       Generic Controller URL Blacklist <i>(One url per line)</i>
       <br>
-      <textarea id="siteBlacklist" rows="8" cols="50"></textarea>
+      <textarea rows="8" cols="50" data-key="key__site_blacklist"></textarea>
     </label>
 
     <br>
     <br>
 
-    <label>Show change log on update? <input type="checkbox" id="showChangeLogOnUpdate"></input></label>
+    <label>Show change log on update? <input type="checkbox" data-key="key__show_change_log_on_update"></input></label>
 
     <script src="../jquery/jquery-3.1.0.min.js"></script>
     <script src="../common.js"></script>

@@ -6,6 +6,7 @@ function saveSettings()
     chrome.storage.sync.set( settings, function()
     {
         console.log( 'Saved!' );
+        console.log( settings );
     } );
 }
 
@@ -26,15 +27,6 @@ function getKeyboardShortcutKey( input )
 
 function updateUI()
 {
-    $( '#controlsDisplayControls' ).prop( 'checked', settings[ Settings.Controls.DisplayControls ] );
-    $( '#controlsAlwaysDisplayPlaybackSpeed' ).prop( 'disabled', !settings[ Settings.Controls.DisplayControls ] );
-    $( '#controlsAlwaysDisplayPlaybackSpeed' ).prop( 'checked', settings[ Settings.Controls.AlwaysDisplayPlaybackSpeed ] );
-    $( '#controlsPlaybackSpeedMuchSlower' ).val( settings[ Settings.Controls.PlaybackSpeed.MuchSlower ] );
-    $( '#controlsPlaybackSpeedSlower' ).val( settings[ Settings.Controls.PlaybackSpeed.Slower ] );
-    $( '#controlsPlaybackSpeedFaster' ).val( settings[ Settings.Controls.PlaybackSpeed.Faster ] );
-    $( '#controlsPlaybackSpeedMuchFaster' ).val( settings[ Settings.Controls.PlaybackSpeed.MuchFaster ] );
-    $( '#controlsPlaybackSpeedReset' ).val( settings[ Settings.Controls.PlaybackSpeed.Reset ] );
-
     $( '#notificationsPandora' ).prop( 'checked', settings[ Settings.Notifications.Pandora ] );
     $( '#notificationsSpotify' ).prop( 'checked', settings[ Settings.Notifications.Spotify ] );
     $( '#notificationsYoutube' ).prop( 'checked', settings[ Settings.Notifications.Youtube ] );
@@ -45,18 +37,125 @@ function updateUI()
     $( '#notificationsAmazonMusic' ).prop( 'checked', settings[ Settings.Notifications.AmazonMusic ] );
     $( '#notificationsHulu' ).prop( 'checked', settings[ Settings.Notifications.Hulu ] );
 
-    $( '#notificationLength' ).val( settings[ Settings.NotificationLength ] );
-    $( '#noActiveWindowNotifications' ).prop( 'checked', settings[ Settings.NoActiveWindowNotifications ] );
 
-    $( '#defaultSite' ).val( settings[ Settings.DefaultSite ] );
+    $( 'input[type="checkbox"][data-key]' ).each( function()
+    {
+        this.checked = settings[ this.dataset.key ];
+    } );
 
-    $( '#pauseOnLock' ).prop( 'checked', settings[ Settings.PauseOnLock ] );
-    $( '#pauseOnInactivity' ).prop( 'checked', settings[ Settings.PauseOnInactivity ] );
-    $( '#inactivityTimeout' ).val( settings[ Settings.InactivityTimeout ] );
-    $( '#inactivityTimeout' ).prop( 'disabled', !settings[ Settings.PauseOnInactivity ] );
-    $( '#showAutoPausedNotification' ).prop( 'checked', settings[ Settings.ShowAutoPausedNotification ] );
-    $( '#siteBlacklist' ).val( settings[ Settings.SiteBlacklist ].join( '\n' ) );
-    $( '#showChangeLogOnUpdate' ).prop( 'checked', settings[ Settings.ShowChangeLogOnUpdate ] );
+    $( 'input[type="text"][data-key]' ).each( function()
+    {
+        this.value = settings[ this.dataset.key ];
+    } );
+
+    $( 'input[type="number"][data-key]' ).each( function()
+    {
+        this.value = settings[ this.dataset.key ];
+    } );
+
+    $( 'select[data-key]' ).each( function()
+    {
+        this.value = settings[ this.dataset.key ];
+    } );
+
+    $( 'textarea[data-key]' ).each( function()
+    {
+        this.value = settings[ this.dataset.key ].join( '\n' );
+    } );
+
+    $( '[data-dependency]' ).each( function()
+    {
+        this.disabled = !settings[ this.dataset.dependency ];
+    } );
+}
+
+
+function registerHandlers()
+{
+    $( 'input[type="checkbox"][data-key]' ).change( function()
+    {
+        settings[ this.dataset.key ] = this.checked;
+
+        saveSettings();
+        updateUI();
+    } );
+
+
+    $( 'input[type="text"][data-key].keyboardShortcutEntry' ).change( function()
+    {
+        settings[ this.dataset.key ] = getKeyboardShortcutKey( this );
+
+        saveSettings();
+        updateUI();
+    } );
+
+
+    $( 'input[type="number"][data-key]' ).change( function()
+    {
+        var val = parseInt( this.value );
+        if( !isNaN( val ) )
+        {
+            settings[ this.dataset.key ] = val;
+        }
+
+        saveSettings();
+        updateUI();
+    } );
+
+
+    $( 'select[data-key]' ).change( function()
+    {
+        settings[ this.dataset.key ] = this.value;
+
+        saveSettings();
+        updateUI();
+    } );
+
+
+    $( 'textarea[data-key]' ).change( function()
+    {
+        settings[ this.dataset.key ] = this.value.split( /[\r\n]+/g );
+
+        saveSettings();
+        updateUI();
+    } );
+
+
+    $( '.keyboardShortcutEntry' ).click( function()
+    {
+        this.value = '';
+    } );
+
+
+    $( '.keyboardShortcutEntry' ).keypress( function( event )
+    {
+        this.value = event.key
+        $( this ).change();
+    } );
+
+
+    $( '#setKeyboardShortcuts' ).click( function()
+    {
+        chrome.tabs.query( { active : true, currentWindow : true }, function( tabs )
+        {
+            if( tabs.length === 1 )
+            {
+                chrome.tabs.update( tabs[ 0 ].id, { url : 'chrome://extensions/configureCommands' } );
+            }
+        } );
+    } );
+
+
+    $( '#createGithubIssue' ).click( function()
+    {
+        chrome.tabs.create( { url : 'https://github.com/anickle060193/easy_control/issues/new' } );
+    } );
+
+
+    $( '#viewChangeLog' ).click( function()
+    {
+        chrome.tabs.create( { url : '../change_log/change_log.html' } );
+    } );
 }
 
 
@@ -100,86 +199,6 @@ $( 'input, select, textarea' ).change( function()
     {
         settings[ Settings.Notifications.Hulu ] = this.checked;
     }
-    else if( this.id === 'defaultSite' )
-    {
-        settings[ Settings.DefaultSite ] = this.value;
-    }
-    else if( this.id === 'pauseOnLock' )
-    {
-        settings[ Settings.PauseOnLock ] = this.checked;
-    }
-    else if( this.id === 'pauseOnInactivity' )
-    {
-        settings[ Settings.PauseOnInactivity ] = this.checked;
-    }
-    else if( this.id === 'inactivityTimeout' )
-    {
-        var timeout = parseInt( this.value );
-        if( timeout >= 15 )
-        {
-            settings[ Settings.InactivityTimeout ] = timeout;
-        }
-        else
-        {
-            save = false;
-        }
-    }
-    else if( this.id === 'notificationLength' )
-    {
-        var length = parseInt( this.value );
-        if( length >= 1 )
-        {
-            settings[ Settings.NotificationLength ] = length;
-        }
-        else
-        {
-            save = false;
-        }
-    }
-    else if( this.id === 'noActiveWindowNotifications' )
-    {
-        settings[ Settings.NoActiveWindowNotifications ] = this.checked;
-    }
-    else if( this.id === 'controlsDisplayControls' )
-    {
-        settings[ Settings.Controls.DisplayControls ] = this.checked;
-    }
-    else if( this.id === 'controlsAlwaysDisplayPlaybackSpeed' )
-    {
-        settings[ Settings.Controls.AlwaysDisplayPlaybackSpeed ] = this.checked;
-    }
-    else if( this.id === 'controlsPlaybackSpeedMuchSlower' )
-    {
-        settings[ Settings.Controls.PlaybackSpeed.MuchSlower ] = getKeyboardShortcutKey( this );
-    }
-    else if( this.id === 'controlsPlaybackSpeedSlower' )
-    {
-        settings[ Settings.Controls.PlaybackSpeed.Slower ] = getKeyboardShortcutKey( this );
-    }
-    else if( this.id === 'controlsPlaybackSpeedFaster' )
-    {
-        settings[ Settings.Controls.PlaybackSpeed.Faster ] = getKeyboardShortcutKey( this );
-    }
-    else if( this.id === 'controlsPlaybackSpeedMuchFaster' )
-    {
-        settings[ Settings.Controls.PlaybackSpeed.MuchFaster ] = getKeyboardShortcutKey( this );
-    }
-    else if( this.id === 'controlsPlaybackSpeedReset' )
-    {
-        settings[ Settings.Controls.PlaybackSpeed.Reset ] = getKeyboardShortcutKey( this );
-    }
-    else if( this.id === 'showAutoPausedNotification' )
-    {
-        settings[ Settings.ShowAutoPausedNotification ] = this.checked;
-    }
-    else if( this.id === 'siteBlacklist' )
-    {
-        settings[ Settings.SiteBlacklist ] = this.value.split( /[\r\n]+/g );
-    }
-    else if( this.id === 'showChangeLogOnUpdate' )
-    {
-        settings[ Settings.ShowChangeLogOnUpdate ] = this.checked;
-    }
     else
     {
         save = false;
@@ -194,50 +213,14 @@ $( 'input, select, textarea' ).change( function()
 } );
 
 
-$( '.keyboardShortcutEntry' ).click( function()
-{
-    this.value = '';
-} );
-
-
-$( '.keyboardShortcutEntry' ).keypress( function( event )
-{
-    event.preventDefault();
-    this.value = String.fromCharCode( event.charCode );
-    $( this ).change();
-} );
-
-
-$( '#setKeyboardShortcuts' ).click( function()
-{
-    chrome.tabs.query( { active : true, currentWindow : true }, function( tabs )
-    {
-        if( tabs.length === 1 )
-        {
-            chrome.tabs.update( tabs[ 0 ].id, { url : 'chrome://extensions/configureCommands' } );
-        }
-    } );
-} );
-
-
-$( '#createGithubIssue' ).click( function()
-{
-    chrome.tabs.create( { url : 'https://github.com/anickle060193/easy_control/issues/new' } );
-} );
-
-
-$( '#viewChangeLog' ).click( function()
-{
-    chrome.tabs.create( { url : '../change_log/change_log.html' } );
-} );
-
-
 $( function()
 {
+    generateControllerSettingsTable();
+    registerHandlers();
+
     chrome.storage.sync.get( null, function( items )
     {
         console.log( items );
-
         settings = items;
         updateUI();
     } );

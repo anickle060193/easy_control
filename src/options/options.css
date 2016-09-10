@@ -14,13 +14,13 @@ input[type="number"]
     width: 50px;
 }
 
-table.notificationSettingsTable
+#controllerSettingsTable
 {
     width: 100%;
     border-collapse: collapse;
 }
 
-.notificationSettingsTable th, .notificationSettingsTable td
+#controllerSettingsTable th, #controllerSettingsTable td
 {
     padding: 5px;
     border-bottom: 1px solid #ddd;
@@ -32,12 +32,12 @@ td > input[type=checkbox]
     margin-left: 5px;
 }
 
-.notificationSettingsTable tr:nth-child(even)
+#controllerSettingsTable tr:nth-child(even)
 {
     background-color: #f2f2f2;
 }
 
-.notificationSettingsTable td:first-child
+#controllerSettingsTable td:first-child
 {
     width:100%;
 }
