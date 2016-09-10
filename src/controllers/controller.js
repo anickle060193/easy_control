@@ -340,7 +340,6 @@ Controller.prototype._volumeDown = function()
 
     chrome.storage.sync.get( null, function( settings )
     {
-        console.log( 'Controller retrieved settings' );
         Controller.settings = settings;
     } );
 

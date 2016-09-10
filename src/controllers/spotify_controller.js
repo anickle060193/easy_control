@@ -72,16 +72,19 @@ SpotifyController.prototype._getContentInfo = function()
 
 $( function()
 {
-    if( $( '#progress' ).length !== 0
-     && $( '#play-pause' ).length !== 0
-     && $( '#previous' ).length !== 0
-     && $( '#next' ).length !== 0 )
+    if( Controller.settings[ Settings.ControllersEnabled.Spotify ] )
     {
-        var controller = new SpotifyController();
-        controller.startPolling();
-    }
-    else
-    {
-        console.log( 'Bad Spotify frame.' );
+        if( $( '#progress' ).length !== 0
+        && $( '#play-pause' ).length !== 0
+        && $( '#previous' ).length !== 0
+        && $( '#next' ).length !== 0 )
+        {
+            var controller = new SpotifyController();
+            controller.startPolling();
+        }
+        else
+        {
+            console.log( 'Bad Spotify frame.' );
+        }
     }
 } );

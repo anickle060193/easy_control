@@ -41,8 +41,11 @@ NetflixController.prototype._getContentInfo = function()
 
 $( function()
 {
-    MediaController.createSingleMediaListener( 'Netflix', function( media )
+    if( Controller.settings[ Settings.ControllersEnabled.Netflix ] )
     {
-        return new NetflixController( media );
-    } );
+        MediaController.createSingleMediaListener( 'Netflix', function( media )
+        {
+            return new NetflixController( media );
+        } );
+    }
 } );

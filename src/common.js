@@ -8,7 +8,20 @@ var Settings = {
         Netflix : 'key__notifications__netflix',
         AmazonVideo : 'key__notifications__amazon_video',
         AmazonMusic : 'key__notifications__amazon_music',
-        Hulu : 'key__notifications__hulu'
+        Hulu : 'key__notifications__hulu',
+        GenericAudioVideo : 'key__notifications__generic_audio_video'
+    },
+    ControllersEnabled : {
+        Pandora : 'key__controllers_enabled__pandora',
+        Spotify : 'key__controllers_enabled__spotify',
+        Youtube : 'key__controllers_enabled__youtube',
+        GooglePlayMusic : 'key__controllers_enabled__google_play_music',
+        Bandcamp : 'key__controllers_enabled__bandcamp',
+        Netflix : 'key__controllers_enabled__netflix',
+        AmazonVideo : 'key__controllers_enabled__amazon_video',
+        AmazonMusic : 'key__controllers_enabled__amazon_music',
+        Hulu : 'key__controllers_enabled__hulu',
+        GenericAudioVideo : 'key__controllers_enabled__generic_audio_video'
     },
     NotificationLength : 'key__notification_length',
     NoActiveWindowNotifications : 'key__no_active_window_notifications',

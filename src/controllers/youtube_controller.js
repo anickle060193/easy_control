@@ -81,8 +81,11 @@ YoutubeController.prototype._getContentInfo = function()
 
 $( function()
 {
-    MediaController.createSingleMediaListener( 'Youtube', function( media )
+    if( Controller.settings[ Settings.ControllersEnabled.Youtube ] )
     {
-        return new YoutubeController( media );
-    } );
+        MediaController.createSingleMediaListener( 'Youtube', function( media )
+        {
+            return new YoutubeController( media );
+        } );
+    }
 } );

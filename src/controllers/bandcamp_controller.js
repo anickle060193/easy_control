@@ -76,6 +76,9 @@ BandcampController.prototype._getContentInfo = function()
 
 $( function()
 {
-    var controller = new BandcampController();
-    controller.startPolling();
+    if( Controller.settings[ Settings.ControllersEnabled.Bandcamp ] )
+    {
+        var controller = new BandcampController();
+        controller.startPolling();
+    }
 } );

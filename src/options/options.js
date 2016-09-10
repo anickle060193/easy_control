@@ -1,6 +1,48 @@
 var settings = null
 
 
+var controllerSettings = {
+    'Pandora' : { notification : Settings.Notifications.Pandora, enabled : Settings.ControllersEnabled.Pandora },
+    'Spotify' : { notification : Settings.Notifications.Spotify, enabled : Settings.ControllersEnabled.Spotify },
+    'Google Play Music' : { notification : Settings.Notifications.GooglePlayMusic, enabled : Settings.ControllersEnabled.GooglePlayMusic },
+    'Bandcamp' : { notification : Settings.Notifications.Bandcamp, enabled : Settings.ControllersEnabled.Bandcamp },
+    'Netflix' : { notification : Settings.Notifications.Netflix, enabled : Settings.ControllersEnabled.Netflix },
+    'Amazon Video' : { notification : Settings.Notifications.AmazonVideo, enabled : Settings.ControllersEnabled.AmazonVideo },
+    'Amazon Music' : { notification : Settings.Notifications.AmazonMusic, enabled : Settings.ControllersEnabled.AmazonMusic },
+    'Hulu' : { notification : Settings.Notifications.Hulu, enabled : Settings.ControllersEnabled.Hulu },
+    'Generic Audio/Video' : { notification : Settings.Notifications.GenericAudioVideo, enabled : Settings.ControllersEnabled.GenericAudioVideo },
+};
+
+
+function generateControllerSettingsTable()
+{
+    var controllerSettingsTable = $( '#controllerSettingsTable' );
+
+    for( var controller in controllerSettings )
+    {
+        var row = $( '<tr>' ).append( $( '<td>' ).text( controller ) );
+
+        var enabledCheckbox = $( '<input>', {
+            type : 'checkbox',
+            name : 'enabledControllers',
+            'data-key' : controllerSettings[ controller ].enabled
+        } );
+
+        var notificationCheckbox = $( '<input>', {
+            type : 'checkbox',
+            name : 'notifications',
+            'data-key' : controllerSettings[ controller ].notification,
+            'data-dependency' : controllerSettings[ controller ].enabled
+        } );
+
+        row.append( $( '<td>' ).append( enabledCheckbox ) );
+        row.append( $( '<td>' ).append( notificationCheckbox ) );
+
+        controllerSettingsTable.append( row );
+    }
+}
+
+
 function saveSettings()
 {
     chrome.storage.sync.set( settings, function()
@@ -27,17 +69,6 @@ function getKeyboardShortcutKey( input )
 
 function updateUI()
 {
-    $( '#notificationsPandora' ).prop( 'checked', settings[ Settings.Notifications.Pandora ] );
-    $( '#notificationsSpotify' ).prop( 'checked', settings[ Settings.Notifications.Spotify ] );
-    $( '#notificationsYoutube' ).prop( 'checked', settings[ Settings.Notifications.Youtube ] );
-    $( '#notificationsGooglePlayMusic' ).prop( 'checked', settings[ Settings.Notifications.GooglePlayMusic ] );
-    $( '#notificationsBandcamp' ).prop( 'checked', settings[ Settings.Notifications.Bandcamp ] );
-    $( '#notificationsNetflix' ).prop( 'checked', settings[ Settings.Notifications.Netflix ] );
-    $( '#notificationsAmazonVideo' ).prop( 'checked', settings[ Settings.Notifications.AmazonVideo ] );
-    $( '#notificationsAmazonMusic' ).prop( 'checked', settings[ Settings.Notifications.AmazonMusic ] );
-    $( '#notificationsHulu' ).prop( 'checked', settings[ Settings.Notifications.Hulu ] );
-
-
     $( 'input[type="checkbox"][data-key]' ).each( function()
     {
         this.checked = settings[ this.dataset.key ];
@@ -157,60 +188,6 @@ function registerHandlers()
         chrome.tabs.create( { url : '../change_log/change_log.html' } );
     } );
 }
-
-
-$( 'input, select, textarea' ).change( function()
-{
-    var save = true;
-
-    if( this.id === 'notificationsPandora' )
-    {
-        settings[ Settings.Notifications.Pandora ] = this.checked;
-    }
-    else if( this.id === 'notificationsSpotify' )
-    {
-        settings[ Settings.Notifications.Spotify ] = this.checked;
-    }
-    else if( this.id === 'notificationsYoutube' )
-    {
-        settings[ Settings.Notifications.Youtube ] = this.checked;
-    }
-    else if( this.id === 'notificationsGooglePlayMusic' )
-    {
-        settings[ Settings.Notifications.GooglePlayMusic ] = this.checked;
-    }
-    else if( this.id === 'notificationsBandcamp' )
-    {
-        settings[ Settings.Notifications.Bandcamp ] = this.checked;
-    }
-    else if( this.id === 'notificationsNetflix' )
-    {
-        settings[ Settings.Notifications.Netflix ] = this.checked;
-    }
-    else if( this.id === 'notificationsAmazonVideo' )
-    {
-        settings[ Settings.Notifications.AmazonVideo ] = this.checked;
-    }
-    else if( this.id === 'notificationsAmazonMusic' )
-    {
-        settings[ Settings.Notifications.AmazonMusic ] = this.checked;
-    }
-    else if( this.id === 'notificationsHulu' )
-    {
-        settings[ Settings.Notifications.Hulu ] = this.checked;
-    }
-    else
-    {
-        save = false;
-    }
-
-    if( save )
-    {
-        saveSettings();
-    }
-
-    updateUI();
-} );
 
 
 $( function()

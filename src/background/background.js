@@ -444,6 +444,18 @@ chrome.runtime.onInstalled.addListener( function( details )
         defaults[ Settings.Notifications.AmazonVideo ] = true;
         defaults[ Settings.Notifications.AmazonMusic ] = true;
         defaults[ Settings.Notifications.Hulu ] = true;
+        defaults[ Settings.Notifications.GenericAudioVideo ] = true;
+
+        defaults[ Settings.ControllersEnabled.Pandora ] = true;
+        defaults[ Settings.ControllersEnabled.Spotify ] = true;
+        defaults[ Settings.ControllersEnabled.Youtube ] = true;
+        defaults[ Settings.ControllersEnabled.GooglePlayMusic ] = true;
+        defaults[ Settings.ControllersEnabled.Bandcamp ] = true;
+        defaults[ Settings.ControllersEnabled.Netflix ] = true;
+        defaults[ Settings.ControllersEnabled.AmazonVideo ] = true;
+        defaults[ Settings.ControllersEnabled.AmazonMusic ] = true;
+        defaults[ Settings.ControllersEnabled.Hulu ] = true;
+        defaults[ Settings.ControllersEnabled.GenericAudioVideo ] = true;
 
         defaults[ Settings.NotificationLength ] = 5;
         defaults[ Settings.NoActiveWindowNotifications ] = false;

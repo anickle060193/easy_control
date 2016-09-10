@@ -23,8 +23,11 @@ AmazonVideoController.prototype._getContentInfo = function()
 
 $( function()
 {
-    MediaController.createSingleMediaListener( 'Amazon Video', function( media )
+    if( Controller.settings[ Settings.ControllersEnabled.AmazonVideo ] )
     {
-        return new AmazonVideoController( media );
-    } );
+        MediaController.createSingleMediaListener( 'Amazon Video', function( media )
+        {
+            return new AmazonVideoController( media );
+        } );
+    }
 } );

@@ -58,6 +58,9 @@ AmazonMusicController.prototype._getContentInfo = function()
 
 $( function()
 {
-    var controller = new AmazonMusicController();
-    controller.startPolling();
+    if( Controller.settings[ Settings.ControllersEnabled.AmazonMusic ] )
+    {
+        var controller = new AmazonMusicController();
+        controller.startPolling();
+    }
 } );

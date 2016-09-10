@@ -91,6 +91,9 @@ PandoraController.prototype._getContentInfo = function()
 
 $( function()
 {
-    var controller = new PandoraController();
-    controller.startPolling();
+    if( Controller.settings[ Settings.ControllersEnabled.Pandora ] )
+    {
+        var controller = new PandoraController();
+        controller.startPolling();
+    }
 } );

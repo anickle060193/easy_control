@@ -44,9 +44,11 @@ HuluController.prototype._getContentInfo = function()
 
 $( function()
 {
-    console.log( 'Hulu Controller Injected' );
-    MediaController.createMultiMediaListener( 'Hulu', function( media )
+    if( Controller.settings[ Settings.ControllersEnabled.Hulu ] )
     {
-        return new HuluController( media );
-    } );
+        MediaController.createMultiMediaListener( 'Hulu', function( media )
+        {
+            return new HuluController( media );
+        } );
+    }
 } );

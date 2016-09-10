@@ -94,6 +94,9 @@ GooglePlayMusicController.prototype._getContentInfo = function()
 
 $( function()
 {
-    var controller = new GooglePlayMusicController();
-    controller.startPolling();
+    if( Controller.settings[ Settings.ControllersEnabled.GooglePlayMusic ] )
+    {
+        var controller = new GooglePlayMusicController();
+        controller.startPolling();
+    }
 } );
