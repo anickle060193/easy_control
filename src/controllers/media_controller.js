@@ -9,6 +9,11 @@ function MediaController( media, name, color, allowLockOnInactivity )
     this.dragging = false;
 
     $( document.body ).keydown( $.proxy( this.handleKeyDown, this ) );
+
+    if( Controller.settings[ Settings.Controls.DisplayControls ] )
+    {
+        this.initializeMediaControls();
+    }
 }
 
 MediaController.prototype = Object.create( Controller.prototype );
@@ -291,6 +296,13 @@ MediaController.onNewMedia = function( callback )
                 {
                     callback( node );
                 }
+                else
+                {
+                    $( node ).find( 'audio, video' ).each( function()
+                    {
+                        callback( this );
+                    } );
+                }
             } );
         } );
     } );
@@ -307,7 +319,10 @@ MediaController.createMultiMediaListener = function( name, controllerCreatorCall
     {
         console.log( name + ' - New Media Found' );
         var controller = controllerCreatorCallback( media );
-        controller.startPolling();
+        if( controller )
+        {
+            controller.startPolling();
+        }
     } );
 }
 
@@ -318,17 +333,19 @@ MediaController.createSingleMediaListener = function( name, controllerCreatorCal
     MediaController.onNewMedia( function( media )
     {
         console.log( name + ' - New Media Found' );
-        if( controller )
-        {
-            console.log( name + ' - Disconnecting Old Media' );
-            controller.disconnect();
-        }
-        controller = controllerCreatorCallback( media );
-        controller.startPolling();
 
-        if( Controller.settings[ Settings.Controls.DisplayControls ] )
+        var tempController = controllerCreatorCallback( media );
+
+        if( tempController )
         {
-            controller.initializeMediaControls();
+            if( controller )
+            {
+                console.log( name + ' - Disconnecting Old Media' );
+                controller.disconnect();
+            }
+
+            controller = tempController;
+            controller.startPolling();
         }
     } );
 };
