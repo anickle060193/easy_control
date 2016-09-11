@@ -4,10 +4,9 @@ var currentController = null;
 var lastContentChangeNotification = null;
 var pauseNotifications = { };
 
-var pauseOnLock = false;
-var pauseOnInactivity = false;
-
 var autoPauseDisabledTabs = { };
+
+var settings = { };
 
 
 function handleMessage( message, controller )
@@ -66,49 +65,45 @@ function handleMessage( message, controller )
 
         if( currentController === controller )
         {
-            chrome.storage.sync.get( null, function( settings )
+            if( settings[ Settings.Notifications[ controller.name ] ] )
             {
-                if( settings[ Settings.Notifications[ controller.name ] ] )
+                if( !controller.active || !settings[ Settings.NoActiveWindowNotifications ] )
                 {
-                    if( !controller.active
-                    || !settings[ Settings.NoActiveWindowNotifications ] )
+                    console.log( 'Content Info:' );
+                    console.log( controller.content );
+
+                    var notificationOptions = {
+                        type : 'basic',
+                        iconUrl : controller.content.image ? controller.content.image : 'res/icon128.png',
+                        title : controller.content.title,
+                        message : controller.content.caption,
+                        contextMessage : controller.content.subcaption,
+                        buttons : [ { title : 'Next' } ],
+                        requireInteraction : true
+                    };
+
+                    console.log( 'Showing notification for ' + controller.name );
+                    console.log( notificationOptions );
+                    chrome.notifications.create( null, notificationOptions, function( notificationId )
                     {
-                        console.log( 'Content Info:' );
-                        console.log( controller.content );
-
-                        var notificationOptions = {
-                            type : 'basic',
-                            iconUrl : controller.content.image ? controller.content.image : 'res/icon128.png',
-                            title : controller.content.title,
-                            message : controller.content.caption,
-                            contextMessage : controller.content.subcaption,
-                            buttons : [ { title : 'Next' } ],
-                            requireInteraction : true
-                        };
-
-                        console.log( 'Showing notification for ' + controller.name );
-                        console.log( notificationOptions );
-                        chrome.notifications.create( null, notificationOptions, function( notificationId )
+                        lastContentChangeNotification = notificationId;
+                        var notificationLength = settings[ Settings.NotificationLength ];
+                        if( !( notificationLength >= 1 ) )
                         {
-                            lastContentChangeNotification = notificationId;
-                            var notificationLength = settings[ Settings.NotificationLength ];
-                            if( !( notificationLength >= 1 ) )
-                            {
-                                notificationLength = 10;
-                            }
+                            notificationLength = 10;
+                        }
 
-                            setTimeout( function()
-                            {
-                                chrome.notifications.clear( notificationId );
-                            }, notificationLength * 1000 );
-                        } );
-                    }
-                    else
-                    {
-                        console.log( 'Not showing notification due to NoActiveWindowNotifications.' );
-                    }
+                        setTimeout( function()
+                        {
+                            chrome.notifications.clear( notificationId );
+                        }, notificationLength * 1000 );
+                    } );
                 }
-            } );
+                else
+                {
+                    console.log( 'Not showing notification due to NoActiveWindowNotifications.' );
+                }
+            }
         }
     }
 }
@@ -191,25 +186,22 @@ function showAutoPauseNotification( controller, notificationLength )
 
 function autoPause( exclusion )
 {
-    chrome.storage.sync.get( null, function( settings )
+    if( settings[ Settings.AutoPauseEnabled ] )
     {
-        if( settings[ Settings.AutoPauseEnabled ] )
+        for( var i = 0; i < controllers.length; i++ )
         {
-            for( var i = 0; i < controllers.length; i++ )
+            if( controllers[ i ] !== exclusion && !controllers[ i ].paused && !autoPauseDisabledTabs[ controllers[ i ].port.sender.tab.id ] )
             {
-                if( controllers[ i ] !== exclusion && !controllers[ i ].paused && !autoPauseDisabledTabs[ controllers[ i ].port.sender.tab.id ] )
-                {
-                    console.log( 'Auto-Pausing ' + controllers[ i ].name );
-                    controllers[ i ].pause();
+                console.log( 'Auto-Pausing ' + controllers[ i ].name );
+                controllers[ i ].pause();
 
-                    if( settings[ Settings.ShowAutoPausedNotification ] )
-                    {
-                        showAutoPauseNotification( controllers[ i ], settings[ Settings.NotificationLength ] );
-                    }
+                if( settings[ Settings.ShowAutoPausedNotification ] )
+                {
+                    showAutoPauseNotification( controllers[ i ], settings[ Settings.NotificationLength ] );
                 }
             }
         }
-    } );
+    }
 }
 
 
@@ -322,14 +314,7 @@ function playPause()
     }
     else if( controllers.length === 0 )
     {
-        chrome.storage.sync.get( Settings.DefaultSite, function( settings )
-        {
-            var defaultSite = settings[ Settings.DefaultSite ];
-            if( siteToURL[ defaultSite ] )
-            {
-                chrome.tabs.create( { url : siteToURL[ defaultSite ] } );
-            }
-        } );
+        chrome.tabs.create( { url : siteToURL[ settings[ Settings.DefaultSite ] ] } );
     }
 }
 
@@ -428,7 +413,6 @@ chrome.runtime.onInstalled.addListener( function( details )
     {
         console.log( 'Not installing or updating:' );
         console.log( details );
-        return;
     }
 
     chrome.storage.sync.get( null, function( settings )
@@ -437,8 +421,7 @@ chrome.runtime.onInstalled.addListener( function( details )
 
         var updatedSettings = $.extend( { }, defaults, settings );
 
-        console.log( 'Updating settings:' );
-        console.log( updatedSettings );
+        console.log( 'Updating Settings' );
 
         chrome.storage.sync.set( updatedSettings );
 
@@ -457,7 +440,7 @@ chrome.idle.onStateChanged.addListener( function( newState )
     {
         if( newState === 'locked' )
         {
-            if( pauseOnLock )
+            if( settings[ Settings.PauseOnLock ] )
             {
                 console.log( 'Pausing due to Lock' );
                 pause();
@@ -465,7 +448,7 @@ chrome.idle.onStateChanged.addListener( function( newState )
         }
         else if( newState === 'idle' )
         {
-            if( pauseOnInactivity && currentController.allowLockOnInactivity )
+            if( settings[ Settings.PauseOnInactivity ] && currentController.allowLockOnInactivity )
             {
                 console.log( 'Pausing due to Inactivity' );
                 pause();
@@ -478,31 +461,21 @@ chrome.idle.onStateChanged.addListener( function( newState )
 chrome.storage.onChanged.addListener( function( changes, ns )
 {
     console.log( 'Settings Changed:' );
-    console.log( changes );
 
-    if( changes[ Settings.PauseOnLock ] )
+    for( var setting in changes )
     {
-        pauseOnLock = changes[ Settings.PauseOnLock ].newValue;
-        console.log( 'Pause on Lock: ' + pauseOnLock );
+        console.log( 'Setting: ' + setting + ' - Old: ' + settings[ setting ] + ' - New: ' + changes[ setting ].newValue );
+        settings[ setting ] = changes[ setting ].newValue;
     }
 
-    if( changes[ Settings.PauseOnInactivity ] || changes[ Settings.InactivityTimeout ] )
+    if( typeof changes[ Settings.InactivityTimeout ] !== 'undefined' )
     {
-        chrome.storage.sync.get( [ Settings.PauseOnInactivity, Settings.InactivityTimeout ], function( items )
-        {
-            pauseOnInactivity = items[ Settings.PauseOnInactivity ];
-            console.log( 'Pause on Inactivity: ' + pauseOnInactivity );
-            if( pauseOnInactivity )
-            {
-                chrome.idle.setDetectionInterval( items[ Settings.InactivityTimeout ] );
-                console.log( 'Inactivity Timeout: ' + items[ Settings.InactivityTimeout ] );
-            }
-        } );
+        chrome.idle.setDetectionInterval( settings[ Settings.InactivityTimeout ] );
     }
 
-    if( changes[ Settings.AutoPauseEnabled ] )
+    if( typeof changes[ Settings.AutoPauseEnabled ] !== 'undefined' )
     {
-        chrome.contextMenus.update( 'auto_pause_enabled', { checked : changes[ Settings.AutoPauseEnabled ].newValue } );
+        chrome.contextMenus.update( 'auto_pause_enabled', { checked : settings[ Settings.AutoPauseEnabled ] } );
     }
 } );
 
@@ -530,15 +503,14 @@ chrome.contextMenus.onClicked.addListener( function( info, tab )
 
 ( function onStart()
 {
-    chrome.storage.sync.get( null, function( settings )
+    console.log( 'Background Start' );
+    chrome.storage.sync.get( null, function( s )
     {
-        pauseOnLock = settings[ Settings.PauseOnLock ];
-        pauseOnInactivity = settings[ Settings.PauseOnInactivity ];
-        if( pauseOnInactivity )
-        {
-            chrome.idle.setDetectionInterval( settings[ Settings.InactivityTimeout ] );
-        }
-        console.log( 'Start - Pause on Lock: ' + pauseOnLock + ' Pause on Inactivity: ' + pauseOnInactivity + ' Inactivity Timeout: ' + settings[ Settings.InactivityTimeout ] );
+        console.log( 'Background Start - Retrieved Settings' );
+
+        settings = s;
+
+        chrome.idle.setDetectionInterval( settings[ Settings.InactivityTimeout ] );
 
         var autoPauseContextMenu = {
             type : 'checkbox',
