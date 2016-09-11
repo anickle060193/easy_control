@@ -48,8 +48,8 @@ SpotifyController.prototype._isPaused = function()
 
 SpotifyController.prototype._getContentInfo = function()
 {
-    var track = $( '#track-name>a' ).text();
-    var artist = $( '#track-artist>a' ).map( function()
+    var track = $( '#track-name > a' ).eq( 0 ).text();
+    var artist = $( '#track-artist > a' ).map( function()
         {
             return $( this ).text();
         } ).get().join( ', ' );
