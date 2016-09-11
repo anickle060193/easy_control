@@ -314,7 +314,10 @@ function playPause()
     }
     else if( controllers.length === 0 )
     {
-        chrome.tabs.create( { url : siteToURL[ settings[ Settings.DefaultSite ] ] } );
+        if( siteToURL[ settings[ Settings.DefaultSite ] ] )
+        {
+            chrome.tabs.create( { url : siteToURL[ settings[ Settings.DefaultSite ] ] } );
+        }
     }
 }
 

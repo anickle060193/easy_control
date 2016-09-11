@@ -28,8 +28,8 @@ BandcampController.prototype._next = function()
 
 BandcampController.prototype._getProgress = function()
 {
-    var elapsedTime = trackTimeToSeconds( $( '.time_elapsed' ).text() );
-    var totalTime = trackTimeToSeconds( $( '.time_total' ).text() );
+    var elapsedTime = parseTime( $( '.time_elapsed' ).text() );
+    var totalTime = parseTime( $( '.time_total' ).text() );
 
     if( totalTime === 0 )
     {

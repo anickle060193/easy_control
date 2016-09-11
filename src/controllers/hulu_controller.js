@@ -16,11 +16,6 @@ HuluController.prototype._pause = function()
     $( '.controls-bar .play-pause-button' ).click();
 };
 
-HuluController.prototype._previous = function()
-{
-    console.log( 'Hulu does not support previous.' );
-};
-
 HuluController.prototype._next = function()
 {
     $( '.controls-bar .next-video-button' ).click();

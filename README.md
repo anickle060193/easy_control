@@ -11,5 +11,6 @@ Provides control of:
 * [Amazon Video](https://www.amazon.com/gp/video/getstarted/)
 * [Amazon Music](https://music.amazon.com/)
 * [Hulu](http://www.hulu.com/)
+* [Twitch](https://www.twitch.tv/)
 
 Chrome Web Store: [Easy Control](https://chrome.google.com/webstore/detail/easy-control/oanebiaiakkpfipgnkpmcpkjfnclbgfi)

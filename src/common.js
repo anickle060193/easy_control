@@ -9,7 +9,8 @@ var Settings = {
         AmazonVideo : 'key__notifications__amazon_video',
         AmazonMusic : 'key__notifications__amazon_music',
         Hulu : 'key__notifications__hulu',
-        GenericAudioVideo : 'key__notifications__generic_audio_video'
+        GenericAudioVideo : 'key__notifications__generic_audio_video',
+        Twitch : 'key__notifications__twitch'
     },
     ControllersEnabled : {
         Pandora : 'key__controllers_enabled__pandora',
@@ -21,7 +22,8 @@ var Settings = {
         AmazonVideo : 'key__controllers_enabled__amazon_video',
         AmazonMusic : 'key__controllers_enabled__amazon_music',
         Hulu : 'key__controllers_enabled__hulu',
-        GenericAudioVideo : 'key__controllers_enabled__generic_audio_video'
+        GenericAudioVideo : 'key__controllers_enabled__generic_audio_video',
+        Twitch : 'key__controllers_enabled__twitch'
     },
     ControllerColors : {
         Pandora : 'key__controller_colors__pandora',
@@ -33,7 +35,8 @@ var Settings = {
         AmazonVideo : 'key__controller_colors__amazon_video',
         AmazonMusic : 'key__controller_colors__amazon_music',
         Hulu : 'key__controller_colors__hulu',
-        GenericAudioVideo : 'key__controller_colors__generic_audio_video'
+        GenericAudioVideo : 'key__controller_colors__generic_audio_video',
+        Twitch : 'key__controller_colors__twitch'
     },
     NotificationLength : 'key__notification_length',
     NoActiveWindowNotifications : 'key__no_active_window_notifications',
@@ -69,7 +72,8 @@ var siteToURL = {
     Netflix : 'https://www.netflix.com/',
     AmazonVideo : 'https://www.amazon.com/gp/video/getstarted/',
     AmazonMusic : 'https://music.amazon.com/',
-    Hulu : 'http://www.hulu.com/'
+    Hulu : 'http://www.hulu.com/',
+    Twitch : 'https://www.twitch.tv/'
 };
 
 
@@ -124,6 +128,7 @@ function getDefaultSettings()
     defaults[ Settings.Notifications.AmazonMusic ] = true;
     defaults[ Settings.Notifications.Hulu ] = true;
     defaults[ Settings.Notifications.GenericAudioVideo ] = true;
+    defaults[ Settings.Notifications.Twitch ] = true;
 
     defaults[ Settings.ControllersEnabled.Pandora ] = true;
     defaults[ Settings.ControllersEnabled.Spotify ] = true;
@@ -135,6 +140,7 @@ function getDefaultSettings()
     defaults[ Settings.ControllersEnabled.AmazonMusic ] = true;
     defaults[ Settings.ControllersEnabled.Hulu ] = true;
     defaults[ Settings.ControllersEnabled.GenericAudioVideo ] = true;
+    defaults[ Settings.ControllersEnabled.Twitch ] = true;
 
     defaults[ Settings.ControllerColors.Pandora ] = '#455774';
     defaults[ Settings.ControllerColors.Spotify ] = '#84bd00';
@@ -146,6 +152,7 @@ function getDefaultSettings()
     defaults[ Settings.ControllerColors.AmazonMusic ] = '#fd7c02';
     defaults[ Settings.ControllerColors.Hulu ] = '#66AA33';
     defaults[ Settings.ControllerColors.GenericAudioVideo ] = '#5b5b5b';
+    defaults[ Settings.ControllerColors.Twitch ] = '#6441A4';
 
     defaults[ Settings.NotificationLength ] = 5;
     defaults[ Settings.NoActiveWindowNotifications ] = false;
@@ -182,11 +189,18 @@ function ContentInfo( title, caption, subcaption, image, isLiked, isDisliked )
 }
 
 
-function trackTimeToSeconds( timeText )
+function parseTime( timeText )
 {
     var strippedTimeText = $.trim( timeText );
-    var timeSplit = timeText.split( ':', 2 );
-    if( timeSplit.length === 2 )
+    var timeSplit = timeText.split( ':' );
+    if( timeSplit.length === 3 )
+    {
+        var hours = Math.abs( parseFloat( timeSplit[ 0 ] ) );
+        var minutes = Math.abs( parseFloat( timeSplit[ 1 ] ) );
+        var seconds = Math.abs( parseFloat( timeSplit[ 2 ] ) );
+        return seconds + ( minutes + hours * 60 ) * 60;
+    }
+    else if( timeSplit.length === 2 )
     {
         var minutes = Math.abs( parseFloat( timeSplit[ 0 ] ) );
         var seconds = Math.abs( parseFloat( timeSplit[ 1 ] ) );

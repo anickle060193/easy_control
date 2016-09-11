@@ -2,58 +2,85 @@ var settings = null
 
 
 var controllerSettingsHeadings = [ 'Enabled?', 'Display Notifications?', 'Color' ];
-var controllerSettings = {
-    'Pandora' : {
+var controllerSettings = [
+    {
+        id : 'Pandora',
+        name : 'Pandora',
         notification : Settings.Notifications.Pandora,
         color : Settings.ControllerColors.Pandora,
         enabled : Settings.ControllersEnabled.Pandora
     },
-    'Spotify' : {
+    {
+        id : 'Spotify',
+        name : 'Spotify',
         notification : Settings.Notifications.Spotify,
         color : Settings.ControllerColors.Spotify,
         enabled : Settings.ControllersEnabled.Spotify
     },
-    'Youtube' : {
+    {
+        id : 'Youtube',
+        name : 'Youtube',
         notification : Settings.Notifications.Youtube,
         color : Settings.ControllerColors.Youtube,
         enabled : Settings.ControllersEnabled.Youtube
     },
-    'Google Play Music' : {
+    {
+        id : 'GooglePlayMusic',
+        name : 'Google Play Music',
         notification : Settings.Notifications.GooglePlayMusic,
         color : Settings.ControllerColors.GooglePlayMusic,
         enabled : Settings.ControllersEnabled.GooglePlayMusic
     },
-    'Bandcamp' : {
+    {
+        id : 'Bandcamp',
+        name : 'Bandcamp',
         notification : Settings.Notifications.Bandcamp,
         color : Settings.ControllerColors.Bandcamp,
         enabled : Settings.ControllersEnabled.Bandcamp
     },
-    'Netflix' : {
+    {
+        id : 'Netflix',
+        name : 'Netflix',
         notification : Settings.Notifications.Netflix,
         color : Settings.ControllerColors.Netflix,
         enabled : Settings.ControllersEnabled.Netflix
     },
-    'Amazon Video' : {
+    {
+        id : 'AmazonVideo',
+        name : 'Amazon Video',
         notification : Settings.Notifications.AmazonVideo,
         color : Settings.ControllerColors.AmazonVideo,
         enabled : Settings.ControllersEnabled.AmazonVideo
     },
-    'Amazon Music' : {
+    {
+        id : 'AmazonMusic',
+        name : 'Amazon Music',
         notification : Settings.Notifications.AmazonMusic,
         color : Settings.ControllerColors.AmazonMusic,
         enabled : Settings.ControllersEnabled.AmazonMusic
     },
-    'Hulu' : {
+    {
+        id : 'Hulu',
+        name : 'Hulu',
         notification : Settings.Notifications.Hulu,
         color : Settings.ControllerColors.Hulu,
         enabled : Settings.ControllersEnabled.Hulu
     },
-    'Generic Audio/Video' : {
+    {
+        id : 'GenericAudioVideo',
+        name : 'Generic Audio/Video',
         notification : Settings.Notifications.GenericAudioVideo,
         color : Settings.ControllerColors.GenericAudioVideo,
         enabled : Settings.ControllersEnabled.GenericAudioVideo
     },
-};
+    {
+        id : 'Twitch',
+        name : 'Twitch',
+        notification : Settings.Notifications.Twitch,
+        color : Settings.ControllerColors.Twitch,
+        enabled : Settings.ControllersEnabled.Twitch
+    }
+];
 
 
 var keyboardShortcuts = [
@@ -77,28 +104,28 @@ function generateControllerSettingsTable()
     } );
     controllerSettingsTable.append( headerRow );
 
-    for( var controller in controllerSettings )
+    controllerSettings.forEach( function( controller )
     {
-        var row = $( '<tr>' ).append( $( '<td>' ).text( controller ) );
+        var row = $( '<tr>' ).append( $( '<td>' ).text( controller.name ) );
 
         $( '<input>', {
             type : 'checkbox',
-            'data-key' : controllerSettings[ controller ].enabled
+            'data-key' : controller.enabled
         } ).appendTo( $( '<td>' ).addClass( 'center' ).appendTo( row ) );
 
         $( '<input>', {
             type : 'checkbox',
-            'data-key' : controllerSettings[ controller ].notification,
-            'data-dependency' : controllerSettings[ controller ].enabled
+            'data-key' : controller.notification,
+            'data-dependency' : controller.enabled
         } ).appendTo( $( '<td>' ).addClass( 'center' ).appendTo( row ) );
 
         $( '<input>', {
             type : 'color',
-            'data-key' : controllerSettings[ controller ].color
+            'data-key' : controller.color
         } ).appendTo( $( '<td>' ).addClass( 'center' ).appendTo( row ) );
 
         controllerSettingsTable.append( row );
-    }
+    } );
 }
 
 
@@ -119,6 +146,18 @@ function generateKeyboardShortcutTable()
         row.append( $( '<td>' ).append( input ) );
 
         table.append( row );
+    } );
+}
+
+
+function generateDefaultSiteSelect()
+{
+    var defaultSiteSelect = $( '#defaultSite' );
+    controllerSettings.forEach( function( controller )
+    {
+        $( '<option>', { value : controller.id } )
+            .appendTo( defaultSiteSelect )
+            .text( controller.name );
     } );
 }
 
@@ -314,6 +353,7 @@ $( function()
 
     generateControllerSettingsTable();
     generateKeyboardShortcutTable();
+    generateDefaultSiteSelect();
     registerHandlers();
 
     chrome.storage.sync.get( null, function( items )
