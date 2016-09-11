@@ -25,6 +25,20 @@ $( function()
         var i = 0;
         MediaController.createMultiMediaListener( 'Generic Audio/Video', function( media )
         {
+            var src = media.currentSrc;
+            console.log( src );
+            if( src )
+            {
+                for( var i = 0; i < blacklist.length; i++ )
+                {
+                    if( blacklist[ i ] && src.indexOf( blacklist[ i ] ) !== -1 )
+                    {
+                        console.log( 'Easy Control - Blacklisted source: ' + blacklist[ i ] );
+                        return null;
+                    }
+                }
+            }
+
             i++;
             return new AudioVideoController( media, name + '_' + i.toString() );
         } );
