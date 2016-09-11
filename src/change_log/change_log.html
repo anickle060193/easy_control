@@ -47,6 +47,7 @@
                         <li class="active"><a href="#change-log">Change Log</a></li>
                     </ul>
                     <ul class="nav nav-sidebar">
+                        <li><a href="#version-1-15-0">Version 1.15.0</a></li>
                         <li><a href="#version-1-14-0">Version 1.14.0</a></li>
                         <li><a href="#version-1-13-0">Version 1.13.0</a></li>
                         <li><a href="#version-1-12-0">Version 1.12.0</a></li>
@@ -71,6 +72,37 @@
 
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main change-log" data-spy="scroll" data-target="#versions-sidebar">
                 <h1 id="change-log" class="page-header">Change Log</h1>
+
+                <div class="row">
+                    <h2 id="version-1-15-0" class="sub-header">Version 1.15.0</h2>
+                    <ul>
+                        <li><span data-type="bug"></span> Fixed issue where Spotify would display new content notifications when hovering over song title.</li>
+                        <li><span data-type="enhancement"></span> Site blacklist now checks against the content source as well as current page URL. <a data-issue=49></a> <a data-issue=33></a></li>
+                        <li><span data-type="bug"></span> Fixed issue where newly-added media elements were not being detected.</li>
+                        <li><span data-type="feature"></span> Added support for <a href="https://www.twitch.tv">Twitch</a>. <a data-issue=41></a></li>
+                        <li>Unified settings retrieval/handling in background procress.</li>
+                        <li><span data-type="enhancement"></span> Added ability to reset all settings to defaults from options page. <a data-issue=59></a></li>
+                        <li>
+                            <span data-type="feature"></span> Controller colors are now customizable. <a data-issue=44></a>
+                            <img src="images/customize_controller_color.png" alt="Customize Controller Color">
+                        </li>
+                        <li>
+                            <span data-type="feature"></span> Added the ability to loop content for media controllers. <a data-issue=38></a>
+                            <img src="images/loop_media.png" alt="Loop Media">
+                        </li>
+                        <li>
+                            <span data-type="feature"></span> Added the ability to enable/disable individual controllers. <a data-issue=19></a>
+                            <img src="images/enable_disable_controllers.png" alt="Enable/Disable Controllers">
+                        </li>
+                        <li>Generalized options popup greatly to help ease new controller addition. <a data-issue=28></a></li>
+                        <li>Improved status polling for media controllers. <a data-issue=57></a></li>
+                        <li>Centralized handling of settings loading/change handling in controllers.</li>
+                        <li><span data-type="enhancement"></span> Improved and unified audio/video element recognition in webpage. <a data-issue=50></a></li>
+                        <li><span data-type="bug"></span> Fixed new content not showing notification when the same content was repeated.</li>
+                        <li>Performed a massive re-organization of extension file structure to move everything out from a single directory.</li>
+                        <li><span data-type="bug"></span> Fixed spamming console with erros on extension reload. <a data-issue=58></a></li>
+                    </ul>
+                </div>
 
                 <div class="row">
                     <h2 id="version-1-14-0" class="sub-header">Version 1.14.0</h2>
