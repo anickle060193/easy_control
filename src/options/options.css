@@ -53,3 +53,19 @@ textarea
 {
     resize: none;
 }
+
+.ui-dialog
+{
+    position: fixed;
+}
+
+.ui-dialog-titlebar-close
+{
+    visibility: hidden;
+}
+
+.center
+{
+    text-align: center;
+    vertical-align: middle;
+}

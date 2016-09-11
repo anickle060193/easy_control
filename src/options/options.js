@@ -1,7 +1,7 @@
 var settings = null
 
 
-var controllerSettingsHeadings = [ 'Enabled?', 'Color', 'Display Notifications?' ];
+var controllerSettingsHeadings = [ 'Enabled?', 'Display Notifications?', 'Color' ];
 var controllerSettings = {
     'Pandora' : {
         notification : Settings.Notifications.Pandora,
@@ -84,18 +84,18 @@ function generateControllerSettingsTable()
         $( '<input>', {
             type : 'checkbox',
             'data-key' : controllerSettings[ controller ].enabled
-        } ).appendTo( $( '<td>' ).appendTo( row ) );
-
-        $( '<input>', {
-            type : 'color',
-            'data-key' : controllerSettings[ controller ].color
-        } ).appendTo( $( '<td>' ).appendTo( row ) );
+        } ).appendTo( $( '<td>' ).addClass( 'center' ).appendTo( row ) );
 
         $( '<input>', {
             type : 'checkbox',
             'data-key' : controllerSettings[ controller ].notification,
             'data-dependency' : controllerSettings[ controller ].enabled
-        } ).appendTo( $( '<td>' ).appendTo( row ) );
+        } ).appendTo( $( '<td>' ).addClass( 'center' ).appendTo( row ) );
+
+        $( '<input>', {
+            type : 'color',
+            'data-key' : controllerSettings[ controller ].color
+        } ).appendTo( $( '<td>' ).addClass( 'center' ).appendTo( row ) );
 
         controllerSettingsTable.append( row );
     }
@@ -281,11 +281,37 @@ function registerHandlers()
     {
         chrome.tabs.create( { url : '../change_log/change_log.html' } );
     } );
+
+    $( '#resetToDefaults' ).click( function()
+    {
+        $( '#reset-confirm' ).dialog( 'open' );
+    } );
 }
 
 
 $( function()
 {
+    $( '#reset-confirm' ).dialog( {
+        autoOpen : false,
+        resizeable : false,
+        height : 'auto',
+        width : 400,
+        modal : true,
+        buttons : {
+            'Yes' : function()
+            {
+                settings = getDefaultSettings();
+                saveSettings();
+                updateUI();
+                $( this ).dialog( 'close' );
+            },
+            'No' : function()
+            {
+                $( this ).dialog( 'close' );
+            }
+        }
+    } );
+
     generateControllerSettingsTable();
     generateKeyboardShortcutTable();
     registerHandlers();

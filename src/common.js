@@ -110,6 +110,67 @@ Message.types = {
 }
 
 
+function getDefaultSettings()
+{
+    var defaults = { };
+
+    defaults[ Settings.Notifications.Pandora ] = true;
+    defaults[ Settings.Notifications.Spotify ] = true;
+    defaults[ Settings.Notifications.Youtube ] = true;
+    defaults[ Settings.Notifications.GooglePlayMusic ] = true;
+    defaults[ Settings.Notifications.Bandcamp ] = true;
+    defaults[ Settings.Notifications.Netflix ] = true;
+    defaults[ Settings.Notifications.AmazonVideo ] = true;
+    defaults[ Settings.Notifications.AmazonMusic ] = true;
+    defaults[ Settings.Notifications.Hulu ] = true;
+    defaults[ Settings.Notifications.GenericAudioVideo ] = true;
+
+    defaults[ Settings.ControllersEnabled.Pandora ] = true;
+    defaults[ Settings.ControllersEnabled.Spotify ] = true;
+    defaults[ Settings.ControllersEnabled.Youtube ] = true;
+    defaults[ Settings.ControllersEnabled.GooglePlayMusic ] = true;
+    defaults[ Settings.ControllersEnabled.Bandcamp ] = true;
+    defaults[ Settings.ControllersEnabled.Netflix ] = true;
+    defaults[ Settings.ControllersEnabled.AmazonVideo ] = true;
+    defaults[ Settings.ControllersEnabled.AmazonMusic ] = true;
+    defaults[ Settings.ControllersEnabled.Hulu ] = true;
+    defaults[ Settings.ControllersEnabled.GenericAudioVideo ] = true;
+
+    defaults[ Settings.ControllerColors.Pandora ] = '#455774';
+    defaults[ Settings.ControllerColors.Spotify ] = '#84bd00';
+    defaults[ Settings.ControllerColors.Youtube ] = '#f12b24';
+    defaults[ Settings.ControllerColors.GooglePlayMusic ] = '#ff5722';
+    defaults[ Settings.ControllerColors.Bandcamp ] = '#639AA9';
+    defaults[ Settings.ControllerColors.Netflix ] = '#9b0103';
+    defaults[ Settings.ControllerColors.AmazonVideo ] = '#FF9900';
+    defaults[ Settings.ControllerColors.AmazonMusic ] = '#fd7c02';
+    defaults[ Settings.ControllerColors.Hulu ] = '#66AA33';
+    defaults[ Settings.ControllerColors.GenericAudioVideo ] = '#5b5b5b';
+
+    defaults[ Settings.NotificationLength ] = 5;
+    defaults[ Settings.NoActiveWindowNotifications ] = false;
+    defaults[ Settings.DefaultSite ] = "Youtube";
+    defaults[ Settings.PauseOnLock ] = true;
+    defaults[ Settings.PauseOnInactivity ] = false;
+    defaults[ Settings.InactivityTimeout ] = 60 * 5;
+    defaults[ Settings.AutoPauseEnabled ] = true;
+    defaults[ Settings.ShowChangeLogOnUpdate ] = true;
+    defaults[ Settings.ShowAutoPausedNotification ] = false;
+    defaults[ Settings.SiteBlacklist ] = [ 'imgur.com' ];
+
+    defaults[ Settings.Controls.DisplayControls ] = true;
+    defaults[ Settings.Controls.AlwaysDisplayPlaybackSpeed ] = true;
+    defaults[ Settings.Controls.MediaControls.MuchSlower ] = '';
+    defaults[ Settings.Controls.MediaControls.Slower ] = 's';
+    defaults[ Settings.Controls.MediaControls.Faster ] = 'd';
+    defaults[ Settings.Controls.MediaControls.MuchFaster ] = '';
+    defaults[ Settings.Controls.MediaControls.Reset ] = 'r';
+    defaults[ Settings.Controls.MediaControls.Loop ] = '';
+
+    return defaults;
+}
+
+
 function ContentInfo( title, caption, subcaption, image, isLiked, isDisliked )
 {
     this.title = $.trim( title );

@@ -2,13 +2,16 @@
 <html>
   <head>
     <title>Easy Control Options</title>
-    <link href="options.css" rel="stylesheet">
+    <link rel="stylesheet" href="../jquery/jquery-ui-1.12.0.min.css">
+    <link rel="stylesheet" href="../jquery/jquery-ui.structure-1.12.0.min.css">
+    <link rel="stylesheet" href="../jquery/jquery-ui.theme-1.12.0.min.css">
+    <link rel="stylesheet" href="options.css">
   </head>
   <body>
 
-    <input type="button" id="setKeyboardShortcuts" value="Set Keyboard Shortucts"></input>
-    <input type="button" id="createGithubIssue" value="Suggest Feature/Report Issue"></input>
-    <input type="button" id="viewChangeLog" value="View Change Log"></input>
+    <button type="button" id="setKeyboardShortcuts">Set Keyboard Shortucts</button>
+    <button type="button" id="createGithubIssue">Suggest Feature/Report Issue</button>
+    <button type="button" id="viewChangeLog">View Change Log</button>
 
     <h1>Focused Content Controls:</h1>
 
@@ -89,7 +92,16 @@
 
     <label>Show change log on update? <input type="checkbox" data-key="key__show_change_log_on_update"></input></label>
 
+    <br>
+    <br>
+
+    <button type="button" id="resetToDefaults">Reset to Defaults</input>
+    <div id="reset-confirm" title="Reset to Defaults">
+      <p>Are you sure you want to reset all settings to defaults? This cannot be undone.</p>
+    </div>
+
     <script src="../jquery/jquery-3.1.0.min.js"></script>
+    <script src="../jquery/jquery-ui-1.12.0.min.js"></script>
     <script src="../common.js"></script>
     <script src="options.js"></script>
   </body>
