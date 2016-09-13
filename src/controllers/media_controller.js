@@ -14,6 +14,14 @@ function MediaController( media, name, color, allowLockOnInactivity )
     {
         this.initializeMediaControls();
     }
+
+    this.observer = new MutationObserver( this.onSourceChanged.bind( this ) );
+    this.observer.observe( this.media, {
+        attributes : true,
+        attributeFilter : [ 'src' ]
+    } );
+
+    this.onSourceChanged( this.media.src );
 }
 
 MediaController.prototype = Object.create( Controller.prototype );
@@ -91,6 +99,19 @@ MediaController.prototype.initializeMediaControls = function()
     }.bind( this ) );
 };
 
+MediaController.prototype.onSourceChanged = function( newSource )
+{
+    console.log( 'Source Changed' );
+
+    var playbackRates = SessionStorage.get( 'easy_control.playbackRate' );
+    var playbackRate = playbackRates[ window.location.hostname ];
+    if( typeof playbackRate !== 'undefined' )
+    {
+        console.log( 'Setting Playback Rate: ' + playbackRate );
+        this.media.playbackRate = playbackRate;
+    }
+};
+
 MediaController.prototype.disconnect = function()
 {
     Controller.prototype.disconnect.call( this );
@@ -101,6 +122,7 @@ MediaController.prototype.disconnect = function()
     }
     $( document ).off( 'webkitfullscreenchange', this.handleFullscreenChange );
     $( document.body ).off( 'keydown', this.handleKeyDown );
+    this.observer.disconnect();
 };
 
 MediaController.prototype.showControls = function()
@@ -190,27 +212,39 @@ MediaController.prototype.handleKeyDown = function( event )
 
 MediaController.prototype.playbackMuchSlower = function()
 {
-    this.media.playbackRate = Math.max( 0, Math.ceil( ( this.media.playbackRate - 0.5 ) / 0.5 ) * 0.5 );
+    this.setPlaybackRate( Math.max( 0, Math.ceil( ( this.media.playbackRate - 0.5 ) / 0.5 ) * 0.5 ) );
 };
 
 MediaController.prototype.playbackSlower = function()
 {
-    this.media.playbackRate = Math.max( 0, this.media.playbackRate - 0.1 );
+    this.setPlaybackRate( Math.max( 0, this.media.playbackRate - 0.1 ) );
 };
 
 MediaController.prototype.playbackReset = function()
 {
-    this.media.playbackRate = 1.0;
+    this.setPlaybackRate( 1.0 );
 };
 
 MediaController.prototype.playbackFaster = function()
 {
-    this.media.playbackRate += 0.1;
+    this.setPlaybackRate( this.media.playbackRate + 0.1 );
 };
 
 MediaController.prototype.playbackMuchFaster = function()
 {
-    this.media.playbackRate = Math.max( 0, Math.floor( ( this.media.playbackRate + 0.5 ) / 0.5 ) * 0.5 );
+    this.setPlaybackRate( Math.floor( ( this.media.playbackRate + 0.5 ) / 0.5 ) * 0.5 );
+};
+
+MediaController.prototype.setPlaybackRate = function( playbackRate )
+{
+    if( this.media.playbackRate !== playbackRate )
+    {
+        this.media.playbackRate = playbackRate;
+
+        var playbackRates = SessionStorage.get( 'easy_control.playbackRate' );
+        playbackRates[ window.location.hostname ] = this.media.playbackRate;
+        SessionStorage.set( 'easy_control.playbackRate', playbackRates );
+    }
 };
 
 MediaController.prototype.loop = function( loop )

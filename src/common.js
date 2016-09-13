@@ -211,3 +211,23 @@ function parseTime( timeText )
         return 0;
     }
 }
+
+
+var SessionStorage = {
+    get : function( key )
+    {
+        var item = window.sessionStorage.getItem( key );
+        if( item !== null )
+        {
+            return JSON.parse( item );
+        }
+        else
+        {
+            return { };
+        }
+    },
+    set : function( key, value )
+    {
+        window.sessionStorage.setItem( key, JSON.stringify( value ) );
+    }
+};
