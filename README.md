@@ -14,3 +14,12 @@ Provides control of:
 * [Twitch](https://www.twitch.tv/)
 
 Chrome Web Store: [Easy Control](https://chrome.google.com/webstore/detail/easy-control/oanebiaiakkpfipgnkpmcpkjfnclbgfi)
+
+
+## Acknowledgments
+* [Chrome Extension Developer API](https://developer.chrome.com/extensions/api_index)
+* [jQuery](http://jquery.com/)
+* [jQuery UI](http://jqueryui.com/)
+* [Bootstrap](http://getbootstrap.com/)
+* [Material Icons](https://design.google.com/icons/)
+* [kellub](https://github.com/kellub) and [lannick](https://github.com/lannick). Thanks guys!
