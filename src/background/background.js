@@ -3,6 +3,7 @@ var currentController = null;
 
 var lastContentChangeNotification = null;
 var pauseNotifications = { };
+var notifications = { };
 
 var autoPauseDisabledTabs = { };
 
@@ -79,13 +80,15 @@ function handleMessage( message, controller )
                         message : controller.content.caption,
                         contextMessage : controller.content.subcaption,
                         buttons : [ { title : 'Next' } ],
-                        requireInteraction : true
+                        requireInteraction : true,
+                        isClickable : true
                     };
 
                     console.log( 'Showing notification for ' + controller.name );
                     console.log( notificationOptions );
                     chrome.notifications.create( null, notificationOptions, function( notificationId )
                     {
+                        notifications[ notificationId ] = controller;
                         lastContentChangeNotification = notificationId;
                         var notificationLength = settings[ Settings.NotificationLength ];
                         if( !( notificationLength >= 1 ) )
@@ -164,11 +167,13 @@ function showAutoPauseNotification( controller, notificationLength )
         message : controller.content.caption,
         contextMessage : controller.content.subcaption,
         buttons : [ { title : 'Resume Playback (will prevent future auto-pausing of tab)' } ],
-        requireInteraction : true
+        requireInteraction : true,
+        isClickable : true
     };
 
     chrome.notifications.create( null, notificationOptions, function( notificationId )
     {
+        notifications[ notificationId ] = controller;
         pauseNotifications[ notificationId ] = controller;
 
         if( !( notificationLength >= 1 ) )
@@ -322,6 +327,21 @@ function playPause()
 }
 
 
+chrome.notifications.onClicked.addListener( function( notificationId )
+{
+    chrome.notifications.clear( notificationId );
+
+    var controller = notifications[ notificationId ];
+    if( controller )
+    {
+        var windowId = controller.port.sender.tab.windowId;
+        var tabId = controller.port.sender.tab.id;
+        chrome.windows.update( windowId, { focused : true } );
+        chrome.tabs.update( tabId, { active : true } );
+    }
+} );
+
+
 chrome.notifications.onButtonClicked.addListener( function( notificationId, buttonIndex )
 {
     console.log( 'Notification Button Clicked - Notification: ' + notificationId + ' Button: ' + buttonIndex );
@@ -349,6 +369,7 @@ chrome.notifications.onButtonClicked.addListener( function( notificationId, butt
 
 chrome.notifications.onClosed.addListener( function( notificationId )
 {
+    delete notifications[ notificationId ];
     if( notificationId === lastContentChangeNotification )
     {
         lastContentChangeNotification = null;
