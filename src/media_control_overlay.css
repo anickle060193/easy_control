@@ -1,14 +1,11 @@
 .easy-control-media-control-overlay
 {
-    all: initial;
-
     position: absolute;
-    display: inline-block;
-    background: black;
+    background-color: black;
     height: 18px;
 
+    vertical-align: middle;
     color: white;
-    line-height: 1.5;
     font-size: 14px;
     font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
 
@@ -22,18 +19,65 @@
     opacity: 1.0;
 }
 
-.easy-control-media-control-overlay button
+.easy-control-media-control-overlay > span
 {
-    background: none;
-    border: none;
-    overflow: hidden;
-    outline: none;
+    float: left;
+    cursor: pointer;
+}
 
+.easy-control-media-control-overlay > .control
+{
+    width: 18px;
+    height: 18px;
+    background-size: contain;
     padding: 0;
     margin: 0;
+}
+
+#media-control-overlay-reset
+{
+    margin: 0 4px;
 }
 
 #media-control-overlay-dragger
 {
     cursor: move;
+    background-image: url( 'chrome-extension://__MSG_@@extension_id__/res/draggable.svg' );
+}
+
+#media-control-overlay-much-slower
+{
+    background-image: url( 'chrome-extension://__MSG_@@extension_id__/res/much_slower.svg' );
+}
+
+#media-control-overlay-slower
+{
+    background-image: url( 'chrome-extension://__MSG_@@extension_id__/res/faster.svg' );
+    -webkit-transform: scaleX( -1 );
+    transform: scaleX( -1 );
+}
+
+#media-control-overlay-faster
+{
+    background-image: url( 'chrome-extension://__MSG_@@extension_id__/res/faster.svg' );
+}
+
+#media-control-overlay-much-faster
+{
+    background-image: url( 'chrome-extension://__MSG_@@extension_id__/res/much_faster.svg' );
+}
+
+#media-control-overlay-remove
+{
+    background-image: url( 'chrome-extension://__MSG_@@extension_id__/res/remove.svg' );
+}
+
+#media-control-overlay-loop.loop
+{
+    background-image: url( 'chrome-extension://__MSG_@@extension_id__/res/loop.svg' );
+}
+
+#media-control-overlay-loop.no-loop
+{
+    background-image: url( 'chrome-extension://__MSG_@@extension_id__/res/no_loop.svg' );
 }

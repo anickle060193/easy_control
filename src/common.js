@@ -231,3 +231,70 @@ var SessionStorage = {
         window.sessionStorage.setItem( key, JSON.stringify( value ) );
     }
 };
+
+
+Array.prototype.remove = function( item )
+{
+    var index = this.indexOf( item );
+    if( index !== -1 )
+    {
+        this.splice( index, 1 );
+    }
+};
+
+
+( function( $ )
+{
+    var elems = [ ];
+    var timeoutId = null;
+
+    $.event.special.move = {
+        setup : function()
+        {
+            var elem = $( this );
+            elem.data( 'move', elem.offset() );
+            elems.push( this );
+
+            if( elems.length === 1 )
+            {
+                poll();
+            }
+        },
+        teardown : function()
+        {
+            var elem = $( this );
+            elems.remove( this );
+            elem.removeData( 'move' );
+
+            if( elems.length === 0 )
+            {
+                window.clearTimeout( timeoutId );
+            }
+        }
+    };
+
+    function poll()
+    {
+        $.each( elems, function()
+        {
+            var elem = $( this );
+            var data = elem.data( 'move' );
+
+            if( data )
+            {
+                var offset = elem.offset();
+
+                if( offset.left !== data.left || offset.top !== data.top )
+                {
+                    elem.data( 'move', offset );
+                    elem.trigger( 'move' );
+                }
+            }
+        } );
+
+        if( elems.length > 0 )
+        {
+            timeoutId = window.setTimeout( poll, 100 );
+        }
+    }
+} )( jQuery );

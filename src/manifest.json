@@ -60,7 +60,7 @@
 
             ],
             "js" : [ "jquery/jquery-ui-1.12.0.min.js", "controllers/media_controller.js" ],
-            "css" : [ "bootstrap/bootstrap-3.3.7.min.css", "jquery/jquery-ui-1.12.0.min.css", "jquery/jquery-ui-structure-1.12.0.min.css", "jquery/jquery-ui-theme-1.12.0.min.css", "media_control_overlay.css" ],
+            "css" : [ "media_control_overlay.css" ],
             "all_frames" : true
         },
         {
@@ -134,7 +134,8 @@
     "web_accessible_resources" : [
         "media_control_overlay.html",
         "bootstrap/*",
-        "jquery/*"
+        "jquery/*",
+        "res/*"
     ],
     "browser_action" : {
         "default_icon" : {

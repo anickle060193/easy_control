@@ -14,7 +14,7 @@ $( function()
         var blacklist = Controller.settings[ Settings.SiteBlacklist ];
         for( var i = 0; i < blacklist.length; i++ )
         {
-            if( blacklist[ i ] && url.indexOf( blacklist[ i ] ) !== -1 )
+            if( blacklist[ i ] && url.includes( blacklist[ i ] ) )
             {
                 console.log( 'Easy Control - Blacklisted site: ' + blacklist[ i ] );
                 return;
@@ -22,16 +22,15 @@ $( function()
         }
 
         var name = window.location.hostname.split( '.' ).join( '' );
-        var i = 0;
+        var mediaCounter = 0;
         MediaController.createMultiMediaListener( 'Generic Audio/Video', function( media )
         {
             var src = media.currentSrc;
-            console.log( src );
             if( src )
             {
                 for( var i = 0; i < blacklist.length; i++ )
                 {
-                    if( blacklist[ i ] && src.indexOf( blacklist[ i ] ) !== -1 )
+                    if( blacklist[ i ] && src.includes( blacklist[ i ] ) )
                     {
                         console.log( 'Easy Control - Blacklisted source: ' + blacklist[ i ] );
                         return null;
@@ -39,8 +38,8 @@ $( function()
                 }
             }
 
-            i++;
-            return new AudioVideoController( media, name + '_' + i.toString() );
+            mediaCounter++;
+            return new AudioVideoController( media, name + '_' + mediaCounter );
         } );
     }
 } );

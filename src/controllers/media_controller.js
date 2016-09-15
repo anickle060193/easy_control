@@ -7,6 +7,7 @@ function MediaController( media, name, color, allowLockOnInactivity )
 
     this.fullscreen = false;
     this.dragging = false;
+    this.positionOfElement = null;
 
     $( document.body ).keydown( $.proxy( this.handleKeyDown, this ) );
 
@@ -32,12 +33,16 @@ MediaController.prototype.initializeMediaControls = function()
     $.get( chrome.extension.getURL( 'media_control_overlay.html' ), function( data )
     {
         this.controls = $( data );
-        this.attachControls( document.body, this.media )
+        this.attachControls( document.body, this.media );
         this.controls.draggable( {
             handle : '#media-control-overlay-dragger',
             start : $.proxy( function()
             {
                 this.dragging = true;
+                if( this.positionOfElement !== null )
+                {
+                    $( this.positionOfElement ).off( 'move' );
+                }
             }, this ),
             stop : $.proxy( function()
             {
@@ -54,7 +59,7 @@ MediaController.prototype.initializeMediaControls = function()
             e.preventDefault();
         } );
 
-        this.controls.on( 'click', 'button', function( e )
+        this.controls.on( 'click', 'span', function( e )
         {
             if( e.currentTarget.id === 'media-control-overlay-much-slower' )
             {
@@ -78,7 +83,7 @@ MediaController.prototype.initializeMediaControls = function()
             }
             else if( e.currentTarget.id === 'media-control-overlay-remove' )
             {
-                this.controls.remove();
+                this.removeControls();
             }
             else if( e.currentTarget.id === 'media-control-overlay-loop' )
             {
@@ -86,10 +91,10 @@ MediaController.prototype.initializeMediaControls = function()
             }
         }.bind( this ) );
 
-        this.media.onratechange = function()
+        $( this.media ).on( 'ratechange', $.proxy( function()
         {
             this.controls.find( '#media-control-overlay-reset' ).text( this.media.playbackRate.toFixed( 1 ) );
-        }.bind( this );
+        }, this ) );
 
         this.controls.hover( $.proxy( this.showControls, this ), $.proxy( this.hideControls, this ) );
         $( this.media ).hover( $.proxy( this.showControls, this ), $.proxy( this.hideControls, this ) );
@@ -97,6 +102,21 @@ MediaController.prototype.initializeMediaControls = function()
         $( document ).on( 'webkitfullscreenchange', $.proxy( this.handleFullscreenChange, this ) );
 
     }.bind( this ) );
+};
+
+MediaController.prototype.removeControls = function()
+{
+    if( this.controls )
+    {
+        this.controls.remove();
+        $( this.positionOfElement ).off( 'move' );
+        this.positionOfElement = null;
+        $( this.media )
+            .off( 'ratechange' )
+            .off( 'mouseenter' )
+            .off( 'mouseleave' );
+        $( document ).off( 'webkitfullscreenchange' );
+    }
 };
 
 MediaController.prototype.onSourceChanged = function( newSource )
@@ -116,11 +136,7 @@ MediaController.prototype.disconnect = function()
 {
     Controller.prototype.disconnect.call( this );
 
-    if( this.controls )
-    {
-        this.controls.remove();
-    }
-    $( document ).off( 'webkitfullscreenchange', this.handleFullscreenChange );
+    this.removeControls();
     $( document.body ).off( 'keydown', this.handleKeyDown );
     this.observer.disconnect();
 };
@@ -132,16 +148,29 @@ MediaController.prototype.showControls = function()
 
 MediaController.prototype.attachControls = function( appendToElement, positionOfElement )
 {
-    return this.controls
+    if( this.positionOfElement !== null )
+    {
+        $( this.positionOfElement ).off( 'move' );
+    }
+    this.positionOfElement = positionOfElement;
+
+    this.controls
         .detach()
         .appendTo( appendToElement )
-        .css( 'zIndex', Number.MAX_SAFE_INTEGER )
-        .position( {
-            my : 'left top',
-            at : 'left+6 top+6',
-            of : positionOfElement,
-            collision : 'none'
-        } );
+        .css( 'zIndex', Number.MAX_SAFE_INTEGER );
+
+    $( this.positionOfElement ).on( 'move', $.proxy( function()
+    {
+        this.controls
+            .position( {
+                my : 'left top',
+                at : 'left+6 top+6',
+                of : this.positionOfElement,
+                collision : 'none'
+            } );
+    }, this ) );
+
+    $( this.positionOfElement ).triggerHandler( 'move' );
 };
 
 MediaController.prototype.handleFullscreenChange = function()
@@ -253,13 +282,17 @@ MediaController.prototype.loop = function( loop )
 
     if( this.media.loop )
     {
-        $( '#media-control-overlay-loop' ).prop( 'title', 'Do not loop' );
-        $( '#media-control-overlay-loop > span' ).removeClass( 'glyphicon-repeat' ).addClass( 'glyphicon-arrow-right' );
+        $( '#media-control-overlay-loop' )
+            .prop( 'title', 'Do not loop' )
+            .removeClass( 'loop' )
+            .addClass( 'no-loop' );
     }
     else
     {
-        $( '#media-control-overlay-loop' ).prop( 'title', 'Loop' );
-        $( '#media-control-overlay-loop > span' ).removeClass( 'glyphicon-arrow-right' ).addClass( 'glyphicon-repeat' );
+        $( '#media-control-overlay-loop' )
+            .prop( 'title', 'Loop' )
+            .removeClass( 'no-loop' )
+            .addClass( 'loop' );
     }
 }
 
@@ -312,39 +345,86 @@ MediaController.prototype.stopPolling = function()
     $( this.media ).off( 'play pause playing timeupdate' );
 };
 
-
-MediaController.onNewMedia = function( callback )
+MediaController.onNewMedia = ( function()
 {
-    $( 'audio, video' ).each( function()
+    function addMedia( element, controllerCreatorCallback )
     {
-        callback( this );
-    } );
-
-    var newMediaElementObserver = new MutationObserver( function( mutations )
-    {
-        mutations.forEach( function( mutation )
+        var elem = $( element );
+        if( !elem.data( 'controller' ) )
         {
-            mutation.addedNodes.forEach( function( node )
+            var controller = controllerCreatorCallback( element );
+            elem.data( 'controller', controller );
+        }
+        else
+        {
+            console.warn( 'Media found that already has controller.' );
+        }
+    }
+
+    function removeMedia( element )
+    {
+        console.log( 'Media removed' );
+        var elem = $( element );
+        var controller = elem.data( 'controller' );
+        if( controller )
+        {
+            controller.disconnect();
+            elem.removeData( 'controller' );
+        }
+        else
+        {
+            console.warn( 'Controller was not found for media.' );
+        }
+    }
+
+    return function( controllerCreatorCallback )
+    {
+        $( 'audio, video' ).each( function()
+        {
+            addMedia( this, controllerCreatorCallback );
+        } );
+
+        var newMediaElementObserver = new MutationObserver( function( mutations )
+        {
+            mutations.forEach( function( mutation )
             {
-                if( node.nodeName === 'VIDEO' || node.nodeName === 'AUDIO' )
+                mutation.addedNodes.forEach( function( node )
                 {
-                    callback( node );
-                }
-                else
-                {
-                    $( node ).find( 'audio, video' ).each( function()
+                    if( node.nodeName === 'VIDEO' || node.nodeName === 'AUDIO' )
                     {
-                        callback( this );
-                    } );
-                }
+                        addMedia( node, controllerCreatorCallback );
+                    }
+                    else
+                    {
+                        $( node ).find( 'audio, video' ).each( function()
+                        {
+                            addMedia( this, controllerCreatorCallback );
+                        } );
+                    }
+                } );
+
+                mutation.removedNodes.forEach( function( node )
+                {
+                    if( node.nodeName === 'VIDEO' || node.nodeName === 'AUDIO' )
+                    {
+                        removeMedia( node );
+                    }
+                    else
+                    {
+                        $( node ).find( 'audio, video' ).each( function()
+                        {
+                            removeMedia( this );
+                        } );
+                    }
+                } );
             } );
         } );
-    } );
-    newMediaElementObserver.observe( document.body, {
-        childList : true,
-        subtree : true
-    } );
-};
+        newMediaElementObserver.observe( document.body, {
+            childList : true,
+            subtree : true
+        } );
+    };
+} )();
 
 
 MediaController.createMultiMediaListener = function( name, controllerCreatorCallback )
@@ -357,6 +437,7 @@ MediaController.createMultiMediaListener = function( name, controllerCreatorCall
         {
             controller.startPolling();
         }
+        return controller;
     } );
 }
 
@@ -381,5 +462,6 @@ MediaController.createSingleMediaListener = function( name, controllerCreatorCal
             controller = tempController;
             controller.startPolling();
         }
+        return controller;
     } );
 };

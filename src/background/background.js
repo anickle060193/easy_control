@@ -39,7 +39,7 @@ function handleMessage( message, controller )
             if( pausedChanged && !controller.paused )
             {
                 console.log( 'Status - Not Current Controller - Other Unpaused - ' + controller.name );
-                controllers.splice( controllers.indexOf( controller ), 1 );
+                controllers.remove( controller );
                 controllers.push( controller );
                 currentController = controller;
 
@@ -111,7 +111,7 @@ function handleMessage( message, controller )
 
 function handleDisconnect( controller )
 {
-    controllers.splice( controllers.indexOf( controller ), 1 );
+    controllers.remove( controller );
 
     console.log( 'Controller Disconnect: ' + controller.name );
 
