@@ -243,6 +243,30 @@ Array.prototype.remove = function( item )
 };
 
 
+Common = ( function()
+{
+    function limit( value, min, max )
+    {
+        if( value < min )
+        {
+            return min;
+        }
+        else if( value > max )
+        {
+            return max;
+        }
+        else
+        {
+            return value;
+        }
+    }
+
+    return {
+        limit : limit
+    };
+} )();
+
+
 ( function( $ )
 {
     var elems = [ ];

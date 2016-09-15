@@ -241,12 +241,12 @@ MediaController.prototype.handleKeyDown = function( event )
 
 MediaController.prototype.playbackMuchSlower = function()
 {
-    this.setPlaybackRate( Math.max( 0, Math.ceil( ( this.media.playbackRate - 0.5 ) / 0.5 ) * 0.5 ) );
+    this.setPlaybackRate( this.media.playbackRate - 0.5 );
 };
 
 MediaController.prototype.playbackSlower = function()
 {
-    this.setPlaybackRate( Math.max( 0, this.media.playbackRate - 0.1 ) );
+    this.setPlaybackRate( this.media.playbackRate - 0.1 );
 };
 
 MediaController.prototype.playbackReset = function()
@@ -261,11 +261,12 @@ MediaController.prototype.playbackFaster = function()
 
 MediaController.prototype.playbackMuchFaster = function()
 {
-    this.setPlaybackRate( Math.floor( ( this.media.playbackRate + 0.5 ) / 0.5 ) * 0.5 );
+    this.setPlaybackRate( this.media.playbackRate + 0.5 );
 };
 
 MediaController.prototype.setPlaybackRate = function( playbackRate )
 {
+    playbackRate = Common.limit( playbackRate, 0, 16 );
     if( this.media.playbackRate !== playbackRate )
     {
         this.media.playbackRate = playbackRate;
