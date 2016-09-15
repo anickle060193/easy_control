@@ -32,7 +32,14 @@
     "background" : {
         "persistent" : false,
         "scripts" : [
-            "jquery/jquery-3.1.0.min.js", "common.js", "background/background_controller.js", "background/background_icon.js", "background/background.js", "background/background_commands.js" ]
+            "jquery/jquery-3.1.0.min.js",
+            "common.js",
+            "background/background_utilities.js",
+            "background/background_controller.js",
+            "background/background_icon.js",
+            "background/background.js",
+            "background/background_commands.js"
+        ]
     },
     "content_scripts" : [
         {
@@ -126,7 +133,14 @@
                 "http://www.hulu.com/*",
                 "https://twitch.tv/*"
             ],
-            "js" : [ "jquery/jquery-3.1.0.min.js", "jquery/jquery-ui-1.12.0.min.js", "common.js", "controllers/controller.js", "controllers/media_controller.js", "controllers/audio_video_controller.js" ],
+            "js" : [
+                "jquery/jquery-3.1.0.min.js",
+                "jquery/jquery-ui-1.12.0.min.js",
+                "common.js",
+                "controllers/controller.js",
+                "controllers/media_controller.js",
+                "controllers/audio_video_controller.js"
+            ],
             "css" : [ "media_control_overlay.css" ],
             "all_frames" : true
         }

@@ -321,7 +321,10 @@ function playPause()
     {
         if( siteToURL[ settings[ Settings.DefaultSite ] ] )
         {
-            chrome.tabs.create( { url : siteToURL[ settings[ Settings.DefaultSite ] ] } );
+            chrome.tabs.create( { url : siteToURL[ settings[ Settings.DefaultSite ] ] }, function( tab )
+            {
+                BackgroundUtilities.focusTab( tab );
+            } );
         }
     }
 }
@@ -334,10 +337,7 @@ chrome.notifications.onClicked.addListener( function( notificationId )
     var controller = notifications[ notificationId ];
     if( controller )
     {
-        var windowId = controller.port.sender.tab.windowId;
-        var tabId = controller.port.sender.tab.id;
-        chrome.windows.update( windowId, { focused : true } );
-        chrome.tabs.update( tabId, { active : true } );
+        BackgroundUtilities.focusTab( controller.port.sender.tab );
     }
 } );
 
@@ -525,7 +525,7 @@ chrome.contextMenus.onClicked.addListener( function( info, tab )
 } );
 
 
-( function onStart()
+( function()
 {
     console.log( 'Background Start' );
     chrome.storage.sync.get( null, function( s )
