@@ -2,7 +2,7 @@
 {
     position: absolute;
     background-color: black;
-    height: 18px;
+    min-height: 24px;
 
     vertical-align: middle;
     color: white;
