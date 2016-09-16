@@ -1,15 +1,15 @@
 .easy-control-media-control-overlay
 {
     position: absolute;
+    display: inline-flex;
     background-color: black;
-    min-height: 24px;
+    height: 28px;
 
-    vertical-align: middle;
+    align-items: center;
     color: white;
     font-size: 14px;
     font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
 
-    padding: 4px;
     border-radius: 2px;
     opacity: 0.2;
 }
@@ -29,7 +29,11 @@
 {
     width: 18px;
     height: 18px;
+
+    background-position: center;
+    background-repeat: no-repeat;
     background-size: contain;
+
     padding: 0;
     margin: 0;
 }
