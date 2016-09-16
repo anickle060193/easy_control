@@ -212,6 +212,7 @@ MediaController.prototype.handleKeyDown = function( event )
 {
     if( $( event.target ).find( this.media ).length !== 0 )
     {
+        var handled = true;
         if( event.key === Controller.settings[ Settings.Controls.MediaControls.MuchSlower ] )
         {
             this.playbackMuchSlower();
@@ -235,6 +236,16 @@ MediaController.prototype.handleKeyDown = function( event )
         else if( event.key === Controller.settings[ Settings.Controls.MediaControls.Loop ] )
         {
             this.loop( !this.media.loop );
+        }
+        else
+        {
+            handled = false;
+        }
+
+        if( handled )
+        {
+            event.preventDefault();
+            event.stopPropagation();
         }
     }
 };
