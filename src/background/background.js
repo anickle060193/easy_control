@@ -1,5 +1,8 @@
 Background = ( function()
 {
+    var CONTEXT_MENU_AUTO_PAUSE_ENABLED = 'auto_pause_enabled';
+    var CONTEXT_MENU_AUTO_PAUSE_ENABLED_FOR_TAB = 'auto_pause_enabled_for_tab';
+
     var controllers = [ ];
     var currentController = null;
 
@@ -406,6 +409,24 @@ Background = ( function()
                 console.log( details );
             }
 
+            var autoPauseContextMenu = {
+                type : 'checkbox',
+                id : CONTEXT_MENU_AUTO_PAUSE_ENABLED,
+                title : 'Auto-Pause Enabled',
+                checked : true,
+                contexts : [ 'browser_action' ]
+            };
+            chrome.contextMenus.create( autoPauseContextMenu );
+
+            var autoPauseTabContextMenu = {
+                type : 'checkbox',
+                id : CONTEXT_MENU_AUTO_PAUSE_ENABLED_FOR_TAB,
+                title : 'Auto-Pause Enabled for Tab',
+                checked : true,
+                contexts : [ 'browser_action' ]
+            };
+            chrome.contextMenus.create( autoPauseTabContextMenu );
+
             chrome.storage.sync.get( null, function( settings )
             {
                 var defaults = Common.getDefaultSettings();
@@ -473,18 +494,19 @@ Background = ( function()
 
         chrome.tabs.onActivated.addListener( function( activateInfo )
         {
-            chrome.contextMenus.update( 'auto_pause_enabled_for_tab', { checked : !autoPauseDisabledTabs[ activateInfo.tabId ] } );
+            chrome.contextMenus.update( CONTEXT_MENU_AUTO_PAUSE_ENABLED, { checked : settings[ Settings.AutoPauseEnabled ] } );
+            chrome.contextMenus.update( CONTEXT_MENU_AUTO_PAUSE_ENABLED_FOR_TAB, { checked : !autoPauseDisabledTabs[ activateInfo.tabId ] } );
         } );
 
 
         chrome.contextMenus.onClicked.addListener( function( info, tab )
         {
-            if( info.menuItemId === 'auto_pause_enabled' )
+            if( info.menuItemId === CONTEXT_MENU_AUTO_PAUSE_ENABLED )
             {
                 console.log( 'Auto-Pause Enabled: ' + info.checked );
                 chrome.storage.sync.set( { [ Settings.AutoPauseEnabled ] : info.checked } );
             }
-            else if( info.menuItemId === 'auto_pause_enabled_for_tab' )
+            else if( info.menuItemId === CONTEXT_MENU_AUTO_PAUSE_ENABLED_FOR_TAB )
             {
                 console.log( 'Auto-Pause Enabled for Tab: Tab - ' + tab.id + ' : ' + info.checked );
                 autoPauseDisabledTabs[ tab.id ] = !info.checked;
@@ -499,24 +521,6 @@ Background = ( function()
             settings = s;
 
             chrome.idle.setDetectionInterval( settings[ Settings.InactivityTimeout ] );
-
-            var autoPauseContextMenu = {
-                type : 'checkbox',
-                id : 'auto_pause_enabled',
-                title : 'Auto-Pause Enabled',
-                checked : settings[ Settings.AutoPauseEnabled ],
-                contexts : [ 'browser_action' ]
-            };
-            chrome.contextMenus.create( autoPauseContextMenu );
-
-            var autoPauseTabContextMenu = {
-                type : 'checkbox',
-                id : 'auto_pause_enabled_for_tab',
-                title : 'Auto-Pause Enabled for Tab',
-                checked : false,
-                contexts : [ 'browser_action' ]
-            };
-            chrome.contextMenus.create( autoPauseTabContextMenu );
         } );
     }
 
