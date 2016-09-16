@@ -46,7 +46,7 @@ AmazonMusicController.prototype._getContentInfo = function()
     var artist = $( '.trackInfoContainer .trackArtist > a > span' ).text();
     var album = $( '.trackInfoContainer .trackSourceLink > span > a' ).text();
     var artwork = $( '.trackAlbumArt img' ).attr( 'src' );
-    if( track )
+    if( track && track !== "loading ..." )
     {
         return new ContentInfo( track, artist, album, artwork );
     }
