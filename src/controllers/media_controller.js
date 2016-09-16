@@ -32,6 +32,10 @@ MediaController.prototype.initializeMediaControls = function()
 {
     $.get( chrome.extension.getURL( 'media_control_overlay.html' ), function( data )
     {
+        if( this.disconnected )
+        {
+            return;
+        }
         this.controls = $( data );
         this.attachControls( document.body, this.media );
         this.controls.draggable( {
@@ -109,6 +113,7 @@ MediaController.prototype.removeControls = function()
     if( this.controls )
     {
         this.controls.remove();
+        this.controls = null;
         $( this.positionOfElement ).off( 'move' );
         this.positionOfElement = null;
         $( this.media )

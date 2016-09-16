@@ -7,6 +7,7 @@ function Controller( name, color, allowLockOnInactivity )
     console.log( 'Initial active: ' + this.active );
     console.log( 'Initial visibility state: ' + document.visibilityState );
 
+    this.disconnected = false;
     this.currentContent = null;
     this.lastProgress = 0.0;
     this.pollingInterval = null;
@@ -154,6 +155,7 @@ Controller.prototype.stopPolling = function()
 Controller.prototype.disconnect = function()
 {
     console.log( 'Disconnect' );
+    this.disconnected = true;
     $( window ).off( 'focus', this.activate );
     $( window ).off( 'blur', this.deactivate );
     this.stopPolling();
