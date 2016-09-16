@@ -388,46 +388,6 @@ Background = ( function()
         } );
 
 
-        chrome.runtime.onMessage.addListener( function( message, sender, sendResponse )
-        {
-            if( message.type === Message.types.from_popup.PLAY )
-            {
-                console.log( 'Recieved from Popup: PLAY' );
-                Background.playPause();
-            }
-            else if( message.type === Message.types.from_popup.NEXT )
-            {
-                console.log( 'Recieved from Popup: NEXT' );
-                Background.next();
-            }
-            else if( message.type === Message.types.from_popup.PREVIOUS )
-            {
-                console.log( 'Recieved from Popup: PREVIOUS' );
-                Background.previous();
-            }
-            else if( message.type === Message.types.from_popup.DISLIKE )
-            {
-                console.log( 'Recieved from Popup: DISLIKE' );
-                Background.dislike();
-            }
-            else if( message.type === Message.types.from_popup.UNDISLIKE )
-            {
-                console.log( 'Recieved from Popup: UNDISLIKE' );
-                Background.undislike();
-            }
-            else if( message.type === Message.types.from_popup.LIKE )
-            {
-                console.log( 'Recieved from Popup: LIKE' );
-                Background.like();
-            }
-            else if( message.type === Message.types.from_popup.UNLIKE )
-            {
-                console.log( 'Recieved from Popup: UNLIKE' );
-                Background.unlike();
-            }
-        } );
-
-
         chrome.runtime.onInstalled.addListener( function( details )
         {
             var version = chrome.runtime.getManifest().version;

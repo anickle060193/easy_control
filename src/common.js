@@ -86,16 +86,6 @@ Message.types = {
         UNDISLIKE : 'from_background.undislike',
         VOLUME_UP : 'from_background.volume_up',
         VOLUME_DOWN : 'from_background.volume_down'
-    },
-    from_popup : {
-        PAUSE : 'from_popup.pause',
-        PLAY : 'from_popup.play',
-        NEXT : 'from_popup.next',
-        PREVIOUS : 'from_popup.previous',
-        LIKE : 'from_popup.like',
-        UNLIKE : 'from_popup.unlike',
-        DISLIKE : 'from_popup.dislike',
-        UNDISLIKE : 'from_popup.undislike'
     }
 }
 
