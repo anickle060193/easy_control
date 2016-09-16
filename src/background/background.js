@@ -445,6 +445,24 @@ Background = ( function()
         } );
 
 
+        chrome.runtime.onStartup.addListener( function()
+        {
+            console.log( 'Background - onStartup()' );
+        } );
+
+
+        chrome.runtime.onSuspend.addListener( function()
+        {
+            console.log( 'Background - onSuspend()' );
+        } );
+
+
+        chrome.runtime.onSuspendCanceled.addListener( function()
+        {
+            console.log( 'Background - onSuspendCanceled()' );
+        } );
+
+
         chrome.idle.onStateChanged.addListener( function( newState )
         {
             console.log( 'State Changed: ' + newState );
