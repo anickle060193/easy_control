@@ -20,8 +20,8 @@ TwitchController.prototype._getProgress = function()
 {
     if( $( '.player-livestatus__online' ).css( 'display' ) === 'none' )
     {
-        var currentTime = parseTime( $( '.js-seek-currenttime' ).text() );
-        var totalTime = parseTime( $( '.js-seek-totaltime' ).text() );
+        var currentTime = Common.parseTime( $( '.js-seek-currenttime' ).text() );
+        var totalTime = Common.parseTime( $( '.js-seek-totaltime' ).text() );
 
         if( totalTime === 0 )
         {

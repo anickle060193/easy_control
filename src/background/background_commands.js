@@ -1,48 +1,61 @@
-chrome.browserAction.onClicked.addListener( function( tag )
+BackgroundCommands = ( function()
 {
-    console.log( 'BrowserAction clicked' );
-    playPause();
-} );
+    function onStart()
+    {
+        chrome.browserAction.onClicked.addListener( function( tag )
+        {
+            console.log( 'BrowserAction clicked' );
+            Background.playPause();
+        } );
 
 
-chrome.commands.onCommand.addListener( function( command )
-{
-    console.log( 'Keyboard Command: ' + command );
+        chrome.commands.onCommand.addListener( function( command )
+        {
+            console.log( 'Keyboard Command: ' + command );
 
-    if( command === '1_play_pause' )
-    {
-        playPause();
+            if( command === '1_play_pause' )
+            {
+                Background.playPause();
+            }
+            else if( command === '2_next' )
+            {
+                Background.next();
+            }
+            else if( command === '3_previous' )
+            {
+                Background.previous();
+            }
+            else if( command === '4_like' )
+            {
+                Background.like();
+            }
+            else if( command === '5_unlike' )
+            {
+                Background.unlike();
+            }
+            else if( command === '6_dislike' )
+            {
+                Background.dislike();
+            }
+            else if( command === '7_undislike' )
+            {
+                Background.undislike();
+            }
+            else if( command === '8_volume_up' )
+            {
+                Background.volumeUp();
+            }
+            else if( command === '9_volume_down' )
+            {
+                Background.volumeDown();
+            }
+        } );
     }
-    else if( command === '2_next' )
-    {
-        next();
-    }
-    else if( command === '3_previous' )
-    {
-        previous();
-    }
-    else if( command === '4_like' )
-    {
-        like();
-    }
-    else if( command === '5_unlike' )
-    {
-        unlike();
-    }
-    else if( command === '6_dislike' )
-    {
-        dislike();
-    }
-    else if( command === '7_undislike' )
-    {
-        undislike();
-    }
-    else if( command === '8_volume_up' )
-    {
-        volumeUp();
-    }
-    else if( command === '9_volume_down' )
-    {
-        volumeDown();
-    }
-} );
+
+    return {
+        onStart : onStart
+    };
+} )();
+
+BackgroundCommands.onStart();
+

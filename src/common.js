@@ -63,20 +63,6 @@ var Settings = {
 };
 
 
-var siteToURL = {
-    Pandora : "http://www.pandora.com/",
-    Spotify : "https://play.spotify.com/",
-    Youtube : "https://www.youtube.com/",
-    GooglePlayMusic : "https://play.google.com/music/",
-    Bandcamp : 'https://bandcamp.com/',
-    Netflix : 'https://www.netflix.com/',
-    AmazonVideo : 'https://www.amazon.com/gp/video/getstarted/',
-    AmazonMusic : 'https://music.amazon.com/',
-    Hulu : 'http://www.hulu.com/',
-    Twitch : 'https://www.twitch.tv/'
-};
-
-
 function Message( type, data )
 {
     this.type = type;
@@ -114,70 +100,6 @@ Message.types = {
 }
 
 
-function getDefaultSettings()
-{
-    var defaults = { };
-
-    defaults[ Settings.Notifications.Pandora ] = true;
-    defaults[ Settings.Notifications.Spotify ] = true;
-    defaults[ Settings.Notifications.Youtube ] = true;
-    defaults[ Settings.Notifications.GooglePlayMusic ] = true;
-    defaults[ Settings.Notifications.Bandcamp ] = true;
-    defaults[ Settings.Notifications.Netflix ] = true;
-    defaults[ Settings.Notifications.AmazonVideo ] = true;
-    defaults[ Settings.Notifications.AmazonMusic ] = true;
-    defaults[ Settings.Notifications.Hulu ] = true;
-    defaults[ Settings.Notifications.GenericAudioVideo ] = true;
-    defaults[ Settings.Notifications.Twitch ] = true;
-
-    defaults[ Settings.ControllersEnabled.Pandora ] = true;
-    defaults[ Settings.ControllersEnabled.Spotify ] = true;
-    defaults[ Settings.ControllersEnabled.Youtube ] = true;
-    defaults[ Settings.ControllersEnabled.GooglePlayMusic ] = true;
-    defaults[ Settings.ControllersEnabled.Bandcamp ] = true;
-    defaults[ Settings.ControllersEnabled.Netflix ] = true;
-    defaults[ Settings.ControllersEnabled.AmazonVideo ] = true;
-    defaults[ Settings.ControllersEnabled.AmazonMusic ] = true;
-    defaults[ Settings.ControllersEnabled.Hulu ] = true;
-    defaults[ Settings.ControllersEnabled.GenericAudioVideo ] = true;
-    defaults[ Settings.ControllersEnabled.Twitch ] = true;
-
-    defaults[ Settings.ControllerColors.Pandora ] = '#455774';
-    defaults[ Settings.ControllerColors.Spotify ] = '#84bd00';
-    defaults[ Settings.ControllerColors.Youtube ] = '#f12b24';
-    defaults[ Settings.ControllerColors.GooglePlayMusic ] = '#ff5722';
-    defaults[ Settings.ControllerColors.Bandcamp ] = '#639AA9';
-    defaults[ Settings.ControllerColors.Netflix ] = '#9b0103';
-    defaults[ Settings.ControllerColors.AmazonVideo ] = '#FF9900';
-    defaults[ Settings.ControllerColors.AmazonMusic ] = '#fd7c02';
-    defaults[ Settings.ControllerColors.Hulu ] = '#66AA33';
-    defaults[ Settings.ControllerColors.GenericAudioVideo ] = '#5b5b5b';
-    defaults[ Settings.ControllerColors.Twitch ] = '#6441A4';
-
-    defaults[ Settings.NotificationLength ] = 5;
-    defaults[ Settings.NoActiveWindowNotifications ] = false;
-    defaults[ Settings.DefaultSite ] = "Youtube";
-    defaults[ Settings.PauseOnLock ] = true;
-    defaults[ Settings.PauseOnInactivity ] = false;
-    defaults[ Settings.InactivityTimeout ] = 60 * 5;
-    defaults[ Settings.AutoPauseEnabled ] = true;
-    defaults[ Settings.ShowChangeLogOnUpdate ] = true;
-    defaults[ Settings.ShowAutoPausedNotification ] = false;
-    defaults[ Settings.SiteBlacklist ] = [ 'imgur.com' ];
-
-    defaults[ Settings.Controls.DisplayControls ] = true;
-    defaults[ Settings.Controls.AlwaysDisplayPlaybackSpeed ] = true;
-    defaults[ Settings.Controls.MediaControls.MuchSlower ] = '';
-    defaults[ Settings.Controls.MediaControls.Slower ] = 's';
-    defaults[ Settings.Controls.MediaControls.Faster ] = 'd';
-    defaults[ Settings.Controls.MediaControls.MuchFaster ] = '';
-    defaults[ Settings.Controls.MediaControls.Reset ] = 'r';
-    defaults[ Settings.Controls.MediaControls.Loop ] = '';
-
-    return defaults;
-}
-
-
 function ContentInfo( title, caption, subcaption, image, isLiked, isDisliked )
 {
     this.title = $.trim( title );
@@ -187,60 +109,6 @@ function ContentInfo( title, caption, subcaption, image, isLiked, isDisliked )
     this.isLiked = !!isLiked;
     this.isDisliked = !!isDisliked;
 }
-
-
-function parseTime( timeText )
-{
-    var strippedTimeText = $.trim( timeText );
-    var timeSplit = timeText.split( ':' );
-    if( timeSplit.length === 3 )
-    {
-        var hours = Math.abs( parseFloat( timeSplit[ 0 ] ) );
-        var minutes = Math.abs( parseFloat( timeSplit[ 1 ] ) );
-        var seconds = Math.abs( parseFloat( timeSplit[ 2 ] ) );
-        return seconds + ( minutes + hours * 60 ) * 60;
-    }
-    else if( timeSplit.length === 2 )
-    {
-        var minutes = Math.abs( parseFloat( timeSplit[ 0 ] ) );
-        var seconds = Math.abs( parseFloat( timeSplit[ 1 ] ) );
-        return minutes * 60 + seconds;
-    }
-    else
-    {
-        return 0;
-    }
-}
-
-
-var SessionStorage = {
-    get : function( key )
-    {
-        var item = window.sessionStorage.getItem( key );
-        if( item !== null )
-        {
-            return JSON.parse( item );
-        }
-        else
-        {
-            return { };
-        }
-    },
-    set : function( key, value )
-    {
-        window.sessionStorage.setItem( key, JSON.stringify( value ) );
-    }
-};
-
-
-Array.prototype.remove = function( item )
-{
-    var index = this.indexOf( item );
-    if( index !== -1 )
-    {
-        this.splice( index, 1 );
-    }
-};
 
 
 Common = ( function()
@@ -261,10 +129,165 @@ Common = ( function()
         }
     }
 
+
+    function parseTime( timeText )
+    {
+        var strippedTimeText = $.trim( timeText );
+        var timeSplit = timeText.split( ':' );
+        if( timeSplit.length === 3 )
+        {
+            var hours = Math.abs( parseFloat( timeSplit[ 0 ] ) );
+            var minutes = Math.abs( parseFloat( timeSplit[ 1 ] ) );
+            var seconds = Math.abs( parseFloat( timeSplit[ 2 ] ) );
+            return seconds + ( minutes + hours * 60 ) * 60;
+        }
+        else if( timeSplit.length === 2 )
+        {
+            var minutes = Math.abs( parseFloat( timeSplit[ 0 ] ) );
+            var seconds = Math.abs( parseFloat( timeSplit[ 1 ] ) );
+            return minutes * 60 + seconds;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+
+    var SITE_TO_URL = {
+        Pandora : "http://www.pandora.com/",
+        Spotify : "https://play.spotify.com/",
+        Youtube : "https://www.youtube.com/",
+        GooglePlayMusic : "https://play.google.com/music/",
+        Bandcamp : 'https://bandcamp.com/',
+        Netflix : 'https://www.netflix.com/',
+        AmazonVideo : 'https://www.amazon.com/gp/video/getstarted/',
+        AmazonMusic : 'https://music.amazon.com/',
+        Hulu : 'http://www.hulu.com/',
+        Twitch : 'https://www.twitch.tv/'
+    };
+
+    function siteToURL( site )
+    {
+        var url = SITE_TO_URL[ site ];
+        if( url )
+        {
+            return url;
+        }
+        else
+        {
+            return "";
+        }
+    }
+
+
+    function getDefaultSettings()
+    {
+        var defaults = { };
+
+        defaults[ Settings.Notifications.Pandora ] = true;
+        defaults[ Settings.Notifications.Spotify ] = true;
+        defaults[ Settings.Notifications.Youtube ] = true;
+        defaults[ Settings.Notifications.GooglePlayMusic ] = true;
+        defaults[ Settings.Notifications.Bandcamp ] = true;
+        defaults[ Settings.Notifications.Netflix ] = true;
+        defaults[ Settings.Notifications.AmazonVideo ] = true;
+        defaults[ Settings.Notifications.AmazonMusic ] = true;
+        defaults[ Settings.Notifications.Hulu ] = true;
+        defaults[ Settings.Notifications.GenericAudioVideo ] = true;
+        defaults[ Settings.Notifications.Twitch ] = true;
+
+        defaults[ Settings.ControllersEnabled.Pandora ] = true;
+        defaults[ Settings.ControllersEnabled.Spotify ] = true;
+        defaults[ Settings.ControllersEnabled.Youtube ] = true;
+        defaults[ Settings.ControllersEnabled.GooglePlayMusic ] = true;
+        defaults[ Settings.ControllersEnabled.Bandcamp ] = true;
+        defaults[ Settings.ControllersEnabled.Netflix ] = true;
+        defaults[ Settings.ControllersEnabled.AmazonVideo ] = true;
+        defaults[ Settings.ControllersEnabled.AmazonMusic ] = true;
+        defaults[ Settings.ControllersEnabled.Hulu ] = true;
+        defaults[ Settings.ControllersEnabled.GenericAudioVideo ] = true;
+        defaults[ Settings.ControllersEnabled.Twitch ] = true;
+
+        defaults[ Settings.ControllerColors.Pandora ] = '#455774';
+        defaults[ Settings.ControllerColors.Spotify ] = '#84bd00';
+        defaults[ Settings.ControllerColors.Youtube ] = '#f12b24';
+        defaults[ Settings.ControllerColors.GooglePlayMusic ] = '#ff5722';
+        defaults[ Settings.ControllerColors.Bandcamp ] = '#639AA9';
+        defaults[ Settings.ControllerColors.Netflix ] = '#9b0103';
+        defaults[ Settings.ControllerColors.AmazonVideo ] = '#FF9900';
+        defaults[ Settings.ControllerColors.AmazonMusic ] = '#fd7c02';
+        defaults[ Settings.ControllerColors.Hulu ] = '#66AA33';
+        defaults[ Settings.ControllerColors.GenericAudioVideo ] = '#5b5b5b';
+        defaults[ Settings.ControllerColors.Twitch ] = '#6441A4';
+
+        defaults[ Settings.NotificationLength ] = 5;
+        defaults[ Settings.NoActiveWindowNotifications ] = false;
+        defaults[ Settings.DefaultSite ] = "Youtube";
+        defaults[ Settings.PauseOnLock ] = true;
+        defaults[ Settings.PauseOnInactivity ] = false;
+        defaults[ Settings.InactivityTimeout ] = 60 * 5;
+        defaults[ Settings.AutoPauseEnabled ] = true;
+        defaults[ Settings.ShowChangeLogOnUpdate ] = true;
+        defaults[ Settings.ShowAutoPausedNotification ] = false;
+        defaults[ Settings.SiteBlacklist ] = [ 'imgur.com' ];
+
+        defaults[ Settings.Controls.DisplayControls ] = true;
+        defaults[ Settings.Controls.AlwaysDisplayPlaybackSpeed ] = true;
+        defaults[ Settings.Controls.MediaControls.MuchSlower ] = '';
+        defaults[ Settings.Controls.MediaControls.Slower ] = 's';
+        defaults[ Settings.Controls.MediaControls.Faster ] = 'd';
+        defaults[ Settings.Controls.MediaControls.MuchFaster ] = '';
+        defaults[ Settings.Controls.MediaControls.Reset ] = 'r';
+        defaults[ Settings.Controls.MediaControls.Loop ] = '';
+
+        return defaults;
+    }
+
     return {
-        limit : limit
+        limit : limit,
+        parseTime : parseTime,
+        siteToURL : siteToURL,
+        getDefaultSettings : getDefaultSettings
     };
 } )();
+
+
+SessionStorage = ( function()
+{
+    function get( key )
+    {
+        var item = window.sessionStorage.getItem( key );
+        if( item !== null )
+        {
+            return JSON.parse( item );
+        }
+        else
+        {
+            return { };
+        }
+    }
+
+    function set( key, value )
+    {
+        window.sessionStorage.setItem( key, JSON.stringify( value ) );
+    }
+
+    return {
+        get : get,
+        set : set
+    };
+} )();
+
+
+Array.prototype.remove = function( item )
+{
+    var index = this.indexOf( item );
+    if( index !== -1 )
+    {
+        this.splice( index, 1 );
+    }
+};
 
 
 ( function( $ )

@@ -53,8 +53,8 @@ PandoraController.prototype._isDisliked = function()
 
 PandoraController.prototype._getProgress = function()
 {
-    var elapsedTime = parseTime( $( '.elapsedTime' ).text() );
-    var remainingTime = parseTime( $( '.remainingTime' ).text() );
+    var elapsedTime = Common.parseTime( $( '.elapsedTime' ).text() );
+    var remainingTime = Common.parseTime( $( '.remainingTime' ).text() );
 
     var totalTime = elapsedTime + remainingTime;
 

@@ -58,8 +58,8 @@ GooglePlayMusicController.prototype._isDisliked = function()
 
 GooglePlayMusicController.prototype._getProgress = function()
 {
-    var elapsedTime = parseTime( $( '#time_container_current' ).text() );
-    var totalTime = parseTime( $( '#time_container_duration' ).text() );
+    var elapsedTime = Common.parseTime( $( '#time_container_current' ).text() );
+    var totalTime = Common.parseTime( $( '#time_container_duration' ).text() );
 
     if( totalTime === 0 )
     {

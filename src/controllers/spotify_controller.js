@@ -28,8 +28,8 @@ SpotifyController.prototype._next = function()
 
 SpotifyController.prototype._getProgress = function()
 {
-    var currentTrackTime = parseTime( $( '#track-current' ).text() );
-    var trackLength = parseTime( $( '#track-length' ).text() );
+    var currentTrackTime = Common.parseTime( $( '#track-current' ).text() );
+    var trackLength = Common.parseTime( $( '#track-length' ).text() );
 
     if( trackLength === 0 )
     {
