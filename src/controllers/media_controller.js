@@ -3,6 +3,7 @@ function MediaController( media, name, color, allowLockOnInactivity )
     Controller.call( this, name, color, allowLockOnInactivity );
 
     this.media = media;
+    this.isVideo = this.media.nodeName === 'VIDEO';
     this.controls = null;
 
     this.fullscreen = false;
@@ -44,18 +45,6 @@ MediaController.prototype.initializeMediaControls = function()
         }
         this.controls = $( data );
         this.attachControls();
-        this.controls.draggable( {
-            handle : '#media-control-overlay-dragger',
-            start : $.proxy( function()
-            {
-                this.dragging = true;
-                this.hasDragged = true;
-            }, this ),
-            stop : $.proxy( function()
-            {
-                this.dragging = false;
-            }, this )
-        } );
 
         this.hideControls();
         this.loop( this.media.loop );
@@ -167,9 +156,11 @@ MediaController.prototype.attachControls = function()
     var appendToElement = document.body;
     this.positionOfElement = this.media;
 
-    if( document.webkitIsFullScreen
-    && ( document.webkitCurrentFullScreenElement === this.media
-      || $.contains( document.webkitFullscreenElement, this.media ) ) )
+    if( !this.isVideo )
+    {
+        this.positionOfElement = document.body;
+    }
+    else if( document.webkitIsFullScreen && ( document.webkitCurrentFullScreenElement === this.media || $.contains( document.webkitFullscreenElement, this.media ) ) )
     {
         console.log( 'Attaching to Fullscreen' );
         this.fullscreen = true;
@@ -181,6 +172,20 @@ MediaController.prototype.attachControls = function()
         .detach()
         .appendTo( appendToElement )
         .css( 'zIndex', Number.MAX_SAFE_INTEGER );
+
+    this.controls.draggable( {
+        handle : '#media-control-overlay-dragger',
+        containment : this.positionOfElement,
+        start : $.proxy( function()
+        {
+            this.dragging = true;
+            this.hasDragged = true;
+        }, this ),
+        stop : $.proxy( function()
+        {
+            this.dragging = false;
+        }, this )
+    } );
 
     $( this.positionOfElement ).on( 'move', $.proxy( function()
     {
