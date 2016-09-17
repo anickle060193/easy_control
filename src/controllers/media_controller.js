@@ -107,6 +107,7 @@ MediaController.prototype.removeControls = function()
         this.controls.remove();
         this.controls = null;
         $( this.positionOfElement ).off( 'move' );
+        $( this.positionOfElement ).off( 'visible' );
         this.positionOfElement = null;
         $( this.media )
             .off( 'ratechange' )
@@ -148,6 +149,7 @@ MediaController.prototype.attachControls = function()
     if( this.positionOfElement )
     {
         $( this.positionOfElement ).off( 'move' );
+        $( this.positionOfElement ).off( 'visible' );
     }
 
     this.hasDragged = false;
@@ -195,6 +197,14 @@ MediaController.prototype.attachControls = function()
         }
     }, this ) );
 
+    this.controls.toggle( $( this.positionOfElement ).is( ':visible' ) );
+    $( this.positionOfElement ).on( 'visible', $.proxy( function( event, visible )
+    {
+        console.log( 'Visible: ' + visible );
+        this.controls.toggle( visible );
+        this.repositionControls();
+    }, this ) );
+
     this.repositionControls();
 };
 
@@ -233,40 +243,35 @@ MediaController.prototype.handleKeyDown = function( event )
 {
     if( event.target === this.media || $.contains( event.target, this.media ) )
     {
-        var handled = true;
         if( event.key === Controller.settings[ Settings.Controls.MediaControls.MuchSlower ] )
         {
             this.playbackMuchSlower();
+            return false;
         }
         else if( event.key === Controller.settings[ Settings.Controls.MediaControls.Slower ] )
         {
             this.playbackSlower();
+            return false;
         }
         else if( event.key === Controller.settings[ Settings.Controls.MediaControls.Faster ] )
         {
             this.playbackFaster();
+            return false;
         }
         else if( event.key === Controller.settings[ Settings.Controls.MediaControls.MuchFaster ] )
         {
             this.playbackMuchFaster();
+            return false;
         }
         else if( event.key === Controller.settings[ Settings.Controls.MediaControls.Reset ] )
         {
             this.resetControls();
+            return false;
         }
         else if( event.key === Controller.settings[ Settings.Controls.MediaControls.Loop ] )
         {
             this.loop( !this.media.loop );
-        }
-        else
-        {
-            handled = false;
-        }
-
-        if( handled )
-        {
-            event.preventDefault();
-            event.stopPropagation();
+            return false;
         }
     }
 };

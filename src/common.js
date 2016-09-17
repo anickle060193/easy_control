@@ -144,31 +144,34 @@ Common = ( function()
     }
 
 
-    var SITE_TO_URL = {
-        Pandora : "http://www.pandora.com/",
-        Spotify : "https://play.spotify.com/",
-        Youtube : "https://www.youtube.com/",
-        GooglePlayMusic : "https://play.google.com/music/",
-        Bandcamp : 'https://bandcamp.com/',
-        Netflix : 'https://www.netflix.com/',
-        AmazonVideo : 'https://www.amazon.com/gp/video/getstarted/',
-        AmazonMusic : 'https://music.amazon.com/',
-        Hulu : 'http://www.hulu.com/',
-        Twitch : 'https://www.twitch.tv/'
-    };
-
-    function siteToURL( site )
+    var siteToURL = ( function()
     {
-        var url = SITE_TO_URL[ site ];
-        if( url )
+        var SITE_TO_URL = {
+            Pandora : "http://www.pandora.com/",
+            Spotify : "https://play.spotify.com/",
+            Youtube : "https://www.youtube.com/",
+            GooglePlayMusic : "https://play.google.com/music/",
+            Bandcamp : 'https://bandcamp.com/',
+            Netflix : 'https://www.netflix.com/',
+            AmazonVideo : 'https://www.amazon.com/gp/video/getstarted/',
+            AmazonMusic : 'https://music.amazon.com/',
+            Hulu : 'http://www.hulu.com/',
+            Twitch : 'https://www.twitch.tv/'
+        };
+
+        return function( site )
         {
-            return url;
-        }
-        else
-        {
-            return "";
-        }
-    }
+            var url = SITE_TO_URL[ site ];
+            if( url )
+            {
+                return url;
+            }
+            else
+            {
+                return "";
+            }
+        };
+    } )();
 
 
     function getDefaultSettings()
@@ -234,11 +237,84 @@ Common = ( function()
         return defaults;
     }
 
+
+    function createElementPollingEvent( eventName, getData, dataEqual )
+    {
+        if( typeof $[ eventName ] !== 'undefined'
+         || typeof $.event.special[ eventName ] !== 'undefined' )
+        {
+            console.error( 'Event "' + eventName + '" already exists.' );
+            return;
+        }
+
+        var elems = [ ];
+        var timeoutId = null;
+
+        function setup()
+        {
+            var elem = $( this );
+            elems.push( this );
+
+            if( elems.length === 1 )
+            {
+                poll();
+            }
+        }
+
+        function teardown()
+        {
+            var elem = $( this );
+            elems.remove( this );
+            elem.removeData( eventName );
+
+            if( elems.length === 0 )
+            {
+                window.clearInterval( timeoutId );
+            }
+        }
+
+        function poll()
+        {
+            $.each( elems, function()
+            {
+                var elem = $( this );
+                var data = elem.data( eventName );
+                var newData = getData.call( this );
+
+                if( typeof data !== 'undefined' )
+                {
+                    if( !dataEqual.call( this, data, newData ) )
+                    {
+                        elem.data( eventName, newData );
+                        elem.trigger( eventName, [ newData ] );
+                    }
+                }
+                else
+                {
+                    elem.data( eventName, newData );
+                    elem.trigger( eventName, [ newData ] );
+                }
+            } );
+
+            if( elems.length > 0 )
+            {
+                timeoutId = window.setTimeout( poll, 1000 );
+            }
+        }
+
+        $.event.special[ eventName ] = {
+            setup : setup,
+            teardown : teardown
+        };
+    }
+
+
     return {
         limit : limit,
         parseTime : parseTime,
         siteToURL : siteToURL,
-        getDefaultSettings : getDefaultSettings
+        getDefaultSettings : getDefaultSettings,
+        createElementPollingEvent : createElementPollingEvent
     };
 } )();
 
@@ -280,58 +356,21 @@ Array.prototype.remove = function( item )
 };
 
 
-( function( $ )
+Common.createElementPollingEvent( 'move', function()
 {
-    var elems = [ ];
-    var timeoutId = null;
+    return $( this ).offset();
+},
+function( oldOffset, newOffset )
+{
+    return oldOffset.left === newOffset.left && oldOffset.top === newOffset.top;
+} );
 
-    $.event.special.move = {
-        setup : function()
-        {
-            var elem = $( this );
-            elem.data( 'move', elem.offset() );
-            elems.push( this );
 
-            if( elems.length === 1 )
-            {
-                poll();
-            }
-        },
-        teardown : function()
-        {
-            var elem = $( this );
-            elems.remove( this );
-            elem.removeData( 'move' );
-
-            if( elems.length === 0 )
-            {
-                window.clearTimeout( timeoutId );
-            }
-        }
-    };
-
-    function poll()
-    {
-        $.each( elems, function()
-        {
-            var elem = $( this );
-            var data = elem.data( 'move' );
-
-            if( data )
-            {
-                var offset = elem.offset();
-
-                if( offset.left !== data.left || offset.top !== data.top )
-                {
-                    elem.data( 'move', offset );
-                    elem.trigger( 'move' );
-                }
-            }
-        } );
-
-        if( elems.length > 0 )
-        {
-            timeoutId = window.setTimeout( poll, 100 );
-        }
-    }
-} )( jQuery );
+Common.createElementPollingEvent( 'visible', function()
+{
+    return $( this ).is( ':visible' );
+},
+function( oldVisibility, newVisibility )
+{
+    return oldVisibility === newVisibility;
+} );
