@@ -7,6 +7,7 @@ function MediaController( media, name, color, allowLockOnInactivity )
 
     this.fullscreen = false;
     this.dragging = false;
+    this.hasDragged = false;
     this.positionOfElement = null;
 
     $( document.body ).keydown( $.proxy( this.handleKeyDown, this ) );
@@ -30,6 +31,11 @@ MediaController.prototype.constructor = MediaController;
 
 MediaController.prototype.initializeMediaControls = function()
 {
+    if( this.controls )
+    {
+        console.warn( 'Controls have already been initialized.' );
+        return;
+    }
     $.get( chrome.extension.getURL( 'media_control_overlay.html' ), function( data )
     {
         if( this.disconnected )
@@ -37,16 +43,13 @@ MediaController.prototype.initializeMediaControls = function()
             return;
         }
         this.controls = $( data );
-        this.attachControls( document.body, this.media );
+        this.attachControls();
         this.controls.draggable( {
             handle : '#media-control-overlay-dragger',
             start : $.proxy( function()
             {
                 this.dragging = true;
-                if( this.positionOfElement !== null )
-                {
-                    $( this.positionOfElement ).off( 'move' );
-                }
+                this.hasDragged = true;
             }, this ),
             stop : $.proxy( function()
             {
@@ -151,13 +154,28 @@ MediaController.prototype.showControls = function()
     this.controls.show().children().show();
 };
 
-MediaController.prototype.attachControls = function( appendToElement, positionOfElement )
+MediaController.prototype.attachControls = function()
 {
-    if( this.positionOfElement !== null )
+    if( this.positionOfElement )
     {
         $( this.positionOfElement ).off( 'move' );
     }
-    this.positionOfElement = positionOfElement;
+
+    this.hasDragged = false;
+    this.fullscreen = false;
+
+    var appendToElement = document.body;
+    this.positionOfElement = this.media;
+
+    if( document.webkitIsFullScreen
+    && ( document.webkitCurrentFullScreenElement === this.media
+      || $.contains( document.webkitFullscreenElement, this.media ) ) )
+    {
+        console.log( 'Attaching to Fullscreen' );
+        this.fullscreen = true;
+        appendToElement = document.webkitCurrentFullScreenElement;
+        this.positionOfElement = document.webkitCurrentFullScreenElement;
+    }
 
     this.controls
         .detach()
@@ -166,36 +184,29 @@ MediaController.prototype.attachControls = function( appendToElement, positionOf
 
     $( this.positionOfElement ).on( 'move', $.proxy( function()
     {
-        this.controls
-            .position( {
-                my : 'left top',
-                at : 'left+6 top+6',
-                of : this.positionOfElement,
-                collision : 'none'
-            } );
+        if( !this.hasDragged )
+        {
+            this.repositionControls();
+        }
     }, this ) );
 
-    $( this.positionOfElement ).triggerHandler( 'move' );
+    this.repositionControls();
+};
+
+MediaController.prototype.repositionControls = function()
+{
+    this.controls
+        .position( {
+            my : 'left top',
+            at : 'left+6 top+6',
+            of : this.positionOfElement,
+            collision : 'none'
+        } );
 };
 
 MediaController.prototype.handleFullscreenChange = function()
 {
-    if( document.webkitIsFullScreen )
-    {
-        if( $( document.webkitFullscreenElement ).find( this.media ) !== 0 )
-        {
-            this.fullscreen = true;
-            this.attachControls( document.webkitCurrentFullScreenElement, document.webkitCurrentFullScreenElement );
-        }
-    }
-    else
-    {
-        if( this.fullscreen )
-        {
-            this.fullscreen = false;
-            this.attachControls( document.body, this.media );
-        }
-    }
+    this.attachControls();
 };
 
 MediaController.prototype.hideControls = function()
@@ -215,7 +226,7 @@ MediaController.prototype.hideControls = function()
 
 MediaController.prototype.handleKeyDown = function( event )
 {
-    if( $( event.target ).find( this.media ).length !== 0 )
+    if( event.target === this.media || $.contains( event.target, this.media ) )
     {
         var handled = true;
         if( event.key === Controller.settings[ Settings.Controls.MediaControls.MuchSlower ] )
@@ -236,7 +247,7 @@ MediaController.prototype.handleKeyDown = function( event )
         }
         else if( event.key === Controller.settings[ Settings.Controls.MediaControls.Reset ] )
         {
-            this.playbackReset();
+            this.resetControls();
         }
         else if( event.key === Controller.settings[ Settings.Controls.MediaControls.Loop ] )
         {
@@ -253,6 +264,23 @@ MediaController.prototype.handleKeyDown = function( event )
             event.stopPropagation();
         }
     }
+};
+
+MediaController.prototype.resetControls = function()
+{
+    if( Controller.settings[ Settings.Controls.DisplayControls ] )
+    {
+        if( this.controls === null )
+        {
+            this.initializeMediaControls();
+        }
+        else
+        {
+            this.hasDragged = false;
+            this.repositionControls();
+        }
+    }
+    this.playbackReset();
 };
 
 MediaController.prototype.playbackMuchSlower = function()
