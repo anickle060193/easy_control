@@ -3,12 +3,16 @@ Background = ( function()
     var CONTEXT_MENU_AUTO_PAUSE_ENABLED = 'auto_pause_enabled';
     var CONTEXT_MENU_AUTO_PAUSE_ENABLED_FOR_TAB = 'auto_pause_enabled_for_tab';
 
+    var NEW_CONTENT_NOTIFICATION_PAUSE_BUTTON = 0;
+    var NEW_CONTENT_NOTIFICATION_NEXT_BUTTON = 1;
+
+    var AUTO_PAUSE_NOTIFICATION_RESUME_BUTTON = 0;
+
     var controllers = [ ];
     var currentController = null;
 
-    var lastContentChangeNotification = null;
-    var pauseNotifications = { };
-    var notifications = { };
+    var newContentNotifications = { };
+    var autoPausedNotifications = { };
 
     var autoPauseDisabledTabs = { };
 
@@ -78,13 +82,17 @@ Background = ( function()
                         console.log( 'Content Info:' );
                         console.log( controller.content );
 
+                        var buttons = [ ];
+                        buttons[ NEW_CONTENT_NOTIFICATION_PAUSE_BUTTON ] = { title : 'Pause' };
+                        buttons[ NEW_CONTENT_NOTIFICATION_NEXT_BUTTON ] = { title : 'Next' };
+
                         var notificationOptions = {
                             type : 'basic',
                             iconUrl : controller.content.image ? controller.content.image : 'res/icon128.png',
                             title : controller.content.title,
                             message : controller.content.caption,
                             contextMessage : controller.content.subcaption,
-                            buttons : [ { title : 'Next' } ],
+                            buttons : buttons,
                             requireInteraction : true,
                             isClickable : true
                         };
@@ -93,8 +101,7 @@ Background = ( function()
                         console.log( notificationOptions );
                         chrome.notifications.create( null, notificationOptions, function( notificationId )
                         {
-                            notifications[ notificationId ] = controller;
-                            lastContentChangeNotification = notificationId;
+                            newContentNotifications[ notificationId ] = controller;
                             var notificationLength = settings[ Settings.NotificationLength ];
                             if( !( notificationLength >= 1 ) )
                             {
@@ -144,21 +151,23 @@ Background = ( function()
 
     function showAutoPauseNotification( controller, notificationLength )
     {
+        var buttons = [ ];
+        buttons[ AUTO_PAUSE_NOTIFICATION_RESUME_BUTTON ] = { title : 'Resume Playback (will prevent future auto-pausing of tab)' };
+
         var notificationOptions = {
             type : 'basic',
             iconUrl : controller.content.image ? controller.content.image : 'res/icon128.png',
             title : controller.content.title,
             message : controller.content.caption,
             contextMessage : controller.content.subcaption,
-            buttons : [ { title : 'Resume Playback (will prevent future auto-pausing of tab)' } ],
+            buttons : buttons,
             requireInteraction : true,
             isClickable : true
         };
 
         chrome.notifications.create( null, notificationOptions, function( notificationId )
         {
-            notifications[ notificationId ] = controller;
-            pauseNotifications[ notificationId ] = controller;
+            autoPausedNotifications[ notificationId ] = controller;
 
             if( !( notificationLength >= 1 ) )
             {
@@ -344,9 +353,14 @@ Background = ( function()
         {
             chrome.notifications.clear( notificationId );
 
-            var controller = notifications[ notificationId ];
-            if( controller )
+            if( typeof newContentNotifications[ notificationId ] !== 'undefined' )
             {
+                var controller = newContentNotifications[ notificationId ];
+                BackgroundUtilities.focusTab( controller.port.sender.tab );
+            }
+            else if( typeof autoPausedNotifications[ notificationId ] !== 'undefined' )
+            {
+                var controller = autoPausedNotifications[ notificationId ];
                 BackgroundUtilities.focusTab( controller.port.sender.tab );
             }
         } );
@@ -355,38 +369,44 @@ Background = ( function()
         chrome.notifications.onButtonClicked.addListener( function( notificationId, buttonIndex )
         {
             console.log( 'Notification Button Clicked - Notification: ' + notificationId + ' Button: ' + buttonIndex );
-            if( notificationId === lastContentChangeNotification )
+            if( typeof newContentNotifications[ notificationId ] !== 'undefined' )
             {
-                if( buttonIndex === 0 )
+                var controller = newContentNotifications[ notificationId ];
+
+                if( buttonIndex === NEW_CONTENT_NOTIFICATION_PAUSE_BUTTON )
                 {
-                    chrome.notifications.clear( lastContentChangeNotification );
-                    Background.next();
+                    controller.pause();
                 }
-            }
-            else if( pauseNotifications[ notificationId ] )
-            {
-                if( buttonIndex === 0 )
+                else if( buttonIndex === NEW_CONTENT_NOTIFICATION_NEXT_BUTTON )
                 {
-                    var controller = pauseNotifications[ notificationId ];
+                    controller.next();
+                }
+
+                chrome.notifications.clear( notificationId );
+            }
+            else if( typeof autoPausedNotifications[ notificationId ] !== 'undefined' )
+            {
+                if( buttonIndex === AUTO_PAUSE_NOTIFICATION_RESUME_BUTTON )
+                {
+                    var controller = autoPausedNotifications[ notificationId ];
                     autoPauseDisabledTabs[ controller.port.sender.tab.id ] = true;
                     controller.play();
-
-                    chrome.notifications.clear( notificationId );
                 }
+
+                chrome.notifications.clear( notificationId );
             }
         } );
 
 
         chrome.notifications.onClosed.addListener( function( notificationId )
         {
-            delete notifications[ notificationId ];
-            if( notificationId === lastContentChangeNotification )
+            if( typeof newContentNotifications[ notificationId ] !== 'undefined' )
             {
-                lastContentChangeNotification = null;
+                delete newContentNotifications[ notificationId ];
             }
-            else
+            else if( typeof autoPausedNotifications[ notificationId ] !== 'undefined' )
             {
-                delete pauseNotifications[ notificationId ];
+                delete autoPausedNotifications[ notificationId ];
             }
         } );
 
