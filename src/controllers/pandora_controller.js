@@ -93,6 +93,12 @@ PandoraController.prototype._getContentInfo = function()
     }
 };
 
+PandoraController.prototype.openContent = function( content )
+{
+    console.log( 'openContent is not supported.' );
+};
+
+
 $( function()
 {
     if( Controller.settings[ Settings.ControllersEnabled.Pandora ] )

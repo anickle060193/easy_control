@@ -2,7 +2,7 @@ function Controller( name )
 {
     this.name = name;
     this.color = 'black';
-    this.hostname = '';
+    this.hostname = window.location.hostname;
     this.allowPauseOnInactivity = true;
 
     this.initialized = false;
@@ -97,6 +97,11 @@ Controller.prototype.handleMessage = function( message )
     {
         console.log( 'Recieved: VOLUME DOWN' );
         this.volumeDown();
+    }
+    else if( message.type === Message.types.from_background.OPEN_CONTENT )
+    {
+        console.log( 'Recieved: OPEN CONTENT' );
+        this.openContent( message.data );
     }
 };
 
@@ -349,6 +354,11 @@ Controller.prototype._volumeUp = function()
 Controller.prototype._volumeDown = function()
 {
     console.log( 'volumeDown not supported.' );
+};
+
+Controller.prototype.openContent = function( content )
+{
+    window.location.href = content;
 };
 
 

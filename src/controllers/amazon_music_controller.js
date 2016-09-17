@@ -60,6 +60,7 @@ AmazonMusicController.prototype._getContentInfo = function()
     }
 };
 
+
 $( function()
 {
     if( Controller.settings[ Settings.ControllersEnabled.AmazonMusic ] )

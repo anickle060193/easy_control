@@ -3,85 +3,18 @@ Options = ( function()
     var settings = null
 
 
-    var controllerSettingsHeadings = [ 'Enabled?', 'Display Notifications?', 'Color' ];
     var controllerSettings = [
-        {
-            id : 'Pandora',
-            name : 'Pandora',
-            notification : Settings.Notifications.Pandora,
-            color : Settings.ControllerColors.Pandora,
-            enabled : Settings.ControllersEnabled.Pandora
-        },
-        {
-            id : 'Spotify',
-            name : 'Spotify',
-            notification : Settings.Notifications.Spotify,
-            color : Settings.ControllerColors.Spotify,
-            enabled : Settings.ControllersEnabled.Spotify
-        },
-        {
-            id : 'Youtube',
-            name : 'Youtube',
-            notification : Settings.Notifications.Youtube,
-            color : Settings.ControllerColors.Youtube,
-            enabled : Settings.ControllersEnabled.Youtube
-        },
-        {
-            id : 'GooglePlayMusic',
-            name : 'Google Play Music',
-            notification : Settings.Notifications.GooglePlayMusic,
-            color : Settings.ControllerColors.GooglePlayMusic,
-            enabled : Settings.ControllersEnabled.GooglePlayMusic
-        },
-        {
-            id : 'Bandcamp',
-            name : 'Bandcamp',
-            notification : Settings.Notifications.Bandcamp,
-            color : Settings.ControllerColors.Bandcamp,
-            enabled : Settings.ControllersEnabled.Bandcamp
-        },
-        {
-            id : 'Netflix',
-            name : 'Netflix',
-            notification : Settings.Notifications.Netflix,
-            color : Settings.ControllerColors.Netflix,
-            enabled : Settings.ControllersEnabled.Netflix
-        },
-        {
-            id : 'AmazonVideo',
-            name : 'Amazon Video',
-            notification : Settings.Notifications.AmazonVideo,
-            color : Settings.ControllerColors.AmazonVideo,
-            enabled : Settings.ControllersEnabled.AmazonVideo
-        },
-        {
-            id : 'AmazonMusic',
-            name : 'Amazon Music',
-            notification : Settings.Notifications.AmazonMusic,
-            color : Settings.ControllerColors.AmazonMusic,
-            enabled : Settings.ControllersEnabled.AmazonMusic
-        },
-        {
-            id : 'Hulu',
-            name : 'Hulu',
-            notification : Settings.Notifications.Hulu,
-            color : Settings.ControllerColors.Hulu,
-            enabled : Settings.ControllersEnabled.Hulu
-        },
-        {
-            id : 'GenericAudioVideo',
-            name : 'Generic Audio/Video',
-            notification : Settings.Notifications.GenericAudioVideo,
-            color : Settings.ControllerColors.GenericAudioVideo,
-            enabled : Settings.ControllersEnabled.GenericAudioVideo
-        },
-        {
-            id : 'Twitch',
-            name : 'Twitch',
-            notification : Settings.Notifications.Twitch,
-            color : Settings.ControllerColors.Twitch,
-            enabled : Settings.ControllersEnabled.Twitch
-        }
+        { id : 'Pandora', name : 'Pandora' },
+        { id : 'Spotify', name : 'Spotify' },
+        { id : 'Youtube', name : 'Youtube' },
+        { id : 'GooglePlayMusic', name : 'Google Play Music' },
+        { id : 'Bandcamp', name : 'Bandcamp' },
+        { id : 'Netflix', name : 'Netflix' },
+        { id : 'AmazonVideo', name : 'Amazon Video' },
+        { id : 'AmazonMusic', name : 'Amazon Music' },
+        { id : 'Hulu', name : 'Hulu' },
+        { id : 'GenericAudioVideo', name : 'Generic Audio/Video' },
+        { id : 'Twitch', name : 'Twitch' }
     ];
 
 
@@ -100,10 +33,11 @@ Options = ( function()
         var controllerSettingsTable = $( '#controllerSettingsTable' );
 
         var headerRow = $( '<tr>' ).append( $( '<th>' ).append( $( '<h1>' ).text( 'Controller Settings' ) ) );
-        controllerSettingsHeadings.forEach( function( heading )
+        [ 'Enabled?', 'Display Notifications?', 'Open new content in existing\u00A0tab?', 'Color' ].forEach( function( heading )
         {
             headerRow.append( $( '<th>' ).text( heading ) );
         } );
+
         controllerSettingsTable.append( headerRow );
 
         controllerSettings.forEach( function( controller )
@@ -112,18 +46,25 @@ Options = ( function()
 
             $( '<input>', {
                 type : 'checkbox',
-                'data-key' : controller.enabled
+                'data-key' : Settings.ControllersEnabled[ controller.id ]
             } ).appendTo( $( '<td>' ).addClass( 'center' ).appendTo( row ) );
 
             $( '<input>', {
                 type : 'checkbox',
-                'data-key' : controller.notification,
-                'data-dependency' : controller.enabled
+                'data-key' : Settings.Notifications[ controller.id ],
+                'data-dependency' : Settings.ControllersEnabled[ controller.id ]
+            } ).appendTo( $( '<td>' ).addClass( 'center' ).appendTo( row ) );
+
+            $( '<input>', {
+                type : 'checkbox',
+                'data-key' : Settings.OpenInExisting[ controller.id ],
+                'data-dependency' : Settings.ControllersEnabled[ controller.id ]
             } ).appendTo( $( '<td>' ).addClass( 'center' ).appendTo( row ) );
 
             $( '<input>', {
                 type : 'color',
-                'data-key' : controller.color
+                'data-key' : Settings.ControllerColors[ controller.id ],
+                'data-dependency' : Settings.ControllersEnabled[ controller.id ]
             } ).appendTo( $( '<td>' ).addClass( 'center' ).appendTo( row ) );
 
             controllerSettingsTable.append( row );

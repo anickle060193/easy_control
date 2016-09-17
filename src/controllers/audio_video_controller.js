@@ -1,14 +1,16 @@
-function AudioVideoController( name, media )
+function AudioVideoController( media )
 {
-    MediaController.call( this, name, media );
+    MediaController.call( this, 'GenericAudioVideo', media );
 
     this.color = Controller.settings[ Settings.ControllerColors.GenericAudioVideo ];
+    this.hostname = null;
 
     this.initialize();
 }
 
 AudioVideoController.prototype = Object.create( MediaController.prototype );
 AudioVideoController.prototype.constructor = AudioVideoController;
+
 
 $( function()
 {
@@ -25,7 +27,6 @@ $( function()
             }
         }
 
-        var name = window.location.hostname.split( '.' ).join( '' );
         var mediaCounter = 0;
         MediaController.createMultiMediaListener( 'Generic Audio/Video', function( media )
         {
@@ -43,7 +44,7 @@ $( function()
             }
 
             mediaCounter++;
-            return new AudioVideoController( name + '_' + mediaCounter, media );
+            return new AudioVideoController( media );
         } );
     }
 } );

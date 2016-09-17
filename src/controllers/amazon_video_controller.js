@@ -3,6 +3,7 @@ function AmazonVideoController( video )
     MediaController.call( this, 'AmazonVideo', video );
 
     this.color = Controller.settings[ Settings.ControllerColors.AmazonVideo ];
+    this.hostname = null;
 
     this.initialize();
 }
@@ -24,6 +25,12 @@ AmazonVideoController.prototype._getContentInfo = function()
         return null;
     }
 };
+
+AmazonVideoController.prototype.openContent = function( content )
+{
+    console.log( 'openContent is not supported.' );
+};
+
 
 $( function()
 {

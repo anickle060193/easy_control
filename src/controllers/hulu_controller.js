@@ -41,6 +41,7 @@ HuluController.prototype._getContentInfo = function()
     }
 };
 
+
 $( function()
 {
     if( Controller.settings[ Settings.ControllersEnabled.Hulu ] )

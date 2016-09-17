@@ -38,6 +38,19 @@ var Settings = {
         GenericAudioVideo : 'key__controller_colors__generic_audio_video',
         Twitch : 'key__controller_colors__twitch'
     },
+    OpenInExisting : {
+        Pandora : 'key__open_in_existing__pandora',
+        Spotify : 'key__open_in_existing__spotify',
+        Youtube : 'key__open_in_existing__youtube',
+        GooglePlayMusic : 'key__open_in_existing__google_play_music',
+        Bandcamp : 'key__open_in_existing__bandcamp',
+        Netflix : 'key__open_in_existing__netflix',
+        AmazonVideo : 'key__open_in_existing__amazon_video',
+        AmazonMusic : 'key__open_in_existing__amazon_music',
+        Hulu : 'key__open_in_existing__hulu',
+        GenericAudioVideo : 'key__open_in_existing__generic_audio_video',
+        Twitch : 'key__open_in_existing__twitch'
+    },
     NotificationLength : 'key__notification_length',
     NoActiveWindowNotifications : 'key__no_active_window_notifications',
     DefaultSite : 'key__default_site',
@@ -85,7 +98,8 @@ Message.types = {
         DISLIKE : 'from_background.dislike',
         UNDISLIKE : 'from_background.undislike',
         VOLUME_UP : 'from_background.volume_up',
-        VOLUME_DOWN : 'from_background.volume_down'
+        VOLUME_DOWN : 'from_background.volume_down',
+        OPEN_CONTENT : 'from_background.open_content'
     }
 }
 
@@ -213,6 +227,18 @@ Common = ( function()
         defaults[ Settings.ControllerColors.Hulu ] = '#66AA33';
         defaults[ Settings.ControllerColors.GenericAudioVideo ] = '#5b5b5b';
         defaults[ Settings.ControllerColors.Twitch ] = '#6441A4';
+
+        defaults[ Settings.OpenInExisting.Pandora ] = false;
+        defaults[ Settings.OpenInExisting.Spotify ] = false;
+        defaults[ Settings.OpenInExisting.Youtube ] = false;
+        defaults[ Settings.OpenInExisting.GooglePlayMusic ] = false;
+        defaults[ Settings.OpenInExisting.Bandcamp ] = false;
+        defaults[ Settings.OpenInExisting.Netflix ] = false;
+        defaults[ Settings.OpenInExisting.AmazonVideo ] = false;
+        defaults[ Settings.OpenInExisting.AmazonMusic ] = false;
+        defaults[ Settings.OpenInExisting.Hulu ] = false;
+        defaults[ Settings.OpenInExisting.GenericAudioVideo ] = false;
+        defaults[ Settings.OpenInExisting.Twitch ] = false;
 
         defaults[ Settings.NotificationLength ] = 5;
         defaults[ Settings.NoActiveWindowNotifications ] = false;

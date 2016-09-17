@@ -3,6 +3,7 @@ function BandcampController()
     Controller.call( this, 'Bandcamp' )
 
     this.color = Controller.settings[ Settings.ControllerColors.Bandcamp ];
+    this.hostname = 'bandcamp.com';
 
     this.initialize();
 }
@@ -77,6 +78,7 @@ BandcampController.prototype._getContentInfo = function()
         return null;
     }
 };
+
 
 $( function()
 {

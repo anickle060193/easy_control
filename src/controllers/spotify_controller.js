@@ -73,6 +73,21 @@ SpotifyController.prototype._getContentInfo = function()
     }
 };
 
+SpotifyController.prototype.openContent = function( content )
+{
+    console.log( 'Spotify - openContent(): ' + content );
+    var newUrl = content;
+    var dataUri = 'spotify:' + newUrl.replace( 'https://play.spotify.com/', '' ).split( '/' ).join( ':' );
+
+    var a = $( `<a href="${newUrl}" data-uri="${dataUri}"></a>` )
+        .text( newUrl )
+        .appendTo( document.body );
+
+    a[ 0 ].click();
+
+    a.remove();
+};
+
 
 $( function()
 {

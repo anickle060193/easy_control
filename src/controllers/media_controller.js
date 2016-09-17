@@ -408,6 +408,7 @@ MediaController.prototype.stopPolling = function()
     $( this.media ).off( 'play pause playing timeupdate' );
 };
 
+
 MediaController.onNewMedia = ( function()
 {
     function addMedia( element, controllerCreatorCallback )

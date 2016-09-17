@@ -2,11 +2,13 @@ function BackgroundController( port )
 {
     this.port = port;
     this.name = this.port.name;
-    this.paused = true;
     this.color = '';
+    this.allowPauseOnInactivity = true;
+    this.hostname = null;
+
+    this.paused = true;
     this.progress = 0.0;
     this.active = false;
-    this.allowPauseOnInactivity = true;
     this.content = null;
 }
 
@@ -58,4 +60,9 @@ BackgroundController.prototype.volumeUp = function()
 BackgroundController.prototype.volumeDown = function()
 {
     this.port.postMessage( new Message( Message.types.from_background.VOLUME_DOWN ) );
+};
+
+BackgroundController.prototype.openContent = function( content )
+{
+    this.port.postMessage( new Message( Message.types.from_background.OPEN_CONTENT, content ) );
 };

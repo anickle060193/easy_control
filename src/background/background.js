@@ -18,6 +18,8 @@ Background = ( function()
 
     var settings = { };
 
+    var tabs = { };
+
 
     function handleMessage( message, controller )
     {
@@ -26,6 +28,7 @@ Background = ( function()
             console.log( 'Controller Initialized: ' + controller.name );
             controller.color = message.data.color;
             controller.allowPauseOnInactivity = message.data.allowPauseOnInactivity;
+            controller.hostname = message.data.hostname;
         }
         else if( message.type === Message.types.to_background.STATUS )
         {
@@ -527,6 +530,63 @@ Background = ( function()
             {
                 chrome.contextMenus.update( 'auto_pause_enabled', { checked : settings[ Settings.AutoPauseEnabled ] } );
             }
+        } );
+
+
+        function urlUpdated( tab )
+        {
+            var hostname = new URL( tab.url ).hostname;
+            if( hostname )
+            {
+                $.each( controllers, function( i, controller )
+                {
+                    if( controller.port.sender.tab.id !== tab.id
+                     && controller.hostname
+                     && hostname.includes( controller.hostname )
+                     && settings[ Settings.OpenInExisting[ controller.name ] ] )
+                    {
+                        console.log( 'Already have ' + controller.name + ' controller.' );
+                        chrome.tabs.remove( tab.id );
+
+                        var existingTab = controller.port.sender.tab;
+
+                        BackgroundUtilities.focusTab( existingTab );
+
+                        controller.openContent( tab.url );
+
+                        return false;
+                    }
+                } );
+            }
+        }
+
+
+        chrome.tabs.onCreated.addListener( function( tab )
+        {
+            tabs[ tab.id ] = tab.url;
+            if( tab.url )
+            {
+                urlUpdated( tab );
+            }
+        } );
+
+
+        chrome.tabs.onUpdated.addListener( function( tabId, changeInfo, tab )
+        {
+            if( typeof changeInfo.url !== 'undefined' )
+            {
+                if( tabs[ tabId ] !== tab.url )
+                {
+                    urlUpdated( tab );
+                    tabs[ tabId ] = tab.url;
+                }
+            }
+        } );
+
+
+        chrome.tabs.onRemoved.addListener( function( tabId, removeInfo )
+        {
+            delete tabs[ tabId ];
         } );
 
 
