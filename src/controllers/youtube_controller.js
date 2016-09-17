@@ -1,8 +1,12 @@
 function YoutubeController( video )
 {
-    MediaController.call( this, video, 'Youtube', Controller.settings[ Settings.ControllerColors.Youtube ], false );
+    MediaController.call( this, 'Youtube', video );
+
+    this.color = Controller.settings[ Settings.ControllerColors.Youtube ];
 
     this.hasBeenActivated = this.active;
+
+    this.initialize();
 }
 
 YoutubeController.prototype = Object.create( MediaController.prototype );

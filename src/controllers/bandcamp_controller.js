@@ -1,6 +1,10 @@
 function BandcampController()
 {
-    Controller.call( this, 'Bandcamp', '#639AA9', true )
+    Controller.call( this, 'Bandcamp' )
+
+    this.color = Controller.settings[ Settings.ControllerColors.Bandcamp ];
+
+    this.initialize();
 }
 
 BandcampController.prototype = Object.create( Controller.prototype );

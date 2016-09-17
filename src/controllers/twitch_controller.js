@@ -1,6 +1,11 @@
 function TwitchController()
 {
-    Controller.call( this, 'Twitch', Controller.settings[ Settings.ControllerColors.Twitch ], true );
+    Controller.call( this, 'Twitch' );
+
+    this.color = Controller.settings[ Settings.ControllerColors.Twitch ];
+    this.allowPauseOnInactivity = false;
+
+    this.initialize();
 }
 
 TwitchController.prototype = Object.create( Controller.prototype );

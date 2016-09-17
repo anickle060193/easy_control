@@ -1,6 +1,10 @@
 function HuluController( video )
 {
-    MediaController.call( this, video, 'Hulu', Controller.settings[ Settings.ControllerColors.Hulu ], false );
+    MediaController.call( this, 'Hulu', video );
+
+    this.color = Controller.settings[ Settings.ControllerColors.Hulu ];
+
+    this.initialize();
 }
 
 HuluController.prototype = Object.create( MediaController.prototype );

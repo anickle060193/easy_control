@@ -1,6 +1,10 @@
 function AmazonVideoController( video )
 {
-    MediaController.call( this, video, 'AmazonVideo', Controller.settings[ Settings.ControllerColors.AmazonVideo ], false );
+    MediaController.call( this, 'AmazonVideo', video );
+
+    this.color = Controller.settings[ Settings.ControllerColors.AmazonVideo ];
+
+    this.initialize();
 }
 
 AmazonVideoController.prototype = Object.create( MediaController.prototype );

@@ -1,6 +1,10 @@
 function GooglePlayMusicController()
 {
-    Controller.call( this, 'GooglePlayMusic', '#ff5722', true );
+    Controller.call( this, 'GooglePlayMusic' );
+
+    this.color = Controller.settings[ Settings.ControllerColors.GooglePlayMusic ];
+
+    this.initialize();
 }
 
 GooglePlayMusicController.prototype = Object.create( Controller.prototype );

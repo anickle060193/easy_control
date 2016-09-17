@@ -25,7 +25,7 @@ Background = ( function()
         {
             console.log( 'Controller Initialized: ' + controller.name );
             controller.color = message.data.color;
-            controller.allowLockOnInactivity = message.data.allowLockOnInactivity;
+            controller.allowPauseOnInactivity = message.data.allowPauseOnInactivity;
         }
         else if( message.type === Message.types.to_background.STATUS )
         {
@@ -498,7 +498,7 @@ Background = ( function()
                 }
                 else if( newState === 'idle' )
                 {
-                    if( settings[ Settings.PauseOnInactivity ] && currentController.allowLockOnInactivity )
+                    if( settings[ Settings.PauseOnInactivity ] && currentController.allowPauseOnInactivity )
                     {
                         console.log( 'Pausing due to Inactivity' );
                         pause();

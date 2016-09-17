@@ -1,6 +1,10 @@
 function NetflixController( video )
 {
-    MediaController.call( this, video, 'Netflix', Controller.settings[ Settings.ControllerColors.Netflix ], false );
+    MediaController.call( this, 'Netflix', video );
+
+    this.color = Controller.settings[ Settings.ControllerColors.Netflix ];
+
+    this.initialize();
 }
 
 NetflixController.prototype = Object.create( MediaController.prototype );

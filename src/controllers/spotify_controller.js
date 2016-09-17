@@ -1,6 +1,10 @@
 function SpotifyController()
 {
-    Controller.call( this, 'Spotify', Controller.settings[ Settings.ControllerColors.Spotify ], true );
+    Controller.call( this, 'Spotify' );
+
+    this.color = Controller.settings[ Settings.ControllerColors.Spotify ];
+
+    this.initialize();
 }
 
 SpotifyController.prototype = Object.create( Controller.prototype );

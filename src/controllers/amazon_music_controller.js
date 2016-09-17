@@ -1,6 +1,10 @@
 function AmazonMusicController()
 {
-    Controller.call( this, 'AmazonMusic', Controller.settings[ Settings.ControllerColors.AmazonMusic ], true );
+    Controller.call( this, 'AmazonMusic' );
+
+    this.color = Controller.settings[ Settings.ControllerColors.AmazonMusic ];
+
+    this.initialize();
 }
 
 AmazonMusicController.prototype = Object.create( Controller.prototype );

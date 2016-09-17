@@ -1,8 +1,12 @@
-function Controller( name, color, allowLockOnInactivity )
+function Controller( name )
 {
-    this.name = name
-    this.color = color;
-    this.allowLockOnInactivity = allowLockOnInactivity;
+    this.name = name;
+    this.color = 'black';
+    this.hostname = '';
+    this.allowPauseOnInactivity = true;
+
+    this.initialized = false;
+
     this.active = !document.hidden;
     console.log( 'Initial active: ' + this.active );
     console.log( 'Initial visibility state: ' + document.visibilityState );
@@ -18,12 +22,18 @@ function Controller( name, color, allowLockOnInactivity )
 
     $( window ).focus( $.proxy( this.activate, this ) );
     $( window ).blur( $.proxy( this.deactivate, this ) );
+}
 
+Controller.prototype.initialize = function()
+{
     var data = {
         color : this.color,
-        allowLockOnInactivity : this.allowLockOnInactivity
+        allowPauseOnInactivity : this.allowPauseOnInactivity,
+        hostname : this.hostname
     };
     this.port.postMessage( new Message( Message.types.to_background.INITIALIZE, data ) );
+
+    this.initialized = true;
 }
 
 Controller.prototype.activate = function()
@@ -143,6 +153,12 @@ Controller.prototype.poll = function()
 Controller.prototype.startPolling = function()
 {
     console.log( 'Controller - Start polling' );
+
+    if( !this.initialized )
+    {
+        throw 'Must initialize controller before polling.';
+    }
+
     this.pollingInterval = window.setInterval( this.poll.bind( this ), 50 );
 };
 

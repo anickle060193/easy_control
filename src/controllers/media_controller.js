@@ -1,10 +1,12 @@
-function MediaController( media, name, color, allowLockOnInactivity )
+function MediaController( name, media )
 {
-    Controller.call( this, name, color, allowLockOnInactivity );
+    Controller.call( this, name );
 
     this.media = media;
     this.isVideo = this.media.nodeName === 'VIDEO';
     this.controls = null;
+
+    this.allowPauseOnInactivity = !this.isVideo;
 
     this.fullscreen = false;
     this.dragging = false;
@@ -391,6 +393,12 @@ MediaController.prototype._volumeDown = function()
 MediaController.prototype.startPolling = function()
 {
     console.log( 'MediaController - Start polling' );
+
+    if( !this.initialized )
+    {
+        throw 'Must initialize media controller before polling.';
+    }
+
     $( this.media ).on( 'play pause playing timeupdate', $.proxy( this.poll, this ) );
 };
 

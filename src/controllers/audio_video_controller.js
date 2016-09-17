@@ -1,6 +1,10 @@
-function AudioVideoController( media, name )
+function AudioVideoController( name, media )
 {
-    MediaController.call( this, media, name, Controller.settings[ Settings.ControllerColors.GenericAudioVideo ], media.nodeName !== 'VIDEO' );
+    MediaController.call( this, name, media );
+
+    this.color = Controller.settings[ Settings.ControllerColors.GenericAudioVideo ];
+
+    this.initialize();
 }
 
 AudioVideoController.prototype = Object.create( MediaController.prototype );
@@ -39,7 +43,7 @@ $( function()
             }
 
             mediaCounter++;
-            return new AudioVideoController( media, name + '_' + mediaCounter );
+            return new AudioVideoController( name + '_' + mediaCounter, media );
         } );
     }
 } );
