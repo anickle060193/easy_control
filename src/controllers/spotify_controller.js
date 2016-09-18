@@ -50,22 +50,30 @@ SpotifyController.prototype._isPaused = function()
     return !$( '#play-pause' ).hasClass( 'playing' );
 };
 
-SpotifyController.prototype._getContentInfo = function()
+SpotifyController.prototype.getContentInfo = function()
 {
-    var track = $( '#track-name > a' ).eq( 0 ).text();
+    var trackLink = $( '#track-name > a:first' );
+    var track = trackLink.text();
     var artist = $( '#track-artist > a' ).map( function()
-        {
-            return $( this ).text();
-        } ).get().join( ', ' );
+    {
+        return $( this ).text();
+    } ).get().join( ', ' );
     var artwork = "";
     var artworkImg = $( '#cover-art div.sp-image-img' ).css( 'background-image' );
     if( artworkImg )
     {
         artwork = artworkImg.replace( /^.*\s*url\(\s*[\'\"]?/, '' ).replace( /[\'\"]?\s*\).*/, '' );
     }
+
     if( track )
     {
-        return new ContentInfo( track, artist, "", artwork );
+        var contentInfo = Controller.prototype.getContentInfo.call( this );
+        contentInfo.title = track.trim();
+        contentInfo.caption = artist.trim();
+        contentInfo.image = artwork.trim();
+        contentInfo.link = trackLink.prop( 'href' ).trim();
+
+        return contentInfo;
     }
     else
     {

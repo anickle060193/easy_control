@@ -44,15 +44,22 @@ AmazonMusicController.prototype._isPaused = function()
     return $( '.playbackControlsView .playButton' ).hasClass( 'playerIconPlay' );
 };
 
-AmazonMusicController.prototype._getContentInfo = function()
+AmazonMusicController.prototype.getContentInfo = function()
 {
-    var track = $( '.trackInfoContainer .trackTitle' ).text();
+    var trackLink = $( '.trackInfoContainer .trackTitle > a' );
+    var track = trackLink.text();
     var artist = $( '.trackInfoContainer .trackArtist > a > span' ).text();
     var album = $( '.trackInfoContainer .trackSourceLink > span > a' ).text();
-    var artwork = $( '.trackAlbumArt img' ).attr( 'src' );
+    var artwork = $( '.trackAlbumArt img' ).prop( 'src' );
     if( track && track !== "loading ..." )
     {
-        return new ContentInfo( track, artist, album, artwork );
+        var contentInfo = Controller.prototype.getContentInfo.call( this );
+        contentInfo.title = track.trim();
+        contentInfo.caption = artist.trim();
+        contentInfo.subcaption = album.trim();
+        contentInfo.image = artwork.trim();
+        contentInfo.link = trackLink.prop( 'href' ).trim();
+        return contentInfo;
     }
     else
     {

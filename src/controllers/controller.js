@@ -262,13 +262,15 @@ Controller.prototype.getProgress = function()
 
 Controller.prototype.getContentInfo = function()
 {
-    var contentInfo = this._getContentInfo();
-    if( contentInfo !== null )
-    {
-        contentInfo.isLiked = this.isLiked();
-        contentInfo.isDisliked = this.isDisliked();
-    }
-    return contentInfo;
+    return {
+        title : '',
+        caption : '',
+        subcaption : '',
+        image : '',
+        link : location.href,
+        isLiked : this.isLiked(),
+        isDisliked : this.isDisliked()
+    };
 };
 
 Controller.prototype.volumeUp = function()
@@ -339,11 +341,6 @@ Controller.prototype._isPaused = function()
 Controller.prototype._getProgress = function()
 {
     return 0.0;
-};
-
-Controller.prototype._getContentInfo = function()
-{
-    return null;
 };
 
 Controller.prototype._volumeUp = function()

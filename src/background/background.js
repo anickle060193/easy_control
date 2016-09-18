@@ -327,6 +327,36 @@ Background = ( function()
     }
 
 
+    function copyContentLink()
+    {
+        console.log( currentController );
+        if( currentController && currentController.content && currentController.content.link )
+        {
+            console.log( 'Copying content link: ' + currentController.content.link );
+            var input = $( '<input>' )
+                .prop( 'type', 'text' )
+                .val( currentController.content.link )
+                .appendTo( document.body );
+            input[ 0 ].select();
+
+            try
+            {
+                document.execCommand( 'copy' );
+            }
+            catch( e )
+            {
+                console.log( 'Copy Failed - ' + e );
+            }
+
+            input.remove();
+        }
+        else
+        {
+            console.log( 'No content to copy' );
+        }
+    }
+
+
     function onStart()
     {
         console.log( 'Background Start' );
@@ -632,7 +662,8 @@ Background = ( function()
         undislike : undislike,
         volumeUp : volumeUp,
         volumeDown : volumeDown,
-        onStart : onStart
+        onStart : onStart,
+        copyContentLink : copyContentLink
     };
 } )();
 

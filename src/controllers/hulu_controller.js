@@ -25,15 +25,19 @@ HuluController.prototype._next = function()
     $( '.controls-bar .next-video-button' ).click();
 };
 
-HuluController.prototype._getContentInfo = function()
+HuluController.prototype.getContentInfo = function()
 {
     var episodeTitle = $( '.video-description .episode-title' ).text();
     var showTitle = $( '.video-description .show-title' ).text();
-    var thumbnail = $( 'meta[property="og:image"]' ).attr( 'content' );
+    var thumbnail = $( 'meta[property="og:image"]' ).prop( 'content' );
 
     if( episodeTitle )
     {
-        return new ContentInfo( episodeTitle, showTitle, "", thumbnail );
+        var contentInfo = MediaController.prototype.getContentInfo.call( this );
+        contentInfo.title = episodeTitle.trim();
+        contentInfo.caption = showTitle.trim();
+        contentInfo.image = thumbnail.trim();
+        return contentInfo;
     }
     else
     {

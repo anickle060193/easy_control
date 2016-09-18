@@ -51,7 +51,7 @@ BandcampController.prototype._isPaused = function()
     return !$( '.playbutton' ).hasClass( 'playing' );
 };
 
-BandcampController.prototype._getContentInfo = function()
+BandcampController.prototype.getContentInfo = function()
 {
     var track, artist, album, artwork;
     if( $( 'h2.trackTitle' ).length !== 0 )
@@ -59,19 +59,24 @@ BandcampController.prototype._getContentInfo = function()
         track = $( '.track_info .title' ).text();
         artist = $( '[itemprop=byArtist] > a' ).text();
         album = $( 'h2.trackTitle' ).text();
-        artwork = $( '#tralbumArt img' ).attr( 'src' );
+        artwork = $( '#tralbumArt img' ).prop( 'src' );
     }
     else
     {
         track = $( '.title' ).text();
         artist = $( '.detail-artist > a' ).text();
         album = $( '.detail-album > a' ).text();
-        artwork = $( '.detail-art > img' ).attr( 'src' );
+        artwork = $( '.detail-art > img' ).prop( 'src' );
     }
 
     if( track )
     {
-        return new ContentInfo( track, artist, album, artwork );
+        var contentInfo = Controller.prototype.getContentInfo.call( this );
+        contentInfo.title = track.trim();
+        contentInfo.caption = artist.trim();
+        contentInfo.subcaption = album.trim();
+        contentInfo.image = artwork.trim();
+        return contentInfo;
     }
     else
     {

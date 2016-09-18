@@ -324,7 +324,7 @@ Common = ( function()
 
             if( elems.length > 0 )
             {
-                timeoutId = window.setTimeout( poll, 1000 );
+                timeoutId = window.setTimeout( poll, 100 );
             }
         }
 
@@ -372,14 +372,17 @@ SessionStorage = ( function()
 } )();
 
 
-Array.prototype.remove = function( item )
+if( typeof Array.prototype.remove === 'undefined' )
 {
-    var index = this.indexOf( item );
-    if( index !== -1 )
+    Array.prototype.remove = function( item )
     {
-        this.splice( index, 1 );
-    }
-};
+        var index = this.indexOf( item );
+        if( index !== -1 )
+        {
+            this.splice( index, 1 );
+        }
+    };
+}
 
 
 Common.createElementPollingEvent( 'move', function()

@@ -11,14 +11,17 @@ function AmazonVideoController( video )
 AmazonVideoController.prototype = Object.create( MediaController.prototype );
 AmazonVideoController.prototype.constructor = AmazonVideoController;
 
-AmazonVideoController.prototype._getContentInfo = function()
+AmazonVideoController.prototype.getContentInfo = function()
 {
     var title = $( '#aiv-content-title' )[ 0 ].childNodes[ 0 ].nodeValue;
-    var thumbnail = $( 'meta[property="og:image"]' ).attr( 'content' );
+    var thumbnail = $( 'meta[property="og:image"]' ).prop( 'content' );
 
     if( title )
     {
-        return new ContentInfo( title, "", "", thumbnail );
+        var contentInfo = MediaController.prototype.getContentInfo.call( this );
+        contentInfo.title = title.trim();
+        contentInfo.image = thumbnail.trim();
+        return contentInfo;
     }
     else
     {

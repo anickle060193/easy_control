@@ -67,15 +67,19 @@ YoutubeController.prototype._isDisliked = function()
     return !$( 'button.like-button-renderer-dislike-button.like-button-renderer-dislike-button-clicked' ).hasClass( 'hid' );
 };
 
-YoutubeController.prototype._getContentInfo = function()
+YoutubeController.prototype.getContentInfo = function()
 {
     var videoTitle = $( '.watch-title' ).text();
     var channel = $( '.spf-link a' ).text();
-    var thumbnailImg = $( '#watch-header img' )[ 0 ];
+    var thumbnailImg = $( '#watch-header img' );
 
-    if( videoTitle && thumbnailImg && thumbnailImg.naturalHeight > 10 )
+    if( videoTitle && thumbnailImg.length > 0 && thumbnailImg.prop( 'naturalHeight' ) > 10 )
     {
-        return new ContentInfo( videoTitle, channel, "", thumbnailImg.src );
+        var contentInfo = MediaController.prototype.getContentInfo.call( this );
+        contentInfo.title = videoTitle.trim();
+        contentInfo.caption = channel.trim();
+        contentInfo.image = thumbnailImg.prop( 'src' ).trim();
+        return contentInfo;
     }
     else
     {

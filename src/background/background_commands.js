@@ -11,8 +11,6 @@ BackgroundCommands = ( function()
 
         chrome.commands.onCommand.addListener( function( command )
         {
-            console.log( 'Keyboard Command: ' + command );
-
             if( command === '1_play_pause' )
             {
                 Background.playPause();
@@ -48,6 +46,14 @@ BackgroundCommands = ( function()
             else if( command === '9_volume_down' )
             {
                 Background.volumeDown();
+            }
+            else if( command === 'a_copy_content_link' )
+            {
+                Background.copyContentLink();
+            }
+            else
+            {
+                console.log( 'Unrecognized Command: ' + command );
             }
         } );
     }

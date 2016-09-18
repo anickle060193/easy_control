@@ -48,7 +48,7 @@ TwitchController.prototype._isPaused = function()
     return $( 'button.player-button--playpause > .play-button' ).css( 'display' ) !== 'none';
 };
 
-TwitchController.prototype._getContentInfo = function()
+TwitchController.prototype.getContentInfo = function()
 {
     var title = $( '.info > .title' ).text();
     var streamer = $( '.channel-name' ).text();
@@ -56,7 +56,11 @@ TwitchController.prototype._getContentInfo = function()
 
     if( title && streamer && artwork )
     {
-        return new ContentInfo( title, streamer, "", artwork );
+        var contentInfo = Controller.prototype.getContentInfo.call( this );
+        contentInfo.title = title.trim();
+        contentInfo.caption = streamer.trim();
+        contentInfo.image = artwork.trim();
+        return contentInfo;
     }
     else
     {

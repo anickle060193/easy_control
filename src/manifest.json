@@ -184,6 +184,9 @@
         },
         "9_volume_down" : {
             "description" : "Volume Down"
+        },
+        "a_copy_content_link" : {
+            "description" : "Copy current content link"
         }
     }
 }

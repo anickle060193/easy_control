@@ -77,15 +77,22 @@ PandoraController.prototype._isPaused = function()
     return $( '.playButton' ).is( ':visible' );
 };
 
-PandoraController.prototype._getContentInfo = function()
+PandoraController.prototype.getContentInfo = function()
 {
-    var track = $( '.playerBarSong' ).text();
+    var trackLink = $( 'a.playerBarSong' );
+    var track = trackLink.text();
     var artist = $( '.playerBarArtist' ).text();
     var album = $( '.playerBarAlbum' ).text();
-    var artwork = $( 'img.art[src]' ).attr( 'src' );
+    var artwork = $( 'img.art[src]' ).prop( 'src' );
     if( track )
     {
-        return new ContentInfo( track, artist, album, artwork );
+        var contentInfo = Controller.prototype.getContentInfo.call( this );
+        contentInfo.title = track.trim();
+        contentInfo.caption = artist.trim();
+        contentInfo.subcaption = album.trim();
+        contentInfo.image = artwork.trim();
+        contentInfo.link = trackLink.prop( 'href' ).trim();
+        return contentInfo;
     }
     else
     {

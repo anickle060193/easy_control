@@ -25,17 +25,23 @@ NetflixController.prototype._next = function()
     $( '.player-control-button.player-next-episode' ).click();
 };
 
-NetflixController.prototype._getContentInfo = function()
+NetflixController.prototype.getContentInfo = function()
 {
-    var playerStatusChildren = $( '.player-status' ).children();
+    var title = $( '.player-status-main-title' ).text();
 
-    var episodeTitle = playerStatusChildren.eq( 2 ).text();
-    var episodeNumber = playerStatusChildren.eq( 1 ).text();
-    var seriesTitle = playerStatusChildren.eq( 0 ).text();
-
-    if( episodeTitle )
+    if( title )
     {
-        return new ContentInfo( episodeTitle, episodeNumber, seriesTitle, "" );
+        var contentInfo = MediaController.prototype.getContentInfo.call( this );
+        contentInfo.title = title.trim();
+
+        var playerStatusChildren = $( '.player-status' ).children();
+        if( playerStatusChildren.length > 1 )
+        {
+            contentInfo.caption = playerStatusChildren.eq( 1 ).text().trim();
+            contentInfo.subcaption = playerStatusChildren.eq( 2 ).text().trim();
+        }
+
+        return contentInfo;
     }
     else
     {

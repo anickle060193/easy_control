@@ -80,15 +80,20 @@ GooglePlayMusicController.prototype._isPaused = function()
     return !$( '#player-bar-play-pause' ).hasClass( 'playing' );
 };
 
-GooglePlayMusicController.prototype._getContentInfo = function()
+GooglePlayMusicController.prototype.getContentInfo = function()
 {
     var track = $( '#currently-playing-title' ).text();
     var artist = $( '#player-artist' ).text();
     var album = $( '.player-album' ).text();
-    var artwork = $( '#playerBarArt' ).attr( 'src' );
+    var artwork = $( '#playerBarArt' ).prop( 'src' );
     if( track )
     {
-        return new ContentInfo( track, artist, album, artwork );
+        var contentInfo = Controller.prototype.getContentInfo.call( this );
+        contentInfo.title = track.trim();
+        contentInfo.caption = artist.trim();
+        contentInfo.subcaption = album.trim();
+        contentInfo.image = artwork.trim();
+        return contentInfo;
     }
     else
     {
