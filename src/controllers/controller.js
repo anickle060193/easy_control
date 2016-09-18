@@ -1,362 +1,326 @@
-function Controller( name )
+class Controller
 {
-    this.name = name;
-    this.color = 'black';
-    this.hostname = window.location.hostname;
-    this.allowPauseOnInactivity = true;
-
-    this.initialized = false;
-
-    this.active = !document.hidden;
-    console.log( 'Initial active: ' + this.active );
-    console.log( 'Initial visibility state: ' + document.visibilityState );
-
-    this.disconnected = false;
-    this.currentContent = null;
-    this.lastProgress = 0.0;
-    this.pollingInterval = null;
-    this.port = chrome.runtime.connect( null, { name : name } );
-
-    this.port.onMessage.addListener( this.handleMessage.bind( this ) );
-    this.port.onDisconnect.addListener( this.disconnect.bind( this ) );
-
-    $( window ).focus( $.proxy( this.activate, this ) );
-    $( window ).blur( $.proxy( this.deactivate, this ) );
-}
-
-Controller.prototype.initialize = function()
-{
-    var data = {
-        color : this.color,
-        allowPauseOnInactivity : this.allowPauseOnInactivity,
-        hostname : this.hostname
-    };
-    this.port.postMessage( new Message( Message.types.to_background.INITIALIZE, data ) );
-
-    this.initialized = true;
-}
-
-Controller.prototype.activate = function()
-{
-    this.active = true;
-};
-
-Controller.prototype.deactivate = function()
-{
-    this.active = false;
-};
-
-Controller.prototype.handleMessage = function( message )
-{
-    if( message.type === Message.types.from_background.PAUSE )
+    constructor( name )
     {
-        console.log( 'Recieved: PAUSE' );
-        this.pause();
+        this.name = name;
+        this.color = 'black';
+        this.hostname = window.location.hostname;
+        this.allowPauseOnInactivity = true;
+
+        this.initialized = false;
+
+        this.active = !document.hidden;
+        console.log( 'Initial active: ' + this.active );
+        console.log( 'Initial visibility state: ' + document.visibilityState );
+
+        this.disconnected = false;
+        this.currentContent = null;
+        this.lastProgress = 0.0;
+        this.pollingInterval = null;
+        this.port = chrome.runtime.connect( null, { name : name } );
+
+        this.port.onMessage.addListener( this.handleMessage.bind( this ) );
+        this.port.onDisconnect.addListener( this.disconnect.bind( this ) );
+
+        $( window ).focus( $.proxy( this.activate, this ) );
+        $( window ).blur( $.proxy( this.deactivate, this ) );
     }
-    else if( message.type === Message.types.from_background.PLAY )
-    {
-        console.log( 'Recieved: PLAY' );
-        this.play();
-    }
-    else if( message.type === Message.types.from_background.NEXT )
-    {
-        console.log( 'Recieved: NEXT' );
-        this.next();
-    }
-    else if( message.type === Message.types.from_background.PREVIOUS )
-    {
-        console.log( 'Recieved: PREVIOUS' );
-        this.previous();
-    }
-    else if( message.type === Message.types.from_background.DISLIKE )
-    {
-        console.log( 'Recieved: DISLIKE' );
-        this.dislike();
-    }
-    else if( message.type == Message.types.from_background.UNDISLIKE )
-    {
-        console.log( 'Recieved: UNDISLIKE' );
-        this.undislike();
-    }
-    else if( message.type === Message.types.from_background.LIKE )
-    {
-        console.log( 'Recieved: LIKE' );
-        this.like();
-    }
-    else if( message.type === Message.types.from_background.UNLIKE )
-    {
-        console.log( 'Recieved: UNLIKE' );
-        this.unlike();
-    }
-    else if( message.type === Message.types.from_background.VOLUME_UP )
-    {
-        console.log( 'Recieved: VOLUME UP' );
-        this.volumeUp();
-    }
-    else if( message.type === Message.types.from_background.VOLUME_DOWN )
-    {
-        console.log( 'Recieved: VOLUME DOWN' );
-        this.volumeDown();
-    }
-    else if( message.type === Message.types.from_background.OPEN_CONTENT )
-    {
-        console.log( 'Recieved: OPEN CONTENT' );
-        this.openContent( message.data );
-    }
-};
 
-Controller.prototype.reportStatus = function()
-{
-    var data = {
-        paused : this.isPaused(),
-        progress : this.getProgress(),
-        active : this.active
-    };
-    this.port.postMessage( new Message( Message.types.to_background.STATUS, data ) );
-};
-
-Controller.prototype.poll = function()
-{
-    this.reportStatus();
-
-    if( !this.isPaused() )
+    initialize()
     {
-        var currentProgress = this.getProgress();
+        var data = {
+            color : this.color,
+            allowPauseOnInactivity : this.allowPauseOnInactivity,
+            hostname : this.hostname
+        };
+        this.port.postMessage( new Message( Message.types.to_background.INITIALIZE, data ) );
 
-        var contentInfo = this.getContentInfo();
-        if( contentInfo !== null )
+        this.initialized = true;
+    }
+
+    activate()
+    {
+        this.active = true;
+    }
+
+    deactivate()
+    {
+        this.active = false;
+    }
+
+    handleMessage( message )
+    {
+        if( message.type === Message.types.from_background.PAUSE )
         {
-            var isNewContent = false;
-            if( this.currentContent === null )
+            console.log( 'Recieved: PAUSE' );
+            this.pause();
+        }
+        else if( message.type === Message.types.from_background.PLAY )
+        {
+            console.log( 'Recieved: PLAY' );
+            this.play();
+        }
+        else if( message.type === Message.types.from_background.NEXT )
+        {
+            console.log( 'Recieved: NEXT' );
+            this.next();
+        }
+        else if( message.type === Message.types.from_background.PREVIOUS )
+        {
+            console.log( 'Recieved: PREVIOUS' );
+            this.previous();
+        }
+        else if( message.type === Message.types.from_background.DISLIKE )
+        {
+            console.log( 'Recieved: DISLIKE' );
+            this.dislike();
+        }
+        else if( message.type == Message.types.from_background.UNDISLIKE )
+        {
+            console.log( 'Recieved: UNDISLIKE' );
+            this.undislike();
+        }
+        else if( message.type === Message.types.from_background.LIKE )
+        {
+            console.log( 'Recieved: LIKE' );
+            this.like();
+        }
+        else if( message.type === Message.types.from_background.UNLIKE )
+        {
+            console.log( 'Recieved: UNLIKE' );
+            this.unlike();
+        }
+        else if( message.type === Message.types.from_background.VOLUME_UP )
+        {
+            console.log( 'Recieved: VOLUME UP' );
+            this.volumeUp();
+        }
+        else if( message.type === Message.types.from_background.VOLUME_DOWN )
+        {
+            console.log( 'Recieved: VOLUME DOWN' );
+            this.volumeDown();
+        }
+        else if( message.type === Message.types.from_background.OPEN_CONTENT )
+        {
+            console.log( 'Recieved: OPEN CONTENT' );
+            this.openContent( message.data );
+        }
+    }
+
+    reportStatus()
+    {
+        var data = {
+            paused : this.isPaused(),
+            progress : this.getProgress(),
+            active : this.active
+        };
+        this.port.postMessage( new Message( Message.types.to_background.STATUS, data ) );
+    }
+
+    poll()
+    {
+        this.reportStatus();
+
+        if( !this.isPaused() )
+        {
+            var currentProgress = this.getProgress();
+
+            var contentInfo = this.getContentInfo();
+            if( contentInfo !== null )
             {
-                isNewContent = true;
-                console.log( 'New Content - Current is null' );
-            }
-            else if( this.currentContent.title !== contentInfo.title )
-            {
-                isNewContent = true;
-                console.log( 'New Content - Title\'s don\'t match' );
-            }
-            else if( this.lastProgress >= 0.95 && currentProgress < 0.05 && currentProgress > 0 )
-            {
-                isNewContent = true;
-                console.log( 'New Content - Progress went from ' + this.lastProgress + ' to ' + currentProgress );
+                var isNewContent = false;
+                if( this.currentContent === null )
+                {
+                    isNewContent = true;
+                    console.log( 'New Content - Current is null' );
+                }
+                else if( this.currentContent.title !== contentInfo.title )
+                {
+                    isNewContent = true;
+                    console.log( 'New Content - Title\'s don\'t match' );
+                }
+                else if( this.lastProgress >= 0.95 && currentProgress < 0.05 && currentProgress > 0 )
+                {
+                    isNewContent = true;
+                    console.log( 'New Content - Progress went from ' + this.lastProgress + ' to ' + currentProgress );
+                }
+
+                if( isNewContent )
+                {
+                    console.log( contentInfo );
+                    this.currentContent = contentInfo;
+                    this.port.postMessage( new Message( Message.types.to_background.NEW_CONTENT, this.currentContent ) );
+                }
             }
 
-            if( isNewContent )
-            {
-                console.log( contentInfo );
-                this.currentContent = contentInfo;
-                this.port.postMessage( new Message( Message.types.to_background.NEW_CONTENT, this.currentContent ) );
-            }
+            this.lastProgress = currentProgress;
+        }
+    }
+
+    startPolling()
+    {
+        console.log( 'Controller - Start polling' );
+
+        if( !this.initialized )
+        {
+            throw 'Must initialize controller before polling.';
         }
 
-        this.lastProgress = currentProgress;
+        this.pollingInterval = window.setInterval( this.poll.bind( this ), 50 );
     }
-};
 
-Controller.prototype.startPolling = function()
-{
-    console.log( 'Controller - Start polling' );
-
-    if( !this.initialized )
+    stopPolling()
     {
-        throw 'Must initialize controller before polling.';
+        console.log( 'Controller - Stop polling' );
+        window.clearInterval( this.pollingInterval );
     }
 
-    this.pollingInterval = window.setInterval( this.poll.bind( this ), 50 );
-};
-
-Controller.prototype.stopPolling = function()
-{
-    console.log( 'Controller - Stop polling' );
-    window.clearInterval( this.pollingInterval );
-};
-
-Controller.prototype.disconnect = function()
-{
-    console.log( 'Disconnect' );
-    this.disconnected = true;
-    $( window ).off( 'focus', this.activate );
-    $( window ).off( 'blur', this.deactivate );
-    this.stopPolling();
-    this.port.disconnect();
-};
-
-Controller.prototype.play = function()
-{
-    if( this.isPaused() )
+    disconnect()
     {
-        this._play();
+        console.log( 'Disconnect' );
+        this.disconnected = true;
+        $( window ).off( 'focus', this.activate );
+        $( window ).off( 'blur', this.deactivate );
+        this.stopPolling();
+        this.port.disconnect();
     }
-};
-Controller.prototype.pause = function()
-{
-    if( !this.isPaused() )
+
+    _play()
     {
-        this._pause();
+        console.log( 'play not supported.' );
     }
-};
 
-Controller.prototype.previous = function()
-{
-    this._previous();
-};
-
-Controller.prototype.next = function()
-{
-    this._next();
-};
-
-Controller.prototype.like = function()
-{
-    if( !this.isLiked() )
+    play()
     {
-        this._like();
+        if( this.isPaused() )
+        {
+            this._play();
+        }
     }
-};
 
-Controller.prototype.unlike = function()
-{
-    if( this.isLiked() )
+    _pause()
     {
-        this._unlike();
+        console.log( 'pause not supported.' );
     }
-};
 
-Controller.prototype.dislike = function()
-{
-    if( !this.isDisliked() )
+    pause()
     {
-        this._dislike();
+        if( !this.isPaused() )
+        {
+            this._pause();
+        }
     }
-};
 
-Controller.prototype.undislike = function()
-{
-    if( this.isDisliked() )
+    previous()
     {
-        this._undislike();
+        console.log( 'previous is not supported' );
     }
-};
 
-Controller.prototype.isLiked = function()
-{
-    return this._isLiked();
-};
+    next()
+    {
+        console.log( 'next is not supported' );
+    }
 
-Controller.prototype.isDisliked = function()
-{
-    return this._isDisliked();
-};
+    _like()
+    {
+        console.log( 'like not supported.' );
+    }
 
-Controller.prototype.isPaused = function()
-{
-    return this._isPaused();
-};
+    like()
+    {
+        if( !this.isLiked() )
+        {
+            this._like();
+        }
+    }
 
-Controller.prototype.getProgress = function()
-{
-    return this._getProgress();
-};
+    _unlike()
+    {
+        console.log( 'unlike not supported.' );
+    }
 
-Controller.prototype.getContentInfo = function()
-{
-    return {
-        title : '',
-        caption : '',
-        subcaption : '',
-        image : '',
-        link : location.href,
-        isLiked : this.isLiked(),
-        isDisliked : this.isDisliked()
-    };
-};
+    unlike()
+    {
+        if( this.isLiked() )
+        {
+            this._unlike();
+        }
+    }
 
-Controller.prototype.volumeUp = function()
-{
-    this._volumeUp();
-};
+    _dislike()
+    {
+        console.log( 'dislike not supported.' );
+    }
 
-Controller.prototype.volumeDown = function()
-{
-    this._volumeDown();
-};
+    dislike()
+    {
+        if( !this.isDisliked() )
+        {
+            this._dislike();
+        }
+    }
 
-Controller.prototype._play = function()
-{
-    console.log( 'play not supported.' );
-};
+    _undislike()
+    {
+        console.log( 'undislike not supported.' );
+    }
 
-Controller.prototype._pause = function()
-{
-    console.log( 'pause not supported.' );
-};
+    undislike()
+    {
+        if( this.isDisliked() )
+        {
+            this._undislike();
+        }
+    }
 
-Controller.prototype._previous = function()
-{
-    console.log( 'previous not supported.' );
-};
+    isLiked()
+    {
+        return false;
+    }
 
-Controller.prototype._next = function()
-{
-    console.log( 'next not supported.' );
-};
+    isDisliked()
+    {
+        return false;
+    }
 
-Controller.prototype._like = function()
-{
-    console.log( 'like not supported.' );
-};
+    isPaused()
+    {
+        return false;
+    }
 
-Controller.prototype._unlike = function()
-{
-    console.log( 'unlike not supported.' );
-};
+    getProgress()
+    {
+        return 0.0;
+    }
 
-Controller.prototype._dislike = function()
-{
-    console.log( 'dislike not supported.' );
-};
+    getContentInfo()
+    {
+        return {
+            title : '',
+            caption : '',
+            subcaption : '',
+            image : '',
+            link : location.href,
+            isLiked : this.isLiked(),
+            isDisliked : this.isDisliked()
+        };
+    }
 
-Controller.prototype._undislike = function()
-{
-    console.log( 'undislike not supported.' );
-};
+    volumeUp()
+    {
+        console.log( 'volumeUp is not supported' );
+    }
 
-Controller.prototype._isLiked = function()
-{
-    return false;
-};
+    volumeDown()
+    {
+        console.log( 'volumeDown is not supported' );
+    }
 
-Controller.prototype._isDisliked = function()
-{
-    return false;
-};
-
-Controller.prototype._isPaused = function()
-{
-    return true;
-};
-
-Controller.prototype._getProgress = function()
-{
-    return 0.0;
-};
-
-Controller.prototype._volumeUp = function()
-{
-    console.log( 'volumeUp not supported.' );
-};
-
-Controller.prototype._volumeDown = function()
-{
-    console.log( 'volumeDown not supported.' );
-};
-
-Controller.prototype.openContent = function( content )
-{
-    window.location.href = content;
-};
+    openContent( content )
+    {
+        window.location.href = content;
+    }
+}
 
 
 ( function()

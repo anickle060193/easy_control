@@ -1,72 +1,72 @@
-function TwitchController()
+class TwitchController extends Controller
 {
-    Controller.call( this, 'Twitch' );
-
-    this.color = Controller.settings[ Settings.ControllerColors.Twitch ];
-    this.allowPauseOnInactivity = false;
-
-    this.initialize();
-}
-
-TwitchController.prototype = Object.create( Controller.prototype );
-TwitchController.prototype.constructor = TwitchController;
-
-TwitchController.prototype._play = function()
-{
-    $( 'button.player-button--playpause' ).click();
-};
-
-TwitchController.prototype._pause = function()
-{
-    $( 'button.player-button--playpause' ).click();
-};
-
-TwitchController.prototype._getProgress = function()
-{
-    if( $( '.player-livestatus__online' ).css( 'display' ) === 'none' )
+    constructor()
     {
-        var currentTime = Common.parseTime( $( '.js-seek-currenttime' ).text() );
-        var totalTime = Common.parseTime( $( '.js-seek-totaltime' ).text() );
+        super( 'Twitch' );
 
-        if( totalTime === 0 )
+        this.color = Controller.settings[ Settings.ControllerColors.Twitch ];
+        this.allowPauseOnInactivity = false;
+
+        this.initialize();
+    }
+
+    _play()
+    {
+        $( 'button.player-button--playpause' ).click();
+    }
+
+    _pause()
+    {
+        $( 'button.player-button--playpause' ).click();
+    }
+
+    getProgress()
+    {
+        if( $( '.player-livestatus__online' ).css( 'display' ) === 'none' )
         {
-            return 0;
+            var currentTime = Common.parseTime( $( '.js-seek-currenttime' ).text() );
+            var totalTime = Common.parseTime( $( '.js-seek-totaltime' ).text() );
+
+            if( totalTime === 0 )
+            {
+                return 0.0;
+            }
+            else
+            {
+                return currentTime / totalTime;
+            }
         }
         else
         {
-            return currentTime / totalTime;
+            return 0.0;
         }
     }
-    else
-    {
-        return 0.0;
-    }
-};
 
-TwitchController.prototype._isPaused = function()
-{
-    return $( 'button.player-button--playpause > .play-button' ).css( 'display' ) !== 'none';
-};
-
-TwitchController.prototype.getContentInfo = function()
-{
-    var title = $( '.info > .title' ).text();
-    var streamer = $( '.channel-name' ).text();
-    var artwork = $( '.profile-photo > img' ).prop( 'src' );
-
-    if( title && streamer && artwork )
+    isPaused()
     {
-        var contentInfo = Controller.prototype.getContentInfo.call( this );
-        contentInfo.title = title.trim();
-        contentInfo.caption = streamer.trim();
-        contentInfo.image = artwork.trim();
-        return contentInfo;
+        return $( 'button.player-button--playpause > .play-button' ).css( 'display' ) !== 'none';
     }
-    else
+
+    getContentInfo()
     {
-        return null;
+        var title = $( '.info > .title' ).text();
+        var streamer = $( '.channel-name' ).text();
+        var artwork = $( '.profile-photo > img' ).prop( 'src' );
+
+        if( title && streamer && artwork )
+        {
+            var contentInfo = super.getContentInfo();
+            contentInfo.title = title.trim();
+            contentInfo.caption = streamer.trim();
+            contentInfo.image = artwork.trim();
+            return contentInfo;
+        }
+        else
+        {
+            return null;
+        }
     }
-};
+}
 
 
 $( function()

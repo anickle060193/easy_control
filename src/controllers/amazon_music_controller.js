@@ -1,71 +1,71 @@
-function AmazonMusicController()
+class AmazonMusicController extends Controller
 {
-    Controller.call( this, 'AmazonMusic' );
+    constructor()
+    {
+        super( 'AmazonMusic' );
 
-    this.color = Controller.settings[ Settings.ControllerColors.AmazonMusic ];
+        this.color = Controller.settings[ Settings.ControllerColors.AmazonMusic ];
 
-    this.initialize();
+        this.initialize();
+    }
+
+    _play()
+    {
+        $( '.playbackControlsView .playButton' ).click();
+    }
+
+    _pause()
+    {
+        $( '.playbackControlsView .playButton' ).click();
+    }
+
+    previous()
+    {
+        $( '.playbackControlsView .previousButton' ).click();
+    }
+
+    next()
+    {
+        $( '.playbackControlsView .nextButton' ).click();
+    }
+
+    getProgress()
+    {
+        var scrubberBackgroundWidth = $( '.playbackControlsView .scrubberBackground' )[ 0 ].style.width;
+
+        var progress = parseFloat( scrubberBackgroundWidth ) / 100.0;
+
+        return progress;
+    }
+
+    isPaused()
+    {
+        return $( '.playbackControlsView .playButton' ).hasClass( 'playerIconPlay' );
+    }
+
+    getContentInfo()
+    {
+        var trackLink = $( '.trackInfoContainer .trackTitle > a' );
+        var track = trackLink.text();
+        var artist = $( '.trackInfoContainer .trackArtist > a > span' ).text();
+        var album = $( '.trackInfoContainer .trackSourceLink > span > a' ).text();
+        var artwork = $( '.trackAlbumArt img' ).prop( 'src' );
+        if( track && track !== "loading ..." )
+        {
+            var contentInfo = super.getContentInfo();
+            contentInfo.title = track.trim();
+            contentInfo.caption = artist.trim();
+            contentInfo.subcaption = album.trim();
+            contentInfo.image = artwork.trim();
+            contentInfo.link = trackLink.prop( 'href' ).trim();
+            return contentInfo;
+        }
+        else
+        {
+            return null;
+        }
+    }
 }
-
-AmazonMusicController.prototype = Object.create( Controller.prototype );
-AmazonMusicController.prototype.constructor = AmazonMusicController;
-
-AmazonMusicController.prototype._play = function()
-{
-    $( '.playbackControlsView .playButton' ).click();
-};
-
-AmazonMusicController.prototype._pause = function()
-{
-    $( '.playbackControlsView .playButton' ).click();
-};
-
-AmazonMusicController.prototype._previous = function()
-{
-    $( '.playbackControlsView .previousButton' ).click();
-};
-
-AmazonMusicController.prototype._next = function()
-{
-    $( '.playbackControlsView .nextButton' ).click();
-};
-
-AmazonMusicController.prototype._getProgress = function()
-{
-    var scrubberBackgroundWidth = $( '.playbackControlsView .scrubberBackground' )[ 0 ].style.width;
-
-    var progress = parseFloat( scrubberBackgroundWidth ) / 100.0;
-
-    return progress;
-};
-
-AmazonMusicController.prototype._isPaused = function()
-{
-    return $( '.playbackControlsView .playButton' ).hasClass( 'playerIconPlay' );
-};
-
-AmazonMusicController.prototype.getContentInfo = function()
-{
-    var trackLink = $( '.trackInfoContainer .trackTitle > a' );
-    var track = trackLink.text();
-    var artist = $( '.trackInfoContainer .trackArtist > a > span' ).text();
-    var album = $( '.trackInfoContainer .trackSourceLink > span > a' ).text();
-    var artwork = $( '.trackAlbumArt img' ).prop( 'src' );
-    if( track && track !== "loading ..." )
-    {
-        var contentInfo = Controller.prototype.getContentInfo.call( this );
-        contentInfo.title = track.trim();
-        contentInfo.caption = artist.trim();
-        contentInfo.subcaption = album.trim();
-        contentInfo.image = artwork.trim();
-        contentInfo.link = trackLink.prop( 'href' ).trim();
-        return contentInfo;
-    }
-    else
-    {
-        return null;
-    }
-};
 
 
 $( function()

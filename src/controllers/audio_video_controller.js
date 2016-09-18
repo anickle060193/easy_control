@@ -1,15 +1,20 @@
-function AudioVideoController( media )
+class AudioVideoController extends MediaController
 {
-    MediaController.call( this, 'GenericAudioVideo', media );
+    constructor( media )
+    {
+        super( 'GenericAudioVideo', media );
 
-    this.color = Controller.settings[ Settings.ControllerColors.GenericAudioVideo ];
-    this.hostname = null;
+        this.color = Controller.settings[ Settings.ControllerColors.GenericAudioVideo ];
+        this.hostname = null;
 
-    this.initialize();
+        this.initialize();
+    }
+
+    openContent( content )
+    {
+        console.log( 'openContent is not supported' );
+    }
 }
-
-AudioVideoController.prototype = Object.create( MediaController.prototype );
-AudioVideoController.prototype.constructor = AudioVideoController;
 
 
 $( function()

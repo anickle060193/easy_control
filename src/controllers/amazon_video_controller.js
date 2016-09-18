@@ -1,38 +1,38 @@
-function AmazonVideoController( video )
+class AmazonVideoController extends MediaController
 {
-    MediaController.call( this, 'AmazonVideo', video );
+    constructor( video )
+    {
+        super( 'AmazonVideo', video );
 
-    this.color = Controller.settings[ Settings.ControllerColors.AmazonVideo ];
-    this.hostname = null;
+        this.color = Controller.settings[ Settings.ControllerColors.AmazonVideo ];
+        this.hostname = null;
 
-    this.initialize();
+        this.initialize();
+    }
+
+    getContentInfo()
+    {
+        var title = $( '#aiv-content-title' )[ 0 ].childNodes[ 0 ].nodeValue;
+        var thumbnail = $( 'meta[property="og:image"]' ).prop( 'content' );
+
+        if( title )
+        {
+            var contentInfo = super.getContentInfo();
+            contentInfo.title = title.trim();
+            contentInfo.image = thumbnail.trim();
+            return contentInfo;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    openContent( content )
+    {
+        console.log( 'openContent is not supported.' );
+    }
 }
-
-AmazonVideoController.prototype = Object.create( MediaController.prototype );
-AmazonVideoController.prototype.constructor = AmazonVideoController;
-
-AmazonVideoController.prototype.getContentInfo = function()
-{
-    var title = $( '#aiv-content-title' )[ 0 ].childNodes[ 0 ].nodeValue;
-    var thumbnail = $( 'meta[property="og:image"]' ).prop( 'content' );
-
-    if( title )
-    {
-        var contentInfo = MediaController.prototype.getContentInfo.call( this );
-        contentInfo.title = title.trim();
-        contentInfo.image = thumbnail.trim();
-        return contentInfo;
-    }
-    else
-    {
-        return null;
-    }
-};
-
-AmazonVideoController.prototype.openContent = function( content )
-{
-    console.log( 'openContent is not supported.' );
-};
 
 
 $( function()

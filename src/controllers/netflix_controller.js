@@ -1,53 +1,53 @@
-function NetflixController( video )
+class NetflixController extends MediaController
 {
-    MediaController.call( this, 'Netflix', video );
-
-    this.color = Controller.settings[ Settings.ControllerColors.Netflix ];
-
-    this.initialize();
-}
-
-NetflixController.prototype = Object.create( MediaController.prototype );
-NetflixController.prototype.constructor = NetflixController;
-
-NetflixController.prototype._play = function()
-{
-    $( '.player-control-button.player-play-pause' ).click();
-};
-
-NetflixController.prototype._pause = function()
-{
-    $( '.player-control-button.player-play-pause' ).click();
-};
-
-NetflixController.prototype._next = function()
-{
-    $( '.player-control-button.player-next-episode' ).click();
-};
-
-NetflixController.prototype.getContentInfo = function()
-{
-    var title = $( '.player-status-main-title' ).text();
-
-    if( title )
+    constructor( video )
     {
-        var contentInfo = MediaController.prototype.getContentInfo.call( this );
-        contentInfo.title = title.trim();
+        super( 'Netflix', video );
 
-        var playerStatusChildren = $( '.player-status' ).children();
-        if( playerStatusChildren.length > 1 )
+        this.color = Controller.settings[ Settings.ControllerColors.Netflix ];
+
+        this.initialize();
+    }
+
+    _play()
+    {
+        $( '.player-control-button.player-play-pause' ).click();
+    }
+
+    _pause()
+    {
+        $( '.player-control-button.player-play-pause' ).click();
+    }
+
+    next()
+    {
+        $( '.player-control-button.player-next-episode' ).click();
+    }
+
+    getContentInfo()
+    {
+        var title = $( '.player-status-main-title' ).text();
+
+        if( title )
         {
-            contentInfo.caption = playerStatusChildren.eq( 1 ).text().trim();
-            contentInfo.subcaption = playerStatusChildren.eq( 2 ).text().trim();
-        }
+            var contentInfo = super.getContentInfo();
+            contentInfo.title = title.trim();
 
-        return contentInfo;
+            var playerStatusChildren = $( '.player-status' ).children();
+            if( playerStatusChildren.length > 1 )
+            {
+                contentInfo.caption = playerStatusChildren.eq( 1 ).text().trim();
+                contentInfo.subcaption = playerStatusChildren.eq( 2 ).text().trim();
+            }
+
+            return contentInfo;
+        }
+        else
+        {
+            return null;
+        }
     }
-    else
-    {
-        return null;
-    }
-};
+}
 
 
 $( function()
