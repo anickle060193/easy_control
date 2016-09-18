@@ -26,15 +26,29 @@ class HuluController extends MediaController
 
     getContentInfo()
     {
-        var episodeTitle = $( '.video-description .episode-title' ).text();
-        var showTitle = $( '.video-description .show-title' ).text();
-        var thumbnail = $( 'meta[property="og:image"]' ).prop( 'content' );
+        var mainTitle = $( '.video-description .episode-title' ).text();
+        var subTitle = $( '.video-description .show-title' ).text();
+        var thumbnail = '';
 
-        if( episodeTitle )
+        var nowPlaying = $( '.now-playing' );
+        if( nowPlaying.length > 0 )
+        {
+            thumbnail = nowPlaying.parent().parent().find( '.thumbnail img' ).prop( 'src' );
+        }
+        else
+        {
+            var metaTitle = $( 'meta[property="og:title"]' ).prop( 'content' );
+            if( metaTitle.includes( mainTitle ) || mainTitle.includes( metaTitle ) )
+            {
+                thumbnail = $( 'meta[property="og:image"]' ).prop( 'content' );
+            }
+        }
+
+        if( mainTitle && thumbnail )
         {
             var contentInfo = super.getContentInfo();
-            contentInfo.title = episodeTitle.trim();
-            contentInfo.caption = showTitle.trim();
+            contentInfo.title = mainTitle.trim();
+            contentInfo.caption = subTitle.trim();
             contentInfo.image = thumbnail.trim();
             return contentInfo;
         }
