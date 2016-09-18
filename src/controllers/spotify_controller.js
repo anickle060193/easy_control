@@ -80,19 +80,46 @@ class SpotifyController extends Controller
         }
     }
 
-    openContent( content )
+    _openLink( url )
     {
-        console.log( 'Spotify - openContent(): ' + content );
-        var newUrl = content;
-        var dataUri = 'spotify:' + newUrl.replace( 'https://play.spotify.com/', '' ).split( '/' ).join( ':' );
-
-        var a = $( `<a href="${newUrl}" data-uri="${dataUri}"></a>` )
-            .text( newUrl )
+        var a = $( '<a>' )
+            .prop( 'href', url )
             .appendTo( document.body );
 
         a[ 0 ].click();
 
         a.remove();
+    }
+
+    _sketchyAddToQueue( uri )
+    {
+        $( '<script>' )
+            .prop( 'type', 'text/javascript' )
+            .text( `console.log( 'Sketchily adding "${uri}" to queue.' );
+                    SpotifyApi.api.request( 'player_queue_tracks_append', [ 'main', '${uri}' ] );
+                    console.log( 'Sketchyness succeeded' );` )
+            .appendTo( document.body )
+            .remove();
+    }
+
+    openContent( content )
+    {
+        console.log( 'Spotify - openContent(): ' + content );
+
+        var splitUri = [ 'spotify' ].concat( content.replace( 'https://play.spotify.com/', '' ).split( '/' ) );
+
+        if( splitUri.length >= 3 && splitUri[ 1 ] === 'track' )
+        {
+            var trackId = splitUri[ 2 ];
+            $.get( 'https://api.spotify.com/v1/tracks/' + trackId, function( data )
+            {
+                this._openLink( data.album.external_urls.spotify );
+            }.bind( this ) );
+        }
+        else
+        {
+            this._openLink( content );
+        }
     }
 }
 
@@ -108,10 +135,6 @@ $( function()
         {
             var controller = new SpotifyController();
             controller.startPolling();
-        }
-        else
-        {
-            console.log( 'Bad Spotify frame.' );
         }
     }
 } );
