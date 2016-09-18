@@ -78,6 +78,12 @@ Background = ( function()
 
             if( currentController === controller )
             {
+                for( var notificationId in newContentNotifications )
+                {
+                    chrome.notifications.clear( notificationId );
+                }
+                newContentNotifications = { };
+
                 if( settings[ Settings.Notifications[ controller.name ] ] )
                 {
                     if( !controller.active || !settings[ Settings.NoActiveWindowNotifications ] )
