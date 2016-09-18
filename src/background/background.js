@@ -110,17 +110,20 @@ Background = ( function()
                         console.log( notificationOptions );
                         chrome.notifications.create( null, notificationOptions, function( notificationId )
                         {
-                            newContentNotifications[ notificationId ] = controller;
-                            var notificationLength = settings[ Settings.NotificationLength ];
-                            if( !( notificationLength >= 1 ) )
+                            if( Common.checkError() )
                             {
-                                notificationLength = 10;
-                            }
+                                newContentNotifications[ notificationId ] = controller;
+                                var notificationLength = settings[ Settings.NotificationLength ];
+                                if( !( notificationLength >= 1 ) )
+                                {
+                                    notificationLength = 10;
+                                }
 
-                            setTimeout( function()
-                            {
-                                chrome.notifications.clear( notificationId );
-                            }, notificationLength * 1000 );
+                                setTimeout( function()
+                                {
+                                    chrome.notifications.clear( notificationId );
+                                }, notificationLength * 1000 );
+                            }
                         } );
                     }
                     else
@@ -176,17 +179,20 @@ Background = ( function()
 
         chrome.notifications.create( null, notificationOptions, function( notificationId )
         {
-            autoPausedNotifications[ notificationId ] = controller;
-
-            if( !( notificationLength >= 1 ) )
+            if( Common.checkError() )
             {
-                notificationLength = 10;
+                autoPausedNotifications[ notificationId ] = controller;
+
+                if( !( notificationLength >= 1 ) )
+                {
+                    notificationLength = 10;
+                }
+
+                setTimeout( function()
+                {
+                    chrome.notifications.clear( notificationId );
+                }, notificationLength * 1000 );
             }
-
-            setTimeout( function()
-            {
-                chrome.notifications.clear( notificationId );
-            }, notificationLength * 1000 );
         } );
     }
 

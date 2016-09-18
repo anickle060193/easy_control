@@ -335,12 +335,24 @@ Common = ( function()
     }
 
 
+    function checkError()
+    {
+        if( chrome.runtime.lastError )
+        {
+            console.warn( chrome.runtime.lastError );
+            return false;
+        }
+        return true;
+    }
+
+
     return {
         limit : limit,
         parseTime : parseTime,
         siteToURL : siteToURL,
         getDefaultSettings : getDefaultSettings,
-        createElementPollingEvent : createElementPollingEvent
+        createElementPollingEvent : createElementPollingEvent,
+        checkError : checkError
     };
 } )();
 
