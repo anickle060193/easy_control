@@ -129,6 +129,11 @@ class MediaController extends Controller
             console.log( 'Setting Playback Rate: ' + playbackRate );
             this.media.playbackRate = playbackRate;
         }
+
+        if( this.controls )
+        {
+            this.loop( this.media.loop );
+        }
     }
 
     disconnect()
