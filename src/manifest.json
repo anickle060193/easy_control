@@ -16,7 +16,7 @@
         "notifications",
         "storage",
         "tabs",
-        "http://*.pandora.com/", "http://*.p-cdn.com/",
+        "https://*.pandora.com/", "https://*.p-cdn.com/",
         "https://*.scdn.co/",
         "https://*.cloudfront.net/",
         "https://*.googleusercontent.com/", "https://*.ggpht.com/",
@@ -25,7 +25,7 @@
         "http://*.huluim.com/",
         "https://static-cdn.jtvnw.net/"
     ],
-    "content_security_policy" : "default-src 'self' https://*.googleapis.com; img-src 'self' data: blob: http://*.pandora.com/ http://*.p-cdn.com/ https://*.scdn.co/ https://*.cloudfront.net/ https://*.googleusercontent.com/ https://*.ggpht.com/ https://*.bcbits.com/ https://*.ssl-images-amazon.com/ https://*.amazonaws.com/ http://*.huluim.com/ https://static-cdn.jtvnw.net/",
+    "content_security_policy" : "default-src 'self' https://*.googleapis.com; img-src 'self' data: blob: https://*.pandora.com/ https://*.p-cdn.com/ https://*.scdn.co/ https://*.cloudfront.net/ https://*.googleusercontent.com/ https://*.ggpht.com/ https://*.bcbits.com/ https://*.ssl-images-amazon.com/ https://*.amazonaws.com/ http://*.huluim.com/ https://static-cdn.jtvnw.net/",
     "options_ui" : {
         "page" : "options/options.html",
         "chrome_style" : true
@@ -45,7 +45,7 @@
     "content_scripts" : [
         {
             "matches" : [
-                "http://www.pandora.com/*",
+                "https://www.pandora.com/*",
                 "https://play.spotify.com/*",
                 "https://www.youtube.com/*",
                 "https://play.google.com/music/*",
@@ -72,7 +72,7 @@
             "all_frames" : true
         },
         {
-            "matches" : [ "http://www.pandora.com/*" ],
+            "matches" : [ "https://www.pandora.com/*" ],
             "js" : [ "controllers/pandora_controller.js" ]
         },
         {
@@ -123,7 +123,7 @@
         {
             "matches" : [ "<all_urls>" ],
             "exclude_matches" : [
-                "http://www.pandora.com/*",
+                "https://www.pandora.com/*",
                 "https://play.spotify.com/*",
                 "https://www.youtube.com/*",
                 "https://play.google.com/music/*",
