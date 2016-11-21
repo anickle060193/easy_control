@@ -70,7 +70,7 @@ class SpotifyController extends Controller
             contentInfo.title = track.trim();
             contentInfo.caption = artist.trim();
             contentInfo.image = artwork.trim();
-            contentInfo.link = trackLink.prop( 'href' ).trim();
+            contentInfo.link = trackLink.prop( 'href' ).trim() + ' [' + contentInfo.title + ']';
 
             return contentInfo;
         }
