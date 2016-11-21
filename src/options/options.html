@@ -24,6 +24,14 @@
         <td>Always display playback speed overlay?</td>
         <td><input type="checkbox" data-key="key__controls__always_display_playback_speed" data-dependency="key__controls__display_controls"></td>
       </tr>
+      <tr>
+        <td>Hide controls when mouse goes idle?</td>
+        <td><input type="checkbox" data-key="key__controls__hide_controls_when_idle"></td>
+      </tr>
+      <tr>
+        <td>Mouse idle timeout:</td>
+        <td><label><input type="number" min="1" data-key="key__controls__hide_controls_idle_time" data-dependency="key__controls__hide_controls_when_idle"> (seconds)</td>
+      </tr>
     </table>
 
     <table id="mediaControlsKeyboardShortcuts">

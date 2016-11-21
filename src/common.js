@@ -64,6 +64,8 @@ var Settings = {
     Controls : {
         DisplayControls : 'key__controls__display_controls',
         AlwaysDisplayPlaybackSpeed : 'key__controls__always_display_playback_speed',
+        HideControlsWhenIdle: 'key__controls__hide_controls_when_idle',
+        HideControlsIdleTime: 'key__controls__hide_controls_idle_time',
         MediaControls : {
             MuchSlower : 'key__controls__playback_speed__much_slower',
             Slower : 'key__controls__playback_speed__slower',
@@ -253,6 +255,8 @@ Common = ( function()
 
         defaults[ Settings.Controls.DisplayControls ] = true;
         defaults[ Settings.Controls.AlwaysDisplayPlaybackSpeed ] = true;
+        defaults[ Settings.Controls.HideControlsWhenIdle ] = true;
+        defaults[ Settings.Controls.HideControlsIdleTime ] = 5;
         defaults[ Settings.Controls.MediaControls.MuchSlower ] = '';
         defaults[ Settings.Controls.MediaControls.Slower ] = 's';
         defaults[ Settings.Controls.MediaControls.Faster ] = 'd';

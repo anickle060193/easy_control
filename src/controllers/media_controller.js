@@ -15,6 +15,8 @@ class MediaController extends Controller
         this.hasDragged = false;
         this.positionOfElement = null;
 
+        this.hideControlsOnIdleTimeout = null;
+
         $( document.body ).keydown( $.proxy( this.handleKeyDown, this ) );
 
         if( Controller.settings[ Settings.Controls.DisplayControls ] )
@@ -93,8 +95,14 @@ class MediaController extends Controller
                 this.controls.find( '#media-control-overlay-reset' ).text( this.media.playbackRate.toFixed( 1 ) );
             }, this ) );
 
-            this.controls.hover( $.proxy( this.showControls, this ), $.proxy( this.hideControls, this ) );
-            $( this.media ).hover( $.proxy( this.showControls, this ), $.proxy( this.hideControls, this ) );
+            this.controls.hover( $.proxy( this.showControls, this ), $.proxy( function()
+            {
+                this.hideControls();
+            }, this ) );
+            $( this.media ).hover( $.proxy( this.showControls, this ), $.proxy( function()
+            {
+                this.hideControls();
+            }, this ) );
 
             $( document ).on( 'webkitfullscreenchange', $.proxy( this.handleFullscreenChange, this ) );
 
@@ -115,6 +123,7 @@ class MediaController extends Controller
                 .off( 'mouseenter' )
                 .off( 'mouseleave' );
             $( document ).off( 'webkitfullscreenchange' );
+            $( document ).off( 'mousemove' );
         }
     }
 
@@ -176,6 +185,8 @@ class MediaController extends Controller
             this.positionOfElement = document.webkitCurrentFullScreenElement;
         }
 
+        $( document ).on( 'mousemove', $.proxy( this.handleMouseMove, this ) );
+
         this.controls
             .detach()
             .appendTo( appendToElement )
@@ -230,17 +241,40 @@ class MediaController extends Controller
         this.attachControls();
     }
 
-    hideControls()
+    hideControls( hideAll )
     {
         if( !this.dragging )
         {
-            if( Controller.settings[ Settings.Controls.AlwaysDisplayPlaybackSpeed ] )
+            if( !hideAll && Controller.settings[ Settings.Controls.AlwaysDisplayPlaybackSpeed ] )
             {
                 this.controls.find( '.control' ).hide();
             }
             else
             {
                 this.controls.hide();
+            }
+        }
+    }
+
+    handleMouseMove( event )
+    {
+        window.clearTimeout( this.hideControlsOnIdleTimeout );
+        this.hideControlsOnIdleTimeout = null;
+
+        if( this.controls )
+        {
+            this.showControls();
+
+            if( Controller.settings[ Settings.Controls.HideControlsWhenIdle ] )
+            {
+                var timeout = Controller.settings[ Settings.Controls.HideControlsIdleTime ] * 1000;
+                this.hideControlsOnIdleTimeout = setTimeout( $.proxy( function()
+                {
+                    if( this.controls )
+                    {
+                        this.hideControls( true );
+                    }
+                }, this ), timeout );
             }
         }
     }
