@@ -9,80 +9,137 @@ class PandoraController extends Controller
         this.initialize();
     }
 
-    _play()
+    getElement( selectors )
     {
-        $( '.playButton' ).click();
+        for( var i = 0; i < selectors.length; i++ )
+        {
+            var el = $( selectors[ i ] );
+            if( el.length > 0 )
+            {
+                return el.first();
+            }
+        }
+        return $();
     }
 
-    pause()
+    _play()
     {
-        $( '.pauseButton' ).click();
+        this.getElement( [ '.playButton', '.PlayButton' ] ).click();
+    }
+
+    _pause()
+    {
+        this.getElement( [ '.pauseButton', '.PlayButton' ] ).click();
     }
 
     next()
     {
-        $( '.skipButton' ).click();
+        this.getElement( [ '.skipButton', '.SkipButton' ] ).click();
     }
 
     _like()
     {
-        $( '.thumbUpButton' ).click();
+        this.getElement( [ '.thumbUpButton', '.ThumbUpButton' ] ).click();
     }
 
     _unlike()
     {
-        $( '.thumbUpButton' ).click();
+        this.getElement( [ '.thumbUpButton', '.ThumbUpButton' ] ).click();
     }
 
     _dislike()
     {
-        $( '.thumbDownButton' ).click();
+        this.getElement( [ '.thumbDownButton', '.ThumbDownButton' ] ).click();
     }
 
     _undislike()
     {
-        $( '.thumbDownButton' ).click();
+        this.getElement( [ '.thumbDownButton', '.ThumbDownButton' ] ).click();
     }
 
     isLiked()
     {
-        return $( '.thumbUpButton' ).hasClass( 'indicator' );
+        var thumbUp = this.getElement( [ '.thumbUpButton', '.ThumbUpButton' ] );
+        return thumbUp.hasClass( 'ThumbUpButton--active' ) || thumbUp.hasClass( 'indicator' );
     }
 
     isDisliked()
     {
-        return $( '.thumbDownButton' ).hasClass( 'indicator' );
+        var thumbDown = this.getElement( [ '.thumbDownButton', '.ThumbDownButton' ] );
+        return thumbDown.hasClass( 'ThumbDownButton--active' ) || thumbDown.hasClass( 'indicator' );
     }
 
     getProgress()
     {
-        var elapsedTime = Common.parseTime( $( '.elapsedTime' ).text() );
-        var remainingTime = Common.parseTime( $( '.remainingTime' ).text() );
-
-        var totalTime = elapsedTime + remainingTime;
-
-        if( totalTime === 0 )
+        var duration = $( '.Duration' );
+        if( duration.length > 0 )
         {
-            return 0;
+            var elapsedTime = Common.parseTime( duration.children().eq( 0 ).text() );
+            var totalTime = Common.parseTime( duration.children().eq( 2 ).text() );
+            if( totalTime == 0 )
+            {
+                return 0;
+            }
+            else
+            {
+                return elapsedTime / totalTime;
+            }
         }
         else
         {
-            return elapsedTime / totalTime;
+            var elapsedTime = Common.parseTime( $( '.elapsedTime' ).text() );
+            var remainingTime = Common.parseTime( $( '.remainingTime' ).text() );
+
+            var totalTime = elapsedTime + remainingTime;
+
+            if( totalTime === 0 )
+            {
+                return 0;
+            }
+            else
+            {
+                return elapsedTime / totalTime;
+            }
         }
     }
 
     isPaused()
     {
-        return $( '.playButton' ).is( ':visible' );
+        var playButton = $( '.playButton' );
+        if( playButton.length != 0 )
+        {
+            return playButton.is( ':visible' );
+        }
+        else
+        {
+            playButton = $( '.PlayButton' );
+            return playButton.data( 'qa' ) == 'play_button'
+        }
     }
 
     getContentInfo()
     {
-        var trackLink = $( 'a.playerBarSong' );
+        var trackLink = this.getElement( [ 'a.playerBarSong', '.nowPlayingTopInfo__current__trackName' ] );
         var track = trackLink.text();
-        var artist = $( '.playerBarArtist' ).text();
-        var album = $( '.playerBarAlbum' ).text();
-        var artwork = $( 'img.art[src]' ).prop( 'src' );
+        var artist = this.getElement( [ '.playerBarArtist', '.nowPlayingTopInfo__current__artistName' ] ).text();
+        var album = this.getElement( [ '.playerBarAlbum', '.nowPlayingTopInfo__current__albumName' ] ).text();
+
+        var artwork = '';
+        var artworkImg = $( 'img.art[src]' )
+        if( artworkImg.length != 0 )
+        {
+            artwork = artworkImg.prop( 'src' );
+        }
+        else
+        {
+            var artContainer = $( '.nowPlayingTopInfo__artContainer__art' ).first();
+            if( artContainer.length != 0 )
+            {
+                artwork = artContainer.css( 'background-image' );
+                artwork = artwork.replace( /^.*\s*url\(\s*[\'\"]?/, '' ).replace( /[\'\"]?\s*\).*/, '' );
+            }
+        }
+
         if( track )
         {
             var contentInfo = super.getContentInfo();
