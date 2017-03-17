@@ -11,59 +11,60 @@ class SpotifyController extends Controller
 
     _play()
     {
-        $( 'button.control-button.spoticon-play-32' ).click();
+        $( '#play-pause' ).click();
     }
 
     _pause()
     {
-        $( 'button.control-button.spoticon-pause-32' ).click();
+        $( '#play-pause' ).click();
     }
 
     previous()
     {
-        $( 'button.control-button.spoticon-skip-back-24' ).click();
+        $( '#previous' ).click();
     }
 
     next()
     {
-        $( 'button.control-button.spoticon-skip-forward-24' ).click();
+        $( '#next' ).click();
     }
 
     getProgress()
     {
-        var progressBar = $( '.progress-bar__fg' );
-        if( progressBar.length == 0 )
+        var currentTrackTime = Common.parseTime( $( '#track-current' ).text() );
+        var trackLength = Common.parseTime( $( '#track-length' ).text() );
+
+        if( trackLength === 0 )
         {
             return 0;
         }
         else
         {
-            return parseFloat( progressBar[ 0 ].style.width ) / 100;
+            return currentTrackTime / trackLength;
         }
     }
 
     isPaused()
     {
-        return $( 'button.control-button.spoticon-play-32' ).length > 0;
+        return !$( '#play-pause' ).hasClass( 'playing' );
     }
 
     getContentInfo()
     {
-
-        var trackLink = $( '.now-playing-bar > div:first-child > div > :first-child > div > a' );
+        var trackLink = $( '#track-name > a:first' );
         var track = trackLink.text();
-        var artist = $( '.now-playing-bar > div:first-child > div > :nth-child( 2 ) > span > span > a' ).map( function()
+        var artist = $( '#track-artist > a' ).map( function()
         {
             return $( this ).text();
         } ).get().join( ', ' );
         var artwork = "";
-        var artworkImg = $( '.now-playing-bar .cover-art-image-loaded' ).css( 'background-image' );
+        var artworkImg = $( '#cover-art div.sp-image-img' ).css( 'background-image' );
         if( artworkImg )
         {
             artwork = artworkImg.replace( /^.*\s*url\(\s*[\'\"]?/, '' ).replace( /[\'\"]?\s*\).*/, '' );
         }
 
-        if( track && artist && artwork )
+        if( track )
         {
             var contentInfo = super.getContentInfo();
             contentInfo.title = track.trim();
@@ -90,7 +91,6 @@ class SpotifyController extends Controller
         a.remove();
     }
 
-    /*
     _sketchyAddToQueue( uri )
     {
         $( '<script>' )
@@ -101,7 +101,6 @@ class SpotifyController extends Controller
             .appendTo( document.body )
             .remove();
     }
-    */
 
     openContent( content )
     {
@@ -129,7 +128,13 @@ $( function()
 {
     if( Controller.settings[ Settings.ControllersEnabled.Spotify ] )
     {
-        var controller = new SpotifyController();
-        controller.startPolling();
+        if( $( '#progress' ).length !== 0
+        && $( '#play-pause' ).length !== 0
+        && $( '#previous' ).length !== 0
+        && $( '#next' ).length !== 0 )
+        {
+            var controller = new SpotifyController();
+            controller.startPolling();
+        }
     }
 } );
