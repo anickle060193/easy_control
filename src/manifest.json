@@ -46,6 +46,7 @@
         {
             "matches" : [
                 "https://www.pandora.com/*",
+                "https://open.spotify.com/*",
                 "https://play.spotify.com/*",
                 "https://www.youtube.com/*",
                 "https://play.google.com/music/*",
@@ -76,7 +77,7 @@
             "js" : [ "controllers/pandora_controller.js" ]
         },
         {
-            "matches" : [ "https://play.spotify.com/*" ],
+            "matches" : [ "https://play.spotify.com/*", "https://open.spotify.com/*" ],
             "js" : [ "controllers/spotify_controller.js" ],
             "all_frames" : true
         },
@@ -125,6 +126,7 @@
             "exclude_matches" : [
                 "https://www.pandora.com/*",
                 "https://play.spotify.com/*",
+                "https://open.spotify.com/*",
                 "https://www.youtube.com/*",
                 "https://play.google.com/music/*",
                 "https://*.bandcamp.com/*",
