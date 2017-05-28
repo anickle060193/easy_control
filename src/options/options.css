@@ -14,14 +14,15 @@ input[type="number"]
     width: 50px;
 }
 
-#controllerSettingsTable
+.optionsTable
 {
     width: 100%;
     border-collapse: collapse;
+    margin: 16px 0;
 }
 
-#controllerSettingsTable th,
-#controllerSettingsTable td
+.optionsTable th,
+.optionsTable td
 {
     padding: 5px;
     border-bottom: 1px solid #ddd;
@@ -33,7 +34,7 @@ td > input[type=checkbox]
     margin-left: 5px;
 }
 
-#controllerSettingsTable tr:nth-child(even)
+.optionsTable tr:nth-child(even)
 {
     background-color: #f2f2f2;
 }

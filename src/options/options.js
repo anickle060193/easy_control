@@ -19,12 +19,12 @@ Options = ( function()
 
 
     var keyboardShortcuts = [
-        { description : 'Playback Speed Much Slower', key : Settings.Controls.MediaControls.MuchSlower },
-        { description : 'Playback Speed Slower', key : Settings.Controls.MediaControls.Slower },
-        { description : 'Playback Speed Faster', key : Settings.Controls.MediaControls.Faster },
-        { description : 'Playback Speed Much Faster', key : Settings.Controls.MediaControls.MuchFaster },
-        { description : 'Playback Speed Reset', key : Settings.Controls.MediaControls.Reset },
-        { description : 'Loop', key : Settings.Controls.MediaControls.Loop }
+        { id: 'MuchSlower', description : 'Playback Speed Much Slower', allowHiding: true  },
+        { id: 'Slower',     description : 'Playback Speed Slower',      allowHiding: true  },
+        { id: 'Faster',     description : 'Playback Speed Faster',      allowHiding: true  },
+        { id: 'MuchFaster', description : 'Playback Speed Much Faster', allowHiding: true  },
+        { id: 'Reset',      description : 'Playback Speed Reset',       allowHiding: false },
+        { id: 'Loop',       description : 'Loop',                       allowHiding: true  }
     ];
 
 
@@ -74,18 +74,38 @@ Options = ( function()
 
     function generateKeyboardShortcutTable()
     {
-        var table = $( '#mediaControlsKeyboardShortcuts' );
+        var table = $( '#mediaControlsKeyboardShortcutsTable' );
+
+        var headerRow = $( '<tr>' ).append( $( '<th>' ).append( $( '<h1>' ).text( 'Generic Media Controls' ) ) );
+        [ 'Keyboard Shortcut', 'Display in Overlay?' ].forEach( function( heading )
+        {
+            headerRow.append( $( '<th>' ).text( heading ) );
+        } );
+
+        table.append( headerRow );
 
         keyboardShortcuts.forEach( function( shortcut )
         {
             var row = $( '<tr>' ).append( $( '<td>' ).text( shortcut.description ) );
-            var input = $( '<input>', {
+
+            $( '<input>', {
                 type : 'text',
                 class : [ 'keyboardShortcutEntry' ],
                 placeholder : 'Press Key',
-                'data-key' : shortcut.key
-            } );
-            row.append( $( '<td>' ).append( input ) );
+                'data-key' : Settings.Controls.MediaControls[ shortcut.id ]
+            } ).appendTo( $( '<td>' ).addClass( 'center' ).appendTo( row ) );
+
+            if( shortcut.allowHiding )
+            {
+                $( '<input>', {
+                    type : 'checkbox',
+                    'data-key' : Settings.Controls.OverlayControls[ shortcut.id ]
+                } ).appendTo( $( '<td>' ).addClass( 'center' ).appendTo( row ) );
+            }
+            else
+            {
+                $( '<td>' ).appendTo( row )
+            }
 
             table.append( row );
         } );

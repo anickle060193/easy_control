@@ -157,6 +157,11 @@ class MediaController extends Controller
     showControls()
     {
         this.controls.show().children().show();
+        this.controls.find( '#media-control-overlay-much-slower' ).toggle( Controller.settings[ Settings.Controls.OverlayControls.MuchSlower ] );
+        this.controls.find( '#media-control-overlay-slower' ).toggle( Controller.settings[ Settings.Controls.OverlayControls.Slower ] );
+        this.controls.find( '#media-control-overlay-faster' ).toggle( Controller.settings[ Settings.Controls.OverlayControls.Faster ] );
+        this.controls.find( '#media-control-overlay-much-faster' ).toggle( Controller.settings[ Settings.Controls.OverlayControls.MuchFaster ] );
+        this.controls.find( '#media-control-overlay-loop' ).toggle( Controller.settings[ Settings.Controls.OverlayControls.Loop ] );
     }
 
     attachControls()
