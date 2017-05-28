@@ -350,13 +350,49 @@ Common = ( function()
     }
 
 
+    function getKeyboardShortcut( keyEvent )
+    {
+        var modifiers = {
+            'Alt' : 'Alt',
+            'Control' : 'Ctrl',
+            'Meta' : 'Command',
+            'OS' : 'Win',
+            'Shift' : 'Shift'
+        };
+
+        var shortcut = [ ];
+
+        $.each( modifiers, function( modifier )
+        {
+            if( keyEvent.getModifierState( modifier ) )
+            {
+                shortcut.push( modifiers[ modifier ] );
+            }
+        } );
+
+        if( typeof( modifiers[ keyEvent.key ] ) === 'undefined' )
+        {
+            if( /^(Key|Digit|Numpad)/.test( keyEvent.code ) )
+            {
+                shortcut.push( keyEvent.code.replace( /(Key|Digit|Numpad)/, '' ) );
+            }
+            else
+            {
+                shortcut.push( keyEvent.key );
+            }
+        }
+        return shortcut.join( '+' );
+    }
+
+
     return {
         limit : limit,
         parseTime : parseTime,
         siteToURL : siteToURL,
         getDefaultSettings : getDefaultSettings,
         createElementPollingEvent : createElementPollingEvent,
-        checkError : checkError
+        checkError : checkError,
+        getKeyboardShortcut : getKeyboardShortcut
     };
 } )();
 

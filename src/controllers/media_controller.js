@@ -283,32 +283,33 @@ class MediaController extends Controller
     {
         if( event.target === this.media || $.contains( event.target, this.media ) )
         {
-            if( event.key === Controller.settings[ Settings.Controls.MediaControls.MuchSlower ] )
+            var shortcut = Common.getKeyboardShortcut( event.originalEvent );
+            if( shortcut === Controller.settings[ Settings.Controls.MediaControls.MuchSlower ] )
             {
                 this.playbackMuchSlower();
                 return false;
             }
-            else if( event.key === Controller.settings[ Settings.Controls.MediaControls.Slower ] )
+            else if( shortcut === Controller.settings[ Settings.Controls.MediaControls.Slower ] )
             {
                 this.playbackSlower();
                 return false;
             }
-            else if( event.key === Controller.settings[ Settings.Controls.MediaControls.Faster ] )
+            else if( shortcut === Controller.settings[ Settings.Controls.MediaControls.Faster ] )
             {
                 this.playbackFaster();
                 return false;
             }
-            else if( event.key === Controller.settings[ Settings.Controls.MediaControls.MuchFaster ] )
+            else if( shortcut === Controller.settings[ Settings.Controls.MediaControls.MuchFaster ] )
             {
                 this.playbackMuchFaster();
                 return false;
             }
-            else if( event.key === Controller.settings[ Settings.Controls.MediaControls.Reset ] )
+            else if( shortcut === Controller.settings[ Settings.Controls.MediaControls.Reset ] )
             {
                 this.resetControls();
                 return false;
             }
-            else if( event.key === Controller.settings[ Settings.Controls.MediaControls.Loop ] )
+            else if( shortcut === Controller.settings[ Settings.Controls.MediaControls.Loop ] )
             {
                 this.loop( !this.media.loop );
                 return false;

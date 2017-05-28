@@ -81,7 +81,6 @@ Options = ( function()
             var row = $( '<tr>' ).append( $( '<td>' ).text( shortcut.description ) );
             var input = $( '<input>', {
                 type : 'text',
-                maxlength : 1,
                 class : [ 'keyboardShortcutEntry' ],
                 placeholder : 'Press Key',
                 'data-key' : shortcut.key
@@ -179,13 +178,23 @@ Options = ( function()
         } );
 
 
-        $( 'input[type="text"][data-key].keyboardShortcutEntry' ).change( function()
-        {
-            settings[ this.dataset.key ] = getKeyboardShortcutKey( this );
+        $( 'input[type="text"][data-key].keyboardShortcutEntry' )
+            .keydown( function( e )
+            {
+                this.value = Common.getKeyboardShortcut( e.originalEvent );
 
-            saveSettings();
-            updateUI();
-        } );
+                return false;
+            } )
+            .blur( function( e )
+            {
+                if( settings[ this.dataset.key ] !== this.value )
+                {
+                    settings[ this.dataset.key ] = this.value;
+
+                    saveSettings();
+                    updateUI();
+                }
+            } );
 
 
         $( 'input[type="number"][data-key]' ).change( function()
@@ -231,13 +240,6 @@ Options = ( function()
         $( '.keyboardShortcutEntry' ).click( function()
         {
             this.value = '';
-        } );
-
-
-        $( '.keyboardShortcutEntry' ).keypress( function( event )
-        {
-            this.value = event.key
-            $( this ).change();
         } );
 
 
