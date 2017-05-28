@@ -460,13 +460,16 @@ Background = ( function()
         {
             var version = chrome.runtime.getManifest().version;
 
+            var possiblyShowChangelog = false;
             if( details.reason === 'install' )
             {
                 console.log( 'Installing version ' + version );
+                possiblyShowChangelog = true;
             }
             else if( details.reason === 'update' )
             {
                 console.log( 'Updating to version ' + version );
+                possiblyShowChangelog = true;
             }
             else
             {
@@ -502,7 +505,7 @@ Background = ( function()
 
                 chrome.storage.sync.set( updatedSettings );
 
-                if( updatedSettings[ Settings.ShowChangeLogOnUpdate ] )
+                if( possiblyShowChangelog && updatedSettings[ Settings.ShowChangeLogOnUpdate ] )
                 {
                     chrome.tabs.create( { url : 'change_log/change_log.html' } );
                 }
