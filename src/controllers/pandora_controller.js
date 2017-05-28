@@ -120,7 +120,12 @@ class PandoraController extends Controller
     getContentInfo()
     {
         var trackLink = this.getElement( [ 'a.playerBarSong', '.nowPlayingTopInfo__current__trackName' ] );
-        var track = trackLink.text();
+        var trackItem = trackLink.find( '.Marquee__wrapper__content__child:first' );
+        if( trackItem.length == 0 )
+        {
+            trackItem = trackLink;
+        }
+        var track = trackItem.text();
         var artist = this.getElement( [ '.playerBarArtist', '.nowPlayingTopInfo__current__artistName' ] ).text();
         var album = this.getElement( [ '.playerBarAlbum', '.nowPlayingTopInfo__current__albumName' ] ).text();
 
