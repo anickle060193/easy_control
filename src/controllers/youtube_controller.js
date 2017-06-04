@@ -18,6 +18,18 @@ class YoutubeController extends MediaController
         this.hasBeenActivated = true;
     }
 
+    setFullscreen( fullscreen )
+    {
+        console.log( 'YoutubeController does not support setting fullscreen.' );
+    }
+
+    showControls()
+    {
+        super.showControls();
+
+        this.controls.find( '#media-control-overlay-fullscreen' ).hide();
+    }
+
     _pause()
     {
         if( this.hasBeenActivated )

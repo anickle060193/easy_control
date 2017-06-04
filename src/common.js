@@ -72,14 +72,16 @@ var Settings = {
             Faster : 'key__controls__playback_speed__faster',
             MuchFaster : 'key__controls__playback_speed__much_faster',
             Reset : 'key__controls__playback_speed__reset',
-            Loop : 'key__controls__playback_speed__loop'
+            Loop : 'key__controls__playback_speed__loop',
+            Fullscreen : 'key__controls__media_controls__fullscreen'
         },
         OverlayControls : {
             MuchSlower : 'key__controls__overlay_controls__much_slower',
             Slower : 'key__controls__overlay_controls__slower',
             Faster : 'key__controls__overlay_controls__faster',
             MuchFaster : 'key__controls__overlay_controls__much_faster',
-            Loop : 'key__controls__overlay_controls__loop'
+            Loop : 'key__controls__overlay_controls__loop',
+            Fullscreen : 'key__controls__overlay_controls__fullscreen'
         }
     }
 };
@@ -270,6 +272,7 @@ Common = ( function()
         defaults[ Settings.Controls.MediaControls.MuchFaster ] = '';
         defaults[ Settings.Controls.MediaControls.Reset ] = 'r';
         defaults[ Settings.Controls.MediaControls.Loop ] = '';
+        defaults[ Settings.Controls.MediaControls.Fullscreen ] = '';
 
         defaults[ Settings.Controls.OverlayControls.MuchSlower ] = true;
         defaults[ Settings.Controls.OverlayControls.Slower     ] = true;
@@ -277,6 +280,7 @@ Common = ( function()
         defaults[ Settings.Controls.OverlayControls.MuchFaster ] = true;
         defaults[ Settings.Controls.OverlayControls.Reset      ] = true;
         defaults[ Settings.Controls.OverlayControls.Loop       ] = true;
+        defaults[ Settings.Controls.OverlayControls.Fullscreen ] = true;
 
         return defaults;
     }

@@ -88,6 +88,10 @@ class MediaController extends Controller
                 {
                     this.loop( !this.media.loop );
                 }
+                else if( e.currentTarget.id === 'media-control-overlay-fullscreen' )
+                {
+                    this.setFullscreen( !this.fullscreen );
+                }
             }.bind( this ) );
 
             $( this.media ).on( 'ratechange', $.proxy( function()
@@ -162,6 +166,7 @@ class MediaController extends Controller
         this.controls.find( '#media-control-overlay-faster' ).toggle( Controller.settings[ Settings.Controls.OverlayControls.Faster ] );
         this.controls.find( '#media-control-overlay-much-faster' ).toggle( Controller.settings[ Settings.Controls.OverlayControls.MuchFaster ] );
         this.controls.find( '#media-control-overlay-loop' ).toggle( Controller.settings[ Settings.Controls.OverlayControls.Loop ] );
+        this.controls.find( '#media-control-overlay-fullscreen' ).toggle( Controller.settings[ Settings.Controls.OverlayControls.Fullscreen ] );
     }
 
     attachControls()
@@ -182,12 +187,34 @@ class MediaController extends Controller
         {
             this.positionOfElement = document.body;
         }
-        else if( document.webkitIsFullScreen && ( document.webkitCurrentFullScreenElement === this.media || $.contains( document.webkitFullscreenElement, this.media ) ) )
+        else if( document.webkitFullscreenElement && $( this.media ).closest( document.webkitFullscreenElement ).length > 0 )
         {
             console.log( 'Attaching to Fullscreen' );
             this.fullscreen = true;
-            appendToElement = document.webkitCurrentFullScreenElement;
-            this.positionOfElement = document.webkitCurrentFullScreenElement;
+            if( document.webkitFullscreenElement === this.media )
+            {
+                appendToElement = document.body;
+            }
+            else
+            {
+                appendToElement = document.webkitFullscreenElement;
+            }
+            this.positionOfElement = document.webkitFullscreenElement;
+        }
+
+        if( this.fullscreen )
+        {
+            $( '#media-control-overlay-fullscreen' )
+                .prop( 'title', 'Exit Fullscreen' )
+                .removeClass( 'easy-control-media-control-fullscreen' )
+                .addClass( 'easy-control-media-control-exit-fullscreen' );
+        }
+        else
+        {
+            $( '#media-control-overlay-fullscreen' )
+                .prop( 'title', 'Fullscreen' )
+                .removeClass( 'easy-control-media-control-exit-fullscreen' )
+                .addClass( 'easy-control-media-control-fullscreen' );
         }
 
         $( document ).on( 'mousemove', $.proxy( this.handleMouseMove, this ) );
@@ -252,7 +279,7 @@ class MediaController extends Controller
         {
             if( !hideAll && Controller.settings[ Settings.Controls.AlwaysDisplayPlaybackSpeed ] )
             {
-                this.controls.find( '.control' ).hide();
+                this.controls.find( '.easy-control-media-control' ).hide();
             }
             else
             {
@@ -286,10 +313,14 @@ class MediaController extends Controller
 
     handleKeyDown( event )
     {
-        if( event.target === this.media || $.contains( event.target, this.media ) )
+        if( $( this.media ).closest( event.target ).length > 0 )
         {
             var shortcut = Common.getKeyboardShortcut( event.originalEvent );
-            if( shortcut === Controller.settings[ Settings.Controls.MediaControls.MuchSlower ] )
+            if( !shortcut )
+            {
+                return true;
+            }
+            else if( shortcut === Controller.settings[ Settings.Controls.MediaControls.MuchSlower ] )
             {
                 this.playbackMuchSlower();
                 return false;
@@ -318,6 +349,10 @@ class MediaController extends Controller
             {
                 this.loop( !this.media.loop );
                 return false;
+            }
+            else if( shortcut === Controller.settings[ Settings.Controls.MediaControls.Fullscreen ] )
+            {
+                this.setFullscreen( !this.fullscreen );
             }
         }
     }
@@ -385,15 +420,38 @@ class MediaController extends Controller
         {
             $( '#media-control-overlay-loop' )
                 .prop( 'title', 'Do not loop' )
-                .removeClass( 'loop' )
-                .addClass( 'no-loop' );
+                .removeClass( 'easy-control-media-control-loop' )
+                .addClass( 'easy-control-media-control-no-loop' );
         }
         else
         {
             $( '#media-control-overlay-loop' )
                 .prop( 'title', 'Loop' )
-                .removeClass( 'no-loop' )
-                .addClass( 'loop' );
+                .removeClass( 'easy-control-media-control-no-loop' )
+                .addClass( 'easy-control-media-control-loop' );
+        }
+    }
+
+    setFullscreen( fullscreen )
+    {
+        if( fullscreen !== this.fullscreen )
+        {
+            if( fullscreen )
+            {
+                if( this.media.webkitRequestFullscreen )
+                {
+                    this.media.webkitRequestFullscreen();
+                    this.handleFullscreenChange();
+                }
+            }
+            else
+            {
+                if( document.webkitExitFullscreen )
+                {
+                    document.webkitExitFullscreen();
+                    this.handleFullscreenChange();
+                }
+            }
         }
     }
 

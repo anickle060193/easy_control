@@ -25,7 +25,7 @@
     cursor: pointer;
 }
 
-.easy-control-media-control-overlay > .control
+.easy-control-media-control-overlay > .easy-control-media-control
 {
     width: 18px;
     height: 18px;
@@ -76,12 +76,22 @@
     background-image: url( 'chrome-extension://__MSG_@@extension_id__/res/remove.svg' );
 }
 
-#media-control-overlay-loop.loop
+#media-control-overlay-loop.easy-control-media-control-loop
 {
     background-image: url( 'chrome-extension://__MSG_@@extension_id__/res/loop.svg' );
 }
 
-#media-control-overlay-loop.no-loop
+#media-control-overlay-loop.easy-control-media-control-no-loop
 {
     background-image: url( 'chrome-extension://__MSG_@@extension_id__/res/no_loop.svg' );
+}
+
+#media-control-overlay-fullscreen.easy-control-media-control-fullscreen
+{
+    background-image: url( 'chrome-extension://__MSG_@@extension_id__/res/fullscreen.svg' );
+}
+
+#media-control-overlay-fullscreen.easy-control-media-control-exit-fullscreen
+{
+    background-image: url( 'chrome-extension://__MSG_@@extension_id__/res/exit_fullscreen.svg' );
 }
