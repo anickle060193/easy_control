@@ -473,3 +473,13 @@ function( oldVisibility, newVisibility )
 {
     return oldVisibility === newVisibility;
 } );
+
+
+Common.createElementPollingEvent( 'loopchange', function()
+{
+    return this.nodeName === 'VIDEO' && this.loop;
+},
+function( oldLoop, newLoop )
+{
+    return oldLoop === newLoop;
+} );

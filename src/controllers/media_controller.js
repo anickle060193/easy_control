@@ -95,10 +95,15 @@ class MediaController extends Controller
                 }
             }.bind( this ) );
 
-            $( this.media ).on( 'ratechange', $.proxy( function()
-            {
-                this.controls.find( '#media-control-overlay-reset' ).text( this.media.playbackRate.toFixed( 1 ) );
-            }, this ) );
+            $( this.media )
+                .on( 'ratechange', $.proxy( function()
+                {
+                    this.controls.find( '#media-control-overlay-reset' ).text( this.media.playbackRate.toFixed( 1 ) );
+                }, this ) )
+                .on( 'loopchange', $.proxy( function( e, loop )
+                {
+                    this.loop( loop );
+                }, this ) );
 
             var shower = $.proxy( function()
             {
@@ -124,15 +129,21 @@ class MediaController extends Controller
         {
             this.controls.remove();
             this.controls = null;
-            $( this.positionOfElement ).off( 'move' );
-            $( this.positionOfElement ).off( 'visible' );
+
+            $( this.positionOfElement )
+                .off( 'move' )
+                .off( 'visible' );
             this.positionOfElement = null;
+
             $( this.media )
                 .off( 'ratechange' )
                 .off( 'mouseenter' )
-                .off( 'mouseleave' );
-            $( document ).off( 'webkitfullscreenchange' );
-            $( document ).off( 'mousemove' );
+                .off( 'mouseleave' )
+                .off( 'loopchange' );
+
+            $( document )
+                .off( 'webkitfullscreenchange' )
+                .off( 'mousemove' );
         }
     }
 
