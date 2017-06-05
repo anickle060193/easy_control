@@ -160,13 +160,46 @@ class MediaController extends Controller
 
     showControls()
     {
-        this.controls.show().children().show();
-        this.controls.find( '#media-control-overlay-much-slower' ).toggle( Controller.settings[ Settings.Controls.OverlayControls.MuchSlower ] );
-        this.controls.find( '#media-control-overlay-slower' ).toggle( Controller.settings[ Settings.Controls.OverlayControls.Slower ] );
-        this.controls.find( '#media-control-overlay-faster' ).toggle( Controller.settings[ Settings.Controls.OverlayControls.Faster ] );
-        this.controls.find( '#media-control-overlay-much-faster' ).toggle( Controller.settings[ Settings.Controls.OverlayControls.MuchFaster ] );
-        this.controls.find( '#media-control-overlay-loop' ).toggle( Controller.settings[ Settings.Controls.OverlayControls.Loop ] );
-        this.controls.find( '#media-control-overlay-fullscreen' ).toggle( Controller.settings[ Settings.Controls.OverlayControls.Fullscreen ] );
+        var shortcut = Controller.settings[ Settings.Controls.MediaControls.Reset ];
+        this.controls.show()
+                        .children().hide().end()
+                        .find( '#media-control-overlay-reset' ).show()
+                        .prop( 'title', 'Reset Playback Speed' + ( shortcut ? ` [${shortcut}]` : '' ) );
+
+        if( this.hovering )
+        {
+            this.controls.find( '#media-control-overlay-remove, #media-control-overlay-dragger' ).show();
+
+            shortcut = Controller.settings[ Settings.Controls.MediaControls.MuchSlower ];
+            this.controls.find( '#media-control-overlay-much-slower' )
+                            .toggle( Controller.settings[ Settings.Controls.OverlayControls.MuchSlower ] )
+                            .prop( 'title', 'Much Slower' + ( shortcut ? ` [${shortcut}]` : '' ) );
+
+            shortcut = Controller.settings[ Settings.Controls.MediaControls.Slower ];
+            this.controls.find( '#media-control-overlay-slower' )
+                            .toggle( Controller.settings[ Settings.Controls.OverlayControls.Slower ] )
+                            .prop( 'title', 'Slower' + ( shortcut ? ` [${shortcut}]` : '' ) );
+
+            shortcut = Controller.settings[ Settings.Controls.MediaControls.Faster ];
+            this.controls.find( '#media-control-overlay-faster' )
+                            .toggle( Controller.settings[ Settings.Controls.OverlayControls.Faster ] )
+                            .prop( 'title', 'Faster' + ( shortcut ? ` [${shortcut}]` : '' ) );
+
+            shortcut = Controller.settings[ Settings.Controls.MediaControls.MuchFaster ];
+            this.controls.find( '#media-control-overlay-much-faster' )
+                            .toggle( Controller.settings[ Settings.Controls.OverlayControls.MuchFaster ] )
+                            .prop( 'title', 'Much Faster' + ( shortcut ? ` [${shortcut}]` : '' ) );
+
+            shortcut = Controller.settings[ Settings.Controls.MediaControls.Loop ];
+            this.controls.find( '#media-control-overlay-loop' )
+                            .toggle( Controller.settings[ Settings.Controls.OverlayControls.Loop ] )
+                            .prop( 'title', ( this.media.loop ? 'Do not loop' : 'Loop' ) + ( shortcut ? ` [${shortcut}]` : '' ) );
+
+            shortcut = Controller.settings[ Settings.Controls.MediaControls.Fullscreen ];
+            this.controls.find( '#media-control-overlay-fullscreen' )
+                            .toggle( Controller.settings[ Settings.Controls.OverlayControls.Fullscreen ] )
+                            .prop( 'title', ( this.fullscreen ? 'Exit Fullscreen' : 'Fullscreen' ) + ( shortcut ? ` [${shortcut}]` : '' ) );
+        }
     }
 
     attachControls()
