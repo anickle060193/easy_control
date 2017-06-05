@@ -13,6 +13,7 @@ class MediaController extends Controller
         this.fullscreen = false;
         this.dragging = false;
         this.hasDragged = false;
+        this.hovering = false;
         this.positionOfElement = null;
 
         this.hideControlsOnIdleTimeout = null;
@@ -99,14 +100,18 @@ class MediaController extends Controller
                 this.controls.find( '#media-control-overlay-reset' ).text( this.media.playbackRate.toFixed( 1 ) );
             }, this ) );
 
-            this.controls.hover( $.proxy( this.showControls, this ), $.proxy( function()
+            var shower = $.proxy( function()
             {
-                this.hideControls();
-            }, this ) );
-            $( this.media ).hover( $.proxy( this.showControls, this ), $.proxy( function()
+                this.hovering = true;
+                this.showControls();
+            }, this );
+            var hider = $.proxy( function()
             {
-                this.hideControls();
-            }, this ) );
+                this.hovering = false;
+                this.hideControls( false );
+            }, this );
+            this.controls.hover( shower, hider );
+            $( this.media ).hover( shower, hider );
 
             $( document ).on( 'webkitfullscreenchange', $.proxy( this.handleFullscreenChange, this ) );
 
@@ -199,6 +204,21 @@ class MediaController extends Controller
             this.controls.find( '#media-control-overlay-fullscreen' )
                             .toggle( Controller.settings[ Settings.Controls.OverlayControls.Fullscreen ] )
                             .prop( 'title', ( this.fullscreen ? 'Exit Fullscreen' : 'Fullscreen' ) + ( shortcut ? ` [${shortcut}]` : '' ) );
+        }
+    }
+
+    hideControls( hideAll )
+    {
+        if( !this.dragging )
+        {
+            if( hideAll || !Controller.settings[ Settings.Controls.AlwaysDisplayPlaybackSpeed ] )
+            {
+                this.controls.hide();
+            }
+            else
+            {
+                this.controls.find( '.easy-control-media-control' ).hide();
+            }
         }
     }
 
@@ -306,21 +326,6 @@ class MediaController extends Controller
         this.attachControls();
     }
 
-    hideControls( hideAll )
-    {
-        if( !this.dragging )
-        {
-            if( !hideAll && Controller.settings[ Settings.Controls.AlwaysDisplayPlaybackSpeed ] )
-            {
-                this.controls.find( '.easy-control-media-control' ).hide();
-            }
-            else
-            {
-                this.controls.hide();
-            }
-        }
-    }
-
     handleMouseMove( event )
     {
         window.clearTimeout( this.hideControlsOnIdleTimeout );
@@ -328,7 +333,10 @@ class MediaController extends Controller
 
         if( this.controls )
         {
-            this.showControls();
+            if( this.hovering )
+            {
+                this.showControls();
+            }
 
             if( Controller.settings[ Settings.Controls.HideControlsWhenIdle ] )
             {
