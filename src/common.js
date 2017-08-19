@@ -66,9 +66,13 @@ var Settings = {
         AlwaysDisplayPlaybackSpeed : 'key__controls__always_display_playback_speed',
         HideControlsWhenIdle: 'key__controls__hide_controls_when_idle',
         HideControlsIdleTime: 'key__controls__hide_controls_idle_time',
+        SkipBackwardAmount: 'keys__controls__skip_backward_amount',
+        SkipForwardAmount: 'keys__controls__skip_forward_amount',
         MediaControls : {
             MuchSlower : 'key__controls__playback_speed__much_slower',
             Slower : 'key__controls__playback_speed__slower',
+            SkipBackward: 'key__controls__media_controls__skip_backward',
+            SkipForward: 'key__controls__media_controls__skip_forward',
             Faster : 'key__controls__playback_speed__faster',
             MuchFaster : 'key__controls__playback_speed__much_faster',
             Reset : 'key__controls__playback_speed__reset',
@@ -78,6 +82,8 @@ var Settings = {
         OverlayControls : {
             MuchSlower : 'key__controls__overlay_controls__much_slower',
             Slower : 'key__controls__overlay_controls__slower',
+            SkipBackward: 'key__controls__overlay_controls__skip_backward',
+            SkipForward: 'key__controls__overlay_controls__skip_forward',
             Faster : 'key__controls__overlay_controls__faster',
             MuchFaster : 'key__controls__overlay_controls__much_faster',
             Loop : 'key__controls__overlay_controls__loop',
@@ -262,25 +268,31 @@ Common = ( function()
         defaults[ Settings.ShowAutoPausedNotification ] = false;
         defaults[ Settings.SiteBlacklist ] = [ 'imgur.com' ];
 
-        defaults[ Settings.Controls.DisplayControls ] = true;
-        defaults[ Settings.Controls.AlwaysDisplayPlaybackSpeed ] = true;
-        defaults[ Settings.Controls.HideControlsWhenIdle ] = true;
-        defaults[ Settings.Controls.HideControlsIdleTime ] = 5;
-        defaults[ Settings.Controls.MediaControls.MuchSlower ] = '';
-        defaults[ Settings.Controls.MediaControls.Slower ] = 's';
-        defaults[ Settings.Controls.MediaControls.Faster ] = 'd';
-        defaults[ Settings.Controls.MediaControls.MuchFaster ] = '';
-        defaults[ Settings.Controls.MediaControls.Reset ] = 'r';
-        defaults[ Settings.Controls.MediaControls.Loop ] = '';
-        defaults[ Settings.Controls.MediaControls.Fullscreen ] = '';
+        defaults[ Settings.Controls.DisplayControls             ] = true;
+        defaults[ Settings.Controls.AlwaysDisplayPlaybackSpeed  ] = true;
+        defaults[ Settings.Controls.HideControlsWhenIdle        ] = true;
+        defaults[ Settings.Controls.HideControlsIdleTime        ] = 5;
+        defaults[ Settings.Controls.SkipBackwardAmount          ] = 10;
+        defaults[ Settings.Controls.SkipForwardAmount           ] = 10;
+        defaults[ Settings.Controls.MediaControls.MuchSlower    ] = '';
+        defaults[ Settings.Controls.MediaControls.Slower        ] = 's';
+        defaults[ Settings.Controls.MediaControls.SkipBackward  ] = '';
+        defaults[ Settings.Controls.MediaControls.SkipForward   ] = '';
+        defaults[ Settings.Controls.MediaControls.Faster        ] = 'd';
+        defaults[ Settings.Controls.MediaControls.MuchFaster    ] = '';
+        defaults[ Settings.Controls.MediaControls.Reset         ] = 'r';
+        defaults[ Settings.Controls.MediaControls.Loop          ] = '';
+        defaults[ Settings.Controls.MediaControls.Fullscreen    ] = '';
 
-        defaults[ Settings.Controls.OverlayControls.MuchSlower ] = true;
-        defaults[ Settings.Controls.OverlayControls.Slower     ] = true;
-        defaults[ Settings.Controls.OverlayControls.Faster     ] = true;
-        defaults[ Settings.Controls.OverlayControls.MuchFaster ] = true;
-        defaults[ Settings.Controls.OverlayControls.Reset      ] = true;
-        defaults[ Settings.Controls.OverlayControls.Loop       ] = true;
-        defaults[ Settings.Controls.OverlayControls.Fullscreen ] = true;
+        defaults[ Settings.Controls.OverlayControls.MuchSlower      ] = true;
+        defaults[ Settings.Controls.OverlayControls.Slower          ] = true;
+        defaults[ Settings.Controls.OverlayControls.SkipBackward    ] = true;
+        defaults[ Settings.Controls.OverlayControls.SkipForward     ] = true;
+        defaults[ Settings.Controls.OverlayControls.Faster          ] = true;
+        defaults[ Settings.Controls.OverlayControls.MuchFaster      ] = true;
+        defaults[ Settings.Controls.OverlayControls.Reset           ] = true;
+        defaults[ Settings.Controls.OverlayControls.Loop            ] = true;
+        defaults[ Settings.Controls.OverlayControls.Fullscreen      ] = true;
 
         return defaults;
     }

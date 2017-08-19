@@ -61,6 +61,18 @@
     transform: scaleX( -1 );
 }
 
+#media-control-overlay-skip-backward
+{
+    background-image: url( 'chrome-extension://__MSG_@@extension_id__/res/skip_backward.svg' );
+}
+
+#media-control-overlay-skip-forward
+{
+    background-image: url( 'chrome-extension://__MSG_@@extension_id__/res/skip_backward.svg' );
+    -webkit-transform: scaleX( -1 );
+    transform: scaleX( -1 );
+}
+
 #media-control-overlay-faster
 {
     background-image: url( 'chrome-extension://__MSG_@@extension_id__/res/faster.svg' );

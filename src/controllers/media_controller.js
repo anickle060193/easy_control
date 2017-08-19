@@ -73,6 +73,14 @@ class MediaController extends Controller
                 {
                     this.playbackReset();
                 }
+                else if( e.currentTarget.id === 'media-control-overlay-skip-backward' )
+                {
+                    this.skipBackward();
+                }
+                else if( e.currentTarget.id === 'media-control-overlay-skip-forward' )
+                {
+                    this.skipForward();
+                }
                 else if( e.currentTarget.id === 'media-control-overlay-faster' )
                 {
                     this.playbackFaster();
@@ -195,6 +203,18 @@ class MediaController extends Controller
             this.controls.find( '#media-control-overlay-slower' )
                             .toggle( Controller.settings[ Settings.Controls.OverlayControls.Slower ] )
                             .prop( 'title', 'Slower' + ( shortcut ? ` [${shortcut}]` : '' ) );
+
+            shortcut = Controller.settings[ Settings.Controls.MediaControls.SkipBackward ];
+            let amount = Controller.settings[ Settings.Controls.SkipBackwardAmount ];
+            this.controls.find( '#media-control-overlay-skip-backward' )
+                            .toggle( Controller.settings[ Settings.Controls.OverlayControls.SkipBackward ] )
+                            .prop( 'title', `Skip Backward ${amount} seconds` + ( shortcut ? ` [${shortcut}]` : '' ) );
+
+            shortcut = Controller.settings[ Settings.Controls.MediaControls.SkipForward ];
+            amount = Controller.settings[ Settings.Controls.SkipForwardAmount ];
+            this.controls.find( '#media-control-overlay-skip-forward' )
+                            .toggle( Controller.settings[ Settings.Controls.OverlayControls.SkipForward ] )
+                            .prop( 'title', `Skip Forward ${amount} seconds` + ( shortcut ? ` [${shortcut}]` : '' ) );
 
             shortcut = Controller.settings[ Settings.Controls.MediaControls.Faster ];
             this.controls.find( '#media-control-overlay-faster' )
@@ -382,6 +402,16 @@ class MediaController extends Controller
                 this.playbackSlower();
                 return false;
             }
+            else if( shortcut === Controller.settings[ Settings.Controls.MediaControls.SkipBackward ] )
+            {
+                this.skipBackward();
+                return false;
+            }
+            else if( shortcut === Controller.settings[ Settings.Controls.MediaControls.SkipForward ] )
+            {
+                this.skipForward();
+                return false;
+            }
             else if( shortcut === Controller.settings[ Settings.Controls.MediaControls.Faster ] )
             {
                 this.playbackFaster();
@@ -405,6 +435,7 @@ class MediaController extends Controller
             else if( shortcut === Controller.settings[ Settings.Controls.MediaControls.Fullscreen ] )
             {
                 this.setFullscreen( !this.fullscreen );
+                return false;
             }
         }
     }
@@ -426,6 +457,11 @@ class MediaController extends Controller
         this.playbackReset();
     }
 
+    playbackReset()
+    {
+        this.setPlaybackRate( 1.0 );
+    }
+
     playbackMuchSlower()
     {
         this.setPlaybackRate( this.media.playbackRate - 0.5 );
@@ -436,9 +472,14 @@ class MediaController extends Controller
         this.setPlaybackRate( this.media.playbackRate - 0.1 );
     }
 
-    playbackReset()
+    skipBackward()
     {
-        this.setPlaybackRate( 1.0 );
+        this.media.currentTime -= Controller.settings[ Settings.Controls.SkipBackwardAmount ];
+    }
+
+    skipForward()
+    {
+        this.media.currentTime += Controller.settings[ Settings.Controls.SkipForwardAmount ];
     }
 
     playbackFaster()

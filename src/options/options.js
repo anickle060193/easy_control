@@ -19,13 +19,15 @@ Options = ( function()
 
 
     var keyboardShortcuts = [
-        { id: 'MuchSlower', description: 'Playback Speed Much Slower', allowHiding: true  },
-        { id: 'Slower',     description: 'Playback Speed Slower',      allowHiding: true  },
-        { id: 'Faster',     description: 'Playback Speed Faster',      allowHiding: true  },
-        { id: 'MuchFaster', description: 'Playback Speed Much Faster', allowHiding: true  },
-        { id: 'Reset',      description: 'Playback Speed Reset',       allowHiding: false },
-        { id: 'Loop',       description: 'Loop',                       allowHiding: true  },
-        { id: 'Fullscreen', description: 'Fullscreen',                 allowHiding: true  }
+        { id: 'MuchSlower',     description: 'Playback Speed Much Slower',  allowHiding: true   },
+        { id: 'Slower',         description: 'Playback Speed Slower',       allowHiding: true   },
+        { id: 'SkipBackward',   description: 'Skip Backward',               allowHiding: true   },
+        { id: 'SkipForward',    description: 'Skip Forward',                allowHiding: true   },
+        { id: 'Faster',         description: 'Playback Speed Faster',       allowHiding: true   },
+        { id: 'MuchFaster',     description: 'Playback Speed Much Faster',  allowHiding: true   },
+        { id: 'Reset',          description: 'Playback Speed Reset',        allowHiding: false  },
+        { id: 'Loop',           description: 'Loop',                        allowHiding: true   },
+        { id: 'Fullscreen',     description: 'Fullscreen',                  allowHiding: true   }
     ];
 
 
@@ -132,20 +134,6 @@ Options = ( function()
             console.log( 'Saved!' );
             console.log( settings );
         } );
-    }
-
-
-    function getKeyboardShortcutKey( input )
-    {
-        var shortcut = input.value;
-        if( shortcut.length > 0 )
-        {
-            return shortcut[ 0 ];
-        }
-        else
-        {
-            return '';
-        }
     }
 
 
