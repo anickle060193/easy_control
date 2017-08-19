@@ -77,6 +77,10 @@ class MediaController extends Controller
                 {
                     this.skipBackward();
                 }
+                else if( e.currentTarget.id === 'media-control-overlay-play-pause' )
+                {
+                    this.playPause();
+                }
                 else if( e.currentTarget.id === 'media-control-overlay-skip-forward' )
                 {
                     this.skipForward();
@@ -111,7 +115,21 @@ class MediaController extends Controller
                 .on( 'loopchange', $.proxy( function( e, loop )
                 {
                     this.loop( loop );
-                }, this ) );
+                }, this ) )
+                .on( 'playing', $.proxy( function( e )
+                {
+                    $( '#media-control-overlay-play-pause' )
+                        .prop( 'title', 'Pause' )
+                        .removeClass( 'easy-control-media-control-play' )
+                        .addClass( 'easy-control-media-control-pause' );
+                }, this ) )
+                .on( 'pause', $.proxy( function( e )
+                {
+                    $( '#media-control-overlay-play-pause' )
+                        .prop( 'title', 'Play' )
+                        .removeClass( 'easy-control-media-control-pause' )
+                        .addClass( 'easy-control-media-control-play' );
+                } ) );
 
             var shower = $.proxy( function()
             {
@@ -147,7 +165,10 @@ class MediaController extends Controller
                 .off( 'ratechange' )
                 .off( 'mouseenter' )
                 .off( 'mouseleave' )
-                .off( 'loopchange' );
+                .off( 'loopchange' )
+                .off( 'playing' )
+                .off( 'play' )
+                .off( 'pause' );
 
             $( document )
                 .off( 'webkitfullscreenchange' )
@@ -209,6 +230,11 @@ class MediaController extends Controller
             this.controls.find( '#media-control-overlay-skip-backward' )
                             .toggle( Controller.settings[ Settings.Controls.OverlayControls.SkipBackward ] )
                             .prop( 'title', `Skip Backward ${amount} seconds` + ( shortcut ? ` [${shortcut}]` : '' ) );
+
+            shortcut = Controller.settings[ Settings.Controls.MediaControls.PlayPause ];
+            this.controls.find( '#media-control-overlay-play-pause' )
+                            .toggle( Controller.settings[ Settings.Controls.OverlayControls.PlayPause ] )
+                            .prop( 'title', ( this.isPaused() ? 'Play' : 'Pause' ) + ( shortcut ? ` [${shortcut}]` : '' ) );
 
             shortcut = Controller.settings[ Settings.Controls.MediaControls.SkipForward ];
             amount = Controller.settings[ Settings.Controls.SkipForwardAmount ];
@@ -407,6 +433,11 @@ class MediaController extends Controller
                 this.skipBackward();
                 return false;
             }
+            else if( shortcut === Controller.settings[ Settings.Controls.MediaControls.PlayPause ] )
+            {
+                this.playPause();
+                return false;
+            }
             else if( shortcut === Controller.settings[ Settings.Controls.MediaControls.SkipForward ] )
             {
                 this.skipForward();
@@ -475,6 +506,18 @@ class MediaController extends Controller
     skipBackward()
     {
         this.media.currentTime -= Controller.settings[ Settings.Controls.SkipBackwardAmount ];
+    }
+
+    playPause()
+    {
+        if( this.isPaused() )
+        {
+            this.play();
+        }
+        else
+        {
+            this.pause();
+        }
     }
 
     skipForward()

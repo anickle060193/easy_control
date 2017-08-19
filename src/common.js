@@ -72,6 +72,7 @@ var Settings = {
             MuchSlower : 'key__controls__playback_speed__much_slower',
             Slower : 'key__controls__playback_speed__slower',
             SkipBackward: 'key__controls__media_controls__skip_backward',
+            PlayPause: 'key__controls__media_controls__play_pause',
             SkipForward: 'key__controls__media_controls__skip_forward',
             Faster : 'key__controls__playback_speed__faster',
             MuchFaster : 'key__controls__playback_speed__much_faster',
@@ -83,6 +84,7 @@ var Settings = {
             MuchSlower : 'key__controls__overlay_controls__much_slower',
             Slower : 'key__controls__overlay_controls__slower',
             SkipBackward: 'key__controls__overlay_controls__skip_backward',
+            PlayPause: 'key__controls__overlay_controls__play_pause',
             SkipForward: 'key__controls__overlay_controls__skip_forward',
             Faster : 'key__controls__overlay_controls__faster',
             MuchFaster : 'key__controls__overlay_controls__much_faster',
@@ -277,6 +279,7 @@ Common = ( function()
         defaults[ Settings.Controls.MediaControls.MuchSlower    ] = '';
         defaults[ Settings.Controls.MediaControls.Slower        ] = 's';
         defaults[ Settings.Controls.MediaControls.SkipBackward  ] = '';
+        defaults[ Settings.Controls.MediaControls.PlayPause     ] = '';
         defaults[ Settings.Controls.MediaControls.SkipForward   ] = '';
         defaults[ Settings.Controls.MediaControls.Faster        ] = 'd';
         defaults[ Settings.Controls.MediaControls.MuchFaster    ] = '';
@@ -287,6 +290,7 @@ Common = ( function()
         defaults[ Settings.Controls.OverlayControls.MuchSlower      ] = true;
         defaults[ Settings.Controls.OverlayControls.Slower          ] = true;
         defaults[ Settings.Controls.OverlayControls.SkipBackward    ] = true;
+        defaults[ Settings.Controls.OverlayControls.PlayPause       ] = true;
         defaults[ Settings.Controls.OverlayControls.SkipForward     ] = true;
         defaults[ Settings.Controls.OverlayControls.Faster          ] = true;
         defaults[ Settings.Controls.OverlayControls.MuchFaster      ] = true;

@@ -66,6 +66,16 @@
     background-image: url( 'chrome-extension://__MSG_@@extension_id__/res/skip_backward.svg' );
 }
 
+#media-control-overlay-play-pause.easy-control-media-control-play
+{
+    background-image: url( 'chrome-extension://__MSG_@@extension_id__/res/play.svg' );
+}
+
+#media-control-overlay-play-pause.easy-control-media-control-pause
+{
+    background-image: url( 'chrome-extension://__MSG_@@extension_id__/res/pause.svg' );
+}
+
 #media-control-overlay-skip-forward
 {
     background-image: url( 'chrome-extension://__MSG_@@extension_id__/res/skip_backward.svg' );

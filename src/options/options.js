@@ -22,6 +22,7 @@ Options = ( function()
         { id: 'MuchSlower',     description: 'Playback Speed Much Slower',  allowHiding: true   },
         { id: 'Slower',         description: 'Playback Speed Slower',       allowHiding: true   },
         { id: 'SkipBackward',   description: 'Skip Backward',               allowHiding: true   },
+        { id: 'PlayPause',      description: 'Play/Pause',                  allowHiding: true   },
         { id: 'SkipForward',    description: 'Skip Forward',                allowHiding: true   },
         { id: 'Faster',         description: 'Playback Speed Faster',       allowHiding: true   },
         { id: 'MuchFaster',     description: 'Playback Speed Much Faster',  allowHiding: true   },
