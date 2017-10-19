@@ -5,6 +5,8 @@ class PandoraController extends Controller
         super( 'Pandora' );
 
         this.color = Controller.settings[ Settings.ControllerColors.Pandora ];
+        this.lastAlbum = null;
+        this.lastArtwork = null;
 
         this.initialize();
     }
@@ -144,6 +146,15 @@ class PandoraController extends Controller
                 artwork = artwork.replace( /^.*\s*url\(\s*[\'\"]?/, '' ).replace( /[\'\"]?\s*\).*/, '' );
             }
         }
+
+        if( album != this.lastAlbum
+         && artwork == this.lastArtwork )
+        {
+            return null;
+        }
+
+        this.lastAlbum = album;
+        this.lastArtwork = artwork;
 
         if( track )
         {
