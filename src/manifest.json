@@ -65,8 +65,8 @@
                 "https://www.youtube.com/*",
                 "https://www.netflix.com/*",
                 "https://www.amazon.com/*",
-                "http://www.hulu.com/*"
-
+                "http://www.hulu.com/*",
+                "https://play.google.com/music/*"
             ],
             "js" : [ "jquery/jquery-ui-1.12.0.min.js", "controllers/media_controller.js" ],
             "css" : [ "media_control_overlay.css" ],

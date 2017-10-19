@@ -1,12 +1,32 @@
-class GooglePlayMusicController extends Controller
+class GooglePlayMusicController extends MediaController
 {
-    constructor()
+    constructor( audio )
     {
-        super( 'GooglePlayMusic' );
+        super( 'GooglePlayMusic', audio );
 
         this.color = Controller.settings[ Settings.ControllerColors.GooglePlayMusic ];
 
         this.initialize();
+    }
+
+    showControls()
+    {
+        super.showControls();
+
+        this.controls.find( '#media-control-overlay-fullscreen' ).hide();
+        this.controls.find( '#media-control-overlay-loop' ).hide();
+    }
+
+    setFullscreen( fullscreen )
+    {
+        console.log( 'GooglePlayMusicController does not support setting fullscreen.' );
+    }
+
+    loop( loop )
+    {
+        super.loop( false );
+
+        console.log( 'GooglePlayMusicController does not support looping.' );
     }
 
     _play()
@@ -59,26 +79,6 @@ class GooglePlayMusicController extends Controller
         return $( '.rating-container > paper-icon-button[data-rating="1"]' ).prop( 'title' ).startsWith( 'Undo' );
     }
 
-    getProgress()
-    {
-        var elapsedTime = Common.parseTime( $( '#time_container_current' ).text() );
-        var totalTime = Common.parseTime( $( '#time_container_duration' ).text() );
-
-        if( totalTime === 0 )
-        {
-            return 0;
-        }
-        else
-        {
-            return elapsedTime / totalTime;
-        }
-    }
-
-    isPaused()
-    {
-        return !$( '#player-bar-play-pause' ).hasClass( 'playing' );
-    }
-
     getContentInfo()
     {
         var track = $( '#currently-playing-title' ).text();
@@ -106,7 +106,16 @@ $( function()
 {
     if( Controller.settings[ Settings.ControllersEnabled.GooglePlayMusic ] )
     {
-        var controller = new GooglePlayMusicController();
-        controller.startPolling();
+        MediaController.createSingleMediaListener( 'Google Play Music', function( audio )
+        {
+            if( $( document.body ).children( 'audio' ).first().is( audio ) )
+            {
+                return new GooglePlayMusicController( audio );
+            }
+            else
+            {
+                return null;
+            }
+        } );
     }
 } );

@@ -7,6 +7,9 @@ class MediaController extends Controller
         this.media = media;
         this.isVideo = this.media.nodeName === 'VIDEO';
         this.controls = null;
+        this.controllerNumber = MediaController.controllerCount;
+
+        MediaController.controllerCount++;
 
         this.allowPauseOnInactivity = !this.isVideo;
 
@@ -18,7 +21,7 @@ class MediaController extends Controller
 
         this.hideControlsOnIdleTimeout = null;
 
-        $( document.body ).keydown( $.proxy( this.handleKeyDown, this ) );
+        $( document ).on( this.e( 'keydown' ), $.proxy( this.handleKeyDown, this ) );
 
         if( Controller.settings[ Settings.Controls.DisplayControls ] )
         {
@@ -32,6 +35,11 @@ class MediaController extends Controller
         } );
 
         this.onSourceChanged( this.media.src );
+    }
+
+    e( eventName )
+    {
+        return eventName + '.' + this.controllerNumber;
     }
 
     initializeMediaControls()
@@ -108,22 +116,22 @@ class MediaController extends Controller
             }.bind( this ) );
 
             $( this.media )
-                .on( 'ratechange', $.proxy( function()
+                .on( this.e( 'ratechange' ), $.proxy( function()
                 {
                     this.controls.find( '#media-control-overlay-reset' ).text( this.media.playbackRate.toFixed( 1 ) );
                 }, this ) )
-                .on( 'loopchange', $.proxy( function( e, loop )
+                .on( this.e( 'loopchange' ), $.proxy( function( e, loop )
                 {
                     this.loop( loop );
                 }, this ) )
-                .on( 'playing', $.proxy( function( e )
+                .on( this.e( 'playing' ), $.proxy( function( e )
                 {
                     $( '#media-control-overlay-play-pause' )
                         .prop( 'title', 'Pause' )
                         .removeClass( 'easy-control-media-control-play' )
                         .addClass( 'easy-control-media-control-pause' );
                 }, this ) )
-                .on( 'pause', $.proxy( function( e )
+                .on( this.e( 'pause' ), $.proxy( function( e )
                 {
                     $( '#media-control-overlay-play-pause' )
                         .prop( 'title', 'Play' )
@@ -141,10 +149,24 @@ class MediaController extends Controller
                 this.hovering = false;
                 this.hideControls( false );
             }, this );
-            this.controls.hover( shower, hider );
-            $( this.media ).hover( shower, hider );
+            this.controls
+                    .on( this.e( 'mouseenter' ), shower )
+                    .on( this.e( 'mouseleave' ), hider );
 
-            $( document ).on( 'webkitfullscreenchange', $.proxy( this.handleFullscreenChange, this ) );
+            if( this.isVideo )
+            {
+                $( this.media )
+                    .on( this.e( 'mouseenter' ), shower )
+                    .on( this.e( 'mouseleave' ), hider );
+
+                $( document ).on( this.e( 'webkitfullscreenchange' ), $.proxy( this.handleFullscreenChange, this ) );
+            }
+            else
+            {
+                $( document.body )
+                    .on( this.e( 'mouseenter' ), shower )
+                    .on( this.e( 'mouseleave' ), hider );
+            }
 
         }.bind( this ) );
     }
@@ -157,22 +179,26 @@ class MediaController extends Controller
             this.controls = null;
 
             $( this.positionOfElement )
-                .off( 'move' )
-                .off( 'visible' );
+                .off( this.e( 'move' ) )
+                .off( this.e( 'visible' ) );
             this.positionOfElement = null;
 
             $( this.media )
-                .off( 'ratechange' )
-                .off( 'mouseenter' )
-                .off( 'mouseleave' )
-                .off( 'loopchange' )
-                .off( 'playing' )
-                .off( 'play' )
-                .off( 'pause' );
+                .off( this.e( 'ratechange' ) )
+                .off( this.e( 'mouseenter' ) )
+                .off( this.e( 'mouseleave' ) )
+                .off( this.e( 'loopchange' ) )
+                .off( this.e( 'playing' ) )
+                .off( this.e( 'play' ) )
+                .off( this.e( 'pause' ) );
 
             $( document )
-                .off( 'webkitfullscreenchange' )
-                .off( 'mousemove' );
+                .off( this.e( 'webkitfullscreenchange' ) )
+                .off( this.e( 'mousemove' ) );
+
+            $( document.body )
+                .off( this.e( 'mouseenter' ) )
+                .off( this.e( 'mouseleave' ) );
         }
     }
 
@@ -199,7 +225,7 @@ class MediaController extends Controller
         super.disconnect( this );
 
         this.removeControls();
-        $( document.body ).off( 'keydown', this.handleKeyDown );
+        $( document ).off( this.e( 'keydown' ) );
         this.observer.disconnect();
     }
 
@@ -283,8 +309,8 @@ class MediaController extends Controller
     {
         if( this.positionOfElement )
         {
-            $( this.positionOfElement ).off( 'move' );
-            $( this.positionOfElement ).off( 'visible' );
+            $( this.positionOfElement ).off( this.e( 'move' ) );
+            $( this.positionOfElement ).off( this.e( 'visible' ) );
         }
 
         this.hasDragged = false;
@@ -297,7 +323,8 @@ class MediaController extends Controller
         {
             this.positionOfElement = document.body;
         }
-        else if( document.webkitFullscreenElement && $( this.media ).closest( document.webkitFullscreenElement ).length > 0 )
+        else if( document.webkitFullscreenElement
+              && $( this.media ).closest( document.webkitFullscreenElement ).length > 0 )
         {
             console.log( 'Attaching to Fullscreen' );
             this.fullscreen = true;
@@ -327,7 +354,7 @@ class MediaController extends Controller
                 .addClass( 'easy-control-media-control-fullscreen' );
         }
 
-        $( document ).on( 'mousemove', $.proxy( this.handleMouseMove, this ) );
+        $( document ).on( this.e( 'mousemove' ), $.proxy( this.handleMouseMove, this ) );
 
         this.controls
             .detach()
@@ -348,7 +375,7 @@ class MediaController extends Controller
             }, this )
         } );
 
-        $( this.positionOfElement ).on( 'move', $.proxy( function()
+        $( this.positionOfElement ).on( this.e( 'move' ), $.proxy( function()
         {
             if( !this.hasDragged )
             {
@@ -357,7 +384,7 @@ class MediaController extends Controller
         }, this ) );
 
         this.controls.toggle( $( this.positionOfElement ).is( ':visible' ) );
-        $( this.positionOfElement ).on( 'visible', $.proxy( function( event, visible )
+        $( this.positionOfElement ).on( this.e( 'visible' ), $.proxy( function( event, visible )
         {
             console.log( 'Visible: ' + visible );
             this.controls.toggle( visible );
@@ -411,9 +438,11 @@ class MediaController extends Controller
 
     handleKeyDown( event )
     {
-        if( $( this.media ).closest( event.target ).length > 0 )
+        if( $( this.media ).closest( event.target ).length > 0
+         || !this.isVideo )
         {
             var shortcut = Common.getKeyboardShortcut( event.originalEvent );
+
             if( !shortcut )
             {
                 return true;
@@ -646,6 +675,8 @@ class MediaController extends Controller
         $( this.media ).off( 'play pause playing timeupdate' );
     }
 }
+
+MediaController.controllerCount = 0;
 
 
 MediaController.onNewMedia = ( function()
