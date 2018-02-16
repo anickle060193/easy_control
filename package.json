@@ -1,0 +1,22 @@
+{
+  "name": "easy_control",
+  "version": "1.28.0",
+  "description": "An extension that allows easy control of various media streaming websites.",
+  "main": "index.js",
+  "repository": "https://github.com/anickle060193/easy_control.git",
+  "author": "Adam Nickle <anickle060193@gmail.com>",
+  "devDependencies": {
+    "@types/chrome": "^0.0.59",
+    "@types/jquery": "^3.3.0",
+    "@types/lodash": "^4.14.102",
+    "@types/node": "^9.4.6",
+    "@types/webpack": "^3.8.7",
+    "ts-node": "^4.1.0",
+    "typescript": "^2.7.1",
+    "webpack": "^3.11.0"
+  },
+  "dependencies": {
+    "jquery": "^3.3.1",
+    "lodash": "^4.17.5"
+  }
+}
