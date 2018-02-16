@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "build",
-    "module": "esnext",
+    "module": "commonjs",
     "target": "es5",
     "lib": [
       "es6",
@@ -11,7 +10,8 @@
     "allowJs": true,
     "jsx": "react",
     "moduleResolution": "node",
-    "rootDir": "./src",
+    "rootDir": "./",
+    "baseUrl": "./",
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -28,8 +28,5 @@
     "webpack",
     "jest",
     "src/setupTests.ts"
-  ],
-  "types": [
-    "chrome"
   ]
 }
