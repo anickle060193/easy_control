@@ -77,7 +77,7 @@ const config: webpack.Configuration = {
         }, null, 2 ) )
       },
       {
-        from: path.resolve( __dirname, 'src', 'res' ),
+        from: path.resolve( __dirname, 'src', 'assets' ),
         to: path.resolve( build ),
       }
     ] )

@@ -29,8 +29,7 @@
   "web_accessible_resources": [
     "media_control_overlay.html",
     "bootstrap/*",
-    "jquery/*",
-    "res/*"
+    "jquery/*"
   ],
   "browser_action": {
     "default_icon": {
