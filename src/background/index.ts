@@ -617,7 +617,7 @@ function onStart()
 
           focusTab( existingTab );
 
-          controller.openContent( tab.url! );
+          controller.openContentLink( tab.url! );
 
           return false;
         }

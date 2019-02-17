@@ -50,7 +50,7 @@ interface DataMessage<T extends AllMessageTypes, D> extends BaseMessage<T>
   data: D;
 }
 
-type OpenContentData = string;
+type OpenContentLinkData = string;
 
 interface InitializeData
 {
@@ -68,7 +68,7 @@ interface StatusData
   active: boolean;
 }
 
-type OpenContentLinkMessage = DataMessage<MessageTypes.FromBackground.OpenContentLink, OpenContentData>;
+type OpenContentLinkMessage = DataMessage<MessageTypes.FromBackground.OpenContentLink, OpenContentLinkData>;
 type InitializeMessage = DataMessage<MessageTypes.ToBackground.Initialize, InitializeData>;
 type NewContentMessage = DataMessage<MessageTypes.ToBackground.NewContent, NewContentData>;
 type StatusMessage = DataMessage<MessageTypes.ToBackground.Status, StatusData>;
@@ -85,7 +85,7 @@ export const fromBackgroundMessage = ( type: MessageTypes.FromBackground ): From
   type: MessageTypes.FromBackground.Play
 } );
 
-export const openContentLinkMessage = ( data: string ): OpenContentLinkMessage => ( {
+export const openContentLinkMessage = ( data: OpenContentLinkData ): OpenContentLinkMessage => ( {
   type: MessageTypes.FromBackground.OpenContentLink,
   data
 } );

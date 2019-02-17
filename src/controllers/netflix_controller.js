@@ -1,62 +1,62 @@
 class NetflixController extends MediaController
 {
-    constructor( video )
+  constructor( video )
+  {
+    super( 'Netflix', video );
+
+    this.color = Controller.settings[ Settings.ControllerColors.Netflix ];
+
+    this.initialize();
+  }
+
+  _play()
+  {
+    $( '.player-control-button.player-play-pause' ).click();
+  }
+
+  _pause()
+  {
+    $( '.player-control-button.player-play-pause' ).click();
+  }
+
+  next()
+  {
+    $( '.player-control-button.player-next-episode' ).click();
+  }
+
+  getContentInfo()
+  {
+    let title = $( '.player-status-main-title' ).text();
+
+    if( title )
     {
-        super( 'Netflix', video );
+      let contentInfo = super.getContentInfo();
+      contentInfo.title = title.trim();
 
-        this.color = Controller.settings[ Settings.ControllerColors.Netflix ];
+      let playerStatusChildren = $( '.player-status' ).children();
+      if( playerStatusChildren.length > 1 )
+      {
+        contentInfo.caption = playerStatusChildren.eq( 1 ).text().trim();
+        contentInfo.subcaption = playerStatusChildren.eq( 2 ).text().trim();
+      }
 
-        this.initialize();
+      return contentInfo;
     }
-
-    _play()
+    else
     {
-        $( '.player-control-button.player-play-pause' ).click();
+      return null;
     }
-
-    _pause()
-    {
-        $( '.player-control-button.player-play-pause' ).click();
-    }
-
-    next()
-    {
-        $( '.player-control-button.player-next-episode' ).click();
-    }
-
-    getContentInfo()
-    {
-        var title = $( '.player-status-main-title' ).text();
-
-        if( title )
-        {
-            var contentInfo = super.getContentInfo();
-            contentInfo.title = title.trim();
-
-            var playerStatusChildren = $( '.player-status' ).children();
-            if( playerStatusChildren.length > 1 )
-            {
-                contentInfo.caption = playerStatusChildren.eq( 1 ).text().trim();
-                contentInfo.subcaption = playerStatusChildren.eq( 2 ).text().trim();
-            }
-
-            return contentInfo;
-        }
-        else
-        {
-            return null;
-        }
-    }
+  }
 }
 
 
 $( function()
 {
-    if( Controller.settings[ Settings.ControllersEnabled.Netflix ] )
+  if( Controller.settings[ Settings.ControllersEnabled.Netflix ] )
+  {
+    MediaController.createSingleMediaListener( 'Netflix', function( media )
     {
-        MediaController.createSingleMediaListener( 'Netflix', function( media )
-        {
-            return new NetflixController( media );
-        } );
-    }
+      return new NetflixController( media );
+    } );
+  }
 } );

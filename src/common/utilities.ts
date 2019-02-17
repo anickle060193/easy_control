@@ -47,36 +47,40 @@ export function checkError()
   return true;
 }
 
-export function getKeyboardShortcut( keyEvent: KeyboardEvent )
-{
-  let modifiers = {
-    'Alt': 'Alt',
-    'Control': 'Ctrl',
-    'Meta': 'Command',
-    'OS': 'Win',
-    'Shift': 'Shift'
-  };
+const MODIFIERS = [
+  { key: 'Alt', name: 'Alt' },
+  { key: 'Control', name: 'Ctrl' },
+  { key: 'Meta', name: 'Command' },
+  { key: 'OS', name: 'Win' },
+  { key: 'Shift', name: 'Shift' },
+];
 
+const MODIFIER_KEYS = new Set( MODIFIERS.map( ( { key } ) => key ) );
+
+export function getKeyboardShortcut( keyEvent: KeyboardEvent | React.KeyboardEvent )
+{
   let shortcut: string[] = [];
 
-  $.each( modifiers, function( modifier )
+  for( let { key: modifierKey, name } of MODIFIERS )
   {
-    if( keyEvent.getModifierState( modifier ) )
+    if( keyEvent.getModifierState( modifierKey ) )
     {
-      shortcut.push( modifiers[ modifier ] );
-    }
-  } );
-
-  if( typeof ( modifiers[ keyEvent.key ] ) === 'undefined' )
-  {
-    if( /^(Key|Digit|Numpad)/.test( keyEvent.code ) )
-    {
-      shortcut.push( keyEvent.code.replace( /(Key|Digit|Numpad)/, '' ) );
-    }
-    else
-    {
-      shortcut.push( keyEvent.key );
+      shortcut.push( name );
     }
   }
+
+  if( keyEvent.key === ' ' )
+  {
+    shortcut.push( 'Space' );
+  }
+  else if( keyEvent.key.length === 1 )
+  {
+    shortcut.push( keyEvent.key.toUpperCase() );
+  }
+  else if( !MODIFIER_KEYS.has( keyEvent.key ) )
+  {
+    shortcut.push( keyEvent.key );
+  }
+
   return shortcut.join( '+' );
 }

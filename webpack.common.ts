@@ -1,16 +1,15 @@
-import * as webpack from 'webpack';
-import * as path from 'path';
-import * as CleanWebpackPlugin from 'clean-webpack-plugin';
-import * as HtmlWebpackPlugin from 'html-webpack-plugin';
-import * as ExtractTextWebpackPlugin from 'extract-text-webpack-plugin';
-import * as CopyWebpackPlugin from 'copy-webpack-plugin';
+import webpack = require( 'webpack' );
+import path = require( 'path' );
+import WebpackBar = require( 'webpackbar' );
+import CleanWebpackPlugin = require( 'clean-webpack-plugin' );
+import HtmlWebpackPlugin = require( 'html-webpack-plugin' );
+import CopyWebpackPlugin = require( 'copy-webpack-plugin' );
 
 const build = path.resolve( __dirname, 'build' );
 
-const config = ( development: boolean ): webpack.Configuration => ( {
+const config: webpack.Configuration = {
   entry: {
-    background: './src/background/index.ts',
-    options: './src/options/index.ts'
+    options: path.resolve( 'src', 'options', 'index.tsx' ),
   },
   output: {
     path: build,
@@ -19,33 +18,47 @@ const config = ( development: boolean ): webpack.Configuration => ( {
   module: {
     rules: [
       {
-        test: /\.ts$/,
-        use: 'ts-loader',
+        test: /\.css$/,
+        use: [ 'style-loader', 'css-loader' ]
+      },
+      {
+        test: /\.scss$/,
+        use: [ 'style-loader', 'css-loader', 'sass-loader' ]
+      },
+      {
+        test: /\.(ts|tsx)$/,
+        use: {
+          loader: 'ts-loader',
+          options: {
+            onlyCompileBundledFiles: true
+          }
+        },
         exclude: /node_modules/
       },
       {
-        test: /\.css$/,
-        use: ExtractTextWebpackPlugin.extract( {
-          fallback: 'style-loader',
-          use: [
-            {
-              loader: 'css-loader',
-              options: {
-                minimize: !development
-              }
-            }
-          ]
-        } ),
-        exclude: /node_modules/
+        test: /\.(woff|woff2)$/,
+        use: {
+          loader: 'url-loader',
+          options: {
+            limit: 1024,
+            fallback: 'file-loader'
+          }
+        }
       }
     ]
   },
   resolve: {
-    extensions: [ '.js', '.ts', '.css' ]
+    extensions: [ '.js', '.jsx', '.ts', '.tsx', '.json', '.css', '.scss', '.woff', '.woff2' ],
+    alias: {
+      common: path.resolve( __dirname, 'src', 'common' ),
+      background: path.resolve( __dirname, 'src', 'background' ),
+      options: path.resolve( __dirname, 'src', 'options' ),
+      utils: path.resolve( __dirname, 'src', 'utils' ),
+    }
   },
   plugins: [
+    new WebpackBar(),
     new CleanWebpackPlugin( [ build ] ),
-    new ExtractTextWebpackPlugin( '[name].bundle.css' ),
     new HtmlWebpackPlugin( {
       template: path.join( __dirname, 'src', 'options', 'index.html' ),
       filename: 'options.html',
@@ -53,25 +66,22 @@ const config = ( development: boolean ): webpack.Configuration => ( {
     } ),
     new CopyWebpackPlugin( [
       {
-        from: 'src/manifest.json',
-        transform: ( content, path ) =>
-        {
-          return JSON.stringify( {
-            name: process.env.npm_package_displayName,
-            description: process.env.npm_package_description,
-            version: process.env.npm_package_version,
-
-            ...JSON.parse( content )
-          }, null, 2 );
-        }
+        from: path.resolve( __dirname, 'src', 'manifest.json' ),
+        to: build,
+        toType: 'dir',
+        transform: ( content ) => ( JSON.stringify( {
+          name: process.env.npm_package_displayName,
+          description: process.env.npm_package_description,
+          version: process.env.npm_package_version,
+          ...JSON.parse( content )
+        }, null, 2 ) )
       },
       {
-        from: './assets',
-        to: 'assets',
-        toType: 'dir'
+        from: path.resolve( __dirname, 'src', 'res' ),
+        to: path.resolve( build ),
       }
     ] )
   ]
-} );
+};
 
 export default config;

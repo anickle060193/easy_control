@@ -1,16 +1,15 @@
-import * as webpack from 'webpack';
-import * as merge from 'webpack-merge';
+import merge = require( 'webpack-merge' );
+import ZipWebpackPlugin = require( 'zip-webpack-plugin' );
 
 import common from './webpack.common';
 
-export default merge( common( false ), {
+export default merge( common, {
+  mode: 'production',
   devtool: 'source-map',
   plugins: [
-    new webpack.DefinePlugin( {
-      'process.env.NODE_ENV': 'production'
-    } ),
-    new webpack.optimize.UglifyJsPlugin( {
-      sourceMap: true
+    new ZipWebpackPlugin( {
+      path: __dirname,
+      filename: 'playlist_subscriber.zip'
     } )
   ]
 } );

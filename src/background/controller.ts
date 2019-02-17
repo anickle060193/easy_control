@@ -1,4 +1,4 @@
-import { MessageTypes, fromBackgroundMessage, openContentMessage } from '../common/message';
+import { MessageTypes, fromBackgroundMessage, openContentLinkMessage } from '../common/message';
 import { ContentInfo } from '../common/content';
 
 export class BackgroundController
@@ -77,8 +77,8 @@ export class BackgroundController
     this.port.postMessage( fromBackgroundMessage( MessageTypes.FromBackground.VolumeDown ) );
   }
 
-  openContent( content: string )
+  openContentLink( contentLink: string )
   {
-    this.port.postMessage( openContentMessage( content ) );
+    this.port.postMessage( openContentLinkMessage( contentLink ) );
   }
 }

@@ -2,537 +2,882 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="Easy Control Change Log">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <meta name="description" content="Easy Control Change Log">
 
-    <title>Easy Control - Change Log</title>
-
-    <!-- CSS -->
-    <link rel="stylesheet" href="../bootstrap/bootstrap-3.3.7.min.css">
-    <link rel="stylesheet" href="change_log.css">
+  <title>Easy Control - Change Log</title>
 </head>
 
 <body>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-
-                <a class="navbar-brand" href="https://github.com/anickle060193/easy_control"><img src="../res/icon48.png" width="20" height="20" alt="Easy Control"></a>
-                <a class="navbar-brand" href="https://github.com/anickle060193/easy_control">Easy Control</a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="https://github.com/anickle060193/easy_control/">Github</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
+  <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
-        <div class="row">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+          aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
 
-            <div class="col-sm-3 col-md-2 sidebar">
-                <nav id="versions-sidebar">
-                    <ul class="nav nav-sidebar">
-                        <li class="active"><a href="#change-log">Change Log</a></li>
-                    </ul>
-                    <ul class="nav nav-sidebar">
-                        <li><a href="#version-1-28-0">Version 1.28.0</a></li>
-                        <li><a href="#version-1-27-0">Version 1.27.0</a></li>
-                        <li><a href="#version-1-26-0">Version 1.26.0</a></li>
-                        <li><a href="#version-1-25-0">Version 1.25.0</a></li>
-                        <li><a href="#version-1-24-0">Version 1.24.0</a></li>
-                        <li><a href="#version-1-23-0">Version 1.23.0</a></li>
-                        <li><a href="#version-1-22-0">Version 1.22.0</a></li>
-                        <li><a href="#version-1-21-0">Version 1.21.0</a></li>
-                        <li><a href="#version-1-20-0">Version 1.20.0</a></li>
-                        <li><a href="#version-1-19-0">Version 1.19.0</a></li>
-                        <li><a href="#version-1-18-0">Version 1.18.0</a></li>
-                        <li><a href="#version-1-17-0">Version 1.17.0</a></li>
-                        <li><a href="#version-1-16-0">Version 1.16.0</a></li>
-                        <li><a href="#version-1-15-1">Version 1.15.1</a></li>
-                        <li><a href="#version-1-15-0">Version 1.15.0</a></li>
-                        <li><a href="#version-1-14-0">Version 1.14.0</a></li>
-                        <li><a href="#version-1-13-0">Version 1.13.0</a></li>
-                        <li><a href="#version-1-12-0">Version 1.12.0</a></li>
-                        <li><a href="#version-1-11-0">Version 1.11.0</a></li>
-                        <li><a href="#version-1-10-0">Version 1.10.0</a></li>
-                        <li><a href="#version-1-9-1">Version 1.9.1</a></li>
-                        <li><a href="#version-1-9-0">Version 1.9.0</a></li>
-                        <li><a href="#version-1-8-0">Version 1.8.0</a></li>
-                        <li><a href="#version-1-7-0">Version 1.7.0</a></li>
-                        <li><a href="#version-1-6-0">Version 1.6.0</a></li>
-                        <li><a href="#version-1-5-0">Version 1.5.0</a></li>
-                        <li><a href="#version-1-4-0">Version 1.4.0</a></li>
-                        <li><a href="#version-1-3-0">Version 1.3.0</a></li>
-                        <li><a href="#version-1-2-0">Version 1.2.0</a></li>
-                        <li><a href="#version-1-1-2">Version 1.1.2</a></li>
-                        <li><a href="#version-1-1-1">Version 1.1.1</a></li>
-                        <li><a href="#version-1-1-0">Version 1.1.0</a></li>
-                        <li><a href="#version-1-0-0">Version 1.0.0</a></li>
-                    </ul>
-                </nav>
-            </div>
-
-            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main change-log" data-spy="scroll" data-target="#versions-sidebar">
-                <h1 id="change-log" class="page-header">Change Log</h1>
-
-                <div class="row">
-                    <h2 id="version-1-27-0" class="sub-header">Version 1.28.0</h2>
-                    <ul>
-                        <li><span data-type="enhancement"></span> Added playback speed controls to Google Play Music. <a data-issue="122"></a></li>
-                        <li><span data-type="bug"></span> Fix incorrect artwork from displaying for Pandora notification.</li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <h2 id="version-1-27-0" class="sub-header">Version 1.27.0</h2>
-                    <ul>
-                        <li><span data-type="enhancement"></span> Added play/pause control to generic media overlay. <a data-issue="120"></a></li>
-                        <li><span data-type="enhancement"></span> Added skip backward/forward controls to generic media overlay. <a data-issue="121"></a></li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <h2 id="version-1-26-0" class="sub-header">Version 1.26.0</h2>
-                    <ul>
-                        <li><span data-type="bug"></span> Update loop media overlay control when video is set to loop externally. <a data-issue="100"></a></li>
-                        <li><span data-type="bug"></span> Corrected mouse movement behavior related to media controls overlay.</li>
-                        <li><span data-type="enhancement"></span> Display keyboard shortcuts in media overlay tooltips. <a data-issue="96"></a></li>
-                        <li><span data-type="enhancement"></span> Added fullscreen control to media overlay. <a data-issue="110"></a></li>
-                        <li><span data-type="enhancement"></span> Dynamically determine icon color for generic media controller. <a data-issue="117"></a></li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <h2 id="version-1-25-0" class="sub-header">Version 1.25.0</h2>
-                    <ul>
-                        <li><span data-type="enhancement"></span> Added support for more complex keyboard shortcuts. <a data-issue="113"></a> <a data-issue="115"></a></li>
-                        <li><span data-type="enhancement"></span> Added ability to hide certain media overlay controls. <a data-issue="116"></a></li>
-                        <li><span data-type="bug"></span> Prevent changelog from opening on Chrome update. <a data-issue="111"></a></li>
-                        <li><span data-type="bug"></span> Fix Pandora track name notification duplication when track name is displaying as marquee. <a data-issue="112"></a></li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <h2 id="version-1-24-0" class="sub-header">Version 1.24.0</h2>
-                    <ul>
-                        <li><span data-type="bug"></span> Reverted "Reverted changes to SpotifyController." <a data-issue="106"></a></li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <h2 id="version-1-23-0" class="sub-header">Version 1.23.0</h2>
-                    <ul>
-                        <li><span data-type="bug"></span> Reverted changes to SpotifyController. <a data-issue="108"></a></li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <h2 id="version-1-22-0" class="sub-header">Version 1.22.0</h2>
-                    <ul>
-                        <li><span data-type="bug"></span> Updated SpotifyController for new Spotify web UI. <a data-issue="106"></a></li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <h2 id="version-1-21-0" class="sub-header">Version 1.21.0</h2>
-                    <ul>
-                        <li><span data-type="bug"></span> Updated PandoraController for new Pandora layout.</li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <h2 id="version-1-20-0" class="sub-header">Version 1.20.0</h2>
-                    <ul>
-                        <li><span data-type="feature"></span> Added option to hide controls when mouse is idle for a certain amount of time. <a data-issue="102"></a></li>
-                        <li><span data-type="enhancement"></span> Track name is now copied with link for Spotify. <a data-issue="98"></a></li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <h2 id="version-1-19-0" class="sub-header">Version 1.19.0</h2>
-                    <ul>
-                        <li><span data-type="enhancement"></span> Opening link to Spotify song will browse to the song's album in existing tab if configured. <a data-issue="84"></a></li>
-                        <li><span data-type="bug"></span> Fixed loop media control not updating on video change. <a data-issue="90"></a></li>
-                        <li><span data-type="bug"></span> Fixed Hulu new content notifications showing wrong thumbnail.</li>
-                        <li><span data-type="bug"></span> Fixed error occuring when a new content notification could not be shown due to invalid thumbnail image.</li>
-                        <li><span data-type="enhancement"></span> Updated to use ES6 style class declarations. <a data-issue="89"></a></li>
-                        <li><span data-type="enhancement"></span> New content notifications now replace the previous new content notification if triggered in succession.</li>
-                        <li>
-                            <span data-type="feature"></span> Added the ability to copy a link to the currently playing media. <a data-issue="88"></a>
-                            <img src="images/copy_media_link_shortcut.png" alt="Copy Media Link Keyboard Shortcut">
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <h2 id="version-1-18-0" class="sub-header">Version 1.18.0</h2>
-                    <ul>
-                        <li>
-                            <span data-type="feature"></span> Added ability to open new content in existing tabs. <a data-issue="84"></a>
-                            <img src="images/open_in_existing.png" alt="Open in Existing">
-                        </li>
-                        <li>Added initialization function back to controllers. <a data-issue="63"></a></li>
-                        <li><span data-type="bug"></span> Media controls are now no longer shown for hidden media elements. <a data-issue="75"></a> <a data-issue="87"></a></li>
-                        <li><span data-type="enhancement"></span> Media controls are now constrained within the media element. <a data-issue="85"></a></li>
-                        <li><span data-type="enhancement"></span> Updated the media controls reset keyboard shortcut to re-add the controls if they've been removed and re-position the controls back to the top-left of the media. <a data-issue="83"></a></li>
-                        <li>
-                            <span data-type="enhancement"></span> Added pause button to new content notifications. <a data-issue="81"></a>
-                            <img src="images/notification_pause.png" alt="Notification Pause">
-                        </li>
-                        <li>Added event handlers for event page. <a data-issue="80"></a></li>
-                        <li><span data-type="bug"></span> Fixed errors caused by trying to create duplicate context menus. <a data-issue="79"></a></li>
-                        <li><span data-type="bug"></span> Fixed media controls being too large on Youtube. <a data-issue="82"></a></li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <h2 id="version-1-17-0" class="sub-header">Version 1.17.0</h2>
-                    <ul>
-                        <li>Removed unused popup code.</li>
-                        <li><span data-type="bug"></span> Fixed media controls background being squished. <a data-issue="77"></a></li>
-                        <li><span data-type="bug"></span> Fixed controls being added after controller is disconnected.</li>
-                        <li><span data-type="bug"></span> Fixed keyboard shortcuts being intercepted by Hulu search. <a data-issue="76"></a></li>
-                        <li><span data-type="bug"></span> Fixed Amazon Music new content showing as "loading...". <a data-issue="78"></a></li>
-                        <li><span data-type="bug"></span> Added Amazon Music CDN.</li>
-                        <li>Cleaned up code.</li>
-                        <li>Removed unused popup HTML/css.</li>
-                        <li><span data-type="enhancement"></span> Much faster/slower speed playback controls are no longer locked to increments of 0.5. <a data-issue="73"></a></li>
-                        <li><span data-type="enhancement"></span> The new content provider tab opened from clicking the browser action is now focused on opening. <a data-issue="74"></a></li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <h2 id="version-1-16-0" class="sub-header">Version 1.16.0</h2>
-                    <ul>
-                        <li><span data-type="enhancement"></span> Clicking on the body of any notification will bring that content provider's tab to the front. <a data-issue="72"></a></li>
-                        <li><span data-type="bug"></span> <span data-type="enhancement"></span> Minor rework of media detection. <a data-issue="71"></a></li>
-                        <li><span data-type="bug"></span> <span data-type="enhancement"></span> Re-worked the display of the media controls overlay. <a data-issue="69"></a> <a data-issue="70"></a></li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <h2 id="version-1-15-1" class="sub-header">Version 1.15.1</h2>
-                    <ul>
-                        <li><span data-type="enhancement"></span> Playback speed is now persisted on a per-site, per-tab basis. <a data-issue="61"></a></li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <h2 id="version-1-15-0" class="sub-header">Version 1.15.0</h2>
-                    <ul>
-                        <li><span data-type="bug"></span> Fixed issue where Spotify would display new content notifications when hovering over song title.</li>
-                        <li><span data-type="enhancement"></span> Site blacklist now checks against the content source as well as current page URL. <a data-issue="49"></a> <a data-issue="33"></a></li>
-                        <li><span data-type="bug"></span> Fixed issue where newly-added media elements were not being detected.</li>
-                        <li><span data-type="feature"></span> Added support for <a href="https://www.twitch.tv">Twitch</a>. <a data-issue="41"></a></li>
-                        <li>Unified settings retrieval/handling in background procress.</li>
-                        <li><span data-type="enhancement"></span> Added ability to reset all settings to defaults from options page. <a data-issue="59"></a></li>
-                        <li>
-                            <span data-type="feature"></span> Controller colors are now customizable. <a data-issue="44"></a>
-                            <img src="images/customize_controller_color.png" alt="Customize Controller Color">
-                        </li>
-                        <li>
-                            <span data-type="feature"></span> Added the ability to loop content for media controllers. <a data-issue="38"></a>
-                            <img src="images/loop_media.png" alt="Loop Media">
-                        </li>
-                        <li>
-                            <span data-type="feature"></span> Added the ability to enable/disable individual controllers. <a data-issue="19"></a>
-                            <img src="images/enable_disable_controllers.png" alt="Enable/Disable Controllers">
-                        </li>
-                        <li>Generalized options popup greatly to help ease new controller addition. <a data-issue="28"></a></li>
-                        <li>Improved status polling for media controllers. <a data-issue="57"></a></li>
-                        <li>Centralized handling of settings loading/change handling in controllers.</li>
-                        <li><span data-type="enhancement"></span> Improved and unified audio/video element recognition in webpage. <a data-issue="50"></a></li>
-                        <li><span data-type="bug"></span> Fixed new content not showing notification when the same content was repeated.</li>
-                        <li>Performed a massive re-organization of extension file structure to move everything out from a single directory.</li>
-                        <li><span data-type="bug"></span> Fixed spamming console with erros on extension reload. <a data-issue="58"></a></li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <h2 id="version-1-14-0" class="sub-header">Version 1.14.0</h2>
-                    <ul>
-                        <li><span data-type="enhancement"></span> Added descriptive change labels to change log. <a data-issue="54"></a></li>
-                        <li>
-                            <span data-type="feature"></span> Added site blacklist option to prevent controlling generic media on certain sites. <a data-issue="49"></a>
-                            <img src="images/blacklist_option.png" alt="Site Blacklist Option">
-                        </li>
-                        <li>
-                            <span data-type="enhancement"></span> Added ability to remove media controls. <a data-issue="56"></a>
-                            <img src="images/remove_media_controls.png" alt="Media Controls are Removable">
-                        </li>
-                        <li>
-                            <span data-type="enhancement"></span> Made media controls draggable. <a data-issue="55"></a>
-                            <img src="images/media_controls_draggable.png" alt="Media Controls are Draggable">
-                        </li>
-                        <li><span data-type="bug"></span> Fixed pause on inactivity option label <a data-issue="52"></a></li>
-                        <li><span data-type="bug"></span> Fixed media controls not appearing on Netflix <a data-issue="53"></a></li>
-                        <li>Updated default install/update settings.</li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <h2 id="version-1-13-0" class="sub-header">Version 1.13.0</h2>
-                    <ul>
-                        <li>
-                            <span data-type="feature"></span> Added option to disable auto-pause on a per-tab basis through browser action context menu. <a data-issue="37"></a>
-                            <i>(Right click browser action icon.)</i>
-                            <img src="images/disable_auto_pause_for_tab.png" alt="Disable Auto-Pause for Tab">
-                        </li>
-                        <li>
-                            <span data-type="enhancement"></span> Added option to disable showing auto-paused content notification.
-                            <img src="images/auto_paused_notification_option.png" alt="Auto-Paused Notification Option">
-                        </li>
-                        <li>
-                            <span data-type="feature"></span> Added notifications to display when content is auto-paused. Notifications include a prompt to disable auto-pause for that content's tab. <a data-issue="37"></a>
-                            <img src="images/auto_paused_notification.png" alt="Auto-Paused Notification">
-                        </li>
-                        <li>
-                            <span data-type="enhancement"></span> Made showing change log on update configurable.
-                            <img src="images/show_change_log_on_update.png" alt="Show Change Log on Update">
-                        </li>
-                        <li><span data-type="bug"></span> Fixed playback speed control icons not loading correctly on some computers. <a data-issue="43"></a></li>
-                        <li>Abstracted content scripts in manifest.json to make adding new controllers/scripts easier.</li>
-                        <li><span data-type="bug"></span> Fixed issue where keyboard shortcuts were being handled multiple times after opening multiple videos on Youtube. <a data-issue="51"></a></li>
-                        <li><span data-type="bug"></span> Fixed playback controls not working when Netflix was full-screened. <a data-issue="48"></a></li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <h2 id="version-1-12-0" class="sub-header">Version 1.12.0</h2>
-                    <ul>
-                        <li><span data-type="enhancement"></span> Added button to options page to view change log.</li>
-                        <li><span data-type="enhancement"></span> Added images to change log. <a data-issue="42"></a></li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <h2 id="version-1-11-0" class="sub-header">Version 1.11.0</h2>
-                    <ul>
-                        <li><span data-type="feature"></span> Created this change log. <a data-issue="42"></a></li>
-                        <li><span data-type="bug"></span> Fixed embedded Youtube videos not being recognized.</li>
-                        <li><span data-type="bug"></span> Fixed playback speed controls displaying badly on full-screened video. <a data-issue="46"></a></li>
-                        <li><span data-type="bug"></span> Fixed how playback speed controls looked on generic sites. <a data-issue="45"></a></li>
-                        <li><span data-type="bug"></span> Fixed issue with pausing Youtube videos in newly-opened tabs before video had auto-played. <a data-issue="32"></a></li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <h2 id="version-1-10-0" class="sub-header">Version 1.10.0</h2>
-                    <ul>
-                        <li>
-                            <span data-type="feature"></span> Added ability to disable pausing of currently playing content when new content starts playing. <a data-issue="37"></a>
-                            <i>(Right click browser action icon.)</i>
-                            <img src="images/disable_auto_pause.png" alt="Disable Auto-Pause">
-                        </li>
-                        <li><span data-type="enhancement"></span> Improved how default settings are set upon install/update. <a data-issue="40"></a></li>
-                        <li><span data-type="enhancement"></span> Made the playback speed controls easier to see. <a data-issue="39"></a></li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <h2 id="version-1-9-1" class="sub-header">Version 1.9.1</h2>
-                    <ul>
-                        <li><span data-type="bug"></span> Fixed an issue where multiple playback speed controls were being appended to the document.</li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <h2 id="version-1-9-0" class="sub-header">Version 1.9.0</h2>
-                    <ul>
-                        <li>
-                            <span data-type="enhancement"></span> Added a configurable option to change how long content change notifications last. <a data-issue="36"></a>
-                            <img src="images/notification_length.png" alt="Notification Length">
-                        </li>
-                        <li>
-                            <span data-type="feature"></span> Added rudimentary volume controls. <a data-issue="30"></a>
-                            <ul>
-                                <li>Currently only supports HTML content providers.</li>
-                            </ul>
-                        </li>
-                        <li>Code clean up regarding extended Controllers and unsupported functions.</li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <h2 id="version-1-8-0" class="sub-header">Version 1.8.0</h2>
-                    <ul>
-                        <li>
-                            <span data-type="feature"></span> Added initial implementation of playback speed controls. <a data-issue="29"></a>
-                            <ul>
-                                <li>Only supports HTML content providers.</li>
-                            </ul>
-                            <img src="images/playback_speed_controls.png" alt="Playback Speed Controls">
-                            <img src="images/playback_speed_controls_options.png" alt="Playback Speed Controls Options">
-                        </li>
-                        <li><span data-type="bug"></span> Fixed Hulu notification option not staying selected. <a data-issue="31"></a></li>
-                        <li>Updated README.md to link to extension in Chrome Web Store.</li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <h2 id="version-1-7-0" class="sub-header">Version 1.7.0</h2>
-                    <ul>
-                        <li><span data-type="feature"></span> Added support for <a href="http://www.hulu.com/">Hulu</a>. <a data-issue="27"></a></li>
-                        <li><span data-type="feature"></span> Added support for <a href="https://www.amazon.com/gp/video/getstarted/">Amazon Video</a>. <a data-issue="24"></a></li>
-                        <li><span data-type="feature"></span> Added support for <a href="https://music.amazon.com/">Amazon Music</a>. <a data-issue="24"></a></li>
-                        <li><span data-type="feature"></span> Added support for <a href="https://www.netflix.com/">Netflix</a>. <a data-issue="23"></a></li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <h2 id="version-1-6-0" class="sub-header">Version 1.6.0</h2>
-                    <ul>
-                        <li>Updated promotional materials.</li>
-                        <li><span data-type="bug"></span> Fixed issue where notifications for Youtube would not have a thumbnail.</li>
-                        <li><span data-type="bug"></span> A notification is now shown when the same content is played again. <a data-issue="6"></a></li>
-                        <li>Now only retrieve tab/frame name when content is found. <a data-issue="16"></a></li>
-                        <li>
-                            <span data-type="enhancement"></span> Reformatted notifications table in options page. <a data-issue="18"></a>
-                            <img src="images/reformatted_notification_settings.png" alt="Reformatted Notification Settings">
-                        </li>
-                        <li><span data-type="feature"></span> Add ability to support generic HTML audio and video elements on any webpage. <a data-issue="22"></a> <a data-issue="16"></a> <a data-issue="8"></a></li>
-                        <li><span data-type="bug"></span> Fixed issue where focus/blur was being handled multiple times on the same page. <a data-issue="12"></a></li>
-                        <li><span data-type="enhancement"></span> Added a more reliable way to check if a controller is playing in the active tab. <a data-issue="12"></a></li>
-                        <li>Prevent locking due to inactivity on Youtube. <a data-issue="20"></a></li>
-                        <li><span data-type="bug"></span> Fixed Youtube not recognizing that a new Youtube video was opened. <a data-issue="21"></a></li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <h2 id="version-1-5-0" class="sub-header">Version 1.5.0</h2>
-                    <ul>
-                        <li><span data-type="bug"></span> Fixed new controls and generalized YoutubeController. <a data-issue="16"></a></li>
-                        <li>Added link to create an Github issue from the options page. <a data-issue="3"></a></li>
-                        <li><span data-type="bug"></span> Added Pandora CDN to permissions. <a data-issue="13"></a></li>
-                        <li>
-                            Added more controls and keyboard shortcuts for each. <a data-issue="1"></a>
-                            <img src="images/keyboard_shortcuts.png" alt="Keyboard Shortcuts">
-                        </li>
-                        <li><span data-type="enhancement"></span> Added a way to open the Chrome keyboard shortcuts from the options page.</li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <h2 id="version-1-4-0" class="sub-header">Version 1.4.0</h2>
-                    <ul>
-                        <li><span data-type="enhancement"></span> When the currently playing content is closed, the last-playing content is made the current content. <a data-issue="11"></a></li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <h2 id="version-1-3-0" class="sub-header">Version 1.3.0</h2>
-                    <ul>
-                        <li><span data-type="feature"></span> Added support for <a href="https://bandcamp.com/">Bandcamp</a>. <a data-issue="9"></a></li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <h2 id="version-1-2-0" class="sub-header">Version 1.2.0</h2>
-                    <ul>
-                        <li>
-                            <span data-type="enhancement"></span> Added option to not show notifications for the active content tab. <a data-issue="4"></a>
-                            <img src="images/no_active_notification.png" alt="No Active Notification">
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <h2 id="version-1-1-2" class="sub-header">Version 1.1.2</h2>
-                    <ul>
-                        <li><span data-type="bug"></span> Fixed check in checkboxes on options page not displaying when checked. <a data-issue="7"></a></li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <h2 id="version-1-1-1" class="sub-header">Version 1.1.1</h2>
-                    <ul>
-                        <li><span data-type="bug"></span> Fixed issue with Google Play Music not being recognized by <i>some</i> people.</li>
-                        <li>
-                            <span data-type="enhancement"></span> Content change notifications now display artwork. <a data-issue="2"></a>
-                            <ul>
-                                <li>Required adding permission for each content provider's CDN.</li>
-                            </ul>
-                            <img src="images/cdn_permissions.png" alt="Additional CDN Permissions">
-                        </li>
-                        <li>
-                            <span data-type="enhancement"></span> Added 'Next' button to content change notification. <a data-issue="5"></a>
-                            <img src="images/notification_next.png" alt="Notification Next">
-                        </li>
-                        <li>
-                            <span data-type="feature"></span> Initial addition of more content controls. <a data-issue="1"></a>
-                            <ul>
-                                <li>Previous, Next, Like, Unlike, Dislike, Undislike</li>
-                                <li>Support for various controls depends on the content provider.</li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <h2 id="version-1-1-0" class="sub-header">Version 1.1.0</h2>
-                    <ul>
-                        <li>
-                            <span data-type="feature"></span> Added option to pause content when the computer is locked or after a set period of inactivity.
-                            <img src="images/pause_lock_inactivity.png" alt="Pause on Lock/Inactivity">
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <h2 id="version-1-0-0" class="sub-header">Version 1.0.0</h2>
-                    <ul>
-                        <li>Uploaded to <a href="https://chrome.google.com/webstore/detail/easy-control/oanebiaiakkpfipgnkpmcpkjfnclbgfi">Chrome Web Store</a>.</li>
-                        <li>Created promotional images.</li>
-                        <li>Updated options page to use include jQuery instead of CDN.</li>
-                        <li>
-                            <span data-type="feature"></span> Added 'Default Site' option.
-                            <ul>
-                                <li>Clicking the browser action when no content is playing will open the default site in a new tab.</li>
-                            </ul>
-                            <img src="images/default_site.png" alt="Default Site">
-                        </li>
-                        <li>Renamed extension to 'Easy Control'.</li>
-                        <li>Created README.md.</li>
-                        <li><span data-type="feature"></span> Added options page.</li>
-                        <li>
-                            <span data-type="enhancement"></span> Added better icon.
-                            <img src="../res/icon48.png" alt="Easy Control">
-                        </li>
-                        <li><span data-type="bug"></span> Fixed issue with notifications only showing up the first time.</li>
-                        <li><span data-type="bug"></span> Fixed artist name issue with Pandora.</li>
-                        <li><span data-type="feature"></span> Added support for <a href="https://play.google.com/music/">Google Play Music</a>.</li>
-                        <li>
-                            Added notifications on content change.
-                            <img src="images/notification.png" alt="Notification">
-                        </li>
-                        <li><span data-type="feature"></span> Added keyboard shortcut to pause/play content.</li>
-                        <li><span data-type="feature"></span> Added support for <a href="https://www.youtube.com/">Youtube</a>.</li>
-                        <li>Code cleanup.</li>
-                        <li><span data-type="feature"></span> Added support for <a href="https://play.spotify.com/">Spotify</a>.</li>
-                        <li><span data-type="feature"></span> Added support for <a href="http://www.pandora.com/">Pandora</a>.</li>
-                    </ul>
-                </div>
-
-            </div>
-        </div>
+        <a class="navbar-brand" href="https://github.com/anickle060193/easy_control">
+          <img src="../res/icon48.png" width="20" height="20" alt="Easy Control">
+        </a>
+        <a class="navbar-brand" href="https://github.com/anickle060193/easy_control">Easy Control</a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <a href="https://github.com/anickle060193/easy_control/">Github</a>
+          </li>
+        </ul>
+      </div>
     </div>
+  </nav>
 
-    <!-- JavaScript -->
-    <script src="../jquery/jquery-3.1.0.min.js"></script>
-    <script src="../bootstrap/bootstrap-3.3.7.min.js"></script>
-    <script src="change_log.js"></script>
+  <div class="container-fluid">
+    <div class="row">
+
+      <div class="col-sm-3 col-md-2 sidebar">
+        <nav id="versions-sidebar">
+          <ul class="nav nav-sidebar">
+            <li class="active">
+              <a href="#change-log">Change Log</a>
+            </li>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <li>
+              <a href="#version-1-28-0">Version 1.28.0</a>
+            </li>
+            <li>
+              <a href="#version-1-27-0">Version 1.27.0</a>
+            </li>
+            <li>
+              <a href="#version-1-26-0">Version 1.26.0</a>
+            </li>
+            <li>
+              <a href="#version-1-25-0">Version 1.25.0</a>
+            </li>
+            <li>
+              <a href="#version-1-24-0">Version 1.24.0</a>
+            </li>
+            <li>
+              <a href="#version-1-23-0">Version 1.23.0</a>
+            </li>
+            <li>
+              <a href="#version-1-22-0">Version 1.22.0</a>
+            </li>
+            <li>
+              <a href="#version-1-21-0">Version 1.21.0</a>
+            </li>
+            <li>
+              <a href="#version-1-20-0">Version 1.20.0</a>
+            </li>
+            <li>
+              <a href="#version-1-19-0">Version 1.19.0</a>
+            </li>
+            <li>
+              <a href="#version-1-18-0">Version 1.18.0</a>
+            </li>
+            <li>
+              <a href="#version-1-17-0">Version 1.17.0</a>
+            </li>
+            <li>
+              <a href="#version-1-16-0">Version 1.16.0</a>
+            </li>
+            <li>
+              <a href="#version-1-15-1">Version 1.15.1</a>
+            </li>
+            <li>
+              <a href="#version-1-15-0">Version 1.15.0</a>
+            </li>
+            <li>
+              <a href="#version-1-14-0">Version 1.14.0</a>
+            </li>
+            <li>
+              <a href="#version-1-13-0">Version 1.13.0</a>
+            </li>
+            <li>
+              <a href="#version-1-12-0">Version 1.12.0</a>
+            </li>
+            <li>
+              <a href="#version-1-11-0">Version 1.11.0</a>
+            </li>
+            <li>
+              <a href="#version-1-10-0">Version 1.10.0</a>
+            </li>
+            <li>
+              <a href="#version-1-9-1">Version 1.9.1</a>
+            </li>
+            <li>
+              <a href="#version-1-9-0">Version 1.9.0</a>
+            </li>
+            <li>
+              <a href="#version-1-8-0">Version 1.8.0</a>
+            </li>
+            <li>
+              <a href="#version-1-7-0">Version 1.7.0</a>
+            </li>
+            <li>
+              <a href="#version-1-6-0">Version 1.6.0</a>
+            </li>
+            <li>
+              <a href="#version-1-5-0">Version 1.5.0</a>
+            </li>
+            <li>
+              <a href="#version-1-4-0">Version 1.4.0</a>
+            </li>
+            <li>
+              <a href="#version-1-3-0">Version 1.3.0</a>
+            </li>
+            <li>
+              <a href="#version-1-2-0">Version 1.2.0</a>
+            </li>
+            <li>
+              <a href="#version-1-1-2">Version 1.1.2</a>
+            </li>
+            <li>
+              <a href="#version-1-1-1">Version 1.1.1</a>
+            </li>
+            <li>
+              <a href="#version-1-1-0">Version 1.1.0</a>
+            </li>
+            <li>
+              <a href="#version-1-0-0">Version 1.0.0</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main change-log" data-spy="scroll" data-target="#versions-sidebar">
+        <h1 id="change-log" class="page-header">Change Log</h1>
+
+        <div class="row">
+          <h2 id="version-1-27-0" class="sub-header">Version 1.28.0</h2>
+          <ul>
+            <li>
+              <span data-type="enhancement"></span> Added playback speed controls to Google Play Music.
+              <a data-issue="122"></a>
+            </li>
+            <li>
+              <span data-type="bug"></span> Fix incorrect artwork from displaying for Pandora notification.</li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <h2 id="version-1-27-0" class="sub-header">Version 1.27.0</h2>
+          <ul>
+            <li>
+              <span data-type="enhancement"></span> Added play/pause control to generic media overlay.
+              <a data-issue="120"></a>
+            </li>
+            <li>
+              <span data-type="enhancement"></span> Added skip backward/forward controls to generic media overlay.
+              <a data-issue="121"></a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <h2 id="version-1-26-0" class="sub-header">Version 1.26.0</h2>
+          <ul>
+            <li>
+              <span data-type="bug"></span> Update loop media overlay control when video is set to loop externally.
+              <a data-issue="100"></a>
+            </li>
+            <li>
+              <span data-type="bug"></span> Corrected mouse movement behavior related to media controls overlay.</li>
+            <li>
+              <span data-type="enhancement"></span> Display keyboard shortcuts in media overlay tooltips.
+              <a data-issue="96"></a>
+            </li>
+            <li>
+              <span data-type="enhancement"></span> Added fullscreen control to media overlay.
+              <a data-issue="110"></a>
+            </li>
+            <li>
+              <span data-type="enhancement"></span> Dynamically determine icon color for generic media controller.
+              <a data-issue="117"></a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <h2 id="version-1-25-0" class="sub-header">Version 1.25.0</h2>
+          <ul>
+            <li>
+              <span data-type="enhancement"></span> Added support for more complex keyboard shortcuts.
+              <a data-issue="113"></a>
+              <a data-issue="115"></a>
+            </li>
+            <li>
+              <span data-type="enhancement"></span> Added ability to hide certain media overlay controls.
+              <a data-issue="116"></a>
+            </li>
+            <li>
+              <span data-type="bug"></span> Prevent changelog from opening on Chrome update.
+              <a data-issue="111"></a>
+            </li>
+            <li>
+              <span data-type="bug"></span> Fix Pandora track name notification duplication when track name is displaying as marquee.
+              <a data-issue="112"></a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <h2 id="version-1-24-0" class="sub-header">Version 1.24.0</h2>
+          <ul>
+            <li>
+              <span data-type="bug"></span> Reverted "Reverted changes to SpotifyController."
+              <a data-issue="106"></a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <h2 id="version-1-23-0" class="sub-header">Version 1.23.0</h2>
+          <ul>
+            <li>
+              <span data-type="bug"></span> Reverted changes to SpotifyController.
+              <a data-issue="108"></a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <h2 id="version-1-22-0" class="sub-header">Version 1.22.0</h2>
+          <ul>
+            <li>
+              <span data-type="bug"></span> Updated SpotifyController for new Spotify web UI.
+              <a data-issue="106"></a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <h2 id="version-1-21-0" class="sub-header">Version 1.21.0</h2>
+          <ul>
+            <li>
+              <span data-type="bug"></span> Updated PandoraController for new Pandora layout.</li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <h2 id="version-1-20-0" class="sub-header">Version 1.20.0</h2>
+          <ul>
+            <li>
+              <span data-type="feature"></span> Added option to hide controls when mouse is idle for a certain amount of time.
+              <a data-issue="102"></a>
+            </li>
+            <li>
+              <span data-type="enhancement"></span> Track name is now copied with link for Spotify.
+              <a data-issue="98"></a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <h2 id="version-1-19-0" class="sub-header">Version 1.19.0</h2>
+          <ul>
+            <li>
+              <span data-type="enhancement"></span> Opening link to Spotify song will browse to the song's album in existing tab if configured.
+              <a data-issue="84"></a>
+            </li>
+            <li>
+              <span data-type="bug"></span> Fixed loop media control not updating on video change.
+              <a data-issue="90"></a>
+            </li>
+            <li>
+              <span data-type="bug"></span> Fixed Hulu new content notifications showing wrong thumbnail.</li>
+            <li>
+              <span data-type="bug"></span> Fixed error occuring when a new content notification could not be shown due to invalid thumbnail image.</li>
+            <li>
+              <span data-type="enhancement"></span> Updated to use ES6 style class declarations.
+              <a data-issue="89"></a>
+            </li>
+            <li>
+              <span data-type="enhancement"></span> New content notifications now replace the previous new content notification if triggered in succession.</li>
+            <li>
+              <span data-type="feature"></span> Added the ability to copy a link to the currently playing media.
+              <a data-issue="88"></a>
+              <img src="images/copy_media_link_shortcut.png" alt="Copy Media Link Keyboard Shortcut">
+            </li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <h2 id="version-1-18-0" class="sub-header">Version 1.18.0</h2>
+          <ul>
+            <li>
+              <span data-type="feature"></span> Added ability to open new content in existing tabs.
+              <a data-issue="84"></a>
+              <img src="images/open_in_existing.png" alt="Open in Existing">
+            </li>
+            <li>Added initialization function back to controllers.
+              <a data-issue="63"></a>
+            </li>
+            <li>
+              <span data-type="bug"></span> Media controls are now no longer shown for hidden media elements.
+              <a data-issue="75"></a>
+              <a data-issue="87"></a>
+            </li>
+            <li>
+              <span data-type="enhancement"></span> Media controls are now constrained within the media element.
+              <a data-issue="85"></a>
+            </li>
+            <li>
+              <span data-type="enhancement"></span> Updated the media controls reset keyboard shortcut to re-add the controls if they've been removed and
+              re-position the controls back to the top-left of the media.
+              <a data-issue="83"></a>
+            </li>
+            <li>
+              <span data-type="enhancement"></span> Added pause button to new content notifications.
+              <a data-issue="81"></a>
+              <img src="images/notification_pause.png" alt="Notification Pause">
+            </li>
+            <li>Added event handlers for event page.
+              <a data-issue="80"></a>
+            </li>
+            <li>
+              <span data-type="bug"></span> Fixed errors caused by trying to create duplicate context menus.
+              <a data-issue="79"></a>
+            </li>
+            <li>
+              <span data-type="bug"></span> Fixed media controls being too large on Youtube.
+              <a data-issue="82"></a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <h2 id="version-1-17-0" class="sub-header">Version 1.17.0</h2>
+          <ul>
+            <li>Removed unused popup code.</li>
+            <li>
+              <span data-type="bug"></span> Fixed media controls background being squished.
+              <a data-issue="77"></a>
+            </li>
+            <li>
+              <span data-type="bug"></span> Fixed controls being added after controller is disconnected.</li>
+            <li>
+              <span data-type="bug"></span> Fixed keyboard shortcuts being intercepted by Hulu search.
+              <a data-issue="76"></a>
+            </li>
+            <li>
+              <span data-type="bug"></span> Fixed Amazon Music new content showing as "loading...".
+              <a data-issue="78"></a>
+            </li>
+            <li>
+              <span data-type="bug"></span> Added Amazon Music CDN.</li>
+            <li>Cleaned up code.</li>
+            <li>Removed unused popup HTML/css.</li>
+            <li>
+              <span data-type="enhancement"></span> Much faster/slower speed playback controls are no longer locked to increments of 0.5.
+              <a data-issue="73"></a>
+            </li>
+            <li>
+              <span data-type="enhancement"></span> The new content provider tab opened from clicking the browser action is now focused on opening.
+              <a data-issue="74"></a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <h2 id="version-1-16-0" class="sub-header">Version 1.16.0</h2>
+          <ul>
+            <li>
+              <span data-type="enhancement"></span> Clicking on the body of any notification will bring that content provider's tab to the front.
+              <a data-issue="72"></a>
+            </li>
+            <li>
+              <span data-type="bug"></span>
+              <span data-type="enhancement"></span> Minor rework of media detection.
+              <a data-issue="71"></a>
+            </li>
+            <li>
+              <span data-type="bug"></span>
+              <span data-type="enhancement"></span> Re-worked the display of the media controls overlay.
+              <a data-issue="69"></a>
+              <a data-issue="70"></a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <h2 id="version-1-15-1" class="sub-header">Version 1.15.1</h2>
+          <ul>
+            <li>
+              <span data-type="enhancement"></span> Playback speed is now persisted on a per-site, per-tab basis.
+              <a data-issue="61"></a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <h2 id="version-1-15-0" class="sub-header">Version 1.15.0</h2>
+          <ul>
+            <li>
+              <span data-type="bug"></span> Fixed issue where Spotify would display new content notifications when hovering over song title.</li>
+            <li>
+              <span data-type="enhancement"></span> Site blacklist now checks against the content source as well as current page URL.
+              <a data-issue="49"></a>
+              <a data-issue="33"></a>
+            </li>
+            <li>
+              <span data-type="bug"></span> Fixed issue where newly-added media elements were not being detected.</li>
+            <li>
+              <span data-type="feature"></span> Added support for
+              <a href="https://www.twitch.tv">Twitch</a>.
+              <a data-issue="41"></a>
+            </li>
+            <li>Unified settings retrieval/handling in background procress.</li>
+            <li>
+              <span data-type="enhancement"></span> Added ability to reset all settings to defaults from options page.
+              <a data-issue="59"></a>
+            </li>
+            <li>
+              <span data-type="feature"></span> Controller colors are now customizable.
+              <a data-issue="44"></a>
+              <img src="images/customize_controller_color.png" alt="Customize Controller Color">
+            </li>
+            <li>
+              <span data-type="feature"></span> Added the ability to loop content for media controllers.
+              <a data-issue="38"></a>
+              <img src="images/loop_media.png" alt="Loop Media">
+            </li>
+            <li>
+              <span data-type="feature"></span> Added the ability to enable/disable individual controllers.
+              <a data-issue="19"></a>
+              <img src="images/enable_disable_controllers.png" alt="Enable/Disable Controllers">
+            </li>
+            <li>Generalized options popup greatly to help ease new controller addition.
+              <a data-issue="28"></a>
+            </li>
+            <li>Improved status polling for media controllers.
+              <a data-issue="57"></a>
+            </li>
+            <li>Centralized handling of settings loading/change handling in controllers.</li>
+            <li>
+              <span data-type="enhancement"></span> Improved and unified audio/video element recognition in webpage.
+              <a data-issue="50"></a>
+            </li>
+            <li>
+              <span data-type="bug"></span> Fixed new content not showing notification when the same content was repeated.</li>
+            <li>Performed a massive re-organization of extension file structure to move everything out from a single directory.</li>
+            <li>
+              <span data-type="bug"></span> Fixed spamming console with erros on extension reload.
+              <a data-issue="58"></a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <h2 id="version-1-14-0" class="sub-header">Version 1.14.0</h2>
+          <ul>
+            <li>
+              <span data-type="enhancement"></span> Added descriptive change labels to change log.
+              <a data-issue="54"></a>
+            </li>
+            <li>
+              <span data-type="feature"></span> Added site blacklist option to prevent controlling generic media on certain sites.
+              <a data-issue="49"></a>
+              <img src="images/blacklist_option.png" alt="Site Blacklist Option">
+            </li>
+            <li>
+              <span data-type="enhancement"></span> Added ability to remove media controls.
+              <a data-issue="56"></a>
+              <img src="images/remove_media_controls.png" alt="Media Controls are Removable">
+            </li>
+            <li>
+              <span data-type="enhancement"></span> Made media controls draggable.
+              <a data-issue="55"></a>
+              <img src="images/media_controls_draggable.png" alt="Media Controls are Draggable">
+            </li>
+            <li>
+              <span data-type="bug"></span> Fixed pause on inactivity option label
+              <a data-issue="52"></a>
+            </li>
+            <li>
+              <span data-type="bug"></span> Fixed media controls not appearing on Netflix
+              <a data-issue="53"></a>
+            </li>
+            <li>Updated default install/update settings.</li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <h2 id="version-1-13-0" class="sub-header">Version 1.13.0</h2>
+          <ul>
+            <li>
+              <span data-type="feature"></span> Added option to disable auto-pause on a per-tab basis through browser action context menu.
+              <a data-issue="37"></a>
+              <i>(Right click browser action icon.)</i>
+              <img src="images/disable_auto_pause_for_tab.png" alt="Disable Auto-Pause for Tab">
+            </li>
+            <li>
+              <span data-type="enhancement"></span> Added option to disable showing auto-paused content notification.
+              <img src="images/auto_paused_notification_option.png" alt="Auto-Paused Notification Option">
+            </li>
+            <li>
+              <span data-type="feature"></span> Added notifications to display when content is auto-paused. Notifications include a prompt to disable
+              auto-pause for that content's tab.
+              <a data-issue="37"></a>
+              <img src="images/auto_paused_notification.png" alt="Auto-Paused Notification">
+            </li>
+            <li>
+              <span data-type="enhancement"></span> Made showing change log on update configurable.
+              <img src="images/show_change_log_on_update.png" alt="Show Change Log on Update">
+            </li>
+            <li>
+              <span data-type="bug"></span> Fixed playback speed control icons not loading correctly on some computers.
+              <a data-issue="43"></a>
+            </li>
+            <li>Abstracted content scripts in manifest.json to make adding new controllers/scripts easier.</li>
+            <li>
+              <span data-type="bug"></span> Fixed issue where keyboard shortcuts were being handled multiple times after opening multiple videos
+              on Youtube.
+              <a data-issue="51"></a>
+            </li>
+            <li>
+              <span data-type="bug"></span> Fixed playback controls not working when Netflix was full-screened.
+              <a data-issue="48"></a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <h2 id="version-1-12-0" class="sub-header">Version 1.12.0</h2>
+          <ul>
+            <li>
+              <span data-type="enhancement"></span> Added button to options page to view change log.</li>
+            <li>
+              <span data-type="enhancement"></span> Added images to change log.
+              <a data-issue="42"></a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <h2 id="version-1-11-0" class="sub-header">Version 1.11.0</h2>
+          <ul>
+            <li>
+              <span data-type="feature"></span> Created this change log.
+              <a data-issue="42"></a>
+            </li>
+            <li>
+              <span data-type="bug"></span> Fixed embedded Youtube videos not being recognized.</li>
+            <li>
+              <span data-type="bug"></span> Fixed playback speed controls displaying badly on full-screened video.
+              <a data-issue="46"></a>
+            </li>
+            <li>
+              <span data-type="bug"></span> Fixed how playback speed controls looked on generic sites.
+              <a data-issue="45"></a>
+            </li>
+            <li>
+              <span data-type="bug"></span> Fixed issue with pausing Youtube videos in newly-opened tabs before video had auto-played.
+              <a data-issue="32"></a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <h2 id="version-1-10-0" class="sub-header">Version 1.10.0</h2>
+          <ul>
+            <li>
+              <span data-type="feature"></span> Added ability to disable pausing of currently playing content when new content starts playing.
+              <a data-issue="37"></a>
+              <i>(Right click browser action icon.)</i>
+              <img src="images/disable_auto_pause.png" alt="Disable Auto-Pause">
+            </li>
+            <li>
+              <span data-type="enhancement"></span> Improved how default settings are set upon install/update.
+              <a data-issue="40"></a>
+            </li>
+            <li>
+              <span data-type="enhancement"></span> Made the playback speed controls easier to see.
+              <a data-issue="39"></a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <h2 id="version-1-9-1" class="sub-header">Version 1.9.1</h2>
+          <ul>
+            <li>
+              <span data-type="bug"></span> Fixed an issue where multiple playback speed controls were being appended to the document.</li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <h2 id="version-1-9-0" class="sub-header">Version 1.9.0</h2>
+          <ul>
+            <li>
+              <span data-type="enhancement"></span> Added a configurable option to change how long content change notifications last.
+              <a data-issue="36"></a>
+              <img src="images/notification_length.png" alt="Notification Length">
+            </li>
+            <li>
+              <span data-type="feature"></span> Added rudimentary volume controls.
+              <a data-issue="30"></a>
+              <ul>
+                <li>Currently only supports HTML content providers.</li>
+              </ul>
+            </li>
+            <li>Code clean up regarding extended Controllers and unsupported functions.</li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <h2 id="version-1-8-0" class="sub-header">Version 1.8.0</h2>
+          <ul>
+            <li>
+              <span data-type="feature"></span> Added initial implementation of playback speed controls.
+              <a data-issue="29"></a>
+              <ul>
+                <li>Only supports HTML content providers.</li>
+              </ul>
+              <img src="images/playback_speed_controls.png" alt="Playback Speed Controls">
+              <img src="images/playback_speed_controls_options.png" alt="Playback Speed Controls Options">
+            </li>
+            <li>
+              <span data-type="bug"></span> Fixed Hulu notification option not staying selected.
+              <a data-issue="31"></a>
+            </li>
+            <li>Updated README.md to link to extension in Chrome Web Store.</li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <h2 id="version-1-7-0" class="sub-header">Version 1.7.0</h2>
+          <ul>
+            <li>
+              <span data-type="feature"></span> Added support for
+              <a href="http://www.hulu.com/">Hulu</a>.
+              <a data-issue="27"></a>
+            </li>
+            <li>
+              <span data-type="feature"></span> Added support for
+              <a href="https://www.amazon.com/gp/video/getstarted/">Amazon Video</a>.
+              <a data-issue="24"></a>
+            </li>
+            <li>
+              <span data-type="feature"></span> Added support for
+              <a href="https://music.amazon.com/">Amazon Music</a>.
+              <a data-issue="24"></a>
+            </li>
+            <li>
+              <span data-type="feature"></span> Added support for
+              <a href="https://www.netflix.com/">Netflix</a>.
+              <a data-issue="23"></a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <h2 id="version-1-6-0" class="sub-header">Version 1.6.0</h2>
+          <ul>
+            <li>Updated promotional materials.</li>
+            <li>
+              <span data-type="bug"></span> Fixed issue where notifications for Youtube would not have a thumbnail.</li>
+            <li>
+              <span data-type="bug"></span> A notification is now shown when the same content is played again.
+              <a data-issue="6"></a>
+            </li>
+            <li>Now only retrieve tab/frame name when content is found.
+              <a data-issue="16"></a>
+            </li>
+            <li>
+              <span data-type="enhancement"></span> Reformatted notifications table in options page.
+              <a data-issue="18"></a>
+              <img src="images/reformatted_notification_settings.png" alt="Reformatted Notification Settings">
+            </li>
+            <li>
+              <span data-type="feature"></span> Add ability to support generic HTML audio and video elements on any webpage.
+              <a data-issue="22"></a>
+              <a data-issue="16"></a>
+              <a data-issue="8"></a>
+            </li>
+            <li>
+              <span data-type="bug"></span> Fixed issue where focus/blur was being handled multiple times on the same page.
+              <a data-issue="12"></a>
+            </li>
+            <li>
+              <span data-type="enhancement"></span> Added a more reliable way to check if a controller is playing in the active tab.
+              <a data-issue="12"></a>
+            </li>
+            <li>Prevent locking due to inactivity on Youtube.
+              <a data-issue="20"></a>
+            </li>
+            <li>
+              <span data-type="bug"></span> Fixed Youtube not recognizing that a new Youtube video was opened.
+              <a data-issue="21"></a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <h2 id="version-1-5-0" class="sub-header">Version 1.5.0</h2>
+          <ul>
+            <li>
+              <span data-type="bug"></span> Fixed new controls and generalized YoutubeController.
+              <a data-issue="16"></a>
+            </li>
+            <li>Added link to create an Github issue from the options page.
+              <a data-issue="3"></a>
+            </li>
+            <li>
+              <span data-type="bug"></span> Added Pandora CDN to permissions.
+              <a data-issue="13"></a>
+            </li>
+            <li>
+              Added more controls and keyboard shortcuts for each.
+              <a data-issue="1"></a>
+              <img src="images/keyboard_shortcuts.png" alt="Keyboard Shortcuts">
+            </li>
+            <li>
+              <span data-type="enhancement"></span> Added a way to open the Chrome keyboard shortcuts from the options page.</li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <h2 id="version-1-4-0" class="sub-header">Version 1.4.0</h2>
+          <ul>
+            <li>
+              <span data-type="enhancement"></span> When the currently playing content is closed, the last-playing content is made the current content.
+              <a data-issue="11"></a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <h2 id="version-1-3-0" class="sub-header">Version 1.3.0</h2>
+          <ul>
+            <li>
+              <span data-type="feature"></span> Added support for
+              <a href="https://bandcamp.com/">Bandcamp</a>.
+              <a data-issue="9"></a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <h2 id="version-1-2-0" class="sub-header">Version 1.2.0</h2>
+          <ul>
+            <li>
+              <span data-type="enhancement"></span> Added option to not show notifications for the active content tab.
+              <a data-issue="4"></a>
+              <img src="images/no_active_notification.png" alt="No Active Notification">
+            </li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <h2 id="version-1-1-2" class="sub-header">Version 1.1.2</h2>
+          <ul>
+            <li>
+              <span data-type="bug"></span> Fixed check in checkboxes on options page not displaying when checked.
+              <a data-issue="7"></a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <h2 id="version-1-1-1" class="sub-header">Version 1.1.1</h2>
+          <ul>
+            <li>
+              <span data-type="bug"></span> Fixed issue with Google Play Music not being recognized by
+              <i>some</i> people.</li>
+            <li>
+              <span data-type="enhancement"></span> Content change notifications now display artwork.
+              <a data-issue="2"></a>
+              <ul>
+                <li>Required adding permission for each content provider's CDN.</li>
+              </ul>
+              <img src="images/cdn_permissions.png" alt="Additional CDN Permissions">
+            </li>
+            <li>
+              <span data-type="enhancement"></span> Added 'Next' button to content change notification.
+              <a data-issue="5"></a>
+              <img src="images/notification_next.png" alt="Notification Next">
+            </li>
+            <li>
+              <span data-type="feature"></span> Initial addition of more content controls.
+              <a data-issue="1"></a>
+              <ul>
+                <li>Previous, Next, Like, Unlike, Dislike, Undislike</li>
+                <li>Support for various controls depends on the content provider.</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <h2 id="version-1-1-0" class="sub-header">Version 1.1.0</h2>
+          <ul>
+            <li>
+              <span data-type="feature"></span> Added option to pause content when the computer is locked or after a set period of inactivity.
+              <img src="images/pause_lock_inactivity.png" alt="Pause on Lock/Inactivity">
+            </li>
+          </ul>
+        </div>
+
+        <div class="row">
+          <h2 id="version-1-0-0" class="sub-header">Version 1.0.0</h2>
+          <ul>
+            <li>Uploaded to
+              <a href="https://chrome.google.com/webstore/detail/easy-control/oanebiaiakkpfipgnkpmcpkjfnclbgfi">Chrome Web Store</a>.</li>
+            <li>Created promotional images.</li>
+            <li>Updated options page to use include jQuery instead of CDN.</li>
+            <li>
+              <span data-type="feature"></span> Added 'Default Site' option.
+              <ul>
+                <li>Clicking the browser action when no content is playing will open the default site in a new tab.</li>
+              </ul>
+              <img src="images/default_site.png" alt="Default Site">
+            </li>
+            <li>Renamed extension to 'Easy Control'.</li>
+            <li>Created README.md.</li>
+            <li>
+              <span data-type="feature"></span> Added options page.</li>
+            <li>
+              <span data-type="enhancement"></span> Added better icon.
+              <img src="../res/icon48.png" alt="Easy Control">
+            </li>
+            <li>
+              <span data-type="bug"></span> Fixed issue with notifications only showing up the first time.</li>
+            <li>
+              <span data-type="bug"></span> Fixed artist name issue with Pandora.</li>
+            <li>
+              <span data-type="feature"></span> Added support for
+              <a href="https://play.google.com/music/">Google Play Music</a>.</li>
+            <li>
+              Added notifications on content change.
+              <img src="images/notification.png" alt="Notification">
+            </li>
+            <li>
+              <span data-type="feature"></span> Added keyboard shortcut to pause/play content.</li>
+            <li>
+              <span data-type="feature"></span> Added support for
+              <a href="https://www.youtube.com/">Youtube</a>.</li>
+            <li>Code cleanup.</li>
+            <li>
+              <span data-type="feature"></span> Added support for
+              <a href="https://play.spotify.com/">Spotify</a>.</li>
+            <li>
+              <span data-type="feature"></span> Added support for
+              <a href="http://www.pandora.com/">Pandora</a>.</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>

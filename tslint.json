@@ -1,7 +1,15 @@
 {
   "extends": [
+    "tslint:latest",
     "tslint-react"
   ],
+  "linterOptions": {
+    "exclude": [
+      "config/**/*.js",
+      "node_modules/**/*.ts",
+      "coverage/lcov-report/*.js"
+    ]
+  },
   "rules": {
     "align": [
       true,
@@ -17,10 +25,11 @@
     "curly": true,
     "eofline": true,
     "forin": true,
+    "import-spacing": false,
     "indent": [
       true,
       "spaces",
-      4
+      2
     ],
     "interface-name": [
       true,
@@ -30,6 +39,7 @@
     "jsx-no-lambda": false,
     "jsx-no-multiline-js": false,
     "label-position": true,
+    "max-line-length": false,
     "member-ordering": [
       true,
       {
@@ -49,28 +59,42 @@
     "no-any": true,
     "no-arg": true,
     "no-bitwise": true,
-    // "no-console": [
-    //   true,
-    //   "log",
-    //   "error",
-    //   "debug",
-    //   "info",
-    //   "time",
-    //   "timeEnd",
-    //   "trace"
-    // ],
+    "no-console": false,
     "no-consecutive-blank-lines": true,
     "no-construct": true,
     "no-debugger": true,
     "no-duplicate-variable": true,
     "no-empty": true,
     "no-eval": true,
+    "no-implicit-dependencies": [
+      true,
+      "dev",
+      [
+        "background",
+        "common",
+        "main",
+        "popup",
+        "store",
+        "utils"
+      ]
+    ],
     "no-shadowed-variable": true,
     "no-string-literal": true,
+    "no-submodule-imports": false,
     "no-switch-case-fall-through": true,
     "no-trailing-whitespace": true,
+    "no-unnecessary-initializer": false,
     "no-unused-expression": true,
     "no-use-before-declare": true,
+    "object-literal-key-quotes": [
+      true,
+      "as-needed"
+    ],
+    "object-literal-shorthand": false,
+    "object-literal-sort-keys": false,
+    "one-line": false,
+    "ordered-imports": false,
+    "prefer-const": false,
     "quotemark": [
       true,
       "single",
@@ -80,6 +104,10 @@
     "semicolon": [
       true,
       "always"
+    ],
+    "space-within-parens": [
+      true,
+      1
     ],
     "switch-default": true,
     "strict-type-predicates": true,
@@ -117,6 +145,18 @@
       "check-module",
       "check-separator",
       "check-type"
-    ]
+    ],
+    "jsx-boolean-value": [
+      true,
+      "always"
+    ],
+    "jsx-equals-spacing": [
+      true,
+      "never"
+    ],
+    "jsx-key": true,
+    "jsx-self-close": true,
+    "jsx-space-before-trailing-slash": true,
+    "jsx-wrap-multiline": true
   }
 }
