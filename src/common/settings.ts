@@ -74,8 +74,10 @@ export namespace SettingKey
     SiteBlacklist = 'key__site_blacklist',
   }
 
+  // tslint:disable-next-line:no-shadowed-variable
   export namespace Controls
   {
+    // tslint:disable-next-line:no-shadowed-variable
     export const enum Other
     {
       DisplayControls = 'key__controls__display_controls',
@@ -231,7 +233,7 @@ export interface SettingsType
   [ SettingKey.Controls.OverlayControls.SkipForward ]: boolean;
   [ SettingKey.Controls.OverlayControls.Faster ]: boolean;
   [ SettingKey.Controls.OverlayControls.MuchFaster ]: boolean;
-  [ SettingKey.Controls.OverlayControls.Reset ]: boolean,
+  [ SettingKey.Controls.OverlayControls.Reset ]: boolean;
   [ SettingKey.Controls.OverlayControls.Loop ]: boolean;
   [ SettingKey.Controls.OverlayControls.Fullscreen ]: boolean;
 }
@@ -338,10 +340,10 @@ const DEFAULT_SETTINGS: SettingsType = {
 };
 
 const SITE_TO_URL: { [ key in Sites ]: string } = {
-  Pandora: "http://www.pandora.com/",
-  Spotify: "https://play.spotify.com/",
-  Youtube: "https://www.youtube.com/",
-  GooglePlayMusic: "https://play.google.com/music/",
+  Pandora: 'http://www.pandora.com/',
+  Spotify: 'https://play.spotify.com/',
+  Youtube: 'https://www.youtube.com/',
+  GooglePlayMusic: 'https://play.google.com/music/',
   Bandcamp: 'https://bandcamp.com/',
   Netflix: 'https://www.netflix.com/',
   AmazonVideo: 'https://www.amazon.com/gp/video/getstarted/',
@@ -360,7 +362,7 @@ export function siteToUrl( site: Sites )
   }
   else
   {
-    return "";
+    return '';
   }
 }
 
@@ -404,7 +406,7 @@ class SettingsStorage
           if( key in this.cache )
           {
             console.log( 'Setting Changed -', key, ':', oldValue, '->', newValue );
-            this.cache[ key ] = newValue
+            this.cache[ key ] = newValue;
           }
           else
           {

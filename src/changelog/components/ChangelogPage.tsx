@@ -385,8 +385,6 @@ class ChangelogPage extends React.Component<WithStyles<typeof pageStyles>>
             <ChangelogEntry changeType="bug" text="A notification is now shown when the same content is played again." issueNumber={6} />
             <ChangelogEntry text="Now only retrieve tab/frame name when content is found." issueNumber={16} />
             <ChangelogEntry changeType="enhancement" text="Reformatted notifications table in options page." issueNumber={18} image={{ src: reformattedNotificationSettings, alt: 'Reformatted Notification SettingKey' }} />
-
-
             <ChangelogEntry changeType="feature" text="Add ability to support generic HTML audio and video elements on any webpage." issueNumber={[ 8, 16, 22 ]} />
             <ChangelogEntry changeType="bug" text="Fixed issue where focus/blur was being handled multiple times on the same page." issueNumber={12} />
             <ChangelogEntry changeType="enhancement" text="Added a more reliable way to check if a controller is playing in the active tab." issueNumber={12} />

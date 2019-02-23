@@ -37,7 +37,8 @@
       "es2017"
     ],
     "types": [
-      "chrome"
+      "chrome",
+      "node"
     ]
   },
   "compileOnSave": false

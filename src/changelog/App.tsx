@@ -1,4 +1,4 @@
-import React = require( 'react' );
+import React from 'react';
 import { CssBaseline, MuiThemeProvider } from '@material-ui/core';
 
 import { theme } from 'common/components/theme';

@@ -1,5 +1,5 @@
-import React = require( 'react' );
-import ReactDOM = require( 'react-dom' );
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 import 'typeface-roboto';
 

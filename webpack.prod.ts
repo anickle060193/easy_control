@@ -1,5 +1,5 @@
-import merge = require( 'webpack-merge' );
-import ZipWebpackPlugin = require( 'zip-webpack-plugin' );
+import merge from 'webpack-merge';
+import ZipWebpackPlugin from 'zip-webpack-plugin';
 
 import common from './webpack.common';
 

@@ -1,4 +1,4 @@
-import { ContentInfo } from "./content";
+import { ContentInfo } from './content';
 
 export namespace MessageTypes
 {

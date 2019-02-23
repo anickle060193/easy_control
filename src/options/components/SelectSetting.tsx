@@ -38,9 +38,9 @@ class SelectSetting extends React.Component<Props & WithSettingProps & WithStyle
         value={value}
         onChange={this.onChange}
       >
-        {options.map( ( { value, label }, i ) => (
-          <MenuItem key={i} value={value}>
-            {label}
+        {options.map( ( option, i ) => (
+          <MenuItem key={i} value={option.value}>
+            {option.label}
           </MenuItem>
         ) )}
       </TextField>
