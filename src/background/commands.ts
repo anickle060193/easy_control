@@ -1,60 +1,67 @@
-import * as background from './index';
-
-function onStart()
+import
 {
-  chrome.browserAction.onClicked.addListener( ( tag ) =>
-  {
-    console.log( 'BrowserAction clicked' );
-    background.playPause();
-  } );
+  playPauseCurrentController,
+  nextCurrentController,
+  previousCurrentController,
+  likeCurrentController,
+  unlikeCurrentController,
+  dislikeCurrentController,
+  undislikeCurrentController,
+  volumeUpCurrentController,
+  volumeDownCurrentController,
+  copyCurrentControllerContentLink
+} from 'background/controllers';
 
-  chrome.commands.onCommand.addListener( ( command ) =>
-  {
-    if( command === '1_play_pause' )
-    {
-      background.playPause();
-    }
-    else if( command === '2_next' )
-    {
-      background.next();
-    }
-    else if( command === '3_previous' )
-    {
-      background.previous();
-    }
-    else if( command === '4_like' )
-    {
-      background.like();
-    }
-    else if( command === '5_unlike' )
-    {
-      background.unlike();
-    }
-    else if( command === '6_dislike' )
-    {
-      background.dislike();
-    }
-    else if( command === '7_undislike' )
-    {
-      background.undislike();
-    }
-    else if( command === '8_volume_up' )
-    {
-      background.volumeUp();
-    }
-    else if( command === '9_volume_down' )
-    {
-      background.volumeDown();
-    }
-    else if( command === 'a_copy_content_link' )
-    {
-      background.copyContentLink();
-    }
-    else
-    {
-      console.log( 'Unrecognized Command: ' + command );
-    }
-  } );
-}
+chrome.browserAction.onClicked.addListener( () =>
+{
+  console.log( 'BrowserAction clicked:' );
+  playPauseCurrentController();
+} );
 
-onStart();
+chrome.commands.onCommand.addListener( ( command ) =>
+{
+  if( command === '1_play_pause' )
+  {
+    playPauseCurrentController();
+  }
+  else if( command === '2_next' )
+  {
+    nextCurrentController();
+  }
+  else if( command === '3_previous' )
+  {
+    previousCurrentController();
+  }
+  else if( command === '4_like' )
+  {
+    likeCurrentController();
+  }
+  else if( command === '5_unlike' )
+  {
+    unlikeCurrentController();
+  }
+  else if( command === '6_dislike' )
+  {
+    dislikeCurrentController();
+  }
+  else if( command === '7_undislike' )
+  {
+    undislikeCurrentController();
+  }
+  else if( command === '8_volume_up' )
+  {
+    volumeUpCurrentController();
+  }
+  else if( command === '9_volume_down' )
+  {
+    volumeDownCurrentController();
+  }
+  else if( command === 'a_copy_content_link' )
+  {
+    copyCurrentControllerContentLink();
+  }
+  else
+  {
+    console.log( 'Unrecognized Command: ' + command );
+  }
+} );

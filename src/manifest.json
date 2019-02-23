@@ -25,18 +25,20 @@
     "https://static-cdn.jtvnw.net/"
   ],
   "content_security_policy": "default-src 'self' https://*.googleapis.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.pandora.com/ https://*.p-cdn.com/ https://*.scdn.co/ https://*.cloudfront.net/ https://*.googleusercontent.com/ https://*.ggpht.com/ https://*.bcbits.com/ https://*.ssl-images-amazon.com/ https://*.amazonaws.com/ http://*.huluim.com/ https://static-cdn.jtvnw.net/",
-  "options_page": "options.html",
-  "web_accessible_resources": [
-    "media_control_overlay.html",
-    "bootstrap/*",
-    "jquery/*"
-  ],
+  "web_accessible_resources": [],
   "browser_action": {
     "default_icon": {
       "19": "icon19.png",
       "38": "icon38.png"
     }
   },
+  "background": {
+    "persistent": true,
+    "scripts": [
+      "background.bundle.js"
+    ]
+  },
+  "options_page": "options.html",
   "commands": {
     "1_play_pause": {
       "description": "Plays/Pause"

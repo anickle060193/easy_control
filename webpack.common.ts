@@ -1,14 +1,15 @@
-import webpack = require( 'webpack' );
-import path = require( 'path' );
-import WebpackBar = require( 'webpackbar' );
-import CleanWebpackPlugin = require( 'clean-webpack-plugin' );
-import HtmlWebpackPlugin = require( 'html-webpack-plugin' );
-import CopyWebpackPlugin = require( 'copy-webpack-plugin' );
+import webpack from 'webpack';
+import path from 'path';
+import WebpackBar from 'webpackbar';
+import CleanWebpackPlugin from 'clean-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 
 const build = path.resolve( __dirname, 'build' );
 
 const config: webpack.Configuration = {
   entry: {
+    background: path.resolve( __dirname, 'src', 'background', 'index.ts' ),
     options: path.resolve( __dirname, 'src', 'options', 'index.tsx' ),
     changelog: path.resolve( __dirname, 'src', 'changelog', 'index.tsx' ),
   },
@@ -56,6 +57,7 @@ const config: webpack.Configuration = {
     extensions: [ '.js', '.jsx', '.ts', '.tsx', '.json', '.css', '.scss', '.woff', '.woff2', '.png' ],
     alias: {
       common: path.resolve( __dirname, 'src', 'common' ),
+      background: path.resolve( __dirname, 'src', 'background' ),
       options: path.resolve( __dirname, 'src', 'options' ),
       changelog: path.resolve( __dirname, 'src', 'changelog' ),
     }

@@ -1,6 +1,6 @@
 export namespace SettingKey
 {
-  export const enum Notifications
+  export enum Notifications
   {
     Pandora = 'key__notifications__pandora',
     Spotify = 'key__notifications__spotify',
@@ -15,7 +15,7 @@ export namespace SettingKey
     Twitch = 'key__notifications__twitch',
   }
 
-  export const enum ControllersEnabled
+  export enum ControllersEnabled
   {
     Pandora = 'key__controllers_enabled__pandora',
     Spotify = 'key__controllers_enabled__spotify',
@@ -30,7 +30,7 @@ export namespace SettingKey
     Twitch = 'key__controllers_enabled__twitch',
   }
 
-  export const enum ControllerColors
+  export enum ControllerColors
   {
     Pandora = 'key__controller_colors__pandora',
     Spotify = 'key__controller_colors__spotify',
@@ -45,7 +45,7 @@ export namespace SettingKey
     Twitch = 'key__controller_colors__twitch',
   }
 
-  export const enum OpenInExisting
+  export enum OpenInExisting
   {
     Pandora = 'key__open_in_existing__pandora',
     Spotify = 'key__open_in_existing__spotify',
@@ -118,7 +118,7 @@ export namespace SettingKey
   }
 }
 
-export const enum Sites
+export enum Sites
 {
   Pandora = 'Pandora',
   Spotify = 'Spotify',
