@@ -7,9 +7,6 @@ import { checkError } from '../common/utilities'
 import { SettingKey, siteToUrl, getDefaultSettings, SettingsType } from '../common/settings';
 import { focusTab } from './utilities';
 
-const CONTEXT_MENU_AUTO_PAUSE_ENABLED = 'auto_pause_enabled';
-const CONTEXT_MENU_AUTO_PAUSE_ENABLED_FOR_TAB = 'auto_pause_enabled_for_tab';
-
 const NEW_CONTENT_NOTIFICATION_PAUSE_BUTTON = 0;
 const NEW_CONTENT_NOTIFICATION_NEXT_BUTTON = 1;
 
@@ -476,61 +473,7 @@ function onStart()
   } );
 
 
-  chrome.runtime.onInstalled.addListener( function( details )
-  {
-    let version = chrome.runtime.getManifest().version;
 
-    let possiblyShowChangelog = false;
-    if( details.reason === 'install' )
-    {
-      console.log( 'Installing version ' + version );
-      possiblyShowChangelog = true;
-    }
-    else if( details.reason === 'update' )
-    {
-      console.log( 'Updating to version ' + version );
-      possiblyShowChangelog = true;
-    }
-    else
-    {
-      console.log( 'Not installing or updating:' );
-      console.log( details );
-    }
-
-    let autoPauseContextMenu = {
-      type: 'checkbox',
-      id: CONTEXT_MENU_AUTO_PAUSE_ENABLED,
-      title: 'Auto-Pause Enabled',
-      checked: true,
-      contexts: [ 'browser_action' ]
-    };
-    chrome.contextMenus.create( autoPauseContextMenu );
-
-    let autoPauseTabContextMenu = {
-      type: 'checkbox',
-      id: CONTEXT_MENU_AUTO_PAUSE_ENABLED_FOR_TAB,
-      title: 'Auto-Pause Enabled for Tab',
-      checked: true,
-      contexts: [ 'browser_action' ]
-    };
-    chrome.contextMenus.create( autoPauseTabContextMenu );
-
-    chrome.storage.sync.get( null, function( settings )
-    {
-      let defaults = getDefaultSettings();
-
-      let updatedSettings = $.extend( {}, defaults, settings );
-
-      console.log( 'Updating SettingKey' );
-
-      chrome.storage.sync.set( updatedSettings );
-
-      if( possiblyShowChangelog && updatedSettings[ SettingKey.Other.ShowChangeLogOnUpdate ] )
-      {
-        chrome.tabs.create( { url: 'change_log/change_log.html' } );
-      }
-    } );
-  } );
 
 
   chrome.runtime.onStartup.addListener( function()
@@ -661,21 +604,6 @@ function onStart()
   {
     chrome.contextMenus.update( CONTEXT_MENU_AUTO_PAUSE_ENABLED, { checked: settings[ SettingKey.Other.AutoPauseEnabled ] } );
     chrome.contextMenus.update( CONTEXT_MENU_AUTO_PAUSE_ENABLED_FOR_TAB, { checked: !autoPauseDisabledTabs[ activateInfo.tabId ] } );
-  } );
-
-
-  chrome.contextMenus.onClicked.addListener( function( info, tab )
-  {
-    if( info.menuItemId === CONTEXT_MENU_AUTO_PAUSE_ENABLED )
-    {
-      console.log( 'Auto-Pause Enabled: ' + info.checked );
-      chrome.storage.sync.set( { [ SettingKey.Other.AutoPauseEnabled ]: info.checked } );
-    }
-    else if( info.menuItemId === CONTEXT_MENU_AUTO_PAUSE_ENABLED_FOR_TAB )
-    {
-      console.log( 'Auto-Pause Enabled for Tab: Tab - ' + tab!.id + ' : ' + info.checked );
-      autoPauseDisabledTabs[ tab!.id! ] = !info.checked;
-    }
   } );
 
 
