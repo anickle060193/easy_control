@@ -84,7 +84,7 @@ class OptionsPage extends React.Component<WithStyles<typeof styles>, State>
         <AppBar position="fixed">
           <Toolbar>
             <Typography variant="h6" color="inherit">
-              Easy Control
+              Easy Control Options
             </Typography>
           </Toolbar>
         </AppBar>
@@ -115,7 +115,7 @@ class OptionsPage extends React.Component<WithStyles<typeof styles>, State>
               className={classes.button}
               variant="contained"
               color="default"
-              href="./change_log.html"
+              href="./changelog.html"
               target="_blank"
               rel="noopener noreferrer"
             >

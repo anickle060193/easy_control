@@ -9,7 +9,8 @@ const build = path.resolve( __dirname, 'build' );
 
 const config: webpack.Configuration = {
   entry: {
-    options: path.resolve( 'src', 'options', 'index.tsx' ),
+    options: path.resolve( __dirname, 'src', 'options', 'index.tsx' ),
+    changelog: path.resolve( __dirname, 'src', 'changelog', 'index.tsx' ),
   },
   output: {
     path: build,
@@ -44,16 +45,19 @@ const config: webpack.Configuration = {
             fallback: 'file-loader'
           }
         }
-      }
+      },
+      {
+        test: /\.(png)$/,
+        use: 'url-loader',
+      },
     ]
   },
   resolve: {
-    extensions: [ '.js', '.jsx', '.ts', '.tsx', '.json', '.css', '.scss', '.woff', '.woff2' ],
+    extensions: [ '.js', '.jsx', '.ts', '.tsx', '.json', '.css', '.scss', '.woff', '.woff2', '.png' ],
     alias: {
       common: path.resolve( __dirname, 'src', 'common' ),
-      background: path.resolve( __dirname, 'src', 'background' ),
       options: path.resolve( __dirname, 'src', 'options' ),
-      utils: path.resolve( __dirname, 'src', 'utils' ),
+      changelog: path.resolve( __dirname, 'src', 'changelog' ),
     }
   },
   plugins: [
@@ -63,6 +67,11 @@ const config: webpack.Configuration = {
       template: path.join( __dirname, 'src', 'options', 'index.html' ),
       filename: 'options.html',
       chunks: [ 'options' ]
+    } ),
+    new HtmlWebpackPlugin( {
+      template: path.join( __dirname, 'src', 'changelog', 'index.html' ),
+      filename: 'changelog.html',
+      chunks: [ 'changelog' ]
     } ),
     new CopyWebpackPlugin( [
       {
