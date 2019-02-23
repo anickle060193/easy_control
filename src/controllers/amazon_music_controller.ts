@@ -1,5 +1,5 @@
 import { Controller } from "./controller";
-import { Settings } from "../common/settings";
+import { SettingKey } from "../common/settings";
 
 class AmazonMusicController extends Controller
 {
@@ -7,7 +7,7 @@ class AmazonMusicController extends Controller
   {
     super( 'AmazonMusic' );
 
-    this.color = Controller.settings[ Settings.ControllerColors.AmazonMusic ]!;
+    this.color = Controller.settings[ SettingKey.ControllerColors.AmazonMusic ]!;
 
     this.initialize();
   }
@@ -72,7 +72,7 @@ class AmazonMusicController extends Controller
 
 $( function()
 {
-  if( AmazonMusicController.settings[ Settings.ControllersEnabled.AmazonMusic ] )
+  if( AmazonMusicController.settings[ SettingKey.ControllersEnabled.AmazonMusic ] )
   {
     let controller = new AmazonMusicController();
     controller.startPolling();

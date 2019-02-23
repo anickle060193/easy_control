@@ -4,7 +4,7 @@ class YoutubeController extends MediaController
   {
     super( 'Youtube', video );
 
-    this.color = Controller.settings[ Settings.ControllerColors.Youtube ];
+    this.color = Controller.settings[ SettingKey.ControllerColors.Youtube ];
 
     this.hasBeenActivated = this.active;
 
@@ -102,7 +102,7 @@ class YoutubeController extends MediaController
 
 $( function()
 {
-  if( Controller.settings[ Settings.ControllersEnabled.Youtube ] )
+  if( Controller.settings[ SettingKey.ControllersEnabled.Youtube ] )
   {
     MediaController.createSingleMediaListener( 'Youtube', function( media )
     {

@@ -4,7 +4,7 @@ class PandoraController extends Controller
   {
     super( 'Pandora' );
 
-    this.color = Controller.settings[ Settings.ControllerColors.Pandora ];
+    this.color = Controller.settings[ SettingKey.ControllerColors.Pandora ];
     this.lastAlbum = null;
     this.lastArtwork = null;
 
@@ -181,7 +181,7 @@ class PandoraController extends Controller
 
 $( function()
 {
-  if( Controller.settings[ Settings.ControllersEnabled.Pandora ] )
+  if( Controller.settings[ SettingKey.ControllersEnabled.Pandora ] )
   {
     let controller = new PandoraController();
     controller.startPolling();

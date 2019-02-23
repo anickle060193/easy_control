@@ -4,7 +4,7 @@ class GooglePlayMusicController extends MediaController
   {
     super( 'GooglePlayMusic', audio );
 
-    this.color = Controller.settings[ Settings.ControllerColors.GooglePlayMusic ];
+    this.color = Controller.settings[ SettingKey.ControllerColors.GooglePlayMusic ];
 
     this.initialize();
   }
@@ -104,7 +104,7 @@ class GooglePlayMusicController extends MediaController
 
 $( function()
 {
-  if( Controller.settings[ Settings.ControllersEnabled.GooglePlayMusic ] )
+  if( Controller.settings[ SettingKey.ControllersEnabled.GooglePlayMusic ] )
   {
     MediaController.createSingleMediaListener( 'Google Play Music', function( audio )
     {

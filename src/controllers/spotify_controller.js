@@ -4,7 +4,7 @@ class SpotifyController extends Controller
   {
     super( 'Spotify' );
 
-    this.color = Controller.settings[ Settings.ControllerColors.Spotify ];
+    this.color = Controller.settings[ SettingKey.ControllerColors.Spotify ];
 
     this.initialize();
   }
@@ -113,7 +113,7 @@ class SpotifyController extends Controller
 
 $( function()
 {
-  if( Controller.settings[ Settings.ControllersEnabled.Spotify ] )
+  if( Controller.settings[ SettingKey.ControllersEnabled.Spotify ] )
   {
     let controller = new SpotifyController();
     controller.startPolling();

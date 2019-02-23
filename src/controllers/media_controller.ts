@@ -1,5 +1,5 @@
 import { Controller } from "./controller";
-import { Settings } from "../common/settings";
+import { SettingKey } from "../common/settings";
 import * as storage from '../common/storage';
 
 const enum ControlIds
@@ -25,7 +25,7 @@ class MediaController extends Controller
   media: HTMLMediaElement;
   isVideo: boolean;
   controlsParent: HTMLElement | null;
-  controls: {[ key in ControlIds ]: HTMLElement } | null;
+  controls: { [ key in ControlIds ]: HTMLElement } | null;
   controllerNumber: number;
 
   fullscreen: boolean;
@@ -60,7 +60,7 @@ class MediaController extends Controller
 
     document.addEventListener( 'keydown', this.onKeyDown );
 
-    if( MediaController.settings[ Settings.Controls.Other.DisplayControls ] )
+    if( MediaController.settings[ SettingKey.Controls.Other.DisplayControls ] )
     {
       this.initializeMediaControls();
     }
@@ -130,7 +130,7 @@ class MediaController extends Controller
       e.preventDefault();
     } );
 
-    const clickHandlers: {[ key in ControlIds ]: () => void } = {
+    const clickHandlers: { [ key in ControlIds ]: () => void } = {
       [ ControlIds.Reset ]: this.onPlaybackReset,
       [ ControlIds.MuchSlower ]: this.onPlaybackMuchSlower,
       [ ControlIds.Slower ]: this.onPlaybackSlower,
@@ -290,458 +290,459 @@ class MediaController extends Controller
     Array.from( this.controlsParent.children ).forEach( ( child ) => ( child as HTMLElement ).hidden = true );
 
     this.controls[ ControlIds.Reset ].hidden = false;
-    this.controls[ ControlIds.Reset ].title = shortcutStr( 'Reset Playback Speed', Controller.settings[ Settings.Controls.MediaControls.Reset ] );
+    this.controls[ ControlIds.Reset ].title = shortcutStr( 'Reset Playback Speed', Controller.settings[ SettingKey.Controls.MediaControls.Reset ] );
 
     if( this.hovering )
     {
       this.controls[ ControlIds.Remove ].hidden = false;
       this.controls[ ControlIds.Dragger ].hidden = false;
 
-      let balh: {[ key in ControlIds, Controls.Reset ]: Controls } = {
-        [ ControlIds.MuchSlower ]: Controls.MuchSlower,
+      let balh: { [ key in ControlIds, Controls.Reset ]: Controls
+    } = {
+      [ ControlIds.MuchSlower ]: Controls.MuchSlower,
         [ ControlIds.Slower ]: Controls.Slower,
-        [ ControlIds.SkipBackward ]: Controls.SkipBackward,
-        [ ControlIds.PlayPause ]: Controls.PlayPause,
-        [ ControlIds.SkipForward ]: Controls.SkipForward,
-        [ ControlIds.Faster ]: Controls.Faster,
-        [ ControlIds.MuchFaster ]: Controls.MuchFaster,
-        [ ControlIds.Loop ]: Controls.Loop,
-        [ ControlIds.Fullscreen ]: Controls.Fullscreen,
+          [ ControlIds.SkipBackward ]: Controls.SkipBackward,
+            [ ControlIds.PlayPause ]: Controls.PlayPause,
+              [ ControlIds.SkipForward ]: Controls.SkipForward,
+                [ ControlIds.Faster ]: Controls.Faster,
+                  [ ControlIds.MuchFaster ]: Controls.MuchFaster,
+                    [ ControlIds.Loop ]: Controls.Loop,
+                      [ ControlIds.Fullscreen ]: Controls.Fullscreen,
       };
 
-      shortcut = Controller.settings[ Settings.Controls.MediaControls.MuchSlower ];
-      this.controls.find( '#media-control-overlay-much-slower' )
-        .toggle( Controller.settings[ Settings.Controls.OverlayControls.MuchSlower ] )
-        .prop( 'title', 'Much Slower' + ( shortcut ? ` [${shortcut}]` : '' ) );
+    shortcut = Controller.settings[ SettingKey.Controls.MediaControls.MuchSlower ];
+    this.controls.find( '#media-control-overlay-much-slower' )
+      .toggle( Controller.settings[ SettingKey.Controls.OverlayControls.MuchSlower ] )
+      .prop( 'title', 'Much Slower' + ( shortcut ? ` [${shortcut}]` : '' ) );
 
-      shortcut = Controller.settings[ Settings.Controls.MediaControls.Slower ];
-      this.controls.find( '#media-control-overlay-slower' )
-        .toggle( Controller.settings[ Settings.Controls.OverlayControls.Slower ] )
-        .prop( 'title', 'Slower' + ( shortcut ? ` [${shortcut}]` : '' ) );
+    shortcut = Controller.settings[ SettingKey.Controls.MediaControls.Slower ];
+    this.controls.find( '#media-control-overlay-slower' )
+      .toggle( Controller.settings[ SettingKey.Controls.OverlayControls.Slower ] )
+      .prop( 'title', 'Slower' + ( shortcut ? ` [${shortcut}]` : '' ) );
 
-      shortcut = Controller.settings[ Settings.Controls.MediaControls.SkipBackward ];
-      let amount = Controller.settings[ Settings.Controls.SkipBackwardAmount ];
-      this.controls.find( '#media-control-overlay-skip-backward' )
-        .toggle( Controller.settings[ Settings.Controls.OverlayControls.SkipBackward ] )
-        .prop( 'title', `Skip Backward ${amount} seconds` + ( shortcut ? ` [${shortcut}]` : '' ) );
+    shortcut = Controller.settings[ SettingKey.Controls.MediaControls.SkipBackward ];
+    let amount = Controller.settings[ SettingKey.Controls.SkipBackwardAmount ];
+    this.controls.find( '#media-control-overlay-skip-backward' )
+      .toggle( Controller.settings[ SettingKey.Controls.OverlayControls.SkipBackward ] )
+      .prop( 'title', `Skip Backward ${amount} seconds` + ( shortcut ? ` [${shortcut}]` : '' ) );
 
-      shortcut = Controller.settings[ Settings.Controls.MediaControls.PlayPause ];
-      this.controls.find( '#media-control-overlay-play-pause' )
-        .toggle( Controller.settings[ Settings.Controls.OverlayControls.PlayPause ] )
-        .prop( 'title', ( this.isPaused() ? 'Play' : 'Pause' ) + ( shortcut ? ` [${shortcut}]` : '' ) );
+    shortcut = Controller.settings[ SettingKey.Controls.MediaControls.PlayPause ];
+    this.controls.find( '#media-control-overlay-play-pause' )
+      .toggle( Controller.settings[ SettingKey.Controls.OverlayControls.PlayPause ] )
+      .prop( 'title', ( this.isPaused() ? 'Play' : 'Pause' ) + ( shortcut ? ` [${shortcut}]` : '' ) );
 
-      shortcut = Controller.settings[ Settings.Controls.MediaControls.SkipForward ];
-      amount = Controller.settings[ Settings.Controls.SkipForwardAmount ];
-      this.controls.find( '#media-control-overlay-skip-forward' )
-        .toggle( Controller.settings[ Settings.Controls.OverlayControls.SkipForward ] )
-        .prop( 'title', `Skip Forward ${amount} seconds` + ( shortcut ? ` [${shortcut}]` : '' ) );
+    shortcut = Controller.settings[ SettingKey.Controls.MediaControls.SkipForward ];
+    amount = Controller.settings[ SettingKey.Controls.SkipForwardAmount ];
+    this.controls.find( '#media-control-overlay-skip-forward' )
+      .toggle( Controller.settings[ SettingKey.Controls.OverlayControls.SkipForward ] )
+      .prop( 'title', `Skip Forward ${amount} seconds` + ( shortcut ? ` [${shortcut}]` : '' ) );
 
-      shortcut = Controller.settings[ Settings.Controls.MediaControls.Faster ];
-      this.controls.find( '#media-control-overlay-faster' )
-        .toggle( Controller.settings[ Settings.Controls.OverlayControls.Faster ] )
-        .prop( 'title', 'Faster' + ( shortcut ? ` [${shortcut}]` : '' ) );
+    shortcut = Controller.settings[ SettingKey.Controls.MediaControls.Faster ];
+    this.controls.find( '#media-control-overlay-faster' )
+      .toggle( Controller.settings[ SettingKey.Controls.OverlayControls.Faster ] )
+      .prop( 'title', 'Faster' + ( shortcut ? ` [${shortcut}]` : '' ) );
 
-      shortcut = Controller.settings[ Settings.Controls.MediaControls.MuchFaster ];
-      this.controls.find( '#media-control-overlay-much-faster' )
-        .toggle( Controller.settings[ Settings.Controls.OverlayControls.MuchFaster ] )
-        .prop( 'title', 'Much Faster' + ( shortcut ? ` [${shortcut}]` : '' ) );
+    shortcut = Controller.settings[ SettingKey.Controls.MediaControls.MuchFaster ];
+    this.controls.find( '#media-control-overlay-much-faster' )
+      .toggle( Controller.settings[ SettingKey.Controls.OverlayControls.MuchFaster ] )
+      .prop( 'title', 'Much Faster' + ( shortcut ? ` [${shortcut}]` : '' ) );
 
-      shortcut = Controller.settings[ Settings.Controls.MediaControls.Loop ];
-      this.controls.find( '#media-control-overlay-loop' )
-        .toggle( Controller.settings[ Settings.Controls.OverlayControls.Loop ] )
-        .prop( 'title', ( this.media.loop ? 'Do not loop' : 'Loop' ) + ( shortcut ? ` [${shortcut}]` : '' ) );
+    shortcut = Controller.settings[ SettingKey.Controls.MediaControls.Loop ];
+    this.controls.find( '#media-control-overlay-loop' )
+      .toggle( Controller.settings[ SettingKey.Controls.OverlayControls.Loop ] )
+      .prop( 'title', ( this.media.loop ? 'Do not loop' : 'Loop' ) + ( shortcut ? ` [${shortcut}]` : '' ) );
 
-      shortcut = Controller.settings[ Settings.Controls.MediaControls.Fullscreen ];
-      this.controls.find( '#media-control-overlay-fullscreen' )
-        .toggle( Controller.settings[ Settings.Controls.OverlayControls.Fullscreen ] )
-        .prop( 'title', ( this.fullscreen ? 'Exit Fullscreen' : 'Fullscreen' ) + ( shortcut ? ` [${shortcut}]` : '' ) );
-    }
+    shortcut = Controller.settings[ SettingKey.Controls.MediaControls.Fullscreen ];
+    this.controls.find( '#media-control-overlay-fullscreen' )
+      .toggle( Controller.settings[ SettingKey.Controls.OverlayControls.Fullscreen ] )
+      .prop( 'title', ( this.fullscreen ? 'Exit Fullscreen' : 'Fullscreen' ) + ( shortcut ? ` [${shortcut}]` : '' ) );
   }
+}
 
-  hideControls( hideAll = false )
+hideControls( hideAll = false )
+{
+  if( !this.dragging )
   {
-    if( !this.dragging )
+    if( hideAll || !Controller.settings[ SettingKey.Controls.AlwaysDisplayPlaybackSpeed ] )
     {
-      if( hideAll || !Controller.settings[ Settings.Controls.AlwaysDisplayPlaybackSpeed ] )
-      {
-        this.controls.hide();
-      }
-      else
-      {
-        this.controls.find( '.easy-control-media-control' ).hide();
-      }
-    }
-  }
-
-  attachControls()
-  {
-    if( this.positionOfElement )
-    {
-      $( this.positionOfElement ).off( this.e( 'move' ) );
-      $( this.positionOfElement ).off( this.e( 'visible' ) );
-    }
-
-    this.hasDragged = false;
-    this.fullscreen = false;
-
-    let appendToElement = document.body;
-    this.positionOfElement = this.media;
-
-    if( !this.isVideo )
-    {
-      this.positionOfElement = document.body;
-    }
-    else if( document.webkitFullscreenElement
-      && $( this.media ).closest( document.webkitFullscreenElement ).length > 0 )
-    {
-      console.log( 'Attaching to Fullscreen' );
-      this.fullscreen = true;
-      if( document.webkitFullscreenElement === this.media )
-      {
-        appendToElement = document.body;
-      }
-      else
-      {
-        appendToElement = document.webkitFullscreenElement;
-      }
-      this.positionOfElement = document.webkitFullscreenElement;
-    }
-
-    if( this.fullscreen )
-    {
-      $( '#media-control-overlay-fullscreen' )
-        .prop( 'title', 'Exit Fullscreen' )
-        .removeClass( 'easy-control-media-control-fullscreen' )
-        .addClass( 'easy-control-media-control-exit-fullscreen' );
+      this.controls.hide();
     }
     else
     {
-      $( '#media-control-overlay-fullscreen' )
-        .prop( 'title', 'Fullscreen' )
-        .removeClass( 'easy-control-media-control-exit-fullscreen' )
-        .addClass( 'easy-control-media-control-fullscreen' );
+      this.controls.find( '.easy-control-media-control' ).hide();
     }
+  }
+}
 
-    $( document ).on( this.e( 'mousemove' ), $.proxy( this.handleMouseMove, this ) );
+attachControls()
+{
+  if( this.positionOfElement )
+  {
+    $( this.positionOfElement ).off( this.e( 'move' ) );
+    $( this.positionOfElement ).off( this.e( 'visible' ) );
+  }
 
-    this.controls
-      .detach()
-      .appendTo( appendToElement )
-      .css( 'zIndex', Number.MAX_SAFE_INTEGER );
+  this.hasDragged = false;
+  this.fullscreen = false;
 
-    this.controls.draggable( {
-      handle: '#media-control-overlay-dragger',
-      containment: this.positionOfElement,
-      start: $.proxy( function()
-      {
-        this.dragging = true;
-        this.hasDragged = true;
-      }, this ),
-      stop: $.proxy( function()
-      {
-        this.dragging = false;
-      }, this )
-    } );
+  let appendToElement = document.body;
+  this.positionOfElement = this.media;
 
-    $( this.positionOfElement ).on( this.e( 'move' ), $.proxy( function()
+  if( !this.isVideo )
+  {
+    this.positionOfElement = document.body;
+  }
+  else if( document.webkitFullscreenElement
+    && $( this.media ).closest( document.webkitFullscreenElement ).length > 0 )
+  {
+    console.log( 'Attaching to Fullscreen' );
+    this.fullscreen = true;
+    if( document.webkitFullscreenElement === this.media )
     {
-      if( !this.hasDragged )
-      {
-        this.repositionControls();
-      }
-    }, this ) );
-
-    this.controls.toggle( $( this.positionOfElement ).is( ':visible' ) );
-    $( this.positionOfElement ).on( this.e( 'visible' ), $.proxy( function( event, visible )
+      appendToElement = document.body;
+    }
+    else
     {
-      console.log( 'Visible: ' + visible );
-      this.controls.toggle( visible );
+      appendToElement = document.webkitFullscreenElement;
+    }
+    this.positionOfElement = document.webkitFullscreenElement;
+  }
+
+  if( this.fullscreen )
+  {
+    $( '#media-control-overlay-fullscreen' )
+      .prop( 'title', 'Exit Fullscreen' )
+      .removeClass( 'easy-control-media-control-fullscreen' )
+      .addClass( 'easy-control-media-control-exit-fullscreen' );
+  }
+  else
+  {
+    $( '#media-control-overlay-fullscreen' )
+      .prop( 'title', 'Fullscreen' )
+      .removeClass( 'easy-control-media-control-exit-fullscreen' )
+      .addClass( 'easy-control-media-control-fullscreen' );
+  }
+
+  $( document ).on( this.e( 'mousemove' ), $.proxy( this.handleMouseMove, this ) );
+
+  this.controls
+    .detach()
+    .appendTo( appendToElement )
+    .css( 'zIndex', Number.MAX_SAFE_INTEGER );
+
+  this.controls.draggable( {
+    handle: '#media-control-overlay-dragger',
+    containment: this.positionOfElement,
+    start: $.proxy( function()
+    {
+      this.dragging = true;
+      this.hasDragged = true;
+    }, this ),
+    stop: $.proxy( function()
+    {
+      this.dragging = false;
+    }, this )
+  } );
+
+  $( this.positionOfElement ).on( this.e( 'move' ), $.proxy( function()
+  {
+    if( !this.hasDragged )
+    {
       this.repositionControls();
-    }, this ) );
+    }
+  }, this ) );
 
+  this.controls.toggle( $( this.positionOfElement ).is( ':visible' ) );
+  $( this.positionOfElement ).on( this.e( 'visible' ), $.proxy( function( event, visible )
+  {
+    console.log( 'Visible: ' + visible );
+    this.controls.toggle( visible );
     this.repositionControls();
-  }
+  }, this ) );
 
-  repositionControls()
+  this.repositionControls();
+}
+
+repositionControls()
+{
+  this.controls
+    .position( {
+      my: 'left top',
+      at: 'left+6 top+6',
+      of: this.positionOfElement,
+      collision: 'none'
+    } );
+}
+
+onFullscreenChange = () =>
+{
+  this.attachControls();
+}
+
+handleMouseMove( event )
+{
+  window.clearTimeout( this.hideControlsOnIdleTimeout );
+  this.hideControlsOnIdleTimeout = null;
+
+  if( this.controls )
   {
-    this.controls
-      .position( {
-        my: 'left top',
-        at: 'left+6 top+6',
-        of: this.positionOfElement,
-        collision: 'none'
-      } );
-  }
-
-  onFullscreenChange = () =>
-  {
-    this.attachControls();
-  }
-
-  handleMouseMove( event )
-  {
-    window.clearTimeout( this.hideControlsOnIdleTimeout );
-    this.hideControlsOnIdleTimeout = null;
-
-    if( this.controls )
+    if( this.hovering )
     {
-      if( this.hovering )
-      {
-        this.showControls();
-      }
+      this.showControls();
+    }
 
-      if( Controller.settings[ Settings.Controls.HideControlsWhenIdle ] )
+    if( Controller.settings[ SettingKey.Controls.HideControlsWhenIdle ] )
+    {
+      let timeout = Controller.settings[ SettingKey.Controls.HideControlsIdleTime ] * 1000;
+      this.hideControlsOnIdleTimeout = setTimeout( $.proxy( function()
       {
-        let timeout = Controller.settings[ Settings.Controls.HideControlsIdleTime ] * 1000;
-        this.hideControlsOnIdleTimeout = setTimeout( $.proxy( function()
+        if( this.controls )
         {
-          if( this.controls )
-          {
-            this.hideControls( true );
-          }
-        }, this ), timeout );
-      }
-    }
-  }
-
-  onKeyDown = ( event: KeyboardEvent ) =>
-  {
-    if( $( this.media ).closest( event.target ).length > 0
-      || !this.isVideo )
-    {
-      let shortcut = Common.getKeyboardShortcut( event.originalEvent );
-
-      if( !shortcut )
-      {
-        return true;
-      }
-      else if( shortcut === Controller.settings[ Settings.Controls.MediaControls.MuchSlower ] )
-      {
-        this.playbackMuchSlower();
-        return false;
-      }
-      else if( shortcut === Controller.settings[ Settings.Controls.MediaControls.Slower ] )
-      {
-        this.playbackSlower();
-        return false;
-      }
-      else if( shortcut === Controller.settings[ Settings.Controls.MediaControls.SkipBackward ] )
-      {
-        this.skipBackward();
-        return false;
-      }
-      else if( shortcut === Controller.settings[ Settings.Controls.MediaControls.PlayPause ] )
-      {
-        this.playPause();
-        return false;
-      }
-      else if( shortcut === Controller.settings[ Settings.Controls.MediaControls.SkipForward ] )
-      {
-        this.skipForward();
-        return false;
-      }
-      else if( shortcut === Controller.settings[ Settings.Controls.MediaControls.Faster ] )
-      {
-        this.playbackFaster();
-        return false;
-      }
-      else if( shortcut === Controller.settings[ Settings.Controls.MediaControls.MuchFaster ] )
-      {
-        this.playbackMuchFaster();
-        return false;
-      }
-      else if( shortcut === Controller.settings[ Settings.Controls.MediaControls.Reset ] )
-      {
-        this.resetControls();
-        return false;
-      }
-      else if( shortcut === Controller.settings[ Settings.Controls.MediaControls.Loop ] )
-      {
-        this.loop( !this.media.loop );
-        return false;
-      }
-      else if( shortcut === Controller.settings[ Settings.Controls.MediaControls.Fullscreen ] )
-      {
-        this.setFullscreen( !this.fullscreen );
-        return false;
-      }
-    }
-  }
-
-  resetControls()
-  {
-    if( Controller.settings[ Settings.Controls.DisplayControls ] )
-    {
-      if( this.controls === null )
-      {
-        this.initializeMediaControls();
-      }
-      else
-      {
-        this.hasDragged = false;
-        this.repositionControls();
-      }
-    }
-    this.playbackReset();
-  }
-
-  onPlaybackReset = () =>
-  {
-    this.setPlaybackRate( 1.0 );
-  }
-
-  onPlaybackMuchSlower = () =>
-  {
-    this.setPlaybackRate( this.media.playbackRate - 0.5 );
-  }
-
-  onPlaybackSlower = () =>
-  {
-    this.setPlaybackRate( this.media.playbackRate - 0.1 );
-  }
-
-  onSkipBackward = () =>
-  {
-    this.media.currentTime -= Controller.settings[ Settings.Controls.SkipBackwardAmount ];
-  }
-
-  onPlayPause = () =>
-  {
-    if( this.isPaused() )
-    {
-      this.play();
-    }
-    else
-    {
-      this.pause();
-    }
-  }
-
-  onSkipForward = () =>
-  {
-    this.media.currentTime += Controller.settings[ Settings.Controls.SkipForwardAmount ];
-  }
-
-  onPlaybackFaster = () =>
-  {
-    this.setPlaybackRate( this.media.playbackRate + 0.1 );
-  }
-
-  onPlaybackMuchFaster = () =>
-  {
-    this.setPlaybackRate( this.media.playbackRate + 0.5 );
-  }
-
-  setPlaybackRate( playbackRate )
-  {
-    playbackRate = Common.limit( playbackRate, 0, 16 );
-    if( this.media.playbackRate !== playbackRate )
-    {
-      this.media.playbackRate = playbackRate;
-
-      let playbackRates = SessionStorage.get( 'easy_control.playbackRate' );
-      playbackRates[ window.location.hostname ] = this.media.playbackRate;
-      SessionStorage.set( 'easy_control.playbackRate', playbackRates );
-    }
-  }
-
-  loop( loop )
-  {
-    this.media.loop = loop;
-
-    if( this.media.loop )
-    {
-      $( '#media-control-overlay-loop' )
-        .prop( 'title', 'Do not loop' )
-        .removeClass( 'easy-control-media-control-loop' )
-        .addClass( 'easy-control-media-control-no-loop' );
-    }
-    else
-    {
-      $( '#media-control-overlay-loop' )
-        .prop( 'title', 'Loop' )
-        .removeClass( 'easy-control-media-control-no-loop' )
-        .addClass( 'easy-control-media-control-loop' );
-    }
-  }
-
-  setFullscreen( fullscreen )
-  {
-    if( fullscreen !== this.fullscreen )
-    {
-      if( fullscreen )
-      {
-        if( this.media.webkitRequestFullscreen )
-        {
-          this.media.webkitRequestFullscreen();
-          this.handleFullscreenChange();
+          this.hideControls( true );
         }
-      }
-      else
-      {
-        if( document.webkitExitFullscreen )
-        {
-          document.webkitExitFullscreen();
-          this.handleFullscreenChange();
-        }
-      }
+      }, this ), timeout );
     }
   }
+}
 
-  _play()
+onKeyDown = ( event: KeyboardEvent ) =>
+{
+  if( $( this.media ).closest( event.target ).length > 0
+    || !this.isVideo )
   {
-    this.media.play();
-  }
+    let shortcut = Common.getKeyboardShortcut( event.originalEvent );
 
-  _pause()
-  {
-    this.media.pause();
-  }
-
-  getProgress()
-  {
-    if( this.media.duration === 0 )
+    if( !shortcut )
     {
-      return 0;
+      return true;
+    }
+    else if( shortcut === Controller.settings[ SettingKey.Controls.MediaControls.MuchSlower ] )
+    {
+      this.playbackMuchSlower();
+      return false;
+    }
+    else if( shortcut === Controller.settings[ SettingKey.Controls.MediaControls.Slower ] )
+    {
+      this.playbackSlower();
+      return false;
+    }
+    else if( shortcut === Controller.settings[ SettingKey.Controls.MediaControls.SkipBackward ] )
+    {
+      this.skipBackward();
+      return false;
+    }
+    else if( shortcut === Controller.settings[ SettingKey.Controls.MediaControls.PlayPause ] )
+    {
+      this.playPause();
+      return false;
+    }
+    else if( shortcut === Controller.settings[ SettingKey.Controls.MediaControls.SkipForward ] )
+    {
+      this.skipForward();
+      return false;
+    }
+    else if( shortcut === Controller.settings[ SettingKey.Controls.MediaControls.Faster ] )
+    {
+      this.playbackFaster();
+      return false;
+    }
+    else if( shortcut === Controller.settings[ SettingKey.Controls.MediaControls.MuchFaster ] )
+    {
+      this.playbackMuchFaster();
+      return false;
+    }
+    else if( shortcut === Controller.settings[ SettingKey.Controls.MediaControls.Reset ] )
+    {
+      this.resetControls();
+      return false;
+    }
+    else if( shortcut === Controller.settings[ SettingKey.Controls.MediaControls.Loop ] )
+    {
+      this.loop( !this.media.loop );
+      return false;
+    }
+    else if( shortcut === Controller.settings[ SettingKey.Controls.MediaControls.Fullscreen ] )
+    {
+      this.setFullscreen( !this.fullscreen );
+      return false;
+    }
+  }
+}
+
+resetControls()
+{
+  if( Controller.settings[ SettingKey.Controls.DisplayControls ] )
+  {
+    if( this.controls === null )
+    {
+      this.initializeMediaControls();
     }
     else
     {
-      return this.media.currentTime / this.media.duration;
+      this.hasDragged = false;
+      this.repositionControls();
     }
   }
+  this.playbackReset();
+}
 
-  isPaused()
+onPlaybackReset = () =>
+{
+  this.setPlaybackRate( 1.0 );
+}
+
+onPlaybackMuchSlower = () =>
+{
+  this.setPlaybackRate( this.media.playbackRate - 0.5 );
+}
+
+onPlaybackSlower = () =>
+{
+  this.setPlaybackRate( this.media.playbackRate - 0.1 );
+}
+
+onSkipBackward = () =>
+{
+  this.media.currentTime -= Controller.settings[ SettingKey.Controls.SkipBackwardAmount ];
+}
+
+onPlayPause = () =>
+{
+  if( this.isPaused() )
   {
-    return this.media.paused;
+    this.play();
   }
-
-  volumeUp()
+  else
   {
-    this.media.volume = Math.min( 1.0, this.media.volume + 0.05 );
+    this.pause();
   }
+}
 
-  volumeDown()
+onSkipForward = () =>
+{
+  this.media.currentTime += Controller.settings[ SettingKey.Controls.SkipForwardAmount ];
+}
+
+onPlaybackFaster = () =>
+{
+  this.setPlaybackRate( this.media.playbackRate + 0.1 );
+}
+
+onPlaybackMuchFaster = () =>
+{
+  this.setPlaybackRate( this.media.playbackRate + 0.5 );
+}
+
+setPlaybackRate( playbackRate )
+{
+  playbackRate = Common.limit( playbackRate, 0, 16 );
+  if( this.media.playbackRate !== playbackRate )
   {
-    this.media.volume = Math.max( 0.0, this.media.volume - 0.05 );
+    this.media.playbackRate = playbackRate;
+
+    let playbackRates = SessionStorage.get( 'easy_control.playbackRate' );
+    playbackRates[ window.location.hostname ] = this.media.playbackRate;
+    SessionStorage.set( 'easy_control.playbackRate', playbackRates );
   }
+}
 
-  startPolling()
+loop( loop )
+{
+  this.media.loop = loop;
+
+  if( this.media.loop )
   {
-    console.log( 'MediaController - Start polling' );
+    $( '#media-control-overlay-loop' )
+      .prop( 'title', 'Do not loop' )
+      .removeClass( 'easy-control-media-control-loop' )
+      .addClass( 'easy-control-media-control-no-loop' );
+  }
+  else
+  {
+    $( '#media-control-overlay-loop' )
+      .prop( 'title', 'Loop' )
+      .removeClass( 'easy-control-media-control-no-loop' )
+      .addClass( 'easy-control-media-control-loop' );
+  }
+}
 
-    if( !this.initialized )
+setFullscreen( fullscreen )
+{
+  if( fullscreen !== this.fullscreen )
+  {
+    if( fullscreen )
     {
-      throw 'Must initialize media controller before polling.';
+      if( this.media.webkitRequestFullscreen )
+      {
+        this.media.webkitRequestFullscreen();
+        this.handleFullscreenChange();
+      }
     }
-
-    $( this.media ).on( 'play pause playing timeupdate', $.proxy( this.poll, this ) );
+    else
+    {
+      if( document.webkitExitFullscreen )
+      {
+        document.webkitExitFullscreen();
+        this.handleFullscreenChange();
+      }
+    }
   }
+}
 
-  stopPolling()
+_play()
+{
+  this.media.play();
+}
+
+_pause()
+{
+  this.media.pause();
+}
+
+getProgress()
+{
+  if( this.media.duration === 0 )
   {
-    console.log( 'MediaController - Stop polling' );
-    $( this.media ).off( 'play pause playing timeupdate' );
+    return 0;
   }
+  else
+  {
+    return this.media.currentTime / this.media.duration;
+  }
+}
+
+isPaused()
+{
+  return this.media.paused;
+}
+
+volumeUp()
+{
+  this.media.volume = Math.min( 1.0, this.media.volume + 0.05 );
+}
+
+volumeDown()
+{
+  this.media.volume = Math.max( 0.0, this.media.volume - 0.05 );
+}
+
+startPolling()
+{
+  console.log( 'MediaController - Start polling' );
+
+  if( !this.initialized )
+  {
+    throw 'Must initialize media controller before polling.';
+  }
+
+  $( this.media ).on( 'play pause playing timeupdate', $.proxy( this.poll, this ) );
+}
+
+stopPolling()
+{
+  console.log( 'MediaController - Stop polling' );
+  $( this.media ).off( 'play pause playing timeupdate' );
+}
 }
 
 MediaController.onNewMedia = ( function()

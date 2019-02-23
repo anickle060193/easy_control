@@ -4,7 +4,7 @@ class BandcampController extends Controller
   {
     super( 'Bandcamp' )
 
-    this.color = Controller.settings[ Settings.ControllerColors.Bandcamp ];
+    this.color = Controller.settings[ SettingKey.ControllerColors.Bandcamp ];
     this.hostname = 'bandcamp.com';
 
     this.initialize();
@@ -87,7 +87,7 @@ class BandcampController extends Controller
 
 $( function()
 {
-  if( Controller.settings[ Settings.ControllersEnabled.Bandcamp ] )
+  if( Controller.settings[ SettingKey.ControllersEnabled.Bandcamp ] )
   {
     let controller = new BandcampController();
     controller.startPolling();

@@ -384,7 +384,7 @@ class ChangelogPage extends React.Component<WithStyles<typeof pageStyles>>
             <ChangelogEntry changeType="bug" text="Fixed issue where notifications for Youtube would not have a thumbnail." />
             <ChangelogEntry changeType="bug" text="A notification is now shown when the same content is played again." issueNumber={6} />
             <ChangelogEntry text="Now only retrieve tab/frame name when content is found." issueNumber={16} />
-            <ChangelogEntry changeType="enhancement" text="Reformatted notifications table in options page." issueNumber={18} image={{ src: reformattedNotificationSettings, alt: 'Reformatted Notification Settings' }} />
+            <ChangelogEntry changeType="enhancement" text="Reformatted notifications table in options page." issueNumber={18} image={{ src: reformattedNotificationSettings, alt: 'Reformatted Notification SettingKey' }} />
 
 
             <ChangelogEntry changeType="feature" text="Add ability to support generic HTML audio and video elements on any webpage." issueNumber={[ 8, 16, 22 ]} />

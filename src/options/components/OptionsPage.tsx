@@ -9,7 +9,7 @@ import TextSetting from 'options/components/TextSetting';
 import GenericMediaControlsSettings from 'options/components/GenericMediaControlsSettings';
 import ControllerSettings from 'options/components/ControllerSettings';
 
-import { Settings, Sites, settings } from 'common/settings';
+import { SettingKey, Sites, settings } from 'common/settings';
 
 const styles = ( theme: Theme ) => createStyles( {
   root: {
@@ -128,19 +128,19 @@ class OptionsPage extends React.Component<WithStyles<typeof styles>, State>
 
             <CheckboxSetting
               label="Display content controls overlay?"
-              setting={Settings.Controls.Other.DisplayControls}
+              setting={SettingKey.Controls.Other.DisplayControls}
             />
             <CheckboxSetting
               label="Always display playback speed overlay?"
-              setting={Settings.Controls.Other.AlwaysDisplayPlaybackSpeed}
+              setting={SettingKey.Controls.Other.AlwaysDisplayPlaybackSpeed}
             />
             <CheckboxSetting
               label="Hide controls when mouse goes idle?"
-              setting={Settings.Controls.Other.HideControlsWhenIdle}
+              setting={SettingKey.Controls.Other.HideControlsWhenIdle}
             />
             <NumberSetting
               label="Mouse idle timeout"
-              setting={Settings.Controls.Other.HideControlsIdleTime}
+              setting={SettingKey.Controls.Other.HideControlsIdleTime}
               endAdornmentText="seconds"
             />
           </div>
@@ -152,22 +152,22 @@ class OptionsPage extends React.Component<WithStyles<typeof styles>, State>
           </div>
 
           <div className={classes.group}>
-            <Typography variant="h6">Other Generic Media Control Settings</Typography>
+            <Typography variant="h6">Other Generic Media Control SettingKey</Typography>
 
             <NumberSetting
               label="Media overlay Skip Backward Amount"
               endAdornmentText="seconds"
-              setting={Settings.Controls.Other.SkipBackwardAmount}
+              setting={SettingKey.Controls.Other.SkipBackwardAmount}
             />
             <NumberSetting
               label="Media overlay Skip Forward Amount"
               endAdornmentText="seconds"
-              setting={Settings.Controls.Other.SkipForwardAmount}
+              setting={SettingKey.Controls.Other.SkipForwardAmount}
             />
           </div>
 
           <div className={classes.group}>
-            <Typography variant="h6">Controller Settings</Typography>
+            <Typography variant="h6">Controller SettingKey</Typography>
 
             <ControllerSettings />
 
@@ -175,21 +175,21 @@ class OptionsPage extends React.Component<WithStyles<typeof styles>, State>
 
             <CheckboxSetting
               label="Don't show notifications if content window is active?"
-              setting={Settings.Other.NoActiveWindowNotifications}
+              setting={SettingKey.Other.NoActiveWindowNotifications}
             />
             <NumberSetting
               label="Notification length"
               endAdornmentText="seconds"
-              setting={Settings.Other.NotificationLength}
+              setting={SettingKey.Other.NotificationLength}
             />
           </div>
 
           <div className={classes.group}>
-            <Typography variant="h6">Other Settings</Typography>
+            <Typography variant="h6">Other SettingKey</Typography>
 
             <SelectSetting
               label="Default streaming site"
-              setting={Settings.Other.DefaultSite}
+              setting={SettingKey.Other.DefaultSite}
               options={[
                 { value: Sites.Pandora, label: 'Pandora' },
                 { value: Sites.Spotify, label: 'Spotify' },
@@ -205,28 +205,28 @@ class OptionsPage extends React.Component<WithStyles<typeof styles>, State>
             />
             <CheckboxSetting
               label="Pause content when computer is locked?"
-              setting={Settings.Other.PauseOnLock}
+              setting={SettingKey.Other.PauseOnLock}
             />
             <CheckboxSetting
               label="Pause content after inactivity timeout?"
-              setting={Settings.Other.PauseOnInactivity}
+              setting={SettingKey.Other.PauseOnInactivity}
             />
             <NumberSetting
               label="Inactivity timeout"
-              setting={Settings.Other.InactivityTimeout}
+              setting={SettingKey.Other.InactivityTimeout}
               endAdornmentText="seconds"
               helperText="Must be >= 15 seconds"
             />
             <CheckboxSetting
               label="Show notification when content is auto-paused?"
-              setting={Settings.Other.ShowAutoPausedNotification}
+              setting={SettingKey.Other.ShowAutoPausedNotification}
             />
             <Typography variant="caption" className={classes.checkboxHelperText}>
               (Shows prompt to allow disabling auto-pause for the content's tab.)
             </Typography>
 
             <TextSetting
-              setting={Settings.Other.SiteBlacklist}
+              setting={SettingKey.Other.SiteBlacklist}
               label="Generic controller URL blacklist"
               helpText="One URL per line"
               splitLines={true}
@@ -234,7 +234,7 @@ class OptionsPage extends React.Component<WithStyles<typeof styles>, State>
 
             <CheckboxSetting
               label="Show change log on update?"
-              setting={Settings.Other.ShowChangeLogOnUpdate}
+              setting={SettingKey.Other.ShowChangeLogOnUpdate}
             />
           </div>
 

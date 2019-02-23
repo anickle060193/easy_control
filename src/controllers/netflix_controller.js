@@ -4,7 +4,7 @@ class NetflixController extends MediaController
   {
     super( 'Netflix', video );
 
-    this.color = Controller.settings[ Settings.ControllerColors.Netflix ];
+    this.color = Controller.settings[ SettingKey.ControllerColors.Netflix ];
 
     this.initialize();
   }
@@ -52,7 +52,7 @@ class NetflixController extends MediaController
 
 $( function()
 {
-  if( Controller.settings[ Settings.ControllersEnabled.Netflix ] )
+  if( Controller.settings[ SettingKey.ControllersEnabled.Netflix ] )
   {
     MediaController.createSingleMediaListener( 'Netflix', function( media )
     {

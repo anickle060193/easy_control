@@ -4,7 +4,7 @@ import { BackgroundController } from './controller';
 import { updateBrowserActionIcon } from './icon';
 import { Message, MessageTypes } from '../common/message';
 import { checkError } from '../common/utilities'
-import { Settings, siteToUrl, getDefaultSettings, SettingsType } from '../common/settings';
+import { SettingKey, siteToUrl, getDefaultSettings, SettingsType } from '../common/settings';
 import { focusTab } from './utilities';
 
 const CONTEXT_MENU_AUTO_PAUSE_ENABLED = 'auto_pause_enabled';
@@ -94,9 +94,9 @@ function handleMessage( message: Message, controller: BackgroundController )
       }
       newContentNotifications = {};
 
-      if( settings[ Settings.Notifications[ controller.name ] ] )
+      if( settings[ SettingKey.Notifications[ controller.name ] ] )
       {
-        if( !controller.active || !settings[ Settings.Other.NoActiveWindowNotifications ] )
+        if( !controller.active || !settings[ SettingKey.Other.NoActiveWindowNotifications ] )
         {
           console.log( 'Content Info:' );
           console.log( controller.content );
@@ -123,7 +123,7 @@ function handleMessage( message: Message, controller: BackgroundController )
             if( checkError() )
             {
               newContentNotifications[ notificationId ] = controller;
-              let notificationLength = settings[ Settings.Other.NotificationLength ];
+              let notificationLength = settings[ SettingKey.Other.NotificationLength ];
               if( !notificationLength || notificationLength < 1 )
               {
                 notificationLength = 10;
@@ -215,7 +215,7 @@ function showAutoPauseNotification( controller: BackgroundController, notificati
 
 export function autoPause( exclusion: BackgroundController )
 {
-  if( settings[ Settings.Other.AutoPauseEnabled ] )
+  if( settings[ SettingKey.Other.AutoPauseEnabled ] )
   {
     for( let i = 0; i < controllers.length; i++ )
     {
@@ -224,9 +224,9 @@ export function autoPause( exclusion: BackgroundController )
         console.log( 'Auto-Pausing ' + controllers[ i ].name );
         controllers[ i ].pause();
 
-        if( settings[ Settings.Other.ShowAutoPausedNotification ] )
+        if( settings[ SettingKey.Other.ShowAutoPausedNotification ] )
         {
-          showAutoPauseNotification( controllers[ i ], settings[ Settings.Other.NotificationLength ] );
+          showAutoPauseNotification( controllers[ i ], settings[ SettingKey.Other.NotificationLength ] );
         }
       }
     }
@@ -343,7 +343,7 @@ export function playPause()
   }
   else if( controllers.length === 0 )
   {
-    let site = settings[ Settings.Other.DefaultSite ];
+    let site = settings[ SettingKey.Other.DefaultSite ];
     if( site )
     {
       let url = siteToUrl( site );
@@ -521,11 +521,11 @@ function onStart()
 
       let updatedSettings = $.extend( {}, defaults, settings );
 
-      console.log( 'Updating Settings' );
+      console.log( 'Updating SettingKey' );
 
       chrome.storage.sync.set( updatedSettings );
 
-      if( possiblyShowChangelog && updatedSettings[ Settings.Other.ShowChangeLogOnUpdate ] )
+      if( possiblyShowChangelog && updatedSettings[ SettingKey.Other.ShowChangeLogOnUpdate ] )
       {
         chrome.tabs.create( { url: 'change_log/change_log.html' } );
       }
@@ -558,7 +558,7 @@ function onStart()
     {
       if( newState === 'locked' )
       {
-        if( settings[ Settings.Other.PauseOnLock ] )
+        if( settings[ SettingKey.Other.PauseOnLock ] )
         {
           console.log( 'Pausing due to Lock' );
           pause();
@@ -566,7 +566,7 @@ function onStart()
       }
       else if( newState === 'idle' )
       {
-        if( settings[ Settings.Other.PauseOnInactivity ] && currentController.allowPauseOnInactivity )
+        if( settings[ SettingKey.Other.PauseOnInactivity ] && currentController.allowPauseOnInactivity )
         {
           console.log( 'Pausing due to Inactivity' );
           pause();
@@ -578,7 +578,7 @@ function onStart()
 
   chrome.storage.onChanged.addListener( function( changes, ns )
   {
-    console.log( 'Settings Changed:' );
+    console.log( 'SettingKey Changed:' );
 
     for( let setting in changes )
     {
@@ -586,14 +586,14 @@ function onStart()
       settings[ setting ] = changes[ setting ].newValue;
     }
 
-    if( typeof changes[ Settings.Other.InactivityTimeout ] !== 'undefined' )
+    if( typeof changes[ SettingKey.Other.InactivityTimeout ] !== 'undefined' )
     {
-      chrome.idle.setDetectionInterval( settings[ Settings.Other.InactivityTimeout ]! );
+      chrome.idle.setDetectionInterval( settings[ SettingKey.Other.InactivityTimeout ]! );
     }
 
-    if( typeof changes[ Settings.Other.AutoPauseEnabled ] !== 'undefined' )
+    if( typeof changes[ SettingKey.Other.AutoPauseEnabled ] !== 'undefined' )
     {
-      chrome.contextMenus.update( 'auto_pause_enabled', { checked: settings[ Settings.Other.AutoPauseEnabled ] } );
+      chrome.contextMenus.update( 'auto_pause_enabled', { checked: settings[ SettingKey.Other.AutoPauseEnabled ] } );
     }
   } );
 
@@ -608,7 +608,7 @@ function onStart()
         if( controller.port.sender!.tab!.id !== tab.id
           && controller.hostname
           && hostname.includes( controller.hostname )
-          && settings[ Settings.OpenInExisting[ controller.name ] ] )
+          && settings[ SettingKey.OpenInExisting[ controller.name ] ] )
         {
           console.log( 'Already have ' + controller.name + ' controller.' );
           chrome.tabs.remove( tab.id! );
@@ -659,7 +659,7 @@ function onStart()
 
   chrome.tabs.onActivated.addListener( function( activateInfo )
   {
-    chrome.contextMenus.update( CONTEXT_MENU_AUTO_PAUSE_ENABLED, { checked: settings[ Settings.Other.AutoPauseEnabled ] } );
+    chrome.contextMenus.update( CONTEXT_MENU_AUTO_PAUSE_ENABLED, { checked: settings[ SettingKey.Other.AutoPauseEnabled ] } );
     chrome.contextMenus.update( CONTEXT_MENU_AUTO_PAUSE_ENABLED_FOR_TAB, { checked: !autoPauseDisabledTabs[ activateInfo.tabId ] } );
   } );
 
@@ -669,7 +669,7 @@ function onStart()
     if( info.menuItemId === CONTEXT_MENU_AUTO_PAUSE_ENABLED )
     {
       console.log( 'Auto-Pause Enabled: ' + info.checked );
-      chrome.storage.sync.set( { [ Settings.Other.AutoPauseEnabled ]: info.checked } );
+      chrome.storage.sync.set( { [ SettingKey.Other.AutoPauseEnabled ]: info.checked } );
     }
     else if( info.menuItemId === CONTEXT_MENU_AUTO_PAUSE_ENABLED_FOR_TAB )
     {
@@ -681,11 +681,11 @@ function onStart()
 
   chrome.storage.sync.get( null, function( s )
   {
-    console.log( 'Background Start - Retrieved Settings' );
+    console.log( 'Background Start - Retrieved SettingKey' );
 
     settings = s;
 
-    let inactivityTimeout = settings[ Settings.Other.InactivityTimeout ];
+    let inactivityTimeout = settings[ SettingKey.Other.InactivityTimeout ];
     if( inactivityTimeout )
     {
       chrome.idle.setDetectionInterval( inactivityTimeout );

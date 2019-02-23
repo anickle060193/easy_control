@@ -1,4 +1,4 @@
-export namespace Settings
+export namespace SettingKey
 {
   export const enum Notifications
   {
@@ -147,194 +147,194 @@ export const enum Controls
 
 export interface SettingsType
 {
-  [ Settings.Notifications.Pandora ]: boolean;
-  [ Settings.Notifications.Spotify ]: boolean;
-  [ Settings.Notifications.Youtube ]: boolean;
-  [ Settings.Notifications.GooglePlayMusic ]: boolean;
-  [ Settings.Notifications.Bandcamp ]: boolean;
-  [ Settings.Notifications.Netflix ]: boolean;
-  [ Settings.Notifications.AmazonVideo ]: boolean;
-  [ Settings.Notifications.AmazonMusic ]: boolean;
-  [ Settings.Notifications.Hulu ]: boolean;
-  [ Settings.Notifications.GenericAudioVideo ]: boolean;
-  [ Settings.Notifications.Twitch ]: boolean;
+  [ SettingKey.Notifications.Pandora ]: boolean;
+  [ SettingKey.Notifications.Spotify ]: boolean;
+  [ SettingKey.Notifications.Youtube ]: boolean;
+  [ SettingKey.Notifications.GooglePlayMusic ]: boolean;
+  [ SettingKey.Notifications.Bandcamp ]: boolean;
+  [ SettingKey.Notifications.Netflix ]: boolean;
+  [ SettingKey.Notifications.AmazonVideo ]: boolean;
+  [ SettingKey.Notifications.AmazonMusic ]: boolean;
+  [ SettingKey.Notifications.Hulu ]: boolean;
+  [ SettingKey.Notifications.GenericAudioVideo ]: boolean;
+  [ SettingKey.Notifications.Twitch ]: boolean;
 
-  [ Settings.ControllersEnabled.Pandora ]: boolean;
-  [ Settings.ControllersEnabled.Spotify ]: boolean;
-  [ Settings.ControllersEnabled.Youtube ]: boolean;
-  [ Settings.ControllersEnabled.GooglePlayMusic ]: boolean;
-  [ Settings.ControllersEnabled.Bandcamp ]: boolean;
-  [ Settings.ControllersEnabled.Netflix ]: boolean;
-  [ Settings.ControllersEnabled.AmazonVideo ]: boolean;
-  [ Settings.ControllersEnabled.AmazonMusic ]: boolean;
-  [ Settings.ControllersEnabled.Hulu ]: boolean;
-  [ Settings.ControllersEnabled.GenericAudioVideo ]: boolean;
-  [ Settings.ControllersEnabled.Twitch ]: boolean;
+  [ SettingKey.ControllersEnabled.Pandora ]: boolean;
+  [ SettingKey.ControllersEnabled.Spotify ]: boolean;
+  [ SettingKey.ControllersEnabled.Youtube ]: boolean;
+  [ SettingKey.ControllersEnabled.GooglePlayMusic ]: boolean;
+  [ SettingKey.ControllersEnabled.Bandcamp ]: boolean;
+  [ SettingKey.ControllersEnabled.Netflix ]: boolean;
+  [ SettingKey.ControllersEnabled.AmazonVideo ]: boolean;
+  [ SettingKey.ControllersEnabled.AmazonMusic ]: boolean;
+  [ SettingKey.ControllersEnabled.Hulu ]: boolean;
+  [ SettingKey.ControllersEnabled.GenericAudioVideo ]: boolean;
+  [ SettingKey.ControllersEnabled.Twitch ]: boolean;
 
-  [ Settings.ControllerColors.Pandora ]: string;
-  [ Settings.ControllerColors.Spotify ]: string;
-  [ Settings.ControllerColors.Youtube ]: string;
-  [ Settings.ControllerColors.GooglePlayMusic ]: string;
-  [ Settings.ControllerColors.Bandcamp ]: string;
-  [ Settings.ControllerColors.Netflix ]: string;
-  [ Settings.ControllerColors.AmazonVideo ]: string;
-  [ Settings.ControllerColors.AmazonMusic ]: string;
-  [ Settings.ControllerColors.Hulu ]: string;
-  [ Settings.ControllerColors.GenericAudioVideo ]: string;
-  [ Settings.ControllerColors.Twitch ]: string;
+  [ SettingKey.ControllerColors.Pandora ]: string;
+  [ SettingKey.ControllerColors.Spotify ]: string;
+  [ SettingKey.ControllerColors.Youtube ]: string;
+  [ SettingKey.ControllerColors.GooglePlayMusic ]: string;
+  [ SettingKey.ControllerColors.Bandcamp ]: string;
+  [ SettingKey.ControllerColors.Netflix ]: string;
+  [ SettingKey.ControllerColors.AmazonVideo ]: string;
+  [ SettingKey.ControllerColors.AmazonMusic ]: string;
+  [ SettingKey.ControllerColors.Hulu ]: string;
+  [ SettingKey.ControllerColors.GenericAudioVideo ]: string;
+  [ SettingKey.ControllerColors.Twitch ]: string;
 
-  [ Settings.OpenInExisting.Pandora ]: boolean;
-  [ Settings.OpenInExisting.Spotify ]: boolean;
-  [ Settings.OpenInExisting.Youtube ]: boolean;
-  [ Settings.OpenInExisting.GooglePlayMusic ]: boolean;
-  [ Settings.OpenInExisting.Bandcamp ]: boolean;
-  [ Settings.OpenInExisting.Netflix ]: boolean;
-  [ Settings.OpenInExisting.AmazonVideo ]: boolean;
-  [ Settings.OpenInExisting.AmazonMusic ]: boolean;
-  [ Settings.OpenInExisting.Hulu ]: boolean;
-  [ Settings.OpenInExisting.GenericAudioVideo ]: boolean;
-  [ Settings.OpenInExisting.Twitch ]: boolean;
+  [ SettingKey.OpenInExisting.Pandora ]: boolean;
+  [ SettingKey.OpenInExisting.Spotify ]: boolean;
+  [ SettingKey.OpenInExisting.Youtube ]: boolean;
+  [ SettingKey.OpenInExisting.GooglePlayMusic ]: boolean;
+  [ SettingKey.OpenInExisting.Bandcamp ]: boolean;
+  [ SettingKey.OpenInExisting.Netflix ]: boolean;
+  [ SettingKey.OpenInExisting.AmazonVideo ]: boolean;
+  [ SettingKey.OpenInExisting.AmazonMusic ]: boolean;
+  [ SettingKey.OpenInExisting.Hulu ]: boolean;
+  [ SettingKey.OpenInExisting.GenericAudioVideo ]: boolean;
+  [ SettingKey.OpenInExisting.Twitch ]: boolean;
 
-  [ Settings.Other.NotificationLength ]: number;
-  [ Settings.Other.NoActiveWindowNotifications ]: boolean;
-  [ Settings.Other.DefaultSite ]: Sites;
-  [ Settings.Other.PauseOnLock ]: boolean;
-  [ Settings.Other.PauseOnInactivity ]: boolean;
-  [ Settings.Other.InactivityTimeout ]: number;
-  [ Settings.Other.AutoPauseEnabled ]: boolean;
-  [ Settings.Other.ShowChangeLogOnUpdate ]: boolean;
-  [ Settings.Other.ShowAutoPausedNotification ]: boolean;
-  [ Settings.Other.SiteBlacklist ]: string[];
+  [ SettingKey.Other.NotificationLength ]: number;
+  [ SettingKey.Other.NoActiveWindowNotifications ]: boolean;
+  [ SettingKey.Other.DefaultSite ]: Sites;
+  [ SettingKey.Other.PauseOnLock ]: boolean;
+  [ SettingKey.Other.PauseOnInactivity ]: boolean;
+  [ SettingKey.Other.InactivityTimeout ]: number;
+  [ SettingKey.Other.AutoPauseEnabled ]: boolean;
+  [ SettingKey.Other.ShowChangeLogOnUpdate ]: boolean;
+  [ SettingKey.Other.ShowAutoPausedNotification ]: boolean;
+  [ SettingKey.Other.SiteBlacklist ]: string[];
 
-  [ Settings.Controls.Other.DisplayControls ]: boolean;
-  [ Settings.Controls.Other.AlwaysDisplayPlaybackSpeed ]: boolean;
-  [ Settings.Controls.Other.HideControlsWhenIdle ]: boolean;
-  [ Settings.Controls.Other.HideControlsIdleTime ]: number;
-  [ Settings.Controls.Other.SkipBackwardAmount ]: number;
-  [ Settings.Controls.Other.SkipForwardAmount ]: number;
+  [ SettingKey.Controls.Other.DisplayControls ]: boolean;
+  [ SettingKey.Controls.Other.AlwaysDisplayPlaybackSpeed ]: boolean;
+  [ SettingKey.Controls.Other.HideControlsWhenIdle ]: boolean;
+  [ SettingKey.Controls.Other.HideControlsIdleTime ]: number;
+  [ SettingKey.Controls.Other.SkipBackwardAmount ]: number;
+  [ SettingKey.Controls.Other.SkipForwardAmount ]: number;
 
-  [ Settings.Controls.MediaControls.MuchSlower ]: string;
-  [ Settings.Controls.MediaControls.Slower ]: string;
-  [ Settings.Controls.MediaControls.SkipBackward ]: string;
-  [ Settings.Controls.MediaControls.PlayPause ]: string;
-  [ Settings.Controls.MediaControls.SkipForward ]: string;
-  [ Settings.Controls.MediaControls.Faster ]: string;
-  [ Settings.Controls.MediaControls.MuchFaster ]: string;
-  [ Settings.Controls.MediaControls.Reset ]: string;
-  [ Settings.Controls.MediaControls.Loop ]: string;
-  [ Settings.Controls.MediaControls.Fullscreen ]: string;
+  [ SettingKey.Controls.MediaControls.MuchSlower ]: string;
+  [ SettingKey.Controls.MediaControls.Slower ]: string;
+  [ SettingKey.Controls.MediaControls.SkipBackward ]: string;
+  [ SettingKey.Controls.MediaControls.PlayPause ]: string;
+  [ SettingKey.Controls.MediaControls.SkipForward ]: string;
+  [ SettingKey.Controls.MediaControls.Faster ]: string;
+  [ SettingKey.Controls.MediaControls.MuchFaster ]: string;
+  [ SettingKey.Controls.MediaControls.Reset ]: string;
+  [ SettingKey.Controls.MediaControls.Loop ]: string;
+  [ SettingKey.Controls.MediaControls.Fullscreen ]: string;
 
-  [ Settings.Controls.OverlayControls.MuchSlower ]: boolean;
-  [ Settings.Controls.OverlayControls.Slower ]: boolean;
-  [ Settings.Controls.OverlayControls.SkipBackward ]: boolean;
-  [ Settings.Controls.OverlayControls.PlayPause ]: boolean;
-  [ Settings.Controls.OverlayControls.SkipForward ]: boolean;
-  [ Settings.Controls.OverlayControls.Faster ]: boolean;
-  [ Settings.Controls.OverlayControls.MuchFaster ]: boolean;
-  [ Settings.Controls.OverlayControls.Reset ]: boolean,
-  [ Settings.Controls.OverlayControls.Loop ]: boolean;
-  [ Settings.Controls.OverlayControls.Fullscreen ]: boolean;
+  [ SettingKey.Controls.OverlayControls.MuchSlower ]: boolean;
+  [ SettingKey.Controls.OverlayControls.Slower ]: boolean;
+  [ SettingKey.Controls.OverlayControls.SkipBackward ]: boolean;
+  [ SettingKey.Controls.OverlayControls.PlayPause ]: boolean;
+  [ SettingKey.Controls.OverlayControls.SkipForward ]: boolean;
+  [ SettingKey.Controls.OverlayControls.Faster ]: boolean;
+  [ SettingKey.Controls.OverlayControls.MuchFaster ]: boolean;
+  [ SettingKey.Controls.OverlayControls.Reset ]: boolean,
+  [ SettingKey.Controls.OverlayControls.Loop ]: boolean;
+  [ SettingKey.Controls.OverlayControls.Fullscreen ]: boolean;
 }
 
 export type SettingsKey = (
-  Settings.Notifications |
-  Settings.ControllersEnabled |
-  Settings.ControllerColors |
-  Settings.OpenInExisting |
-  Settings.Other |
-  Settings.Controls.Other |
-  Settings.Controls.MediaControls |
-  Settings.Controls.OverlayControls
+  SettingKey.Notifications |
+  SettingKey.ControllersEnabled |
+  SettingKey.ControllerColors |
+  SettingKey.OpenInExisting |
+  SettingKey.Other |
+  SettingKey.Controls.Other |
+  SettingKey.Controls.MediaControls |
+  SettingKey.Controls.OverlayControls
 );
 
 const DEFAULT_SETTINGS: SettingsType = {
-  [ Settings.Notifications.Pandora ]: true,
-  [ Settings.Notifications.Spotify ]: true,
-  [ Settings.Notifications.Youtube ]: true,
-  [ Settings.Notifications.GooglePlayMusic ]: true,
-  [ Settings.Notifications.Bandcamp ]: true,
-  [ Settings.Notifications.Netflix ]: true,
-  [ Settings.Notifications.AmazonVideo ]: true,
-  [ Settings.Notifications.AmazonMusic ]: true,
-  [ Settings.Notifications.Hulu ]: true,
-  [ Settings.Notifications.GenericAudioVideo ]: true,
-  [ Settings.Notifications.Twitch ]: true,
+  [ SettingKey.Notifications.Pandora ]: true,
+  [ SettingKey.Notifications.Spotify ]: true,
+  [ SettingKey.Notifications.Youtube ]: true,
+  [ SettingKey.Notifications.GooglePlayMusic ]: true,
+  [ SettingKey.Notifications.Bandcamp ]: true,
+  [ SettingKey.Notifications.Netflix ]: true,
+  [ SettingKey.Notifications.AmazonVideo ]: true,
+  [ SettingKey.Notifications.AmazonMusic ]: true,
+  [ SettingKey.Notifications.Hulu ]: true,
+  [ SettingKey.Notifications.GenericAudioVideo ]: true,
+  [ SettingKey.Notifications.Twitch ]: true,
 
-  [ Settings.ControllersEnabled.Pandora ]: true,
-  [ Settings.ControllersEnabled.Spotify ]: true,
-  [ Settings.ControllersEnabled.Youtube ]: true,
-  [ Settings.ControllersEnabled.GooglePlayMusic ]: true,
-  [ Settings.ControllersEnabled.Bandcamp ]: true,
-  [ Settings.ControllersEnabled.Netflix ]: true,
-  [ Settings.ControllersEnabled.AmazonVideo ]: true,
-  [ Settings.ControllersEnabled.AmazonMusic ]: true,
-  [ Settings.ControllersEnabled.Hulu ]: true,
-  [ Settings.ControllersEnabled.GenericAudioVideo ]: true,
-  [ Settings.ControllersEnabled.Twitch ]: true,
+  [ SettingKey.ControllersEnabled.Pandora ]: true,
+  [ SettingKey.ControllersEnabled.Spotify ]: true,
+  [ SettingKey.ControllersEnabled.Youtube ]: true,
+  [ SettingKey.ControllersEnabled.GooglePlayMusic ]: true,
+  [ SettingKey.ControllersEnabled.Bandcamp ]: true,
+  [ SettingKey.ControllersEnabled.Netflix ]: true,
+  [ SettingKey.ControllersEnabled.AmazonVideo ]: true,
+  [ SettingKey.ControllersEnabled.AmazonMusic ]: true,
+  [ SettingKey.ControllersEnabled.Hulu ]: true,
+  [ SettingKey.ControllersEnabled.GenericAudioVideo ]: true,
+  [ SettingKey.ControllersEnabled.Twitch ]: true,
 
-  [ Settings.ControllerColors.Pandora ]: '#455774',
-  [ Settings.ControllerColors.Spotify ]: '#84bd00',
-  [ Settings.ControllerColors.Youtube ]: '#f12b24',
-  [ Settings.ControllerColors.GooglePlayMusic ]: '#ff5722',
-  [ Settings.ControllerColors.Bandcamp ]: '#639AA9',
-  [ Settings.ControllerColors.Netflix ]: '#9b0103',
-  [ Settings.ControllerColors.AmazonVideo ]: '#FF9900',
-  [ Settings.ControllerColors.AmazonMusic ]: '#fd7c02',
-  [ Settings.ControllerColors.Hulu ]: '#66AA33',
-  [ Settings.ControllerColors.GenericAudioVideo ]: '#5b5b5b',
-  [ Settings.ControllerColors.Twitch ]: '#6441A4',
+  [ SettingKey.ControllerColors.Pandora ]: '#455774',
+  [ SettingKey.ControllerColors.Spotify ]: '#84bd00',
+  [ SettingKey.ControllerColors.Youtube ]: '#f12b24',
+  [ SettingKey.ControllerColors.GooglePlayMusic ]: '#ff5722',
+  [ SettingKey.ControllerColors.Bandcamp ]: '#639AA9',
+  [ SettingKey.ControllerColors.Netflix ]: '#9b0103',
+  [ SettingKey.ControllerColors.AmazonVideo ]: '#FF9900',
+  [ SettingKey.ControllerColors.AmazonMusic ]: '#fd7c02',
+  [ SettingKey.ControllerColors.Hulu ]: '#66AA33',
+  [ SettingKey.ControllerColors.GenericAudioVideo ]: '#5b5b5b',
+  [ SettingKey.ControllerColors.Twitch ]: '#6441A4',
 
-  [ Settings.OpenInExisting.Pandora ]: false,
-  [ Settings.OpenInExisting.Spotify ]: false,
-  [ Settings.OpenInExisting.Youtube ]: false,
-  [ Settings.OpenInExisting.GooglePlayMusic ]: false,
-  [ Settings.OpenInExisting.Bandcamp ]: false,
-  [ Settings.OpenInExisting.Netflix ]: false,
-  [ Settings.OpenInExisting.AmazonVideo ]: false,
-  [ Settings.OpenInExisting.AmazonMusic ]: false,
-  [ Settings.OpenInExisting.Hulu ]: false,
-  [ Settings.OpenInExisting.GenericAudioVideo ]: false,
-  [ Settings.OpenInExisting.Twitch ]: false,
+  [ SettingKey.OpenInExisting.Pandora ]: false,
+  [ SettingKey.OpenInExisting.Spotify ]: false,
+  [ SettingKey.OpenInExisting.Youtube ]: false,
+  [ SettingKey.OpenInExisting.GooglePlayMusic ]: false,
+  [ SettingKey.OpenInExisting.Bandcamp ]: false,
+  [ SettingKey.OpenInExisting.Netflix ]: false,
+  [ SettingKey.OpenInExisting.AmazonVideo ]: false,
+  [ SettingKey.OpenInExisting.AmazonMusic ]: false,
+  [ SettingKey.OpenInExisting.Hulu ]: false,
+  [ SettingKey.OpenInExisting.GenericAudioVideo ]: false,
+  [ SettingKey.OpenInExisting.Twitch ]: false,
 
-  [ Settings.Other.NotificationLength ]: 5,
-  [ Settings.Other.NoActiveWindowNotifications ]: false,
-  [ Settings.Other.DefaultSite ]: Sites.Youtube,
-  [ Settings.Other.PauseOnLock ]: true,
-  [ Settings.Other.PauseOnInactivity ]: false,
-  [ Settings.Other.InactivityTimeout ]: 60 * 5,
-  [ Settings.Other.AutoPauseEnabled ]: true,
-  [ Settings.Other.ShowChangeLogOnUpdate ]: true,
-  [ Settings.Other.ShowAutoPausedNotification ]: false,
-  [ Settings.Other.SiteBlacklist ]: [ 'imgur.com' ],
+  [ SettingKey.Other.NotificationLength ]: 5,
+  [ SettingKey.Other.NoActiveWindowNotifications ]: false,
+  [ SettingKey.Other.DefaultSite ]: Sites.Youtube,
+  [ SettingKey.Other.PauseOnLock ]: true,
+  [ SettingKey.Other.PauseOnInactivity ]: false,
+  [ SettingKey.Other.InactivityTimeout ]: 60 * 5,
+  [ SettingKey.Other.AutoPauseEnabled ]: true,
+  [ SettingKey.Other.ShowChangeLogOnUpdate ]: true,
+  [ SettingKey.Other.ShowAutoPausedNotification ]: false,
+  [ SettingKey.Other.SiteBlacklist ]: [ 'imgur.com' ],
 
-  [ Settings.Controls.Other.DisplayControls ]: true,
-  [ Settings.Controls.Other.AlwaysDisplayPlaybackSpeed ]: true,
-  [ Settings.Controls.Other.HideControlsWhenIdle ]: true,
-  [ Settings.Controls.Other.HideControlsIdleTime ]: 5,
-  [ Settings.Controls.Other.SkipBackwardAmount ]: 10,
-  [ Settings.Controls.Other.SkipForwardAmount ]: 10,
+  [ SettingKey.Controls.Other.DisplayControls ]: true,
+  [ SettingKey.Controls.Other.AlwaysDisplayPlaybackSpeed ]: true,
+  [ SettingKey.Controls.Other.HideControlsWhenIdle ]: true,
+  [ SettingKey.Controls.Other.HideControlsIdleTime ]: 5,
+  [ SettingKey.Controls.Other.SkipBackwardAmount ]: 10,
+  [ SettingKey.Controls.Other.SkipForwardAmount ]: 10,
 
-  [ Settings.Controls.MediaControls.MuchSlower ]: '',
-  [ Settings.Controls.MediaControls.Slower ]: 's',
-  [ Settings.Controls.MediaControls.SkipBackward ]: '',
-  [ Settings.Controls.MediaControls.PlayPause ]: '',
-  [ Settings.Controls.MediaControls.SkipForward ]: '',
-  [ Settings.Controls.MediaControls.Faster ]: 'd',
-  [ Settings.Controls.MediaControls.MuchFaster ]: '',
-  [ Settings.Controls.MediaControls.Reset ]: 'r',
-  [ Settings.Controls.MediaControls.Loop ]: '',
-  [ Settings.Controls.MediaControls.Fullscreen ]: '',
+  [ SettingKey.Controls.MediaControls.MuchSlower ]: '',
+  [ SettingKey.Controls.MediaControls.Slower ]: 's',
+  [ SettingKey.Controls.MediaControls.SkipBackward ]: '',
+  [ SettingKey.Controls.MediaControls.PlayPause ]: '',
+  [ SettingKey.Controls.MediaControls.SkipForward ]: '',
+  [ SettingKey.Controls.MediaControls.Faster ]: 'd',
+  [ SettingKey.Controls.MediaControls.MuchFaster ]: '',
+  [ SettingKey.Controls.MediaControls.Reset ]: 'r',
+  [ SettingKey.Controls.MediaControls.Loop ]: '',
+  [ SettingKey.Controls.MediaControls.Fullscreen ]: '',
 
-  [ Settings.Controls.OverlayControls.MuchSlower ]: true,
-  [ Settings.Controls.OverlayControls.Slower ]: true,
-  [ Settings.Controls.OverlayControls.SkipBackward ]: true,
-  [ Settings.Controls.OverlayControls.PlayPause ]: true,
-  [ Settings.Controls.OverlayControls.SkipForward ]: true,
-  [ Settings.Controls.OverlayControls.Faster ]: true,
-  [ Settings.Controls.OverlayControls.MuchFaster ]: true,
-  [ Settings.Controls.OverlayControls.Reset ]: true,
-  [ Settings.Controls.OverlayControls.Loop ]: true,
-  [ Settings.Controls.OverlayControls.Fullscreen ]: true,
+  [ SettingKey.Controls.OverlayControls.MuchSlower ]: true,
+  [ SettingKey.Controls.OverlayControls.Slower ]: true,
+  [ SettingKey.Controls.OverlayControls.SkipBackward ]: true,
+  [ SettingKey.Controls.OverlayControls.PlayPause ]: true,
+  [ SettingKey.Controls.OverlayControls.SkipForward ]: true,
+  [ SettingKey.Controls.OverlayControls.Faster ]: true,
+  [ SettingKey.Controls.OverlayControls.MuchFaster ]: true,
+  [ SettingKey.Controls.OverlayControls.Reset ]: true,
+  [ SettingKey.Controls.OverlayControls.Loop ]: true,
+  [ SettingKey.Controls.OverlayControls.Fullscreen ]: true,
 };
 
 const SITE_TO_URL: { [ key in Sites ]: string } = {
@@ -382,7 +382,7 @@ class SettingsStorage
         {
           if( chrome.runtime.lastError )
           {
-            console.error( 'Failed to retrieve settings:', chrome.runtime.lastError );
+            console.error( 'Failed to retrieve SettingKey:', chrome.runtime.lastError );
             return reject( chrome.runtime.lastError );
           }
 
@@ -461,7 +461,7 @@ class SettingsStorage
     {
       if( chrome.runtime.lastError )
       {
-        console.error( 'Failed to reset settings:', chrome.runtime.lastError );
+        console.error( 'Failed to reset SettingKey:', chrome.runtime.lastError );
       }
     } );
   }

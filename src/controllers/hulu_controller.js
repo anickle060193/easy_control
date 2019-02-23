@@ -4,7 +4,7 @@ class HuluController extends MediaController
   {
     super( 'Hulu', video );
 
-    this.color = Controller.settings[ Settings.ControllerColors.Hulu ];
+    this.color = Controller.settings[ SettingKey.ControllerColors.Hulu ];
 
     this.initialize();
   }
@@ -62,7 +62,7 @@ class HuluController extends MediaController
 
 $( function()
 {
-  if( Controller.settings[ Settings.ControllersEnabled.Hulu ] )
+  if( Controller.settings[ SettingKey.ControllersEnabled.Hulu ] )
   {
     MediaController.createMultiMediaListener( 'Hulu', function( media )
     {

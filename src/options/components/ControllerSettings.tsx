@@ -4,7 +4,7 @@ import { Table, TableHead, TableRow, TableCell, TableBody, Theme, createStyles, 
 import CheckboxSetting from 'options/components/CheckboxSetting';
 import ColorSetting from 'options/components/ColorSetting';
 
-import { Settings } from 'common/settings';
+import { SettingKey } from 'common/settings';
 
 const styles = ( theme: Theme ) => createStyles( {
   fixedWidthCell: {
@@ -18,89 +18,89 @@ const styles = ( theme: Theme ) => createStyles( {
 
 interface ControllerSetting
 {
-  enabledSetting: Settings.ControllersEnabled;
-  notificationsSetting: Settings.Notifications;
-  openInExistingSetting: Settings.OpenInExisting;
-  colorSetting: Settings.ControllerColors;
+  enabledSetting: SettingKey.ControllersEnabled;
+  notificationsSetting: SettingKey.Notifications;
+  openInExistingSetting: SettingKey.OpenInExisting;
+  colorSetting: SettingKey.ControllerColors;
   description: string;
 }
 
 const CONTROLLER_SETTINGS: ControllerSetting[] = [
   {
-    enabledSetting: Settings.ControllersEnabled.Pandora,
-    notificationsSetting: Settings.Notifications.Pandora,
-    openInExistingSetting: Settings.OpenInExisting.Pandora,
-    colorSetting: Settings.ControllerColors.Pandora,
+    enabledSetting: SettingKey.ControllersEnabled.Pandora,
+    notificationsSetting: SettingKey.Notifications.Pandora,
+    openInExistingSetting: SettingKey.OpenInExisting.Pandora,
+    colorSetting: SettingKey.ControllerColors.Pandora,
     description: 'Pandora',
   },
   {
-    enabledSetting: Settings.ControllersEnabled.Spotify,
-    notificationsSetting: Settings.Notifications.Spotify,
-    openInExistingSetting: Settings.OpenInExisting.Spotify,
-    colorSetting: Settings.ControllerColors.Spotify,
+    enabledSetting: SettingKey.ControllersEnabled.Spotify,
+    notificationsSetting: SettingKey.Notifications.Spotify,
+    openInExistingSetting: SettingKey.OpenInExisting.Spotify,
+    colorSetting: SettingKey.ControllerColors.Spotify,
     description: 'Spotify',
   },
   {
-    enabledSetting: Settings.ControllersEnabled.Youtube,
-    notificationsSetting: Settings.Notifications.Youtube,
-    openInExistingSetting: Settings.OpenInExisting.Youtube,
-    colorSetting: Settings.ControllerColors.Youtube,
+    enabledSetting: SettingKey.ControllersEnabled.Youtube,
+    notificationsSetting: SettingKey.Notifications.Youtube,
+    openInExistingSetting: SettingKey.OpenInExisting.Youtube,
+    colorSetting: SettingKey.ControllerColors.Youtube,
     description: 'Youtube',
   },
   {
-    enabledSetting: Settings.ControllersEnabled.GooglePlayMusic,
-    notificationsSetting: Settings.Notifications.GooglePlayMusic,
-    openInExistingSetting: Settings.OpenInExisting.GooglePlayMusic,
-    colorSetting: Settings.ControllerColors.GooglePlayMusic,
+    enabledSetting: SettingKey.ControllersEnabled.GooglePlayMusic,
+    notificationsSetting: SettingKey.Notifications.GooglePlayMusic,
+    openInExistingSetting: SettingKey.OpenInExisting.GooglePlayMusic,
+    colorSetting: SettingKey.ControllerColors.GooglePlayMusic,
     description: 'Google Play Music',
   },
   {
-    enabledSetting: Settings.ControllersEnabled.Bandcamp,
-    notificationsSetting: Settings.Notifications.Bandcamp,
-    openInExistingSetting: Settings.OpenInExisting.Bandcamp,
-    colorSetting: Settings.ControllerColors.Bandcamp,
+    enabledSetting: SettingKey.ControllersEnabled.Bandcamp,
+    notificationsSetting: SettingKey.Notifications.Bandcamp,
+    openInExistingSetting: SettingKey.OpenInExisting.Bandcamp,
+    colorSetting: SettingKey.ControllerColors.Bandcamp,
     description: 'Bandcamp',
   },
   {
-    enabledSetting: Settings.ControllersEnabled.Netflix,
-    notificationsSetting: Settings.Notifications.Netflix,
-    openInExistingSetting: Settings.OpenInExisting.Netflix,
-    colorSetting: Settings.ControllerColors.Netflix,
+    enabledSetting: SettingKey.ControllersEnabled.Netflix,
+    notificationsSetting: SettingKey.Notifications.Netflix,
+    openInExistingSetting: SettingKey.OpenInExisting.Netflix,
+    colorSetting: SettingKey.ControllerColors.Netflix,
     description: 'Netflix',
   },
   {
-    enabledSetting: Settings.ControllersEnabled.AmazonVideo,
-    notificationsSetting: Settings.Notifications.AmazonVideo,
-    openInExistingSetting: Settings.OpenInExisting.AmazonVideo,
-    colorSetting: Settings.ControllerColors.AmazonVideo,
+    enabledSetting: SettingKey.ControllersEnabled.AmazonVideo,
+    notificationsSetting: SettingKey.Notifications.AmazonVideo,
+    openInExistingSetting: SettingKey.OpenInExisting.AmazonVideo,
+    colorSetting: SettingKey.ControllerColors.AmazonVideo,
     description: 'Amazon Video',
   },
   {
-    enabledSetting: Settings.ControllersEnabled.AmazonMusic,
-    notificationsSetting: Settings.Notifications.AmazonMusic,
-    openInExistingSetting: Settings.OpenInExisting.AmazonMusic,
-    colorSetting: Settings.ControllerColors.AmazonMusic,
+    enabledSetting: SettingKey.ControllersEnabled.AmazonMusic,
+    notificationsSetting: SettingKey.Notifications.AmazonMusic,
+    openInExistingSetting: SettingKey.OpenInExisting.AmazonMusic,
+    colorSetting: SettingKey.ControllerColors.AmazonMusic,
     description: 'Amazon Music',
   },
   {
-    enabledSetting: Settings.ControllersEnabled.Hulu,
-    notificationsSetting: Settings.Notifications.Hulu,
-    openInExistingSetting: Settings.OpenInExisting.Hulu,
-    colorSetting: Settings.ControllerColors.Hulu,
+    enabledSetting: SettingKey.ControllersEnabled.Hulu,
+    notificationsSetting: SettingKey.Notifications.Hulu,
+    openInExistingSetting: SettingKey.OpenInExisting.Hulu,
+    colorSetting: SettingKey.ControllerColors.Hulu,
     description: 'Hulu',
   },
   {
-    enabledSetting: Settings.ControllersEnabled.GenericAudioVideo,
-    notificationsSetting: Settings.Notifications.GenericAudioVideo,
-    openInExistingSetting: Settings.OpenInExisting.GenericAudioVideo,
-    colorSetting: Settings.ControllerColors.GenericAudioVideo,
+    enabledSetting: SettingKey.ControllersEnabled.GenericAudioVideo,
+    notificationsSetting: SettingKey.Notifications.GenericAudioVideo,
+    openInExistingSetting: SettingKey.OpenInExisting.GenericAudioVideo,
+    colorSetting: SettingKey.ControllerColors.GenericAudioVideo,
     description: 'Generic Audio/Video',
   },
   {
-    enabledSetting: Settings.ControllersEnabled.Twitch,
-    notificationsSetting: Settings.Notifications.Twitch,
-    openInExistingSetting: Settings.OpenInExisting.Twitch,
-    colorSetting: Settings.ControllerColors.Twitch,
+    enabledSetting: SettingKey.ControllersEnabled.Twitch,
+    notificationsSetting: SettingKey.Notifications.Twitch,
+    openInExistingSetting: SettingKey.OpenInExisting.Twitch,
+    colorSetting: SettingKey.ControllerColors.Twitch,
     description: 'Twitch',
   },
 ];

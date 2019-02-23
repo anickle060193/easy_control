@@ -4,7 +4,7 @@ class AmazonVideoController extends MediaController
   {
     super( 'AmazonVideo', video );
 
-    this.color = Controller.settings[ Settings.ControllerColors.AmazonVideo ];
+    this.color = Controller.settings[ SettingKey.ControllerColors.AmazonVideo ];
     this.hostname = null;
 
     this.initialize();
@@ -37,7 +37,7 @@ class AmazonVideoController extends MediaController
 
 $( function()
 {
-  if( AmazonVideoController.settings[ Settings.ControllersEnabled.AmazonVideo ] )
+  if( AmazonVideoController.settings[ SettingKey.ControllersEnabled.AmazonVideo ] )
   {
     MediaController.createSingleMediaListener( 'Amazon Video', function( media )
     {
