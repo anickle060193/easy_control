@@ -163,19 +163,35 @@ export function volumeDownCurrentController()
 
 export async function copyCurrentControllerContentLink()
 {
-  console.log( currentController );
   if( currentController && currentController.content && currentController.content.link )
   {
-    console.log( 'Copying content link: ' + currentController.content.link );
+    console.log( 'Copying content link:', currentController.content.link );
 
+    let input: HTMLTextAreaElement | null = null;
     try
     {
-      await navigator.clipboard.writeText( currentController.content.link );
+      input = document.createElement( 'textarea' );
+      input.value = currentController.content.link;
+
+      document.body.appendChild( input );
+
+      input.focus();
+      input.select();
+
+      document.execCommand( 'copy' );
+
       console.log( 'Successfully copied content link' );
     }
     catch( e )
     {
       console.error( 'Failed to copy content link:', e );
+    }
+    finally
+    {
+      if( input )
+      {
+        input.remove();
+      }
     }
   }
   else
@@ -186,11 +202,9 @@ export async function copyCurrentControllerContentLink()
 
 function onControllerMessage( message: Message, controller: BackgroundController )
 {
-  console.log( 'Message:', message );
-
   if( message.type === MessageTypes.ToBackground.Initialize )
   {
-    console.log( 'Controller Initialized: ' + controller.name );
+    console.log( 'Controller Initialized:', controller.name );
 
     controller.color = message.data.color;
     controller.allowPauseOnInactivity = message.data.allowPauseOnInactivity;
@@ -251,7 +265,7 @@ function onControllerMessage( message: Message, controller: BackgroundController
   }
   else if( message.type === MessageTypes.ToBackground.NewContent )
   {
-    console.log( 'New Content - ' + controller.name );
+    console.log( 'New Content:', controller.name, message.data );
     controller.content = message.data;
 
     if( currentController === controller )
@@ -288,7 +302,7 @@ function onControllerDisconnect( controller: BackgroundController )
 
 chrome.runtime.onConnect.addListener( ( port ) =>
 {
-  console.log( 'Port Connect:', port.name, port );
+  console.log( 'Port Connect:', port.name );
 
   let controller = new BackgroundController( port );
 

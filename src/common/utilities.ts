@@ -14,8 +14,13 @@ export function limit( value: number, min: number, max: number )
   }
 }
 
-export function parseTime( timeText: string )
+export function parseTime( timeText: string | null )
 {
+  if( !timeText )
+  {
+    return 0;
+  }
+
   let strippedTimeText = timeText.trim();
   let timeSplit = strippedTimeText.split( ':' );
   if( timeSplit.length === 3 )
@@ -35,16 +40,6 @@ export function parseTime( timeText: string )
   {
     return 0;
   }
-}
-
-export function checkError()
-{
-  if( chrome.runtime.lastError )
-  {
-    console.warn( chrome.runtime.lastError );
-    return false;
-  }
-  return true;
 }
 
 const MODIFIERS = [

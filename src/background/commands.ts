@@ -14,7 +14,7 @@ import
 
 chrome.browserAction.onClicked.addListener( () =>
 {
-  console.log( 'BrowserAction clicked:' );
+  console.log( 'BrowserAction clicked' );
   playPauseCurrentController();
 } );
 
@@ -62,6 +62,6 @@ chrome.commands.onCommand.addListener( ( command ) =>
   }
   else
   {
-    console.log( 'Unrecognized Command: ' + command );
+    console.log( 'Unrecognized Command:', command );
   }
 } );

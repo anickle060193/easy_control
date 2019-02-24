@@ -25,7 +25,7 @@ function onTabUpdated( tab: chrome.tabs.Tab )
     {
       if( !controller.port.sender || !controller.port.sender.tab || !controller.port.sender.tab.id )
       {
-        console.warn( 'Controller port has no sender:', controller.port.sender );
+        console.warn( 'Controller port has no sender:', controller );
         continue;
       }
 
@@ -34,7 +34,7 @@ function onTabUpdated( tab: chrome.tabs.Tab )
         && hostname.includes( controller.hostname )
         && settings.get( SettingKey.OpenInExisting[ controller.name ] ) )
       {
-        console.log( 'Already have', controller.name, 'controller.' );
+        console.log( 'Already have controller:', controller.name );
         chrome.tabs.remove( tab.id );
 
         let existingTab = controller.port.sender.tab;

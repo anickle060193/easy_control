@@ -7,6 +7,7 @@
     "128": "icon128.png"
   },
   "permissions": [
+    "clipboardWrite",
     "contextMenus",
     "idle",
     "notifications",
@@ -39,6 +40,16 @@
     ]
   },
   "options_page": "options.html",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.pandora.com/*"
+      ],
+      "js": [
+        "pandora.bundle.js"
+      ]
+    }
+  ],
   "commands": {
     "1_play_pause": {
       "description": "Plays/Pause"

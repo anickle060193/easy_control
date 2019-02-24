@@ -9,12 +9,12 @@ class HuluController extends MediaController
     this.initialize();
   }
 
-  _play()
+  onPlay()
   {
     $( '.controls-bar .play-pause-button' ).click();
   }
 
-  _pause()
+  onPause()
   {
     $( '.controls-bar .play-pause-button' ).click();
   }

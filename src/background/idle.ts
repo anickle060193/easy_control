@@ -4,7 +4,7 @@ import { settings, SettingKey } from 'common/settings';
 
 chrome.idle.onStateChanged.addListener( ( newState ) =>
 {
-  console.log( 'State Changed: ' + newState );
+  console.log( 'State Changed:', newState );
 
   let currentController = getCurrentController();
 

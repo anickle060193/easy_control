@@ -30,11 +30,11 @@ class YoutubeController extends MediaController
     this.controls.find( '#media-control-overlay-fullscreen' ).hide();
   }
 
-  _pause()
+  onPause()
   {
     if( this.hasBeenActivated )
     {
-      super._pause();
+      super.onPause();
     }
   }
 
@@ -48,22 +48,22 @@ class YoutubeController extends MediaController
     return !this.hasBeenActivated || super.isPaused();
   }
 
-  _like()
+  onLike()
   {
     $( 'button.like-button-renderer-like-button.like-button-renderer-like-button-unclicked' ).click();
   }
 
-  _unlike()
+  onUnlike()
   {
     $( 'button.like-button-renderer-like-button.like-button-renderer-like-button-clicked' ).click();
   }
 
-  _dislike()
+  onDislike()
   {
     $( 'button.like-button-renderer-dislike-button.like-button-renderer-dislike-button-unclicked' ).click();
   }
 
-  _undislike()
+  onUndislike()
   {
     $( 'button.like-button-renderer-dislike-button.like-button-renderer-dislike-button-clicked' ).click();
   }

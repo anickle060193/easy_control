@@ -37,8 +37,6 @@ export function showNewContextNotification( controller: BackgroundController )
     return;
   }
 
-  console.log( 'New Content Info:', controller.content );
-
   let buttons: chrome.notifications.ButtonOptions[] = [];
   buttons[ NewContentNotificationButton.Pause ] = { title: 'Pause' };
   buttons[ NewContentNotificationButton.Next ] = { title: 'Next' };

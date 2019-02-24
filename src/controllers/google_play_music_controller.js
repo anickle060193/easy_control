@@ -29,12 +29,12 @@ class GooglePlayMusicController extends MediaController
     console.log( 'GooglePlayMusicController does not support looping.' );
   }
 
-  _play()
+  onPlay()
   {
     $( '#player-bar-play-pause' ).click();
   }
 
-  _pause()
+  onPause()
   {
     $( '#player-bar-play-pause' ).click();
   }
@@ -49,22 +49,22 @@ class GooglePlayMusicController extends MediaController
     $( '#player-bar-forward' ).click();
   }
 
-  _like()
+  onLike()
   {
     $( '.rating-container > paper-icon-button[data-rating="5"]' ).click();
   }
 
-  _unlike()
+  onUnlike()
   {
     $( '.rating-container > paper-icon-button[data-rating="5"]' ).click();
   }
 
-  _dislike()
+  onDislike()
   {
     $( '.rating-container > paper-icon-button[data-rating="1"]' ).click();
   }
 
-  _undislike()
+  onUndislike()
   {
     $( '.rating-container > paper-icon-button[data-rating="1"]' ).click();
   }

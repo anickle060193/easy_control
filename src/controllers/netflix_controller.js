@@ -9,12 +9,12 @@ class NetflixController extends MediaController
     this.initialize();
   }
 
-  _play()
+  onPlay()
   {
     $( '.player-control-button.player-play-pause' ).click();
   }
 
-  _pause()
+  onPause()
   {
     $( '.player-control-button.player-play-pause' ).click();
   }

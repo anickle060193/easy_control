@@ -10,12 +10,12 @@ class BandcampController extends Controller
     this.initialize();
   }
 
-  _play()
+  onPlay()
   {
     $( '.playbutton' ).click();
   }
 
-  _pause()
+  onPause()
   {
     $( '.playbutton' ).click();
   }

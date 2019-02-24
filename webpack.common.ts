@@ -12,6 +12,7 @@ const config: webpack.Configuration = {
     background: path.resolve( __dirname, 'src', 'background', 'index.ts' ),
     options: path.resolve( __dirname, 'src', 'options', 'index.tsx' ),
     changelog: path.resolve( __dirname, 'src', 'changelog', 'index.tsx' ),
+    pandora: path.resolve( __dirname, 'src', 'controllers', 'pandora_controller.ts' ),
   },
   output: {
     path: build,
@@ -56,10 +57,11 @@ const config: webpack.Configuration = {
   resolve: {
     extensions: [ '.js', '.jsx', '.ts', '.tsx', '.json', '.css', '.scss', '.woff', '.woff2', '.png' ],
     alias: {
-      common: path.resolve( __dirname, 'src', 'common' ),
       background: path.resolve( __dirname, 'src', 'background' ),
-      options: path.resolve( __dirname, 'src', 'options' ),
       changelog: path.resolve( __dirname, 'src', 'changelog' ),
+      common: path.resolve( __dirname, 'src', 'common' ),
+      controllers: path.resolve( __dirname, 'src', 'controllers' ),
+      options: path.resolve( __dirname, 'src', 'options' ),
     }
   },
   plugins: [

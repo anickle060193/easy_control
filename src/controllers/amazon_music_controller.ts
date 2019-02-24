@@ -12,12 +12,12 @@ class AmazonMusicController extends Controller
     this.initialize();
   }
 
-  _play()
+  onPlay()
   {
     $( '.playbackControlsView .playButton' ).click();
   }
 
-  _pause()
+  onPause()
   {
     $( '.playbackControlsView .playButton' ).click();
   }

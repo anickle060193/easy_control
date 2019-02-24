@@ -9,12 +9,12 @@ class SpotifyController extends Controller
     this.initialize();
   }
 
-  _play()
+  onPlay()
   {
     $( 'button.control-button[class*="spoticon-play"]' ).click();
   }
 
-  _pause()
+  onPause()
   {
     $( 'button.control-button[class*="spoticon-pause"]' ).click();
   }

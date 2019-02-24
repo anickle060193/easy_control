@@ -32,7 +32,7 @@ interface BaseMessage<T extends AllMessageTypes>
   type: T;
 }
 
-interface FromBackgroundMessage extends BaseMessage<
+type BasicFromBackgroundMessageType = (
   MessageTypes.FromBackground.Pause |
   MessageTypes.FromBackground.Play |
   MessageTypes.FromBackground.Next |
@@ -43,7 +43,9 @@ interface FromBackgroundMessage extends BaseMessage<
   MessageTypes.FromBackground.Undislike |
   MessageTypes.FromBackground.VolumeUp |
   MessageTypes.FromBackground.VolumeDown
-  > { }
+);
+
+interface FromBackgroundMessage extends BaseMessage<BasicFromBackgroundMessageType> { }
 
 interface DataMessage<T extends AllMessageTypes, D> extends BaseMessage<T>
 {
@@ -81,8 +83,8 @@ export type Message = (
   StatusMessage
 );
 
-export const fromBackgroundMessage = ( type: MessageTypes.FromBackground ): FromBackgroundMessage => ( {
-  type: MessageTypes.FromBackground.Play
+export const fromBackgroundMessage = ( type: BasicFromBackgroundMessageType ): FromBackgroundMessage => ( {
+  type: type
 } );
 
 export const openContentLinkMessage = ( data: OpenContentLinkData ): OpenContentLinkMessage => ( {

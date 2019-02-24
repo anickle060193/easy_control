@@ -1,27 +1,26 @@
-import { ContentInfo } from "../common/content";
-import { initializeMessage, Message, MessageTypes, statusMessage, newContentMessage } from "../common/message";
-import { SettingsType } from "../common/settings";
+import { ContentInfo } from 'common/content';
+import { initializeMessage, Message, MessageTypes, statusMessage, newContentMessage } from 'common/message';
+import { Sites } from 'common/settings';
 
-export class Controller
+// tslint:disable:member-ordering
+export abstract class Controller
 {
-  static settings: Partial<SettingsType> = {};
+  public readonly name: string;
+  public color: string;
+  public hostname: string;
+  public allowPauseOnInactivity: boolean;
 
-  name: string;
-  color: string;
-  hostname: string;
-  allowPauseOnInactivity: boolean;
+  public initialized: boolean;
 
-  initialized: boolean;
+  public active: boolean;
 
-  active: boolean;
+  public disconnected: boolean;
+  public currentContent: ContentInfo | null;
+  public lastProgress: number;
+  public pollingInterval: number;
+  public port: chrome.runtime.Port;
 
-  disconnected: boolean;
-  currentContent: ContentInfo | null;
-  lastProgress: number;
-  pollingInterval: number;
-  port: chrome.runtime.Port;
-
-  constructor( name: string )
+  constructor( name: Sites )
   {
     this.name = name;
     this.color = 'black';
@@ -31,8 +30,8 @@ export class Controller
     this.initialized = false;
 
     this.active = !document.hidden;
-    console.log( 'Initial active: ' + this.active );
-    console.log( 'Initial visibility state: ' + document.visibilityState );
+    console.log( 'Initial active:', this.active );
+    console.log( 'Initial visibility state:', document.visibilityState );
 
     this.disconnected = false;
     this.currentContent = null;
@@ -40,14 +39,24 @@ export class Controller
     this.pollingInterval = 0;
     this.port = chrome.runtime.connect( null!, { name: name } );
 
-    this.port.onMessage.addListener( this.handleMessage.bind( this ) );
-    this.port.onDisconnect.addListener( this.disconnect.bind( this ) );
+    this.port.onMessage.addListener( this.onPortMessage );
+    this.port.onDisconnect.addListener( this.onPortDisconnect );
 
-    $( window ).focus( $.proxy( this.activate, this ) );
-    $( window ).blur( $.proxy( this.deactivate, this ) );
+    window.addEventListener( 'focus', this.onFocus );
+    window.addEventListener( 'blur', this.onBlur );
   }
 
-  initialize()
+  private onFocus = () =>
+  {
+    this.active = true;
+  }
+
+  private onBlur = () =>
+  {
+    this.active = false;
+  }
+
+  protected initialize()
   {
     let data = {
       color: this.color,
@@ -59,17 +68,7 @@ export class Controller
     this.initialized = true;
   }
 
-  activate()
-  {
-    this.active = true;
-  }
-
-  deactivate()
-  {
-    this.active = false;
-  }
-
-  handleMessage( message: Message )
+  private onPortMessage = ( message: Message ) =>
   {
     if( message.type === MessageTypes.FromBackground.Pause )
     {
@@ -96,7 +95,7 @@ export class Controller
       console.log( 'Recieved: DISLIKE' );
       this.dislike();
     }
-    else if( message.type == MessageTypes.FromBackground.Undislike )
+    else if( message.type === MessageTypes.FromBackground.Undislike )
     {
       console.log( 'Recieved: UNDISLIKE' );
       this.undislike();
@@ -126,9 +125,13 @@ export class Controller
       console.log( 'Recieved: OPEN CONTENT' );
       this.openContentLink( message.data );
     }
+    else
+    {
+      console.warn( 'Unknown controller message:', message );
+    }
   }
 
-  reportStatus()
+  private reportStatus()
   {
     let data = {
       paused: this.isPaused(),
@@ -138,7 +141,7 @@ export class Controller
     this.port.postMessage( statusMessage( data ) );
   }
 
-  poll()
+  private onPoll = () =>
   {
     this.reportStatus();
 
@@ -178,183 +181,170 @@ export class Controller
     }
   }
 
-  startPolling()
+  public startPolling()
   {
     console.log( 'Controller - Start polling' );
 
     if( !this.initialized )
     {
-      throw 'Must initialize controller before polling.';
+      throw new Error( 'Must initialize controller before polling.' );
     }
 
-    this.pollingInterval = window.setInterval( this.poll.bind( this ), 50 );
+    this.pollingInterval = window.setInterval( this.onPoll, 50 );
   }
 
-  stopPolling()
+  public stopPolling()
   {
     console.log( 'Controller - Stop polling' );
     window.clearInterval( this.pollingInterval );
   }
 
-  disconnect()
+  protected onPortDisconnect = () =>
   {
     console.log( 'Disconnect' );
     this.disconnected = true;
-    $( window ).off( 'focus', this.activate );
-    $( window ).off( 'blur', this.deactivate );
+
+    window.removeEventListener( 'focus', this.onFocus );
+    window.removeEventListener( 'blur', this.onBlur );
+
     this.stopPolling();
     this.port.disconnect();
   }
 
-  _play()
+  protected onPlay()
   {
     console.log( 'play not supported.' );
   }
 
-  play()
+  protected play()
   {
     if( this.isPaused() )
     {
-      this._play();
+      this.onPlay();
     }
   }
 
-  _pause()
+  protected onPause()
   {
     console.log( 'pause not supported.' );
   }
 
-  pause()
+  protected pause()
   {
     if( !this.isPaused() )
     {
-      this._pause();
+      this.onPause();
     }
   }
 
-  previous()
+  protected previous()
   {
     console.log( 'previous is not supported' );
   }
 
-  next()
+  protected next()
   {
     console.log( 'next is not supported' );
   }
 
-  _like()
+  protected onLike()
   {
     console.log( 'like not supported.' );
   }
 
-  like()
+  protected like()
   {
     if( !this.isLiked() )
     {
-      this._like();
+      this.onLike();
     }
   }
 
-  _unlike()
+  protected onUnlike()
   {
     console.log( 'unlike not supported.' );
   }
 
-  unlike()
+  protected unlike()
   {
     if( this.isLiked() )
     {
-      this._unlike();
+      this.onUnlike();
     }
   }
 
-  _dislike()
+  protected onDislike()
   {
     console.log( 'dislike not supported.' );
   }
 
-  dislike()
+  protected dislike()
   {
     if( !this.isDisliked() )
     {
-      this._dislike();
+      this.onDislike();
     }
   }
 
-  _undislike()
+  protected onUnDislike()
   {
     console.log( 'undislike not supported.' );
   }
 
-  undislike()
+  protected undislike()
   {
     if( this.isDisliked() )
     {
-      this._undislike();
+      this.onUnDislike();
     }
   }
 
-  isLiked()
+  protected isLiked(): boolean
   {
     return false;
   }
 
-  isDisliked()
+  protected isDisliked(): boolean
   {
     return false;
   }
 
-  isPaused()
+  protected isPaused(): boolean
   {
     return false;
   }
 
-  getProgress()
+  protected getProgress(): number
   {
     return 0.0;
   }
 
-  getContentInfo(): ContentInfo | null
+  protected getBasicContentInfo()
   {
     return {
-      title: '',
-      caption: '',
-      subcaption: '',
-      image: '',
       link: location.href,
       isLiked: this.isLiked(),
       isDisliked: this.isDisliked()
     };
   }
 
-  volumeUp()
+  protected getContentInfo(): ContentInfo | null
+  {
+    return null;
+  }
+
+  protected volumeUp()
   {
     console.log( 'volumeUp is not supported' );
   }
 
-  volumeDown()
+  protected volumeDown()
   {
     console.log( 'volumeDown is not supported' );
   }
 
-  openContentLink( contentLink: string )
+  protected openContentLink( contentLink: string )
   {
     window.location.href = contentLink;
   }
 }
-
-( function()
-{
-  chrome.storage.sync.get( null, function( settings )
-  {
-    Controller.settings = settings;
-  } );
-
-  chrome.storage.onChanged.addListener( function( changes )
-  {
-    for( let setting in changes )
-    {
-      Controller.settings[ setting ] = changes[ setting ].newValue;
-    }
-  } );
-} )();

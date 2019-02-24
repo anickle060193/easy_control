@@ -10,12 +10,12 @@ class TwitchController extends Controller
     this.initialize();
   }
 
-  _play()
+  onPlay()
   {
     $( 'button.player-button--playpause' ).click();
   }
 
-  _pause()
+  onPause()
   {
     $( 'button.player-button--playpause' ).click();
   }
