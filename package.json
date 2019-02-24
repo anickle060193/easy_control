@@ -12,7 +12,7 @@
     "build": "webpack --config webpack.prod.ts"
   },
   "devDependencies": {
-    "@types/chrome": "^0.0.80",
+    "@types/chrome": "^0.0.81",
     "@types/classnames": "^2.2.7",
     "@types/clean-webpack-plugin": "^0.1.2",
     "@types/copy-webpack-plugin": "^4.4.3",

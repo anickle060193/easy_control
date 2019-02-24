@@ -43,13 +43,14 @@ export function showNewContextNotification( controller: BackgroundController )
 
   let notificationOptions: chrome.notifications.NotificationOptions = {
     type: 'basic',
-    iconUrl: controller.content.image ? controller.content.image : 'res/icon128.png',
+    iconUrl: controller.content.image ? controller.content.image : 'icon128.png',
     title: controller.content.title,
     message: controller.content.caption,
     contextMessage: controller.content.subcaption,
     buttons: buttons,
     requireInteraction: true,
-    isClickable: true
+    isClickable: true,
+    silent: true,
   };
 
   for( let notificationId of Object.keys( newContentNotifications ) )
@@ -106,7 +107,8 @@ export function showAutoPauseNotification( controller: BackgroundController, not
     contextMessage: controller.content.subcaption,
     buttons: buttons,
     requireInteraction: true,
-    isClickable: true
+    isClickable: true,
+    silent: true,
   };
 
   chrome.notifications.create( '', notificationOptions, ( notificationId ) =>
