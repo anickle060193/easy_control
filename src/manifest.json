@@ -15,7 +15,7 @@
     "tabs",
     "https://*.pandora.com/",
     "https://*.p-cdn.com/",
-    "https://*.p-cdn.us",
+    "https://*.p-cdn.us/",
     "https://*.scdn.co/",
     "https://*.cloudfront.net/",
     "https://*.googleusercontent.com/",
@@ -26,7 +26,7 @@
     "http://*.huluim.com/",
     "https://static-cdn.jtvnw.net/"
   ],
-  "content_security_policy": "default-src 'self' https://*.googleapis.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.pandora.com/ https://*.p-cdn.com/ https://*.p-cdn.us https://*.scdn.co/ https://*.cloudfront.net/ https://*.googleusercontent.com/ https://*.ggpht.com/ https://*.bcbits.com/ https://*.ssl-images-amazon.com/ https://*.amazonaws.com/ http://*.huluim.com/ https://static-cdn.jtvnw.net/",
+  "content_security_policy": "default-src 'none'; script-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.pandora.com/ https://*.p-cdn.com/ https://*.p-cdn.us/ https://*.scdn.co/ https://*.cloudfront.net/ https://*.googleusercontent.com/ https://*.ggpht.com/ https://*.bcbits.com/ https://*.ssl-images-amazon.com/ https://*.amazonaws.com/ https://static-cdn.jtvnw.net/",
   "web_accessible_resources": [],
   "browser_action": {
     "default_icon": {

@@ -62,7 +62,6 @@ export namespace SettingKey
 
   export const enum Other
   {
-    NotificationLength = 'key__notification_length',
     NoActiveWindowNotifications = 'key__no_active_window_notifications',
     DefaultSite = 'key__default_site',
     PauseOnLock = 'key__pause_on_lock',
@@ -197,7 +196,6 @@ export interface SettingsType
   [ SettingKey.OpenInExisting.GenericAudioVideo ]: boolean;
   [ SettingKey.OpenInExisting.Twitch ]: boolean;
 
-  [ SettingKey.Other.NotificationLength ]: number;
   [ SettingKey.Other.NoActiveWindowNotifications ]: boolean;
   [ SettingKey.Other.DefaultSite ]: Sites;
   [ SettingKey.Other.PauseOnLock ]: boolean;
@@ -298,7 +296,6 @@ const DEFAULT_SETTINGS: SettingsType = {
   [ SettingKey.OpenInExisting.GenericAudioVideo ]: false,
   [ SettingKey.OpenInExisting.Twitch ]: false,
 
-  [ SettingKey.Other.NotificationLength ]: 5,
   [ SettingKey.Other.NoActiveWindowNotifications ]: false,
   [ SettingKey.Other.DefaultSite ]: Sites.Youtube,
   [ SettingKey.Other.PauseOnLock ]: true,

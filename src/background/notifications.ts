@@ -48,7 +48,7 @@ export function showNewContextNotification( controller: BackgroundController )
     message: controller.content.caption,
     contextMessage: controller.content.subcaption,
     buttons: buttons,
-    requireInteraction: true,
+    requireInteraction: false,
     isClickable: true,
     silent: true,
   };
@@ -69,21 +69,10 @@ export function showNewContextNotification( controller: BackgroundController )
     }
 
     newContentNotifications[ notificationId ] = controller;
-
-    let notificationLength = settings.get( SettingKey.Other.NotificationLength );
-    if( !notificationLength || notificationLength < 1 )
-    {
-      notificationLength = 10;
-    }
-
-    window.setTimeout( () =>
-    {
-      chrome.notifications.clear( notificationId );
-    }, notificationLength * 1000 );
   } );
 }
 
-export function showAutoPauseNotification( controller: BackgroundController, notificationLength: number = 10 )
+export function showAutoPauseNotification( controller: BackgroundController )
 {
   if( !controller.content )
   {
@@ -106,7 +95,7 @@ export function showAutoPauseNotification( controller: BackgroundController, not
     message: controller.content.caption,
     contextMessage: controller.content.subcaption,
     buttons: buttons,
-    requireInteraction: true,
+    requireInteraction: false,
     isClickable: true,
     silent: true,
   };
@@ -120,16 +109,6 @@ export function showAutoPauseNotification( controller: BackgroundController, not
     }
 
     autoPausedNotifications[ notificationId ] = controller;
-
-    if( notificationLength < 1 )
-    {
-      notificationLength = 10;
-    }
-
-    window.setTimeout( () =>
-    {
-      chrome.notifications.clear( notificationId );
-    }, notificationLength * 1000 );
   } );
 }
 
