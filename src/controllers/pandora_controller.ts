@@ -18,12 +18,12 @@ class PandoraController extends Controller
     this.initialize();
   }
 
-  protected onPlay()
+  protected playImpl()
   {
     select( '.PlayButton' ).click();
   }
 
-  protected onPause()
+  protected pauseImpl()
   {
     select( '.PlayButton' ).click();
   }
@@ -33,17 +33,17 @@ class PandoraController extends Controller
     select( '.SkipButton' ).click();
   }
 
-  protected onLike()
+  protected likeImpl()
   {
     select( '.ThumbUpButton' ).click();
   }
 
-  protected onUnlike()
+  protected unlikeImpl()
   {
     select( '.ThumbUpButton' ).click();
   }
 
-  protected onDislike()
+  protected dislikeImpl()
   {
     select( '.ThumbDownButton' ).click();
   }

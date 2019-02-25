@@ -4,18 +4,18 @@ class TwitchController extends Controller
   {
     super( 'Twitch' );
 
-    this.color = Controller.settings[ SettingKey.ControllerColors.Twitch ];
+    this.color = settings.get( SettingKey.ControllerColors.Twitch );
     this.allowPauseOnInactivity = false;
 
     this.initialize();
   }
 
-  onPlay()
+  playImpl()
   {
     $( 'button.player-button--playpause' ).click();
   }
 
-  onPause()
+  pauseImpl()
   {
     $( 'button.player-button--playpause' ).click();
   }
@@ -71,7 +71,7 @@ class TwitchController extends Controller
 
 $( function()
 {
-  if( Controller.settings[ SettingKey.ControllersEnabled.Twitch ] )
+  if( settings.get( SettingKey.ControllersEnabled.Twitch ) )
   {
     let controller = new TwitchController();
     controller.startPolling();

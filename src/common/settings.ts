@@ -422,6 +422,16 @@ class SettingsStorage
     return this.initializingPromise;
   }
 
+  public addOnChangeListener( callback: () => void )
+  {
+    chrome.storage.onChanged.addListener( callback );
+  }
+
+  public removeOnChangeListener( callback: () => void )
+  {
+    chrome.storage.onChanged.removeListener( callback );
+  }
+
   public get<K extends SettingsKey>( setting: K ): SettingsType[ K ]
   {
     if( typeof this.cache[ setting ] !== typeof DEFAULT_SETTINGS[ setting ] )

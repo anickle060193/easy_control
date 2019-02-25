@@ -13,6 +13,7 @@ const config: webpack.Configuration = {
     options: path.resolve( __dirname, 'src', 'options', 'index.tsx' ),
     changelog: path.resolve( __dirname, 'src', 'changelog', 'index.tsx' ),
     pandora: path.resolve( __dirname, 'src', 'controllers', 'pandora_controller.ts' ),
+    youtube: path.resolve( __dirname, 'src', 'controllers', 'youtube_controller.ts' ),
   },
   output: {
     path: build,

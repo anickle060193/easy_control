@@ -7,17 +7,17 @@ class AmazonMusicController extends Controller
   {
     super( 'AmazonMusic' );
 
-    this.color = Controller.settings[ SettingKey.ControllerColors.AmazonMusic ]!;
+    this.color = settings.get( SettingKey.ControllerColors.AmazonMusic )!;
 
     this.initialize();
   }
 
-  onPlay()
+  playImpl()
   {
     $( '.playbackControlsView .playButton' ).click();
   }
 
-  onPause()
+  pauseImpl()
   {
     $( '.playbackControlsView .playButton' ).click();
   }
@@ -72,7 +72,7 @@ class AmazonMusicController extends Controller
 
 $( function()
 {
-  if( AmazonMusicController.settings[ SettingKey.ControllersEnabled.AmazonMusic ] )
+  if( AmazonMusicController.settings.get( SettingKey.ControllersEnabled.AmazonMusic ) )
   {
     let controller = new AmazonMusicController();
     controller.startPolling();

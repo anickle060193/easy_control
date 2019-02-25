@@ -4,17 +4,17 @@ class NetflixController extends MediaController
   {
     super( 'Netflix', video );
 
-    this.color = Controller.settings[ SettingKey.ControllerColors.Netflix ];
+    this.color = settings.get( SettingKey.ControllerColors.Netflix );
 
     this.initialize();
   }
 
-  onPlay()
+  playImpl()
   {
     $( '.player-control-button.player-play-pause' ).click();
   }
 
-  onPause()
+  pauseImpl()
   {
     $( '.player-control-button.player-play-pause' ).click();
   }
@@ -52,7 +52,7 @@ class NetflixController extends MediaController
 
 $( function()
 {
-  if( Controller.settings[ SettingKey.ControllersEnabled.Netflix ] )
+  if( settings.get( SettingKey.ControllersEnabled.Netflix ) )
   {
     MediaController.createSingleMediaListener( 'Netflix', function( media )
     {

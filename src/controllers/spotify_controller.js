@@ -4,17 +4,17 @@ class SpotifyController extends Controller
   {
     super( 'Spotify' );
 
-    this.color = Controller.settings[ SettingKey.ControllerColors.Spotify ];
+    this.color = settings.get( SettingKey.ControllerColors.Spotify );
 
     this.initialize();
   }
 
-  onPlay()
+  playImpl()
   {
     $( 'button.control-button[class*="spoticon-play"]' ).click();
   }
 
-  onPause()
+  pauseImpl()
   {
     $( 'button.control-button[class*="spoticon-pause"]' ).click();
   }
@@ -113,7 +113,7 @@ class SpotifyController extends Controller
 
 $( function()
 {
-  if( Controller.settings[ SettingKey.ControllersEnabled.Spotify ] )
+  if( settings.get( SettingKey.ControllersEnabled.Spotify ) )
   {
     let controller = new SpotifyController();
     controller.startPolling();

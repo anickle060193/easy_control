@@ -12,6 +12,15 @@ class Selector<T extends HTMLElement>
     this.match = Array.from( match );
   }
 
+  public index( index: number )
+  {
+    if( index < 0 || this.match.length <= index )
+    {
+      console.warn( 'Selector index out of range:', index, 'length:', this.match.length );
+    }
+    return new Selector( this.match.slice( index, index + 1 ) );
+  }
+
   public single()
   {
     return new Selector( this.match.slice( 0, 1 ) );

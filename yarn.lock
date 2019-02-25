@@ -210,6 +210,11 @@
   resolved "https://registry.yarnpkg.com/@types/relateurl/-/relateurl-0.2.28.tgz#6bda7db8653fa62643f5ee69e9f69c11a392e3a6"
   integrity sha1-a9p9uGU/piZD9e5p6facEaOS46Y=
 
+"@types/screenfull@^3.3.2":
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/@types/screenfull/-/screenfull-3.3.2.tgz#2425ed1ff1c70913e40c622c31b9b3b51701c9f9"
+  integrity sha512-2mdZgaFDd1+qJDOw3RlBnVNucwt3xnHEkKmoIpSBmLr9QzVW2EOwmQnPmUf/MfCx2JVGu1Lq7vDVfML/mioFmA==
+
 "@types/tapable@*":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@types/tapable/-/tapable-1.0.4.tgz#b4ffc7dc97b498c969b360a41eee247f82616370"
@@ -4174,6 +4179,11 @@ schema-utils@^1.0.0:
     ajv "^6.1.0"
     ajv-errors "^1.0.0"
     ajv-keywords "^3.1.0"
+
+screenfull@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/screenfull/-/screenfull-4.0.1.tgz#f3c13c41eb852cd29a63b01cf6e02a4fede137e2"
+  integrity sha512-9Poi+mjYVWbMFtt7JFGvXo9r/HVo2eweKnmAFQ0A++YjoCKaErDbvLjwtTF7Slazdx9K7VCxqWbNn22V2a1J/g==
 
 scss-tokenizer@^0.2.3:
   version "0.2.3"

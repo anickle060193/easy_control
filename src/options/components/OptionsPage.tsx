@@ -177,11 +177,6 @@ class OptionsPage extends React.Component<WithStyles<typeof styles>, State>
               label="Don't show notifications if content window is active?"
               setting={SettingKey.Other.NoActiveWindowNotifications}
             />
-            <NumberSetting
-              label="Notification length"
-              endAdornmentText="seconds"
-              setting={SettingKey.Other.NotificationLength}
-            />
           </div>
 
           <div className={classes.group}>

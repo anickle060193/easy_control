@@ -4,7 +4,7 @@ class AudioVideoController extends MediaController
   {
     super( 'GenericAudioVideo', media );
 
-    this.color = color || Controller.settings[ SettingKey.ControllerColors.GenericAudioVideo ];
+    this.color = color || settings.get( SettingKey.ControllerColors.GenericAudioVideo );
     this.hostname = null;
 
     this.initialize();
@@ -19,9 +19,9 @@ class AudioVideoController extends MediaController
 
 $( function()
 {
-  if( Controller.settings[ SettingKey.ControllersEnabled.GenericAudioVideo ] )
+  if( settings.get( SettingKey.ControllersEnabled.GenericAudioVideo ) )
   {
-    let color = Controller.settings[ SettingKey.ControllerColors.GenericAudioVideo ];
+    let color = settings.get( SettingKey.ControllerColors.GenericAudioVideo );
     let metaThemeColor = $( 'meta[name="theme-color"][content][content!=""]:first' );
     let metaTileColor = $( 'meta[name="msapplication-TileColor"][content][content!=""]:first' );
     if( metaThemeColor.length > 0 )
@@ -34,7 +34,7 @@ $( function()
     }
 
     let url = window.location.href;
-    let blacklist = Controller.settings[ SettingKey.SiteBlacklist ];
+    let blacklist = settings.get( SettingKey.SiteBlacklist );
     for( let i = 0; i < blacklist.length; i++ )
     {
       if( blacklist[ i ] && url.includes( blacklist[ i ] ) )

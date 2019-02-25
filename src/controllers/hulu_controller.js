@@ -4,17 +4,17 @@ class HuluController extends MediaController
   {
     super( 'Hulu', video );
 
-    this.color = Controller.settings[ SettingKey.ControllerColors.Hulu ];
+    this.color = settings.get( SettingKey.ControllerColors.Hulu );
 
     this.initialize();
   }
 
-  onPlay()
+  playImpl()
   {
     $( '.controls-bar .play-pause-button' ).click();
   }
 
-  onPause()
+  pauseImpl()
   {
     $( '.controls-bar .play-pause-button' ).click();
   }
@@ -62,7 +62,7 @@ class HuluController extends MediaController
 
 $( function()
 {
-  if( Controller.settings[ SettingKey.ControllersEnabled.Hulu ] )
+  if( settings.get( SettingKey.ControllersEnabled.Hulu ) )
   {
     MediaController.createMultiMediaListener( 'Hulu', function( media )
     {

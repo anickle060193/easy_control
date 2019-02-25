@@ -4,7 +4,7 @@ class GooglePlayMusicController extends MediaController
   {
     super( 'GooglePlayMusic', audio );
 
-    this.color = Controller.settings[ SettingKey.ControllerColors.GooglePlayMusic ];
+    this.color = settings.get( SettingKey.ControllerColors.GooglePlayMusic );
 
     this.initialize();
   }
@@ -29,12 +29,12 @@ class GooglePlayMusicController extends MediaController
     console.log( 'GooglePlayMusicController does not support looping.' );
   }
 
-  onPlay()
+  playImpl()
   {
     $( '#player-bar-play-pause' ).click();
   }
 
-  onPause()
+  pauseImpl()
   {
     $( '#player-bar-play-pause' ).click();
   }
@@ -49,17 +49,17 @@ class GooglePlayMusicController extends MediaController
     $( '#player-bar-forward' ).click();
   }
 
-  onLike()
+  likeImpl()
   {
     $( '.rating-container > paper-icon-button[data-rating="5"]' ).click();
   }
 
-  onUnlike()
+  unlikeImpl()
   {
     $( '.rating-container > paper-icon-button[data-rating="5"]' ).click();
   }
 
-  onDislike()
+  dislikeImpl()
   {
     $( '.rating-container > paper-icon-button[data-rating="1"]' ).click();
   }
@@ -104,7 +104,7 @@ class GooglePlayMusicController extends MediaController
 
 $( function()
 {
-  if( Controller.settings[ SettingKey.ControllersEnabled.GooglePlayMusic ] )
+  if( settings.get( SettingKey.ControllersEnabled.GooglePlayMusic ) )
   {
     MediaController.createSingleMediaListener( 'Google Play Music', function( audio )
     {

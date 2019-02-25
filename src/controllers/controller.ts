@@ -39,19 +39,29 @@ export abstract class Controller
     this.pollingInterval = 0;
     this.port = chrome.runtime.connect( null!, { name: name } );
 
-    this.port.onMessage.addListener( this.onPortMessage );
-    this.port.onDisconnect.addListener( this.onPortDisconnect );
+    this.port.onMessage.addListener( ( message ) => this.onPortMessage( message ) );
+    this.port.onDisconnect.addListener( () => this.onPortDisconnect() );
 
-    window.addEventListener( 'focus', this.onFocus );
-    window.addEventListener( 'blur', this.onBlur );
+    window.addEventListener( 'focus', this.onFocusScope );
+    window.addEventListener( 'blur', this.onBlurScope );
   }
 
-  private onFocus = () =>
+  private onFocusScope = () =>
+  {
+    this.onFocus();
+  }
+
+  protected onFocus()
   {
     this.active = true;
   }
 
-  private onBlur = () =>
+  private onBlurScope = () =>
+  {
+    this.onBlur();
+  }
+
+  protected onBlur()
   {
     this.active = false;
   }
@@ -68,7 +78,7 @@ export abstract class Controller
     this.initialized = true;
   }
 
-  private onPortMessage = ( message: Message ) =>
+  private onPortMessage( message: Message )
   {
     if( message.type === MessageTypes.FromBackground.Pause )
     {
@@ -141,7 +151,7 @@ export abstract class Controller
     this.port.postMessage( statusMessage( data ) );
   }
 
-  private onPoll = () =>
+  protected onPoll = () =>
   {
     this.reportStatus();
 
@@ -199,7 +209,7 @@ export abstract class Controller
     window.clearInterval( this.pollingInterval );
   }
 
-  protected onPortDisconnect = () =>
+  protected onPortDisconnect()
   {
     console.log( 'Disconnect' );
     this.disconnected = true;
@@ -211,7 +221,7 @@ export abstract class Controller
     this.port.disconnect();
   }
 
-  protected onPlay()
+  protected playImpl()
   {
     console.log( 'play not supported.' );
   }
@@ -220,11 +230,11 @@ export abstract class Controller
   {
     if( this.isPaused() )
     {
-      this.onPlay();
+      this.playImpl();
     }
   }
 
-  protected onPause()
+  protected pauseImpl()
   {
     console.log( 'pause not supported.' );
   }
@@ -233,7 +243,7 @@ export abstract class Controller
   {
     if( !this.isPaused() )
     {
-      this.onPause();
+      this.pauseImpl();
     }
   }
 
@@ -247,7 +257,7 @@ export abstract class Controller
     console.log( 'next is not supported' );
   }
 
-  protected onLike()
+  protected likeImpl()
   {
     console.log( 'like not supported.' );
   }
@@ -256,11 +266,11 @@ export abstract class Controller
   {
     if( !this.isLiked() )
     {
-      this.onLike();
+      this.likeImpl();
     }
   }
 
-  protected onUnlike()
+  protected unlikeImpl()
   {
     console.log( 'unlike not supported.' );
   }
@@ -269,11 +279,11 @@ export abstract class Controller
   {
     if( this.isLiked() )
     {
-      this.onUnlike();
+      this.unlikeImpl();
     }
   }
 
-  protected onDislike()
+  protected dislikeImpl()
   {
     console.log( 'dislike not supported.' );
   }
@@ -282,11 +292,11 @@ export abstract class Controller
   {
     if( !this.isDisliked() )
     {
-      this.onDislike();
+      this.dislikeImpl();
     }
   }
 
-  protected onUnDislike()
+  protected undislikeImpl()
   {
     console.log( 'undislike not supported.' );
   }
@@ -295,7 +305,7 @@ export abstract class Controller
   {
     if( this.isDisliked() )
     {
-      this.onUnDislike();
+      this.undislikeImpl();
     }
   }
 

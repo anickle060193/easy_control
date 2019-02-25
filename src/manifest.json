@@ -48,7 +48,17 @@
       ],
       "js": [
         "pandora.bundle.js"
-      ]
+      ],
+      "all_frames": true
+    },
+    {
+      "matches": [
+        "https://www.youtube.com/*"
+      ],
+      "js": [
+        "youtube.bundle.js"
+      ],
+      "all_frames": true
     }
   ],
   "commands": {
