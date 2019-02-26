@@ -58,7 +58,7 @@ interface InitializeData
 {
   color: string;
   allowPauseOnInactivity: boolean;
-  hostname: string;
+  hostname: string | null;
 }
 
 type NewContentData = ContentInfo;

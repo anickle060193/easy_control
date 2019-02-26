@@ -94,6 +94,18 @@ class Selector<T extends HTMLElement>
     }
   }
 
+  public attr( attribute: string ): string | null
+  {
+    if( this.match.length === 0 )
+    {
+      return null;
+    }
+    else
+    {
+      return this.match[ 0 ].getAttribute( attribute );
+    }
+  }
+
   public click()
   {
     if( this.match.length === 0 )

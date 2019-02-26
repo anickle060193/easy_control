@@ -68,6 +68,20 @@
         "spotify.bundle.js"
       ],
       "all_frames": true
+    },
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "exclude_matches": [
+        "https://www.pandora.com/*",
+        "https://www.youtube.com/*",
+        "https://open.spotify.com/*"
+      ],
+      "js": [
+        "audioVideo.bundle.js"
+      ],
+      "all_frames": true
     }
   ],
   "commands": {

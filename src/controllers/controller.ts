@@ -7,7 +7,7 @@ export abstract class Controller
 {
   public readonly name: string;
   public color: string;
-  public hostname: string;
+  public hostname: string | null;
   public allowPauseOnInactivity: boolean;
 
   public initialized: boolean;

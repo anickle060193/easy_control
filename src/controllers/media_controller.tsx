@@ -203,16 +203,22 @@ export abstract class MediaController extends Controller
   }
 }
 
-type ControllerCreatorCallback = ( element: HTMLElement ) => MediaController | null;
+type ControllerCreatorCallback = ( element: HTMLAudioElement | HTMLVideoElement ) => MediaController | null;
 
 function registerNewMediaCallback( controllerCreatorCallback: ControllerCreatorCallback )
 {
-  type HTMLControllableElement = HTMLElement & {
+  type HTMLControllableElement = ( HTMLAudioElement | HTMLVideoElement ) & {
     [ 'easy-control--controller' ]: MediaController | undefined;
   };
 
   function addMedia( element: HTMLElement )
   {
+    if( !( element instanceof HTMLAudioElement
+      || element instanceof HTMLVideoElement ) )
+    {
+      return;
+    }
+
     let controller = ( element as HTMLControllableElement )[ 'easy-control--controller' ];
     if( controller )
     {
