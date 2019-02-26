@@ -45,19 +45,19 @@ class TextSetting extends React.Component<Props>
 
   private onChange = ( e: React.ChangeEvent<HTMLTextAreaElement> ) =>
   {
+    this.props.onChange( e.target.value );
+  }
+
+  private onBlur = ( e: React.UIEvent<HTMLTextAreaElement> ) =>
+  {
     if( this.props.splitLines )
     {
-      this.props.onChange( e.target.value.split( /[\r\n]+/ ) );
+      this.props.onSave( e.currentTarget.value.split( /[\r\n]+/ ) );
     }
     else
     {
-      this.props.onChange( e.target.value );
+      this.props.onSave( e.currentTarget.value );
     }
-  }
-
-  private onBlur = () =>
-  {
-    this.props.onSave();
   }
 }
 
