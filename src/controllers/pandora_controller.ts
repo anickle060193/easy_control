@@ -3,6 +3,7 @@ import { Controller } from 'controllers/controller';
 import { Sites, settings, SettingKey } from 'common/settings';
 import { select } from 'common/selector';
 import { ContentInfo } from 'common/content';
+import { cssUrlToUrl } from 'common/utilities';
 
 class PandoraController extends Controller
 {
@@ -102,8 +103,7 @@ class PandoraController extends Controller
     let artContainer = select( '.nowPlayingTopInfo__artContainer__art' );
     if( artContainer.length !== 0 )
     {
-      artwork = artContainer.css( 'backgroundImage' ) || '';
-      artwork = artwork.replace( /^.*\s*url\(\s*[\'\"]?/, '' ).replace( /[\'\"]?\s*\).*/, '' );
+      artwork = cssUrlToUrl( artContainer.css( 'backgroundImage' ) || '' );
     }
 
     if( album !== this.lastAlbum

@@ -79,3 +79,8 @@ export function getKeyboardShortcut( keyEvent: KeyboardEvent | React.KeyboardEve
 
   return shortcut.join( '+' );
 }
+
+export function cssUrlToUrl( cssUrl: string )
+{
+  return cssUrl.replace( /^.*\s*url\(\s*[\'\"]?/, '' ).replace( /[\'\"]?\s*\).*/, '' );
+}

@@ -59,6 +59,15 @@
         "youtube.bundle.js"
       ],
       "all_frames": true
+    },
+    {
+      "matches": [
+        "https://open.spotify.com/*"
+      ],
+      "js": [
+        "spotify.bundle.js"
+      ],
+      "all_frames": true
     }
   ],
   "commands": {

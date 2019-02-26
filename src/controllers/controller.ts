@@ -332,9 +332,10 @@ export abstract class Controller
   protected getBasicContentInfo()
   {
     return {
+      subcaption: '',
       link: location.href,
       isLiked: this.isLiked(),
-      isDisliked: this.isDisliked()
+      isDisliked: this.isDisliked(),
     };
   }
 

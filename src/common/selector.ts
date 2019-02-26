@@ -102,13 +102,12 @@ class Selector<T extends HTMLElement>
     }
     else
     {
-      for( let element of this.match )
+      if( this.match.length > 1 )
       {
-        if( element instanceof HTMLElement )
-        {
-          element.click();
-        }
+        console.warn( 'Multiple elements selected on click' );
       }
+
+      this.match[ 0 ].click();
     }
   }
 
