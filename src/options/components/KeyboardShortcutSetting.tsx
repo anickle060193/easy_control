@@ -1,5 +1,6 @@
 import React from 'react';
-import { TextField, Theme, createStyles, WithStyles, withStyles } from '@material-ui/core';
+import { TextField, Theme, createStyles, WithStyles, withStyles, InputAdornment, IconButton } from '@material-ui/core';
+import ClearIcon from '@material-ui/icons/Clear';
 
 import withSetting, { WithSettingProps } from 'options/components/withSetting';
 
@@ -31,7 +32,14 @@ class KeyboardShortcutSetting extends React.Component<Props>
         InputProps={{
           classes: {
             input: classes.input
-          }
+          },
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton onClick={this.onClearClick}>
+                <ClearIcon />
+              </IconButton>
+            </InputAdornment>
+          )
         }}
         value={value}
         onKeyDown={this.onKeyDown}
@@ -50,6 +58,11 @@ class KeyboardShortcutSetting extends React.Component<Props>
   private onBlur = () =>
   {
     this.props.onSave();
+  }
+
+  private onClearClick = () =>
+  {
+    this.props.onSave( '' );
   }
 }
 
