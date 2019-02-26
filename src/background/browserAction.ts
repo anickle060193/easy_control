@@ -39,7 +39,7 @@ export function updateBrowserActionIcon( controller: BackgroundController | null
 {
   if( !controller )
   {
-    chrome.browserAction.setIcon( { path: { 19: 'res/icon19.png', 38: 'res/icon38.png' } } );
+    chrome.browserAction.setIcon( { path: { 19: 'icon19.png', 38: 'icon38.png' } } );
     chrome.browserAction.setTitle( { title: 'Easy Control' } );
   }
   else
