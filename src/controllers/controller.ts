@@ -30,8 +30,7 @@ export abstract class Controller
     this.initialized = false;
 
     this.active = !document.hidden;
-    console.log( 'Initial active:', this.active );
-    console.log( 'Initial visibility state:', document.visibilityState );
+    console.log( name, '- Active:', this.active, '- Visible:', document.visibilityState );
 
     this.disconnected = false;
     this.currentContent = null;
@@ -211,7 +210,6 @@ export abstract class Controller
 
   protected onPortDisconnect()
   {
-    console.log( 'Disconnect' );
     this.disconnected = true;
 
     window.removeEventListener( 'focus', this.onFocus );

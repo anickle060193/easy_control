@@ -80,6 +80,11 @@ export abstract class MediaController extends Controller
 
   protected onUpdateControls()
   {
+    if( !this.isVideo )
+    {
+      return;
+    }
+
     if( this.controlsRoot.parentElement !== document.body )
     {
       document.body.appendChild( this.controlsRoot );
@@ -277,7 +282,6 @@ function registerNewMediaCallback( controllerCreatorCallback: ControllerCreatorC
     let controller = ( element as HTMLControllableElement )[ 'easy-control--controller' ];
     if( controller )
     {
-      console.warn( 'Media found that already has controller.' );
       return;
     }
 
