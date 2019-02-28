@@ -12,8 +12,9 @@ class YoutubeController extends MediaController
   {
     super( Sites.Youtube, video );
 
-    this.allowFullscreen = false;
     this.color = settings.get( SettingKey.ControllerColors.Youtube );
+    this.allowFullscreen = true;
+    this.mediaContainer = document.body;
 
     this.hasBeenActivated = this.active;
 
@@ -29,7 +30,7 @@ class YoutubeController extends MediaController
 
   protected setFullscreen( fullscreen: boolean )
   {
-    console.warn( 'YoutubeController does not support setting fullscreen.' );
+    select( '.ytp-fullscreen-button' ).click();
   }
 
   protected pauseImpl()
