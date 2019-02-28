@@ -44,6 +44,15 @@
   "content_scripts": [
     {
       "matches": [
+        "https://*.bandcamp.com/*"
+      ],
+      "js": [
+        "bandcamp.bundle.js"
+      ],
+      "all_frames": true
+    },
+    {
+      "matches": [
         "https://play.google.com/*"
       ],
       "js": [
@@ -92,6 +101,7 @@
         "<all_urls>"
       ],
       "exclude_matches": [
+        "https://*.bandcamp.com/*",
         "https://play.google.com/*",
         "https://www.netflix.com/*",
         "https://www.pandora.com/*",
