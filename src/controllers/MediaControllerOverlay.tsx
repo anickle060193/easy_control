@@ -13,6 +13,7 @@ import NoLoopIcon from '@material-ui/icons/Publish';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
 import RemoveIcon from '@material-ui/icons/Clear';
+import screenfull from 'screenfull';
 
 import { getKeyboardShortcut, limit } from 'common/utilities';
 import { SettingKey, settings } from 'common/settings';
@@ -23,6 +24,7 @@ const FONT_SIZE = 16;
 const styles = ( theme: Theme ) => createStyles( {
   mediaHovering: {},
   popper: {
+    zIndex: 1000000,
     display: 'none',
     '$mediaHovering&:not( $idle ), &:hover:not( $idle )': {
       display: 'block',
@@ -118,8 +120,8 @@ const MediaControl: React.SFC<{
 interface OwnProps
 {
   media: HTMLMediaElement;
+  mediaContainer: HTMLElement | null;
   allowsFullscreen: boolean;
-  fullscreen: boolean;
   onSkipBackward: () => void;
   onPlay: () => void;
   onPause: () => void;
@@ -148,6 +150,7 @@ interface State
   paused: boolean;
   playbackRate: number;
   looping: boolean;
+  fullscreen: boolean;
   hovering: boolean;
   idle: boolean;
 }
@@ -166,6 +169,7 @@ class MediaControllerOverlay extends React.Component<Props, State>
     paused: this.props.media.paused,
     playbackRate: this.props.media.playbackRate,
     looping: this.props.media.loop,
+    fullscreen: this.getIsFullscreen(),
     hovering: false,
     idle: false,
   };
@@ -189,6 +193,11 @@ class MediaControllerOverlay extends React.Component<Props, State>
     document.addEventListener( 'keydown', this.onDocumentKeyDown );
     document.addEventListener( 'mousemove', this.onDocumentMouseMove );
 
+    if( screenfull )
+    {
+      screenfull.on( 'change', this.onFullscreenChange );
+    }
+
     this.props.media.addEventListener( 'ratechange', this.onPlaybackRateChange );
     this.props.media.addEventListener( 'playing', this.onMediaPlayingPaused );
     this.props.media.addEventListener( 'pause', this.onMediaPlayingPaused );
@@ -206,10 +215,15 @@ class MediaControllerOverlay extends React.Component<Props, State>
 
   public componentWillUnmount()
   {
+    this.observer.disconnect();
+
     document.removeEventListener( 'keydown', this.onDocumentKeyDown );
     document.removeEventListener( 'mousemove', this.onDocumentMouseMove );
 
-    this.observer.disconnect();
+    if( screenfull )
+    {
+      screenfull.off( 'change', this.onFullscreenChange );
+    }
 
     this.props.media.removeEventListener( 'ratechange', this.onPlaybackRateChange );
     this.props.media.removeEventListener( 'playing', this.onMediaPlayingPaused );
@@ -228,10 +242,10 @@ class MediaControllerOverlay extends React.Component<Props, State>
 
   public render()
   {
-    const { classes, allowsFullscreen, fullscreen } = this.props;
+    const { classes, allowsFullscreen } = this.props;
     const {
       displayControls, alwaysDisplayPlaybackSpeed, hideControlsWhenIdle,
-      removed, paused, playbackRate, looping, hovering, idle
+      removed, paused, playbackRate, looping, fullscreen, hovering, idle
     } = this.state;
 
     if( !displayControls
@@ -259,6 +273,8 @@ class MediaControllerOverlay extends React.Component<Props, State>
             enabled: true,
           },
         }}
+        disablePortal={false}
+        container={this.props.mediaContainer}
       >
         <Paper className={classes.paper}>
           <MediaControl
@@ -399,6 +415,16 @@ class MediaControllerOverlay extends React.Component<Props, State>
       shortcutLoop: settings.get( SettingKey.Controls.MediaControls.Loop ),
       shortcutFullscreen: settings.get( SettingKey.Controls.MediaControls.Fullscreen ),
     };
+  }
+
+  private getIsFullscreen()
+  {
+    return (
+      screenfull &&
+      screenfull.element &&
+      ( screenfull.element === this.props.media ||
+        screenfull.element.contains( this.props.media ) )
+    );
   }
 
   private onPlaybackRateReset = () =>
@@ -559,7 +585,7 @@ class MediaControllerOverlay extends React.Component<Props, State>
     }
     else if( shortcut === settings.get( SettingKey.Controls.MediaControls.Fullscreen ) )
     {
-      if( this.props.fullscreen )
+      if( this.state.fullscreen )
       {
         this.onUnFullscreen();
       }
@@ -595,6 +621,13 @@ class MediaControllerOverlay extends React.Component<Props, State>
   private onIdleTimeout = () =>
   {
     this.setState( { idle: true } );
+  }
+
+  private onFullscreenChange = () =>
+  {
+    this.setState( {
+      fullscreen: this.getIsFullscreen()
+    } );
   }
 }
 

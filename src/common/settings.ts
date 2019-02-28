@@ -277,7 +277,7 @@ const DEFAULT_SETTINGS: SettingsType = {
   [ SettingKey.ControllerColors.Youtube ]: '#f12b24',
   [ SettingKey.ControllerColors.GooglePlayMusic ]: '#ff5722',
   [ SettingKey.ControllerColors.Bandcamp ]: '#639AA9',
-  [ SettingKey.ControllerColors.Netflix ]: '#9b0103',
+  [ SettingKey.ControllerColors.Netflix ]: '#e50914',
   [ SettingKey.ControllerColors.AmazonVideo ]: '#FF9900',
   [ SettingKey.ControllerColors.AmazonMusic ]: '#fd7c02',
   [ SettingKey.ControllerColors.Hulu ]: '#66AA33',

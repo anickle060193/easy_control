@@ -7,34 +7,68 @@ import MediaControllerOverlay from 'controllers/MediaControllerOverlay';
 
 import { SettingKey, settings, Sites } from 'common/settings';
 
+const fullscreenStyle = document.createElement( 'style' );
+fullscreenStyle.textContent = `
+  *:-webkit-full-screen video
+  {
+    object-fit: contain;
+    position: fixed !important;
+    top: 0px !important;
+    right: 0px !important;
+    bottom: 0px !important;
+    left: 0px !important;
+    box-sizing: border-box !important;
+    min-width: 0px !important;
+    max-width: none !important;
+    min-height: 0px !important;
+    max-height: none !important;
+    width: 100% !important;
+    height: 100% !important;
+    transform: none !important;
+    margin: 0px !important;
+  }
+`;
+
 // tslint:disable:member-ordering
 export abstract class MediaController extends Controller
 {
   protected static controllerCount = 0;
 
-  protected readonly media: HTMLMediaElement;
+  protected readonly media: HTMLAudioElement | HTMLVideoElement;
   protected readonly isVideo: boolean;
-  protected readonly controlsParent: HTMLElement;
+  protected readonly controlsRoot: HTMLElement;
   protected readonly controllerNumber: number;
 
   protected allowFullscreen: boolean;
-  protected fullscreen: boolean;
+  protected mediaContainer: HTMLElement | null;
 
-  constructor( name: Sites, media: HTMLMediaElement )
+  constructor( name: Sites, media: HTMLAudioElement | HTMLVideoElement )
   {
     super( name );
 
     this.media = media;
     this.isVideo = this.media instanceof HTMLVideoElement;
-    this.controlsParent = document.createElement( 'div' );
+    this.controlsRoot = document.createElement( 'div' );
     this.controllerNumber = MediaController.controllerCount;
 
     MediaController.controllerCount++;
 
     this.allowPauseOnInactivity = !this.isVideo;
 
-    this.allowFullscreen = screenfull && screenfull.enabled && this.media instanceof HTMLVideoElement;
-    this.fullscreen = screenfull && screenfull.element === this.media;
+    this.allowFullscreen = screenfull && screenfull.enabled && this.isVideo;
+    this.mediaContainer = this.media.parentElement;
+
+    if( screenfull )
+    {
+      screenfull.on( 'change', () =>
+      {
+        if( ( !screenfull || !screenfull.isFullscreen )
+          && fullscreenStyle.parentElement !== null )
+        {
+          fullscreenStyle.remove();
+        }
+      } );
+    }
   }
 
   protected initialize()
@@ -44,25 +78,25 @@ export abstract class MediaController extends Controller
     this.onUpdateControls();
   }
 
-  private onUpdateControls()
+  protected onUpdateControls()
   {
-    if( this.controlsParent.parentElement !== document.body )
+    if( this.controlsRoot.parentElement !== document.body )
     {
-      document.body.appendChild( this.controlsParent );
+      document.body.appendChild( this.controlsRoot );
     }
 
     ReactDOM.render(
       <MediaControllerOverlay
         media={this.media}
+        mediaContainer={this.mediaContainer}
         allowsFullscreen={this.allowFullscreen}
-        fullscreen={this.fullscreen}
         onSkipBackward={this.onSkipBackwardScope}
         onPlay={this.onPlayScope}
         onPause={this.onPauseScope}
         onSkipForward={this.onSkipForwardScope}
         setFullscreen={this.setFullscreenScope}
       />,
-      this.controlsParent
+      this.controlsRoot
     );
   }
 
@@ -70,7 +104,8 @@ export abstract class MediaController extends Controller
   {
     super.onPortDisconnect();
 
-    ReactDOM.unmountComponentAtNode( this.controlsParent );
+    ReactDOM.unmountComponentAtNode( this.controlsRoot );
+    this.controlsRoot.remove();
   }
 
   public disconnect()
@@ -89,11 +124,23 @@ export abstract class MediaController extends Controller
     {
       if( fullscreen )
       {
-        screenfull.request( this.media );
+        if( this.mediaContainer )
+        {
+          screenfull.request( this.mediaContainer );
+          document.body.append( fullscreenStyle );
+        }
+        else
+        {
+          console.error( 'Media container is null.' );
+        }
       }
       else
       {
-        screenfull.exit();
+        if( screenfull.isFullscreen )
+        {
+          screenfull.exit();
+          fullscreenStyle.remove();
+        }
       }
     }
   }
@@ -160,6 +207,14 @@ export abstract class MediaController extends Controller
     {
       return this.media.currentTime / this.media.duration;
     }
+  }
+
+  protected getBasicContentInfo()
+  {
+    return {
+      ...super.getBasicContentInfo(),
+      image: this.media instanceof HTMLVideoElement && this.media.poster ? this.media.poster : undefined
+    };
   }
 
   protected isPaused()
@@ -246,7 +301,25 @@ function registerNewMediaCallback( controllerCreatorCallback: ControllerCreatorC
     delete ( element as HTMLControllableElement )[ 'easy-control--controller' ];
   }
 
-  for( let element of Array.from( document.querySelectorAll<HTMLElement>( 'audio, video' ) ) )
+  function findMediaElements( node: Node ): Array<HTMLAudioElement | HTMLVideoElement>
+  {
+    if( node instanceof HTMLAudioElement
+      || node instanceof HTMLVideoElement )
+    {
+      return [ node ];
+    }
+    else if( node instanceof HTMLElement
+      || node instanceof Document )
+    {
+      return Array.from( node.querySelectorAll<HTMLAudioElement | HTMLVideoElement>( 'audio, video' ) );
+    }
+    else
+    {
+      return [];
+    }
+  }
+
+  for( let element of findMediaElements( document ) )
   {
     addMedia( element );
   }
@@ -255,35 +328,22 @@ function registerNewMediaCallback( controllerCreatorCallback: ControllerCreatorC
   {
     for( let mutation of mutations )
     {
-      for( let addedNode of Array.from( mutation.addedNodes ) )
+      let modifiedNodes = Array.from( mutation.addedNodes );
+      modifiedNodes.push( mutation.target );
+
+      for( let modifiedNode of modifiedNodes )
       {
-        if( addedNode instanceof HTMLAudioElement
-          || addedNode instanceof HTMLVideoElement )
+        for( let element of findMediaElements( modifiedNode ) )
         {
-          addMedia( addedNode );
-        }
-        else if( addedNode instanceof HTMLElement )
-        {
-          for( let element of Array.from( addedNode.querySelectorAll<HTMLElement>( 'audio, video' ) ) )
-          {
-            addMedia( element );
-          }
+          addMedia( element );
         }
       }
 
       for( let removedNode of Array.from( mutation.removedNodes ) )
       {
-        if( removedNode instanceof HTMLAudioElement
-          || removedNode instanceof HTMLVideoElement )
+        for( let element of findMediaElements( removedNode ) )
         {
-          removeMedia( removedNode );
-        }
-        else if( removedNode instanceof HTMLElement )
-        {
-          for( let element of Array.from( removedNode.querySelectorAll<HTMLElement>( 'audio, video' ) ) )
-          {
-            removeMedia( element );
-          }
+          removeMedia( element );
         }
       }
     }
@@ -291,7 +351,9 @@ function registerNewMediaCallback( controllerCreatorCallback: ControllerCreatorC
 
   newMediaElementObserver.observe( document.body, {
     childList: true,
-    subtree: true
+    subtree: true,
+    attributes: true,
+    attributeFilter: [ 'src' ],
   } );
 }
 
