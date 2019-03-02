@@ -14,6 +14,7 @@ const config: webpack.Configuration = {
     changelog: path.resolve( __dirname, 'src', 'changelog', 'index.tsx' ),
 
     amazonMusic: path.resolve( __dirname, 'src', 'controllers', 'amazon_music_controller.ts' ),
+    amazonVideo: path.resolve( __dirname, 'src', 'controllers', 'amazon_video_controller.ts' ),
     bandcamp: path.resolve( __dirname, 'src', 'controllers', 'bandcamp_controller.ts' ),
     googlePlayMusic: path.resolve( __dirname, 'src', 'controllers', 'google_play_music_controller.ts' ),
     netflix: path.resolve( __dirname, 'src', 'controllers', 'netflix_controller.ts' ),

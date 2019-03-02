@@ -26,6 +26,11 @@ class Selector<T extends HTMLElement>
     return new Selector( this.match.slice( 0, 1 ) );
   }
 
+  public last()
+  {
+    return this.index( this.match.length - 1 );
+  }
+
   public mapSingle<U>( callback: ( element: T ) => U, defaultValue: U ): U
   {
     if( this.match.length === 0 )
