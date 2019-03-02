@@ -20,6 +20,7 @@ const config: webpack.Configuration = {
     netflix: path.resolve( __dirname, 'src', 'controllers', 'netflix_controller.ts' ),
     pandora: path.resolve( __dirname, 'src', 'controllers', 'pandora_controller.ts' ),
     spotify: path.resolve( __dirname, 'src', 'controllers', 'spotify_controller.ts' ),
+    twitch: path.resolve( __dirname, 'src', 'controllers', 'twitch_controller.ts' ),
     youtube: path.resolve( __dirname, 'src', 'controllers', 'youtube_controller.ts' ),
 
     audioVideo: path.resolve( __dirname, 'src', 'controllers', 'audio_video_controller.ts' ),

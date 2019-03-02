@@ -107,6 +107,15 @@
     },
     {
       "matches": [
+        "https://www.twitch.tv/*"
+      ],
+      "js": [
+        "twitch.bundle.js"
+      ],
+      "all_frames": true
+    },
+    {
+      "matches": [
         "https://www.youtube.com/*"
       ],
       "js": [
@@ -126,6 +135,7 @@
         "https://www.netflix.com/*",
         "https://www.pandora.com/*",
         "https://open.spotify.com/*",
+        "https://www.twitch.tv/*",
         "https://www.youtube.com/*"
       ],
       "js": [
