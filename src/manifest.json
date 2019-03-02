@@ -26,7 +26,7 @@
     "http://*.huluim.com/",
     "https://static-cdn.jtvnw.net/"
   ],
-  "content_security_policy": "default-src 'none'; script-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.pandora.com/ https://*.p-cdn.com/ https://*.p-cdn.us/ https://*.scdn.co/ https://*.cloudfront.net/ https://*.googleusercontent.com/ https://*.ggpht.com/ https://*.bcbits.com/ https://*.ssl-images-amazon.com/ https://*.amazonaws.com/ https://static-cdn.jtvnw.net/",
+  "content_security_policy": "default-src 'none'; script-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.pandora.com/ https://*.p-cdn.com/ https://*.p-cdn.us/ https://*.scdn.co/ https://*.cloudfront.net/ https://*.googleusercontent.com/ https://*.ggpht.com/ https://*.bcbits.com/ https://*.ssl-images-amazon.com/ https://*.amazonaws.com/ https://m.media-amazon.com/images/ https://static-cdn.jtvnw.net/",
   "web_accessible_resources": [],
   "browser_action": {
     "default_icon": {
@@ -42,6 +42,15 @@
   },
   "options_page": "options.html",
   "content_scripts": [
+    {
+      "matches": [
+        "https://music.amazon.com/*"
+      ],
+      "js": [
+        "amazonMusic.bundle.js"
+      ],
+      "all_frames": true
+    },
     {
       "matches": [
         "https://*.bandcamp.com/*"
@@ -101,6 +110,7 @@
         "<all_urls>"
       ],
       "exclude_matches": [
+        "https://music.amazon.com/*",
         "https://*.bandcamp.com/*",
         "https://play.google.com/*",
         "https://www.netflix.com/*",

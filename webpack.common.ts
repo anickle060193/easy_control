@@ -13,13 +13,15 @@ const config: webpack.Configuration = {
     options: path.resolve( __dirname, 'src', 'options', 'index.tsx' ),
     changelog: path.resolve( __dirname, 'src', 'changelog', 'index.tsx' ),
 
-    audioVideo: path.resolve( __dirname, 'src', 'controllers', 'audio_video_controller.ts' ),
+    amazonMusic: path.resolve( __dirname, 'src', 'controllers', 'amazon_music_controller.ts' ),
     bandcamp: path.resolve( __dirname, 'src', 'controllers', 'bandcamp_controller.ts' ),
     googlePlayMusic: path.resolve( __dirname, 'src', 'controllers', 'google_play_music_controller.ts' ),
     netflix: path.resolve( __dirname, 'src', 'controllers', 'netflix_controller.ts' ),
     pandora: path.resolve( __dirname, 'src', 'controllers', 'pandora_controller.ts' ),
     spotify: path.resolve( __dirname, 'src', 'controllers', 'spotify_controller.ts' ),
     youtube: path.resolve( __dirname, 'src', 'controllers', 'youtube_controller.ts' ),
+
+    audioVideo: path.resolve( __dirname, 'src', 'controllers', 'audio_video_controller.ts' ),
   },
   output: {
     path: build,
