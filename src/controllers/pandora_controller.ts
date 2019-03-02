@@ -66,8 +66,7 @@ class PandoraController extends Controller
 
   protected getProgress()
   {
-    return select( 'audio:last-of-type' )
-      .filter( ( element ): element is HTMLAudioElement => element instanceof HTMLAudioElement )
+    return select<HTMLAudioElement>( 'audio:last-of-type' )
       .mapSingle( ( audio ) =>
       {
         if( audio.duration > 0 )
@@ -81,14 +80,13 @@ class PandoraController extends Controller
 
   protected isPaused()
   {
-    return select( 'audio:last-of-type' )
-      .filter( ( element ): element is HTMLAudioElement => element instanceof HTMLAudioElement )
+    return select<HTMLAudioElement>( 'audio:last-of-type' )
       .mapSingle( ( element ) => element.paused, true );
   }
 
   protected getContentInfo()
   {
-    let trackLink = select( '.nowPlayingTopInfo__current__trackName' );
+    let trackLink = select<HTMLAnchorElement>( 'a.nowPlayingTopInfo__current__trackName' );
     let trackItem = trackLink.find( '.Marquee__wrapper__content__child' ).single();
     if( trackItem.length === 0 )
     {
@@ -97,13 +95,13 @@ class PandoraController extends Controller
     let track = trackItem.text();
     let artist = select( '.nowPlayingTopInfo__current__artistName' ).text();
     let album = select( '.nowPlayingTopInfo__current__albumName' ).text();
-    let link = trackLink.filter( ( el ): el is HTMLAnchorElement => el instanceof HTMLAnchorElement ).prop( 'href' ) || '';
+    let link = trackLink.prop( 'href', '' );
 
-    let artwork: string | null = '';
+    let artwork: string = '';
     let artContainer = select( '.nowPlayingTopInfo__artContainer__art' );
     if( artContainer.length !== 0 )
     {
-      artwork = cssUrlToUrl( artContainer.css( 'backgroundImage' ) || '' );
+      artwork = cssUrlToUrl( artContainer.css( 'backgroundImage', '' ) );
     }
 
     if( album !== this.lastAlbum

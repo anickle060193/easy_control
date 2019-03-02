@@ -85,7 +85,7 @@ class YoutubeController extends MediaController
   {
     let videoTitle = select( '#info-contents h1.title' ).text();
     let channel = select( '#owner-name a' ).text();
-    let thumbnailImg = select( '.ytd-video-owner-renderer img' ).filter( ( el ): el is HTMLImageElement => el instanceof HTMLImageElement ).prop( 'src' );
+    let thumbnailImg = select<HTMLImageElement>( '.ytd-video-owner-renderer img' ).prop( 'src' );
 
     if( videoTitle && thumbnailImg )
     {

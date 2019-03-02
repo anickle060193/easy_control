@@ -57,14 +57,14 @@ class SpotifyController extends Controller
 
   protected getContentInfo()
   {
-    let trackLink = select( '.Root__now-playing-bar .track-info__name a' );
+    let trackLink = select<HTMLAnchorElement>( '.Root__now-playing-bar .track-info__name a' );
     let track = trackLink.text();
-    let trackUrl = trackLink.filter( ( e ): e is HTMLAnchorElement => e instanceof HTMLAnchorElement ).prop( 'href' ) || '';
+    let trackUrl = trackLink.prop( 'href', '' );
 
     let artist = select( '.Root__now-playing-bar .track-info__artists' ).text();
 
-    let artwork = select( '.Root__now-playing-bar .cover-art-image' ).css( 'backgroundImage' );
-    artwork = cssUrlToUrl( artwork || '' );
+    let artwork = select( '.Root__now-playing-bar .cover-art-image' ).css( 'backgroundImage', '' );
+    artwork = cssUrlToUrl( artwork );
 
     if( track && artist && artwork )
     {

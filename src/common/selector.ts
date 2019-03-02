@@ -70,40 +70,68 @@ class Selector<T extends HTMLElement>
     return this.match.map( ( el ) => el.textContent ).join( '' );
   }
 
-  public css<K extends keyof CSSStyleDeclaration>( key: K ): CSSStyleDeclaration[ K ] | null
+  public css<K extends keyof CSSStyleDeclaration>( key: K, defaultValue: NonNullable<CSSStyleDeclaration[ K ]> ): NonNullable<CSSStyleDeclaration[ K ]>;
+  public css<K extends keyof CSSStyleDeclaration>( key: K ): CSSStyleDeclaration[ K ] | null;
+  public css<K extends keyof CSSStyleDeclaration>( key: K, defaultValue?: NonNullable<CSSStyleDeclaration[ K ]> ): CSSStyleDeclaration[ K ] | null
   {
-    if( this.match.length === 0 )
+    if( this.match.length > 0 )
     {
-      return null;
+      let val = this.match[ 0 ].style[ key ];
+      if( val !== undefined
+        && val !== null )
+      {
+        return val;
+      }
     }
-    else
+
+    if( defaultValue !== undefined )
     {
-      return this.match[ 0 ].style[ key ];
+      return defaultValue;
     }
+
+    return null;
   }
 
-  public prop<P extends keyof T>( prop: P ): T[ P ] | null
+  public prop<P extends keyof T>( prop: P ): T[ P ] | null;
+  public prop<P extends keyof T>( prop: P, defaultValue: T[ P ] ): T[ P ];
+  public prop<P extends keyof T>( prop: P, defaultValue?: T[ P ] ): T[ P ] | null
   {
-    if( this.match.length === 0 )
+    if( this.match.length > 0 )
     {
-      return null;
+      let p = this.match[ 0 ][ prop ];
+      if( p !== undefined )
+      {
+        return p;
+      }
     }
-    else
+
+    if( defaultValue !== undefined )
     {
-      return this.match[ 0 ][ prop ];
+      return defaultValue;
     }
+
+    return null;
   }
 
-  public attr( attribute: string ): string | null
+  public attr( attribute: string ): string | null;
+  public attr( attribute: string, defaultValue: string ): string;
+  public attr( attribute: string, defaultValue?: string ): string | null
   {
-    if( this.match.length === 0 )
+    if( this.match.length > 0 )
     {
-      return null;
+      let a = this.match[ 0 ].getAttribute( attribute );
+      if( a !== null )
+      {
+        return a;
+      }
     }
-    else
+
+    if( defaultValue !== undefined )
     {
-      return this.match[ 0 ].getAttribute( attribute );
+      return defaultValue;
     }
+
+    return null;
   }
 
   public click()
@@ -129,7 +157,7 @@ class Selector<T extends HTMLElement>
   }
 }
 
-export function select( selector: string )
+export function select<E extends HTMLElement = HTMLElement>( selector: string )
 {
-  return new Selector( document.querySelectorAll<HTMLElement>( selector ) );
+  return new Selector<E>( document.querySelectorAll<E>( selector ) );
 }
