@@ -134,6 +134,7 @@ interface State
   displayControls: boolean;
   alwaysDisplayPlaybackSpeed: boolean;
   hideControlsWhenIdle: boolean;
+  mediaSource: string;
 
   shortcutMuchSlower: string;
   shortcutSlower: string;
@@ -165,6 +166,7 @@ class MediaControllerOverlay extends React.Component<Props, State>
 
   public readonly state: State = {
     ...this.getSettingsState(),
+    mediaSource: this.props.media.currentSrc,
     removed: false,
     paused: this.props.media.paused,
     playbackRate: this.props.media.playbackRate,
@@ -245,11 +247,12 @@ class MediaControllerOverlay extends React.Component<Props, State>
     const { classes, allowsFullscreen } = this.props;
     const {
       displayControls, alwaysDisplayPlaybackSpeed, hideControlsWhenIdle,
-      removed, paused, playbackRate, looping, fullscreen, hovering, idle
+      mediaSource, removed, paused, playbackRate, looping, fullscreen, hovering, idle
     } = this.state;
 
     if( !displayControls
-      || removed )
+      || removed
+      || !mediaSource )
     {
       return null;
     }
@@ -502,6 +505,7 @@ class MediaControllerOverlay extends React.Component<Props, State>
   private onSourceChanged = () =>
   {
     this.props.media.playbackRate = getSessionStorageItem( SessionStorageKey.PlaybackRate );
+    this.setState( { mediaSource: this.props.media.currentSrc } );
   }
 
   private onPlaybackRateChange = () =>

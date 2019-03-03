@@ -17,6 +17,7 @@ const config: webpack.Configuration = {
     amazonVideo: path.resolve( __dirname, 'src', 'controllers', 'amazon_video_controller.ts' ),
     bandcamp: path.resolve( __dirname, 'src', 'controllers', 'bandcamp_controller.ts' ),
     googlePlayMusic: path.resolve( __dirname, 'src', 'controllers', 'google_play_music_controller.ts' ),
+    hulu: path.resolve( __dirname, 'src', 'controllers', 'hulu_controller.ts' ),
     netflix: path.resolve( __dirname, 'src', 'controllers', 'netflix_controller.ts' ),
     pandora: path.resolve( __dirname, 'src', 'controllers', 'pandora_controller.ts' ),
     spotify: path.resolve( __dirname, 'src', 'controllers', 'spotify_controller.ts' ),

@@ -26,7 +26,7 @@
     "http://*.huluim.com/",
     "https://static-cdn.jtvnw.net/"
   ],
-  "content_security_policy": "default-src 'none'; script-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.pandora.com/ https://*.p-cdn.com/ https://*.p-cdn.us/ https://*.scdn.co/ https://*.cloudfront.net/ https://*.googleusercontent.com/ https://*.ggpht.com/ https://*.bcbits.com/ https://*.ssl-images-amazon.com/ https://*.amazonaws.com/ https://*.media-amazon.com/images/ https://*.ssl-images-amazon.com/images/ https://static-cdn.jtvnw.net/",
+  "content_security_policy": "default-src 'none'; script-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.pandora.com/ https://*.p-cdn.com/ https://*.p-cdn.us/ https://*.scdn.co/ https://*.cloudfront.net/ https://*.googleusercontent.com/ https://*.ggpht.com/ https://*.bcbits.com/ https://*.ssl-images-amazon.com/ https://*.amazonaws.com/ https://*.media-amazon.com/images/ https://*.ssl-images-amazon.com/images/ https://static-cdn.jtvnw.net/ https://*.hulu.com/",
   "web_accessible_resources": [],
   "browser_action": {
     "default_icon": {
@@ -75,6 +75,15 @@
       ],
       "js": [
         "googlePlayMusic.bundle.js"
+      ],
+      "all_frames": true
+    },
+    {
+      "matches": [
+        "https://www.hulu.com/*"
+      ],
+      "js": [
+        "hulu.bundle.js"
       ],
       "all_frames": true
     },

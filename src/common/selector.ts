@@ -49,25 +49,31 @@ class Selector<T extends HTMLElement>
   }
 
   public filter<U extends T>( callback: ( element: T ) => element is U ): Selector<U>;
+  public filter( callback: ( element: T ) => boolean ): Selector<T>;
   public filter( callback: ( element: T ) => boolean ): Selector<T>
   {
     return new Selector( this.match.filter( callback ) );
   }
 
-  public find( selector: string )
+  public find<E extends HTMLElement = HTMLElement>( selector: string )
   {
     let matches = this.match
-      .map( ( element ) => Array.from( element.querySelectorAll<HTMLElement>( selector ) ) )
-      .reduce( ( elements: Set<HTMLElement>, match ) =>
+      .map( ( element ) => Array.from( element.querySelectorAll<E>( selector ) ) )
+      .reduce( ( elements: Set<E>, match ) =>
       {
         for( let elem of match )
         {
           elements.add( elem );
         }
         return elements;
-      }, new Set<HTMLElement>() );
+      }, new Set<E>() );
 
     return new Selector( Array.from( matches ) );
+  }
+
+  public parent()
+  {
+    return new Selector( this.match.map( ( el ) => el.parentElement ).filter( ( el ): el is HTMLElement => el instanceof HTMLElement ) );
   }
 
   public text()
