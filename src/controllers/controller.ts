@@ -219,10 +219,7 @@ export abstract class Controller
     this.port.disconnect();
   }
 
-  protected playImpl()
-  {
-    console.log( 'play not supported.' );
-  }
+  protected abstract playImpl(): void;
 
   protected play()
   {
@@ -232,10 +229,7 @@ export abstract class Controller
     }
   }
 
-  protected pauseImpl()
-  {
-    console.log( 'pause not supported.' );
-  }
+  protected abstract pauseImpl(): void;
 
   protected pause()
   {
@@ -317,20 +311,13 @@ export abstract class Controller
     return false;
   }
 
-  protected isPaused(): boolean
-  {
-    return false;
-  }
+  protected abstract isPaused(): boolean;
 
-  protected getProgress(): number
-  {
-    return 0.0;
-  }
+  protected abstract getProgress(): number;
 
   protected getBasicContentInfo()
   {
     return {
-      subcaption: '',
       link: location.href,
       isLiked: this.isLiked(),
       isDisliked: this.isDisliked(),
