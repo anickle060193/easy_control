@@ -3,6 +3,7 @@ import { isAutoPauseEnabledForTab } from 'background/autoPauser';
 import { showAutoPauseNotification, showNewContextNotification } from 'background/notifications';
 import { updateBrowserActionIcon } from 'background/browserAction';
 import { focusTab } from 'background/utilities';
+import { updateControlsPopup } from 'background/controlsPopup';
 
 import { Message, MessageTypes } from 'common/message';
 import { SettingKey, settings, siteToUrl } from 'common/settings';
@@ -94,6 +95,14 @@ export function playCurrentController()
   if( currentController )
   {
     currentController.play();
+  }
+}
+
+export function pauseCurrentController()
+{
+  if( currentController )
+  {
+    currentController.pause();
   }
 }
 
@@ -200,6 +209,18 @@ export async function copyCurrentControllerContentLink()
   }
 }
 
+function updateControlsPopupForCurrentController()
+{
+  if( currentController )
+  {
+    currentController.updateControlsPopup();
+  }
+  else
+  {
+    updateControlsPopup( null );
+  }
+}
+
 function onControllerMessage( message: Message, controller: BackgroundController )
 {
   if( message.type === MessageTypes.ToBackground.Initialize )
@@ -208,6 +229,7 @@ function onControllerMessage( message: Message, controller: BackgroundController
 
     controller.color = message.data.color;
     controller.allowPauseOnInactivity = message.data.allowPauseOnInactivity;
+    controller.supportedOperations = message.data.supportedOperations;
     controller.hostname = message.data.hostname;
   }
   else if( message.type === MessageTypes.ToBackground.Status )
@@ -215,9 +237,7 @@ function onControllerMessage( message: Message, controller: BackgroundController
     let progressChanged = controller.progress !== message.data.progress;
     let pausedChanged = controller.paused !== message.data.paused;
 
-    controller.paused = message.data.paused;
-    controller.progress = message.data.progress;
-    controller.active = message.data.active;
+    controller.onStatus( message.data );
 
     if( currentController === null )
     {
@@ -262,6 +282,8 @@ function onControllerMessage( message: Message, controller: BackgroundController
         updateBrowserActionIcon( currentController );
       }
     }
+
+    updateControlsPopupForCurrentController();
   }
   else if( message.type === MessageTypes.ToBackground.NewContent )
   {
@@ -271,6 +293,8 @@ function onControllerMessage( message: Message, controller: BackgroundController
     if( currentController === controller )
     {
       showNewContextNotification( controller );
+
+      updateControlsPopupForCurrentController();
     }
   }
 }
@@ -296,7 +320,10 @@ function onControllerDisconnect( controller: BackgroundController )
       currentController = null;
       console.log( 'No other controllers to promote' );
     }
+
     updateBrowserActionIcon( currentController );
+
+    updateControlsPopupForCurrentController();
   }
 }
 

@@ -10,8 +10,9 @@ const build = path.resolve( __dirname, 'build' );
 const config: webpack.Configuration = {
   entry: {
     background: path.resolve( __dirname, 'src', 'background', 'index.ts' ),
-    options: path.resolve( __dirname, 'src', 'options', 'index.tsx' ),
     changelog: path.resolve( __dirname, 'src', 'changelog', 'index.tsx' ),
+    controlsPopup: path.resolve( __dirname, 'src', 'controlsPopup', 'index.tsx' ),
+    options: path.resolve( __dirname, 'src', 'options', 'index.tsx' ),
 
     amazonMusic: path.resolve( __dirname, 'src', 'controllers', 'amazon_music_controller.ts' ),
     amazonVideo: path.resolve( __dirname, 'src', 'controllers', 'amazon_video_controller.ts' ),
@@ -72,6 +73,7 @@ const config: webpack.Configuration = {
       background: path.resolve( __dirname, 'src', 'background' ),
       changelog: path.resolve( __dirname, 'src', 'changelog' ),
       common: path.resolve( __dirname, 'src', 'common' ),
+      controlsPopup: path.resolve( __dirname, 'src', 'controlsPopup' ),
       controllers: path.resolve( __dirname, 'src', 'controllers' ),
       options: path.resolve( __dirname, 'src', 'options' ),
     }
@@ -80,14 +82,19 @@ const config: webpack.Configuration = {
     new WebpackBar(),
     new CleanWebpackPlugin( [ build ] ),
     new HtmlWebpackPlugin( {
-      template: path.join( __dirname, 'src', 'options', 'index.html' ),
-      filename: 'options.html',
-      chunks: [ 'options' ]
-    } ),
-    new HtmlWebpackPlugin( {
       template: path.join( __dirname, 'src', 'changelog', 'index.html' ),
       filename: 'changelog.html',
       chunks: [ 'changelog' ]
+    } ),
+    new HtmlWebpackPlugin( {
+      template: path.join( __dirname, 'src', 'controlsPopup', 'index.html' ),
+      filename: 'controlsPopup.html',
+      chunks: [ 'controlsPopup' ]
+    } ),
+    new HtmlWebpackPlugin( {
+      template: path.join( __dirname, 'src', 'options', 'index.html' ),
+      filename: 'options.html',
+      chunks: [ 'options' ]
     } ),
     new CopyWebpackPlugin( [
       {

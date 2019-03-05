@@ -10,9 +10,14 @@ class AmazonMusicController extends Controller
   {
     super( Sites.AmazonMusic );
 
-    this.color = settings.get( SettingKey.ControllerColors.AmazonMusic )!;
+    this.color = settings.get( SettingKey.ControllerColors.AmazonMusic );
 
-    this.initialize();
+    this.supportedOperations = {
+      ...this.supportedOperations,
+      playPause: true,
+      previous: true,
+      next: true,
+    };
   }
 
   protected playImpl()

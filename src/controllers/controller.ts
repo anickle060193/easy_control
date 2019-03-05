@@ -1,33 +1,34 @@
 import { ContentInfo } from 'common/content';
-import { initializeMessage, Message, MessageTypes, statusMessage, newContentMessage } from 'common/message';
+import { createControllerInitializeMessage, Message, MessageTypes, createStatusMessage, createNewContentMessage, SupportedOperations } from 'common/message';
 import { Sites } from 'common/settings';
 
 // tslint:disable:member-ordering
 export abstract class Controller
 {
-  public readonly name: string;
-  public color: string;
-  public hostname: string | null;
-  public allowPauseOnInactivity: boolean;
+  protected readonly name: string;
+  protected hostname: string | null;
+  protected allowPauseOnInactivity: boolean;
 
-  public initialized: boolean;
+  protected active: boolean;
 
-  public active: boolean;
+  protected disconnected: boolean;
+  protected currentContent: ContentInfo | null;
+  protected lastProgress: number;
+  protected pollingInterval: number;
+  protected port: chrome.runtime.Port;
 
-  public disconnected: boolean;
-  public currentContent: ContentInfo | null;
-  public lastProgress: number;
-  public pollingInterval: number;
-  public port: chrome.runtime.Port;
+  protected color: string;
+  protected supportedOperations: SupportedOperations;
 
   constructor( name: Sites )
   {
     this.name = name;
     this.color = 'black';
+    this.supportedOperations = {
+      playPause: true,
+    };
     this.hostname = window.location.hostname;
     this.allowPauseOnInactivity = true;
-
-    this.initialized = false;
 
     this.active = !document.hidden;
     console.log( name, '- Active:', this.active, '- Visible:', document.visibilityState );
@@ -65,16 +66,14 @@ export abstract class Controller
     this.active = false;
   }
 
-  protected initialize()
+  private initialize()
   {
-    let data = {
+    this.port.postMessage( createControllerInitializeMessage( {
       color: this.color,
       allowPauseOnInactivity: this.allowPauseOnInactivity,
-      hostname: this.hostname
-    };
-    this.port.postMessage( initializeMessage( data ) );
-
-    this.initialized = true;
+      hostname: this.hostname,
+      supportedOperations: this.supportedOperations,
+    } ) );
   }
 
   private onPortMessage( message: Message )
@@ -142,12 +141,13 @@ export abstract class Controller
 
   private reportStatus()
   {
-    let data = {
+    this.port.postMessage( createStatusMessage( {
       paused: this.isPaused(),
       progress: this.getProgress(),
-      active: this.active
-    };
-    this.port.postMessage( statusMessage( data ) );
+      active: this.active,
+      isLiked: this.isLiked(),
+      isDisliked: this.isDisliked(),
+    } ) );
   }
 
   protected onPoll = () =>
@@ -182,7 +182,7 @@ export abstract class Controller
         {
           console.log( contentInfo );
           this.currentContent = contentInfo;
-          this.port.postMessage( newContentMessage( this.currentContent ) );
+          this.port.postMessage( createNewContentMessage( this.currentContent ) );
         }
       }
 
@@ -192,17 +192,23 @@ export abstract class Controller
 
   public startPolling()
   {
+    this.initialize();
+
+    this.onStartPolling();
+  }
+
+  protected onStartPolling()
+  {
     console.log( 'Controller - Start polling' );
-
-    if( !this.initialized )
-    {
-      throw new Error( 'Must initialize controller before polling.' );
-    }
-
-    this.pollingInterval = window.setInterval( this.onPoll, 50 );
+    this.pollingInterval = window.setInterval( this.onPoll, 100 );
   }
 
   public stopPolling()
+  {
+    this.onStopPolling();
+  }
+
+  protected onStopPolling()
   {
     console.log( 'Controller - Stop polling' );
     window.clearInterval( this.pollingInterval );
@@ -319,8 +325,6 @@ export abstract class Controller
   {
     return {
       link: location.href,
-      isLiked: this.isLiked(),
-      isDisliked: this.isDisliked(),
     };
   }
 

@@ -11,8 +11,9 @@ class TwitchController extends MediaController
     super( Sites.Twitch, video );
 
     this.color = settings.get( SettingKey.ControllerColors.Twitch );
-
-    this.initialize();
+    this.supportedOperations = {
+      ...this.supportedOperations,
+    };
   }
 
   protected playImpl()

@@ -11,8 +11,13 @@ class GooglePlayMusicController extends MediaController
     super( Sites.GooglePlayMusic, audio );
 
     this.color = settings.get( SettingKey.ControllerColors.GooglePlayMusic );
-
-    this.initialize();
+    this.supportedOperations = {
+      ...this.supportedOperations,
+      previous: true,
+      next: true,
+      like: true,
+      dislike: true,
+    };
   }
 
   protected playImpl()

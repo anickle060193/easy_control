@@ -4,7 +4,5 @@ export interface ContentInfo
   caption?: string | null;
   subcaption?: string | null;
   image?: string | null;
-  isLiked: boolean;
-  isDisliked: boolean;
   link: string;
 }

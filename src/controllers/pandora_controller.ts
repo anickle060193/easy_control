@@ -15,8 +15,13 @@ class PandoraController extends Controller
     super( Sites.Pandora );
 
     this.color = settings.get( SettingKey.ControllerColors.Pandora );
-
-    this.initialize();
+    this.supportedOperations = {
+      ...this.supportedOperations,
+      next: true,
+      previous: true,
+      like: true,
+      dislike: true,
+    };
   }
 
   protected playImpl()

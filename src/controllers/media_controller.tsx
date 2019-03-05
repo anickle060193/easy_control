@@ -51,6 +51,13 @@ export abstract class MediaController extends Controller
     this.controlsRoot = document.createElement( 'div' );
     this.controllerNumber = MediaController.controllerCount;
 
+    this.supportedOperations = {
+      ...this.supportedOperations,
+      playPause: true,
+      volumeDown: true,
+      volumeUp: true,
+    };
+
     MediaController.controllerCount++;
 
     this.allowPauseOnInactivity = !this.isVideo;
@@ -69,13 +76,6 @@ export abstract class MediaController extends Controller
         }
       } );
     }
-  }
-
-  protected initialize()
-  {
-    super.initialize();
-
-    this.onUpdateControls();
   }
 
   protected onUpdateControls()
@@ -237,14 +237,11 @@ export abstract class MediaController extends Controller
     this.media.volume = Math.max( 0.0, this.media.volume - 0.05 );
   }
 
-  public startPolling()
+  protected onStartPolling()
   {
     console.log( 'MediaController - Start polling' );
 
-    if( !this.initialized )
-    {
-      throw new Error( 'Must initialize media controller before polling.' );
-    }
+    this.onUpdateControls();
 
     this.media.addEventListener( 'play', this.onPoll );
     this.media.addEventListener( 'pause', this.onPoll );
@@ -252,7 +249,7 @@ export abstract class MediaController extends Controller
     this.media.addEventListener( 'timeupdate', this.onPoll );
   }
 
-  public stopPolling()
+  protected onStopPolling()
   {
     console.log( 'MediaController - Stop polling' );
 

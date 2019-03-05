@@ -74,6 +74,7 @@
         "background",
         "changelog",
         "common",
+        "controlsPopup",
         "controllers",
         "options"
       ]

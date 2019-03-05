@@ -12,8 +12,11 @@ class SpotifyController extends Controller
     super( Sites.Spotify );
 
     this.color = settings.get( SettingKey.ControllerColors.Spotify );
-
-    this.initialize();
+    this.supportedOperations = {
+      ...this.supportedOperations,
+      previous: true,
+      next: true,
+    };
   }
 
   protected playImpl()

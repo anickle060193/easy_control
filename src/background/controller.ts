@@ -1,4 +1,6 @@
-import { MessageTypes, fromBackgroundMessage, openContentLinkMessage } from 'common/message';
+import { updateControlsPopup } from 'background/controlsPopup';
+
+import { MessageTypes, createBasicMessage, createOpenContentLinkMessage, SupportedOperations, StatusData } from 'common/message';
 import { ContentInfo } from 'common/content';
 import { Sites } from 'common/settings';
 
@@ -9,11 +11,14 @@ export class BackgroundController
 
   public color: string;
   public allowPauseOnInactivity: boolean;
+  public supportedOperations: SupportedOperations;
   public hostname: string | null;
 
   public paused: boolean;
   public progress: number;
   public active: boolean;
+  public isLiked: boolean;
+  public isDisliked: boolean;
   public content: ContentInfo | null;
 
   public get tabId(): number | null
@@ -36,66 +41,95 @@ export class BackgroundController
     this.name = this.port.name as Sites;
     this.color = '';
     this.allowPauseOnInactivity = true;
+    this.supportedOperations = {};
     this.hostname = null;
 
     this.paused = true;
     this.progress = 0.0;
     this.active = false;
+    this.isLiked = false;
+    this.isDisliked = false;
+
     this.content = null;
+  }
+
+  public updateControlsPopup()
+  {
+    updateControlsPopup( {
+      color: this.color,
+      supportedOperations: this.supportedOperations,
+      status: {
+        active: this.active,
+        paused: this.paused,
+        progress: this.progress,
+        isLiked: this.isLiked,
+        isDisliked: this.isDisliked,
+      },
+      content: this.content,
+    } );
+  }
+
+  public onStatus( status: StatusData )
+  {
+    this.active = status.active;
+    this.paused = status.paused;
+    this.progress = status.progress;
+    this.isLiked = status.isLiked;
+    this.isDisliked = status.isDisliked;
   }
 
   public play()
   {
-    this.port.postMessage( fromBackgroundMessage( MessageTypes.FromBackground.Play ) );
+    this.port.postMessage( createBasicMessage( MessageTypes.FromBackground.Play ) );
   }
 
   public pause()
   {
-    this.port.postMessage( fromBackgroundMessage( MessageTypes.FromBackground.Pause ) );
+    this.port.postMessage( createBasicMessage( MessageTypes.FromBackground.Pause ) );
   }
 
   public next()
   {
-    this.port.postMessage( fromBackgroundMessage( MessageTypes.FromBackground.Next ) );
+    this.port.postMessage( createBasicMessage( MessageTypes.FromBackground.Next ) );
   }
 
   public previous()
   {
-    this.port.postMessage( fromBackgroundMessage( MessageTypes.FromBackground.Previous ) );
+    this.port.postMessage( createBasicMessage( MessageTypes.FromBackground.Previous ) );
   }
 
   public like()
   {
-    this.port.postMessage( fromBackgroundMessage( MessageTypes.FromBackground.Like ) );
+    this.port.postMessage( createBasicMessage( MessageTypes.FromBackground.Like ) );
   }
 
   public unlike()
   {
-    this.port.postMessage( fromBackgroundMessage( MessageTypes.FromBackground.Unlike ) );
+    this.port.postMessage( createBasicMessage( MessageTypes.FromBackground.Unlike ) );
   }
 
   public dislike()
   {
-    this.port.postMessage( fromBackgroundMessage( MessageTypes.FromBackground.Dislike ) );
+    this.port.postMessage( createBasicMessage( MessageTypes.FromBackground.Dislike ) );
   }
 
   public undislike()
   {
-    this.port.postMessage( fromBackgroundMessage( MessageTypes.FromBackground.Undislike ) );
+    this.port.postMessage( createBasicMessage( MessageTypes.FromBackground.Undislike ) );
   }
 
   public volumeUp()
   {
-    this.port.postMessage( fromBackgroundMessage( MessageTypes.FromBackground.VolumeUp ) );
+    this.port.postMessage( createBasicMessage( MessageTypes.FromBackground.VolumeUp ) );
   }
 
   public volumeDown()
   {
-    this.port.postMessage( fromBackgroundMessage( MessageTypes.FromBackground.VolumeDown ) );
+    this.port.postMessage( createBasicMessage( MessageTypes.FromBackground.VolumeDown ) );
   }
 
   public openContentLink( contentLink: string )
   {
-    this.port.postMessage( openContentLinkMessage( contentLink ) );
+    this.port.postMessage( createOpenContentLinkMessage( contentLink ) );
   }
 }

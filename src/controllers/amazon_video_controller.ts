@@ -12,11 +12,13 @@ class AmazonVideoController extends MediaController
     super( Sites.AmazonVideo, video );
 
     this.color = settings.get( SettingKey.ControllerColors.AmazonVideo );
+    this.supportedOperations = {
+      ...this.supportedOperations,
+    };
+
     this.hostname = null;
 
     this.mediaContainer = document.querySelector( '.cascadesContainer' );
-
-    this.initialize();
   }
 
   protected setFullscreen( fullscreen: boolean )

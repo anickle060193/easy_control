@@ -1,4 +1,4 @@
-import { ContentInfo } from './content';
+import { ContentInfo } from 'common/content';
 
 export namespace MessageTypes
 {
@@ -23,16 +23,40 @@ export namespace MessageTypes
     VolumeDown = 'from_background.volume_down',
     OpenContentLink = 'from_background.open_content_link'
   }
+
+  export const enum ToControlsPopup
+  {
+    Update = 'to_controls_popup.update',
+  }
+
+  export const enum FromControlsPopup
+  {
+    Pause = 'from_controls_popup.pause',
+    Play = 'from_controls_popup.play',
+    Next = 'from_controls_popup.next',
+    Previous = 'from_controls_popup.previous',
+    Like = 'from_controls_popup.like',
+    Unlike = 'from_controls_popup.unlike',
+    Dislike = 'from_controls_popup.dislike',
+    Undislike = 'from_controls_popup.undislike',
+    VolumeUp = 'from_controls_popup.volume_up',
+    VolumeDown = 'from_controls_popup.volume_down',
+  }
 }
 
-type AllMessageTypes = ( MessageTypes.ToBackground | MessageTypes.FromBackground );
+type AllMessageTypes = (
+  MessageTypes.ToBackground |
+  MessageTypes.FromBackground |
+  MessageTypes.ToControlsPopup |
+  MessageTypes.FromControlsPopup
+);
 
 interface BaseMessage<T extends AllMessageTypes>
 {
   type: T;
 }
 
-type BasicFromBackgroundMessageType = (
+type BasicMessageType = (
   MessageTypes.FromBackground.Pause |
   MessageTypes.FromBackground.Play |
   MessageTypes.FromBackground.Next |
@@ -42,10 +66,20 @@ type BasicFromBackgroundMessageType = (
   MessageTypes.FromBackground.Dislike |
   MessageTypes.FromBackground.Undislike |
   MessageTypes.FromBackground.VolumeUp |
-  MessageTypes.FromBackground.VolumeDown
+  MessageTypes.FromBackground.VolumeDown |
+  MessageTypes.FromControlsPopup.Pause |
+  MessageTypes.FromControlsPopup.Play |
+  MessageTypes.FromControlsPopup.Next |
+  MessageTypes.FromControlsPopup.Previous |
+  MessageTypes.FromControlsPopup.Like |
+  MessageTypes.FromControlsPopup.Unlike |
+  MessageTypes.FromControlsPopup.Dislike |
+  MessageTypes.FromControlsPopup.Undislike |
+  MessageTypes.FromControlsPopup.VolumeUp |
+  MessageTypes.FromControlsPopup.VolumeDown
 );
 
-interface FromBackgroundMessage extends BaseMessage<BasicFromBackgroundMessageType> { }
+interface BasicMessage extends BaseMessage<BasicMessageType> { }
 
 interface DataMessage<T extends AllMessageTypes, D> extends BaseMessage<T>
 {
@@ -54,55 +88,84 @@ interface DataMessage<T extends AllMessageTypes, D> extends BaseMessage<T>
 
 type OpenContentLinkData = string;
 
-interface InitializeData
+export interface SupportedOperations
+{
+  playPause?: boolean;
+  previous?: boolean;
+  next?: boolean;
+  like?: boolean;
+  dislike?: boolean;
+  volumeUp?: boolean;
+  volumeDown?: boolean;
+}
+
+export interface ControllerInitializeData
 {
   color: string;
   allowPauseOnInactivity: boolean;
   hostname: string | null;
+  supportedOperations: SupportedOperations;
 }
 
-type NewContentData = ContentInfo;
+export type NewContentData = ContentInfo;
 
-interface StatusData
+export interface StatusData
 {
   paused: boolean;
   progress: number;
   active: boolean;
+  isLiked: boolean;
+  isDisliked: boolean;
+}
+
+export interface ControlsPopupUpdateData
+{
+  color: string;
+  supportedOperations: SupportedOperations;
+  status: StatusData;
+  content: ContentInfo | null;
 }
 
 type OpenContentLinkMessage = DataMessage<MessageTypes.FromBackground.OpenContentLink, OpenContentLinkData>;
-type InitializeMessage = DataMessage<MessageTypes.ToBackground.Initialize, InitializeData>;
+type ControllerInitializeMessage = DataMessage<MessageTypes.ToBackground.Initialize, ControllerInitializeData>;
 type NewContentMessage = DataMessage<MessageTypes.ToBackground.NewContent, NewContentData>;
 type StatusMessage = DataMessage<MessageTypes.ToBackground.Status, StatusData>;
+type ControlsPopupUpdateMessage = DataMessage<MessageTypes.ToControlsPopup.Update, ControlsPopupUpdateData | null>;
 
 export type Message = (
-  FromBackgroundMessage |
+  BasicMessage |
   OpenContentLinkMessage |
-  InitializeMessage |
+  ControllerInitializeMessage |
   NewContentMessage |
-  StatusMessage
+  StatusMessage |
+  ControlsPopupUpdateMessage
 );
 
-export const fromBackgroundMessage = ( type: BasicFromBackgroundMessageType ): FromBackgroundMessage => ( {
+export const createBasicMessage = ( type: BasicMessageType ): BasicMessage => ( {
   type: type
 } );
 
-export const openContentLinkMessage = ( data: OpenContentLinkData ): OpenContentLinkMessage => ( {
+export const createOpenContentLinkMessage = ( data: OpenContentLinkData ): OpenContentLinkMessage => ( {
   type: MessageTypes.FromBackground.OpenContentLink,
   data
 } );
 
-export const initializeMessage = ( data: InitializeData ): InitializeMessage => ( {
+export const createControllerInitializeMessage = ( data: ControllerInitializeData ): ControllerInitializeMessage => ( {
   type: MessageTypes.ToBackground.Initialize,
   data
 } );
 
-export const newContentMessage = ( data: NewContentData ): NewContentMessage => ( {
+export const createNewContentMessage = ( data: NewContentData ): NewContentMessage => ( {
   type: MessageTypes.ToBackground.NewContent,
   data
 } );
 
-export const statusMessage = ( data: StatusData ): StatusMessage => ( {
+export const createStatusMessage = ( data: StatusData ): StatusMessage => ( {
   type: MessageTypes.ToBackground.Status,
+  data
+} );
+
+export const createControlsPopupUpdateMessage = ( data: ControlsPopupUpdateData | null ) => ( {
+  type: MessageTypes.ToControlsPopup.Update,
   data
 } );

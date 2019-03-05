@@ -12,10 +12,12 @@ class NetflixController extends MediaController
     super( Sites.Netflix, video );
 
     this.color = settings.get( SettingKey.ControllerColors.Netflix );
+    this.supportedOperations = {
+      ...this.supportedOperations,
+      next: true,
+    };
 
     this.allowFullscreen = true;
-
-    this.initialize();
   }
 
   public playImpl()

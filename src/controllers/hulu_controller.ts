@@ -11,8 +11,10 @@ class HuluController extends MediaController
     super( Sites.Hulu, video );
 
     this.color = settings.get( SettingKey.ControllerColors.Hulu );
-
-    this.initialize();
+    this.supportedOperations = {
+      ...this.supportedOperations,
+      next: true,
+    };
   }
 
   protected playImpl()

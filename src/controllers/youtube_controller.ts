@@ -13,12 +13,17 @@ class YoutubeController extends MediaController
     super( Sites.Youtube, video );
 
     this.color = settings.get( SettingKey.ControllerColors.Youtube );
+    this.supportedOperations = {
+      ...this.supportedOperations,
+      next: true,
+      like: true,
+      dislike: true,
+    };
+
     this.allowFullscreen = true;
     this.mediaContainer = document.body;
 
     this.hasBeenActivated = this.active;
-
-    this.initialize();
   }
 
   protected onFocus()

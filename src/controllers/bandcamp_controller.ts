@@ -11,9 +11,13 @@ class BandcampController extends MediaController
     super( Sites.Bandcamp, audio );
 
     this.color = settings.get( SettingKey.ControllerColors.Bandcamp );
-    this.hostname = 'bandcamp.com';
+    this.supportedOperations = {
+      ...this.supportedOperations,
+      previous: true,
+      next: true,
+    };
 
-    this.initialize();
+    this.hostname = 'bandcamp.com';
   }
 
   protected previous()

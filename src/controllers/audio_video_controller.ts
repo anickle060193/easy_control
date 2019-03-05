@@ -10,9 +10,11 @@ class AudioVideoController extends MediaController
     super( Sites.GenericAudioVideo, media );
 
     this.color = color || settings.get( SettingKey.ControllerColors.GenericAudioVideo );
-    this.hostname = null;
+    this.supportedOperations = {
+      ...this.supportedOperations,
+    };
 
-    this.initialize();
+    this.hostname = null;
   }
 
   protected openContentLink( contentLink: string )
