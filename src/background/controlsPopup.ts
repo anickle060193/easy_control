@@ -13,6 +13,7 @@ import
 } from 'background/controllers';
 
 import { ControlsPopupUpdateData, createControlsPopupUpdateMessage, MessageTypes, Message } from 'common/message';
+import { settings, SettingKey } from 'common/settings';
 
 let controlsPopup: Window | null = null;
 
@@ -21,7 +22,16 @@ export function openControlsPopup()
   if( controlsPopup === null
     || controlsPopup.closed )
   {
-    controlsPopup = window.open( chrome.runtime.getURL( 'controlsPopup.html' ), 'easy-control--controls-popup', 'width=315,height=450,dialog=yes,minimizable=yes,resizable=no,scrollbars=no' );
+    let windowFeatures = Object.entries( {
+      width: settings.get( SettingKey.Other.ControlsPopupWidth ),
+      height: settings.get( SettingKey.Other.ControlsPopupHeight ),
+      dialog: 'yes',
+      minimizable: 'yes',
+      resizable: 'no',
+      scrollbars: 'no',
+    } ).map( ( [ key, value ] ) => `${key}=${value}` ).join( ',' );
+    console.log( 'WINDOW FEATURES:', windowFeatures );
+    controlsPopup = window.open( chrome.runtime.getURL( 'controlsPopup.html' ), 'easy-control--controls-popup', windowFeatures );
   }
   else
   {

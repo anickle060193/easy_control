@@ -12,6 +12,7 @@ import UndislikeIcon from '@material-ui/icons/ThumbDown';
 
 import { Message, MessageTypes, SupportedOperations, StatusData, createBasicMessage } from 'common/message';
 import { ContentInfo } from 'common/content';
+import { settings, SettingKey } from 'common/settings';
 
 const styles = ( theme: Theme ) => createStyles( {
   root: {
@@ -86,6 +87,8 @@ type Props = WithStyles<typeof styles>;
 
 class ControlsPage extends React.Component<Props, State>
 {
+  private resizeTimeout: number | undefined = undefined;
+
   private readonly initialState: State = {
     color: 'black',
     supportedOperations: {},
@@ -104,11 +107,15 @@ class ControlsPage extends React.Component<Props, State>
   public componentDidMount()
   {
     chrome.runtime.onMessage.addListener( this.onMessage );
+
+    window.addEventListener( 'resize', this.onResize, false );
   }
 
   public componentWillUnmount()
   {
     chrome.runtime.onMessage.removeListener( this.onMessage );
+
+    window.removeEventListener( 'resize', this.onResize, false );
   }
 
   public render()
@@ -249,6 +256,18 @@ class ControlsPage extends React.Component<Props, State>
     {
       console.warn( 'Unknown message type:', message.type, message );
     }
+  }
+
+  private onResize = () =>
+  {
+    window.clearTimeout( this.resizeTimeout );
+    this.resizeTimeout = window.setTimeout( this.onResizeFinish, 250 );
+  }
+
+  private onResizeFinish = () =>
+  {
+    settings.set( SettingKey.Other.ControlsPopupWidth, window.outerWidth );
+    settings.set( SettingKey.Other.ControlsPopupHeight, window.outerHeight );
   }
 }
 
