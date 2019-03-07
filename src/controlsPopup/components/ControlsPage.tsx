@@ -1,6 +1,7 @@
 import React from 'react';
 import { Theme, createStyles, WithStyles, withStyles, Typography, Fab } from '@material-ui/core';
 import { SvgIconProps } from '@material-ui/core/SvgIcon';
+import ContentIcon from '@material-ui/icons/MusicNote';
 import PlayIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
 import PreviousIcon from '@material-ui/icons/SkipPrevious';
@@ -39,6 +40,11 @@ const styles = ( theme: Theme ) => createStyles( {
     maxWidth: '100%',
     maxHeight: '100%',
   },
+  contentIcon: {
+    width: '100%',
+    height: '100%',
+    color: '#5d5d5d',
+  },
   controlsContainer: {
     marginTop: theme.spacing.unit,
   },
@@ -50,6 +56,7 @@ const styles = ( theme: Theme ) => createStyles( {
     color: theme.palette.text.secondary,
   },
   controlButton: {
+    flexShrink: 0,
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
     marginTop: theme.spacing.unit,
@@ -126,24 +133,28 @@ class ControlsPage extends React.Component<Props, State>
     return (
       <div className={classes.root}>
         <div className={classes.contentImageContainer}>
-          {content && content.image && (
-            <img className={classes.contentImage} src={content.image} />
-          )}
+          {content && content.image ?
+            (
+              <img className={classes.contentImage} src={content.image} />
+            ) :
+            (
+              <ContentIcon className={classes.contentIcon} />
+            )}
         </div>
         <div className={classes.controlsContainer}>
           {content && content.title && (
             <div className={classes.row}>
-              <Typography className={classes.contentText} variant="h6">{content.title}</Typography>
+              <Typography className={classes.contentText} variant="h6" title={content.title}>{content.title}</Typography>
             </div>
           )}
           {content && content.caption && (
             <div className={classes.row}>
-              <Typography className={classes.contentText} variant="body1">{content.caption}</Typography>
+              <Typography className={classes.contentText} variant="body1" title={content.caption}>{content.caption}</Typography>
             </div>
           )}
           {content && content.subcaption && (
             <div className={classes.row}>
-              <Typography className={classes.contentText} variant="body2">{content.subcaption}</Typography>
+              <Typography className={classes.contentText} variant="body2" title={content.subcaption}>{content.subcaption}</Typography>
             </div>
           )}
           <div className={classes.row}>
