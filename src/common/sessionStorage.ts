@@ -12,7 +12,7 @@ const DEFAULT_STORAGE: SessionStorageType = {
   [ SessionStorageKey.PlaybackRate ]: 1.0,
 };
 
-export function getSessionStorageItem<K extends SessionStorageKey>( key: K ): SessionStorageType[ K ]
+export function getSessionStorageItem<K extends SessionStorageKey>( key: K, defaultValue?: SessionStorageType[ K ] ): SessionStorageType[ K ]
 {
   try
   {
@@ -30,7 +30,15 @@ export function getSessionStorageItem<K extends SessionStorageKey>( key: K ): Se
   {
     console.warn( 'Failed to retrieve session storage item:', key, e );
   }
-  return DEFAULT_STORAGE[ key ];
+
+  if( defaultValue !== undefined )
+  {
+    return defaultValue;
+  }
+  else
+  {
+    return DEFAULT_STORAGE[ key ];
+  }
 }
 
 export function setSessionStorageItem<K extends SessionStorageKey>( key: K, value: SessionStorageType[ K ] )

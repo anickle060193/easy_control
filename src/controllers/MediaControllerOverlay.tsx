@@ -504,7 +504,8 @@ class MediaControllerOverlay extends React.Component<Props, State>
 
   private onSourceChanged = () =>
   {
-    this.props.media.playbackRate = getSessionStorageItem( SessionStorageKey.PlaybackRate );
+    let defaultPlaybackRate = settings.get( SettingKey.Controls.Other.DefaultPlaybackSpeed );
+    this.props.media.playbackRate = getSessionStorageItem( SessionStorageKey.PlaybackRate, defaultPlaybackRate );
     this.setState( { mediaSource: this.props.media.currentSrc } );
   }
 

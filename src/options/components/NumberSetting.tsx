@@ -27,13 +27,15 @@ interface Props
   label: string;
   endAdornmentText?: string;
   helperText?: string;
+  min?: number;
+  step?: number;
 }
 
 class NumberSetting extends React.Component<Props & WithSettingProps & WithStyles<typeof styles>>
 {
   public render()
   {
-    const { classes, label, endAdornmentText, helperText, value } = this.props;
+    const { classes, label, endAdornmentText, helperText, step, min, value } = this.props;
 
     return (
       <TextField
@@ -43,6 +45,10 @@ class NumberSetting extends React.Component<Props & WithSettingProps & WithStyle
         value={isValid( value ) ? value : ''}
         onChange={this.onChange}
         onBlur={this.onBlur}
+        inputProps={{
+          step: step,
+          min: min,
+        }}
         InputLabelProps={{
           shrink: true
         }}

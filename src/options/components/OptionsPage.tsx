@@ -152,22 +152,30 @@ class OptionsPage extends React.Component<WithStyles<typeof styles>, State>
           </div>
 
           <div className={classes.group}>
-            <Typography variant="h6">Other Generic Media Control SettingKey</Typography>
+            <Typography variant="h6">Other Generic Media Control Settings</Typography>
 
+            <NumberSetting
+              label="Default Playback Speed"
+              setting={SettingKey.Controls.Other.DefaultPlaybackSpeed}
+              step={0.1}
+              min={0}
+            />
             <NumberSetting
               label="Media overlay Skip Backward Amount"
               endAdornmentText="seconds"
               setting={SettingKey.Controls.Other.SkipBackwardAmount}
+              min={0}
             />
             <NumberSetting
               label="Media overlay Skip Forward Amount"
               endAdornmentText="seconds"
               setting={SettingKey.Controls.Other.SkipForwardAmount}
+              min={0}
             />
           </div>
 
           <div className={classes.group}>
-            <Typography variant="h6">Controller SettingKey</Typography>
+            <Typography variant="h6">Controller Settings</Typography>
 
             <ControllerSettings />
 
@@ -180,7 +188,7 @@ class OptionsPage extends React.Component<WithStyles<typeof styles>, State>
           </div>
 
           <div className={classes.group}>
-            <Typography variant="h6">Other SettingKey</Typography>
+            <Typography variant="h6">Other Settings</Typography>
 
             <SelectSetting
               label="Default streaming site"

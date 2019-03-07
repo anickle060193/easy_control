@@ -87,6 +87,7 @@ export namespace SettingKey
       HideControlsIdleTime = 'key__controls__hide_controls_idle_time',
       SkipBackwardAmount = 'keys__controls__skip_backward_amount',
       SkipForwardAmount = 'keys__controls__skip_forward_amount',
+      DefaultPlaybackSpeed = 'key__controls__other__default_playback_speed',
     }
 
     export const enum MediaControls
@@ -216,6 +217,7 @@ export interface SettingsType
   [ SettingKey.Controls.Other.HideControlsIdleTime ]: number;
   [ SettingKey.Controls.Other.SkipBackwardAmount ]: number;
   [ SettingKey.Controls.Other.SkipForwardAmount ]: number;
+  [ SettingKey.Controls.Other.DefaultPlaybackSpeed ]: number;
 
   [ SettingKey.Controls.MediaControls.MuchSlower ]: string;
   [ SettingKey.Controls.MediaControls.Slower ]: string;
@@ -318,6 +320,7 @@ const DEFAULT_SETTINGS: SettingsType = {
   [ SettingKey.Controls.Other.HideControlsIdleTime ]: 5,
   [ SettingKey.Controls.Other.SkipBackwardAmount ]: 10,
   [ SettingKey.Controls.Other.SkipForwardAmount ]: 10,
+  [ SettingKey.Controls.Other.DefaultPlaybackSpeed ]: 1.0,
 
   [ SettingKey.Controls.MediaControls.MuchSlower ]: '',
   [ SettingKey.Controls.MediaControls.Slower ]: 's',
