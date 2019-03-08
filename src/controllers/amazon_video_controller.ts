@@ -37,8 +37,13 @@ class AmazonVideoController extends MediaController
   {
     let title = select( '.contentTitlePanel .title' ).text();
     let subtitle = select( '.contentTitlePanel .subtitle' ).text();
-    let thumbnail = select( '.av-bgimg__div' ).last().css( 'backgroundImage', '' );
-    thumbnail = cssUrlToUrl( thumbnail );
+    let thumbnail = '';
+    let thumbnailImage = select( '.av-bgimg__div' );
+    if( thumbnailImage.length > 0 )
+    {
+      thumbnail = thumbnailImage.last().css( 'backgroundImage', '' );
+      thumbnail = cssUrlToUrl( thumbnail );
+    }
 
     if( title )
     {
@@ -65,7 +70,7 @@ settings.initialize().then( () =>
     {
       if( media instanceof HTMLVideoElement )
       {
-        if( media.style.visibility !== 'hidden' )
+        if( media.closest( '.cascadesContainer' ) !== null )
         {
           return new AmazonVideoController( media );
         }

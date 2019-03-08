@@ -53,7 +53,8 @@
     },
     {
       "matches": [
-        "https://www.amazon.com/gp/video/*"
+        "https://www.amazon.com/gp/video/*",
+        "https://www.amazon.com/Prime-Video/*"
       ],
       "js": [
         "amazonVideo.bundle.js"
@@ -139,6 +140,7 @@
       "exclude_matches": [
         "https://music.amazon.com/*",
         "https://www.amazon.com/gp/video/*",
+        "https://www.amazon.com/Prime-Video/*",
         "https://*.bandcamp.com/*",
         "https://play.google.com/*",
         "https://www.netflix.com/*",

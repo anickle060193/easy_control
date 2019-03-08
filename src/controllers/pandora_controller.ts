@@ -18,7 +18,6 @@ class PandoraController extends Controller
     this.supportedOperations = {
       ...this.supportedOperations,
       next: true,
-      previous: true,
       like: true,
       dislike: true,
     };
