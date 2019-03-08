@@ -116,6 +116,8 @@ class ControlsPage extends React.Component<Props, State>
     chrome.runtime.onMessage.addListener( this.onMessage );
 
     window.addEventListener( 'resize', this.onResize, false );
+
+    chrome.runtime.sendMessage( createBasicMessage( MessageTypes.FromControlsPopup.Opened ) );
   }
 
   public componentWillUnmount()

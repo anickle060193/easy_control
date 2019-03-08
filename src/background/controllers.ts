@@ -209,7 +209,7 @@ export async function copyCurrentControllerContentLink()
   }
 }
 
-function updateControlsPopupForCurrentController()
+export function updateControlsPopupForCurrentController()
 {
   if( currentController )
   {

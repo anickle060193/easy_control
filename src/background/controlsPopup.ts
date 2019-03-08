@@ -9,7 +9,8 @@ import
   dislikeCurrentController,
   undislikeCurrentController,
   volumeUpCurrentController,
-  volumeDownCurrentController
+  volumeDownCurrentController,
+  updateControlsPopupForCurrentController
 } from 'background/controllers';
 
 import { ControlsPopupUpdateData, createControlsPopupUpdateMessage, MessageTypes, Message } from 'common/message';
@@ -46,7 +47,12 @@ export function updateControlsPopup( data: ControlsPopupUpdateData | null )
 
 chrome.runtime.onMessage.addListener( ( message: Message ) =>
 {
-  if( message.type === MessageTypes.FromControlsPopup.Pause )
+  if( message.type === MessageTypes.FromControlsPopup.Opened )
+  {
+    console.log( 'Controller Popup Message:', message.type );
+    updateControlsPopupForCurrentController();
+  }
+  else if( message.type === MessageTypes.FromControlsPopup.Pause )
   {
     console.log( 'Controller Popup Message:', message.type );
     pauseCurrentController();

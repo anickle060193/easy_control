@@ -31,6 +31,7 @@ export namespace MessageTypes
 
   export const enum FromControlsPopup
   {
+    Opened = 'from_controls_popup.opened',
     Pause = 'from_controls_popup.pause',
     Play = 'from_controls_popup.play',
     Next = 'from_controls_popup.next',
@@ -67,6 +68,7 @@ type BasicMessageType = (
   MessageTypes.FromBackground.Undislike |
   MessageTypes.FromBackground.VolumeUp |
   MessageTypes.FromBackground.VolumeDown |
+  MessageTypes.FromControlsPopup.Opened |
   MessageTypes.FromControlsPopup.Pause |
   MessageTypes.FromControlsPopup.Play |
   MessageTypes.FromControlsPopup.Next |
