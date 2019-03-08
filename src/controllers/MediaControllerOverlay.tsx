@@ -2,10 +2,9 @@ import React from 'react';
 import classNames from 'classnames';
 import { Theme, createStyles, WithStyles, withStyles, Popper, Typography, Paper, IconButton } from '@material-ui/core';
 import MuchSlowerIcon from '@material-ui/icons/FastRewind';
-import SkipBackwardIcon from '@material-ui/icons/SkipPrevious';
+import ReplayIcon from '@material-ui/icons/Replay';
 import PlayIcon from '@material-ui/icons/PlayCircleFilled';
 import PauseIcon from '@material-ui/icons/Pause';
-import SkipForwardIcon from '@material-ui/icons/SkipNext';
 import FasterIcon from '@material-ui/icons/PlayArrow';
 import MuchFasterIcon from '@material-ui/icons/FastForward';
 import LoopIcon from '@material-ui/icons/Repeat';
@@ -78,6 +77,9 @@ const styles = ( theme: Theme ) => createStyles( {
   },
   controlIcon: {
     fontSize: FONT_SIZE,
+  },
+  skipForwardIcon: {
+    transform: 'rotateY( 180deg )',
   },
   slowerIcon: {
     transform: 'rotateZ( 180deg )',
@@ -305,7 +307,7 @@ class MediaControllerOverlay extends React.Component<Props, State>
             <MediaControl
               classes={classes}
               title="Skip Backward"
-              content={<SkipBackwardIcon className={classes.controlIcon} />}
+              content={<ReplayIcon className={classes.controlIcon} />}
               shortcut={this.state.shortcutSkipBackward}
               onClick={this.props.onSkipBackward}
             />
@@ -331,7 +333,7 @@ class MediaControllerOverlay extends React.Component<Props, State>
             <MediaControl
               classes={classes}
               title="Skip Forward"
-              content={<SkipForwardIcon className={classes.controlIcon} />}
+              content={<ReplayIcon className={classNames( classes.controlIcon, classes.skipForwardIcon )} />}
               shortcut={this.state.shortcutSkipForward}
               onClick={this.props.onSkipForward}
             />
