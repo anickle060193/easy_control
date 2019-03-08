@@ -1,5 +1,6 @@
 class Selector<T extends HTMLElement>
 {
+  private readonly selector: string;
   private readonly match: T[];
 
   public get length()
@@ -7,8 +8,9 @@ class Selector<T extends HTMLElement>
     return this.match.length;
   }
 
-  constructor( match: ArrayLike<T> )
+  constructor( selector: string, match: ArrayLike<T> )
   {
+    this.selector = selector;
     this.match = Array.from( match );
   }
 
@@ -16,14 +18,14 @@ class Selector<T extends HTMLElement>
   {
     if( index < 0 || this.match.length <= index )
     {
-      console.warn( 'Selector index out of range:', index, 'length:', this.match.length );
+      console.warn( this.selector, '- Selector index out of range:', index, 'length:', this.match.length );
     }
-    return new Selector( this.match.slice( index, index + 1 ) );
+    return new Selector( `${this.selector}[${index}]`, this.match.slice( index, index + 1 ) );
   }
 
   public single()
   {
-    return new Selector( this.match.slice( 0, 1 ) );
+    return new Selector( `${this.selector}:single`, this.match.slice( 0, 1 ) );
   }
 
   public last()
@@ -52,7 +54,7 @@ class Selector<T extends HTMLElement>
   public filter( callback: ( element: T ) => boolean ): Selector<T>;
   public filter( callback: ( element: T ) => boolean ): Selector<T>
   {
-    return new Selector( this.match.filter( callback ) );
+    return new Selector( `${this.selector}:filtered`, this.match.filter( callback ) );
   }
 
   public find<E extends HTMLElement = HTMLElement>( selector: string )
@@ -68,12 +70,12 @@ class Selector<T extends HTMLElement>
         return elements;
       }, new Set<E>() );
 
-    return new Selector( Array.from( matches ) );
+    return new Selector( `${this.selector} ${selector}`, Array.from( matches ) );
   }
 
   public parent()
   {
-    return new Selector( this.match.map( ( el ) => el.parentElement ).filter( ( el ): el is HTMLElement => el instanceof HTMLElement ) );
+    return new Selector( `${this.selector}:parent`, this.match.map( ( el ) => el.parentElement ).filter( ( el ): el is HTMLElement => el instanceof HTMLElement ) );
   }
 
   public text()
@@ -149,13 +151,13 @@ class Selector<T extends HTMLElement>
   {
     if( this.match.length === 0 )
     {
-      console.warn( 'No selected elements to click' );
+      console.warn( this.selector, '- No selected elements to click' );
     }
     else
     {
       if( this.match.length > 1 )
       {
-        console.warn( 'Multiple elements selected on click' );
+        console.warn( this.selector, '- Multiple elements selected on click' );
       }
 
       this.match[ 0 ].click();
@@ -170,5 +172,5 @@ class Selector<T extends HTMLElement>
 
 export function select<E extends HTMLElement = HTMLElement>( selector: string )
 {
-  return new Selector<E>( document.querySelectorAll<E>( selector ) );
+  return new Selector<E>( selector, document.querySelectorAll<E>( selector ) );
 }
