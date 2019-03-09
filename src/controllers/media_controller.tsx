@@ -6,6 +6,7 @@ import { Controller } from 'controllers/controller';
 import MediaControllerOverlay from 'controllers/MediaControllerOverlay';
 
 import { SettingKey, settings, Sites } from 'common/settings';
+import doc from 'common/doc';
 
 const fullscreenStyle = document.createElement( 'style' );
 fullscreenStyle.textContent = `
@@ -78,8 +79,14 @@ export abstract class MediaController extends Controller
     }
   }
 
-  protected onUpdateControls()
+  public updateControls()
   {
+    if( this.disconnected )
+    {
+      console.warn( 'Attempting to update controls of disconnected controller.' );
+      return;
+    }
+
     if( !this.isVideo )
     {
       return;
@@ -111,6 +118,9 @@ export abstract class MediaController extends Controller
 
     ReactDOM.unmountComponentAtNode( this.controlsRoot );
     this.controlsRoot.remove();
+
+    let elem = this.media as HTMLControllableElement;
+    elem[ 'easy-control--controller' ] = undefined;
   }
 
   public disconnect()
@@ -241,7 +251,7 @@ export abstract class MediaController extends Controller
   {
     console.log( 'MediaController - Start polling' );
 
-    this.onUpdateControls();
+    this.updateControls();
 
     this.media.addEventListener( 'play', this.onPoll );
     this.media.addEventListener( 'pause', this.onPoll );
@@ -262,12 +272,12 @@ export abstract class MediaController extends Controller
 
 type ControllerCreatorCallback = ( element: HTMLAudioElement | HTMLVideoElement ) => MediaController | null;
 
+type HTMLControllableElement = ( HTMLAudioElement | HTMLVideoElement ) & {
+  [ 'easy-control--controller' ]: MediaController | undefined;
+};
+
 function registerNewMediaCallback( controllerCreatorCallback: ControllerCreatorCallback )
 {
-  type HTMLControllableElement = ( HTMLAudioElement | HTMLVideoElement ) & {
-    [ 'easy-control--controller' ]: MediaController | undefined;
-  };
-
   function addMedia( element: HTMLElement )
   {
     if( !( element instanceof HTMLAudioElement
@@ -276,16 +286,19 @@ function registerNewMediaCallback( controllerCreatorCallback: ControllerCreatorC
       return;
     }
 
-    let controller = ( element as HTMLControllableElement )[ 'easy-control--controller' ];
+    let elem = element as HTMLControllableElement;
+
+    let controller = elem[ 'easy-control--controller' ];
     if( controller )
     {
+      controller.updateControls();
       return;
     }
 
     let newController = controllerCreatorCallback( element );
     if( newController )
     {
-      ( element as HTMLControllableElement )[ 'easy-control--controller' ] = newController;
+      elem[ 'easy-control--controller' ] = newController;
     }
   }
 
@@ -325,7 +338,7 @@ function registerNewMediaCallback( controllerCreatorCallback: ControllerCreatorC
     addMedia( element );
   }
 
-  let newMediaElementObserver = new MutationObserver( ( mutations ) =>
+  doc.addEventListener( 'change:src', ( { detail: mutations } ) =>
   {
     for( let mutation of mutations )
     {
@@ -349,20 +362,13 @@ function registerNewMediaCallback( controllerCreatorCallback: ControllerCreatorC
       }
     }
   } );
-
-  newMediaElementObserver.observe( document.body, {
-    childList: true,
-    subtree: true,
-    attributes: true,
-    attributeFilter: [ 'src' ],
-  } );
 }
 
 export function createMultiMediaListener( name: string, controllerCreatorCallback: ControllerCreatorCallback )
 {
   registerNewMediaCallback( ( media ) =>
   {
-    console.log( 'New Media Found:', name );
+    console.log( 'New Media Found:', name, media );
 
     let controller = controllerCreatorCallback( media );
     if( controller )
@@ -379,7 +385,7 @@ export function createSingleMediaListener( name: string, controllerCreatorCallba
 
   registerNewMediaCallback( ( media ) =>
   {
-    console.log( 'New Media Found:', name );
+    console.log( 'New Media Found:', name, media );
 
     let newController = controllerCreatorCallback( media );
 

@@ -39,6 +39,7 @@
     "jsx-no-lambda": false,
     "jsx-no-multiline-js": false,
     "label-position": true,
+    "max-classes-per-file": false,
     "max-line-length": false,
     "member-ordering": [
       true,

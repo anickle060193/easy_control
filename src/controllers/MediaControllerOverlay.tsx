@@ -202,6 +202,8 @@ class MediaControllerOverlay extends React.Component<Props, State>
       screenfull.on( 'change', this.onFullscreenChange );
     }
 
+    this.props.media.addEventListener( 'loadstart', this.onSourceChanged );
+    this.props.media.addEventListener( 'loadeddata', this.onSourceChanged );
     this.props.media.addEventListener( 'ratechange', this.onPlaybackRateChange );
     this.props.media.addEventListener( 'playing', this.onMediaPlayingPaused );
     this.props.media.addEventListener( 'pause', this.onMediaPlayingPaused );
@@ -229,6 +231,8 @@ class MediaControllerOverlay extends React.Component<Props, State>
       screenfull.off( 'change', this.onFullscreenChange );
     }
 
+    this.props.media.removeEventListener( 'loadstart', this.onSourceChanged );
+    this.props.media.removeEventListener( 'loadeddata', this.onSourceChanged );
     this.props.media.removeEventListener( 'ratechange', this.onPlaybackRateChange );
     this.props.media.removeEventListener( 'playing', this.onMediaPlayingPaused );
     this.props.media.removeEventListener( 'pause', this.onMediaPlayingPaused );
@@ -506,8 +510,12 @@ class MediaControllerOverlay extends React.Component<Props, State>
 
   private onSourceChanged = () =>
   {
-    let defaultPlaybackRate = settings.get( SettingKey.Controls.Other.DefaultPlaybackSpeed );
-    this.props.media.playbackRate = getSessionStorageItem( SessionStorageKey.PlaybackRate, defaultPlaybackRate );
+    if( this.props.media.currentSrc
+      && this.props.media.currentSrc !== this.state.mediaSource )
+    {
+      let defaultPlaybackRate = settings.get( SettingKey.Controls.Other.DefaultPlaybackSpeed );
+      this.props.media.playbackRate = getSessionStorageItem( SessionStorageKey.PlaybackRate, defaultPlaybackRate );
+    }
     this.setState( { mediaSource: this.props.media.currentSrc } );
   }
 
@@ -536,6 +544,10 @@ class MediaControllerOverlay extends React.Component<Props, State>
     let shortcut = getKeyboardShortcut( e );
 
     if( !shortcut )
+    {
+      return true;
+    }
+    else if( !this.state.mediaSource )
     {
       return true;
     }
