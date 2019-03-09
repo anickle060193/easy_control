@@ -54,17 +54,23 @@ class NetflixController extends MediaController
       return null;
     }
 
-    let showTitle = select( '.video-title h4' ).text();
-    let episodeNumber = select( '.video-title span' ).index( 0 ).text();
-    let episodeTitle = select( '.video-title span' ).index( 1 ).text();
+    let title = select( '.video-title h4' ).text();
+    let caption = '';
+    let subcaption = '';
+    let episodeInfo = select( '.video-title span' );
+    if( episodeInfo.length >= 2 )
+    {
+      caption = select( '.video-title span' ).index( 0 ).text();
+      subcaption = select( '.video-title span' ).index( 1 ).text();
+    }
 
-    if( showTitle && episodeNumber && episodeTitle )
+    if( title )
     {
       let info: ContentInfo = {
         ...this.getBasicContentInfo(),
-        title: showTitle,
-        caption: episodeTitle,
-        subcaption: episodeNumber,
+        title: title,
+        caption: caption,
+        subcaption: subcaption,
       };
       return info;
     }
@@ -81,7 +87,8 @@ settings.initialize().then( () =>
   {
     createSingleMediaListener( 'Netflix', ( media ) =>
     {
-      if( media instanceof HTMLVideoElement )
+      if( media instanceof HTMLVideoElement
+        && !media.matches( '.mainView video' ) )
       {
         return new NetflixController( media );
       }
