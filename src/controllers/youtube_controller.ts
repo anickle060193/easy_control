@@ -71,19 +71,19 @@ class YoutubeController extends MediaController
     select( '.ytd-video-primary-info-renderer #top-level-buttons button' ).index( 1 ).click();
   }
 
-  protected onUndislike()
+  protected undislikeImpl()
   {
     select( '.ytd-video-primary-info-renderer #top-level-buttons button' ).index( 1 ).click();
   }
 
   protected isLiked()
   {
-    return select( '.ytd-video-primary-info-renderer #top-level-buttons button' ).index( 0 ).hasClass( 'style-default-active' );
+    return select( '.ytd-video-primary-info-renderer #top-level-buttons button' ).index( 0 ).parent().hasClass( 'style-default-active' );
   }
 
   protected isDisliked()
   {
-    return select( '.ytd-video-primary-info-renderer #top-level-buttons button' ).index( 1 ).hasClass( 'style-default-active' );
+    return select( '.ytd-video-primary-info-renderer #top-level-buttons button' ).index( 1 ).parent().hasClass( 'style-default-active' );
   }
 
   protected getContentInfo()
