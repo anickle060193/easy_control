@@ -1,4 +1,4 @@
-import { MediaController, createSingleMediaListener } from 'controllers/media_controller';
+import { MediaController, createMultiMediaListener } from 'controllers/media_controller';
 
 import { Sites, settings, SettingKey } from 'common/settings';
 import { select } from 'common/selector';
@@ -66,11 +66,11 @@ settings.initialize().then( () =>
 {
   if( settings.get( SettingKey.ControllersEnabled.AmazonVideo ) )
   {
-    createSingleMediaListener( 'Amazon Video', ( media ) =>
+    createMultiMediaListener( 'Amazon Video', ( media ) =>
     {
       if( media instanceof HTMLVideoElement )
       {
-        if( media.closest( '.cascadesContainer' ) !== null )
+        if( media.matches( '.cascadesContainer video' ) )
         {
           return new AmazonVideoController( media );
         }
