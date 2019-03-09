@@ -2,6 +2,7 @@ import { MediaController, createMultiMediaListener } from 'controllers/media_con
 
 import { Sites, SettingKey, settings } from 'common/settings';
 import { select } from 'common/selector';
+import { ContentInfo } from 'common/content';
 
 class AudioVideoController extends MediaController
 {
@@ -15,6 +16,16 @@ class AudioVideoController extends MediaController
     };
 
     this.hostname = null;
+  }
+
+  protected getContentInfo()
+  {
+    let contentInfo: ContentInfo = {
+      ...this.getBasicContentInfo(),
+      title: window.location.host,
+      image: null,
+    };
+    return contentInfo;
   }
 
   protected openContentLink( contentLink: string )
