@@ -42,32 +42,32 @@ class GooglePlayMusicController extends MediaController
 
   protected likeImpl()
   {
-    select( '.rating-container > paper-icon-button[data-rating="5"]' ).click();
+    select( '#player .rating-container > paper-icon-button[data-rating="5"]' ).click();
   }
 
   protected unlikeImpl()
   {
-    select( '.rating-container > paper-icon-button[data-rating="5"]' ).click();
+    select( '#player .rating-container > paper-icon-button[data-rating="5"]' ).click();
   }
 
   protected dislikeImpl()
   {
-    select( '.rating-container > paper-icon-button[data-rating="1"]' ).click();
+    select( '#player .rating-container > paper-icon-button[data-rating="1"]' ).click();
   }
 
   protected onUndislike()
   {
-    select( '.rating-container > paper-icon-button[data-rating="1"]' ).click();
+    select( '#player .rating-container > paper-icon-button[data-rating="1"]' ).click();
   }
 
   protected isLiked()
   {
-    return false;
+    return select( '#player .rating-container > paper-icon-button[data-rating="5"] path' ).length === 1;
   }
 
   protected isDisliked()
   {
-    return false;
+    return select( '#player .rating-container > paper-icon-button[data-rating="1"] path' ).length === 1;
   }
 
   protected getContentInfo()
