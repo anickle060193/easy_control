@@ -57,6 +57,8 @@ const styles = ( theme: Theme ) => createStyles( {
     },
   },
   playbackSpeed: {
+    height: FONT_SIZE,
+    lineHeight: `${FONT_SIZE}px`,
     fontSize: FONT_SIZE,
     marginRight: 2,
   },
