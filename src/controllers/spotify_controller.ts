@@ -16,6 +16,7 @@ class SpotifyController extends Controller
       ...this.supportedOperations,
       previous: true,
       next: true,
+      like: true,
     };
   }
 
@@ -39,6 +40,16 @@ class SpotifyController extends Controller
     select( '.Root__now-playing-bar button.control-button[class*="spoticon-skip-forward"]' ).click();
   }
 
+  protected likeImpl()
+  {
+    select( '.Root__now-playing-bar .now-playing button[class*="spoticon-heart"]' ).click();
+  }
+
+  protected unlike()
+  {
+    select( '.Root__now-playing-bar .now-playing button[class*="spoticon-heart"]' ).click();
+  }
+
   protected getProgress()
   {
     let elapsedTime = parseTime( select( '.Root__now-playing-bar .playback-bar__progress-time' ).index( 0 ).text() );
@@ -56,6 +67,11 @@ class SpotifyController extends Controller
   protected isPaused()
   {
     return select( '.Root__now-playing-bar button.control-button[class*="spoticon-play"]' ).length > 0;
+  }
+
+  protected isLiked()
+  {
+    return select( '.Root__now-playing-bar .now-playing button.control-button--active[class*="spoticon-heart"]' ).length > 0;
   }
 
   protected getContentInfo()
