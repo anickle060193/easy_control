@@ -1,6 +1,21 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Theme, createStyles, withStyles, WithStyles, Button, AppBar, Toolbar, Typography, Paper } from '@material-ui/core';
+import
+{
+  Theme,
+  createStyles,
+  withStyles,
+  WithStyles,
+  Button,
+  AppBar,
+  Toolbar,
+  Typography,
+  Paper,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogActions
+} from '@material-ui/core';
 
 import CheckboxSetting from 'options/components/CheckboxSetting';
 import NumberSetting from 'options/components/NumberSetting';
@@ -55,12 +70,14 @@ const styles = ( theme: Theme ) => createStyles( {
 interface State
 {
   initialized: boolean;
+  resetConfirmationDialogOpen: boolean;
 }
 
 class OptionsPage extends React.Component<WithStyles<typeof styles>, State>
 {
   public readonly state: State = {
-    initialized: false
+    initialized: false,
+    resetConfirmationDialogOpen: false,
   };
 
   public componentDidMount()
@@ -72,7 +89,7 @@ class OptionsPage extends React.Component<WithStyles<typeof styles>, State>
   public render()
   {
     const { classes } = this.props;
-    const { initialized } = this.state;
+    const { initialized, resetConfirmationDialogOpen } = this.state;
 
     if( !initialized )
     {
@@ -249,6 +266,24 @@ class OptionsPage extends React.Component<WithStyles<typeof styles>, State>
             >
               Reset to Defaults
             </Button>
+            <Dialog
+              open={resetConfirmationDialogOpen}
+              onClose={this.onResetConfirmationDialogClose}
+            >
+              <DialogContent>
+                <DialogContentText>
+                  Reset all settings back to defaults?
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button color="primary" onClick={this.onResetConfirmationDialogClose}>
+                  Cancel
+                </Button>
+                <Button color="primary" onClick={this.onConfirmResetToDefaultsClick} autoFocus={true}>
+                  Reset
+                </Button>
+              </DialogActions>
+            </Dialog>
           </div>
 
         </Paper>
@@ -267,7 +302,18 @@ class OptionsPage extends React.Component<WithStyles<typeof styles>, State>
 
   private onResetToDefaultsClick = () =>
   {
+    this.setState( { resetConfirmationDialogOpen: true } );
+  }
+
+  private onConfirmResetToDefaultsClick = () =>
+  {
     settings.reset();
+    this.onResetConfirmationDialogClose();
+  }
+
+  private onResetConfirmationDialogClose = () =>
+  {
+    this.setState( { resetConfirmationDialogOpen: false } );
   }
 }
 
