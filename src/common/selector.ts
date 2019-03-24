@@ -1,3 +1,5 @@
+import { queryXpathSelectorAll } from 'common/utilities';
+
 class Selector<T extends HTMLElement>
 {
   private readonly selector: string;
@@ -12,6 +14,15 @@ class Selector<T extends HTMLElement>
   {
     this.selector = selector;
     this.match = Array.from( match );
+  }
+
+  public log()
+  {
+    if( process.env.NODE_ENV === 'development' )
+    {
+      console.log( this.selector, this.match );
+    }
+    return this;
   }
 
   public index( index: number )
@@ -173,4 +184,9 @@ class Selector<T extends HTMLElement>
 export function select<E extends HTMLElement = HTMLElement>( selector: string )
 {
   return new Selector<E>( selector, document.querySelectorAll<E>( selector ) );
+}
+
+export function selectXPath<E extends HTMLElement = HTMLElement>( xpathSelector: string )
+{
+  return new Selector<E>( xpathSelector, queryXpathSelectorAll( xpathSelector ) );
 }

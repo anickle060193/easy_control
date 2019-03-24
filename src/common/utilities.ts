@@ -84,3 +84,36 @@ export function cssUrlToUrl( cssUrl: string )
 {
   return cssUrl.replace( /^.*\s*url\(\s*[\'\"]?/, '' ).replace( /[\'\"]?\s*\).*/, '' );
 }
+
+export function isStringNotNullOrWhitespace( s: string | null | undefined ): s is string
+{
+  return !!s && !/^\s+$/.test( s );
+}
+
+export function queryXpathSelectorAll<E extends HTMLElement = HTMLElement>( xpathSelector: string, contextNode: Node = document ): E[]
+{
+  let result = document.evaluate( xpathSelector, contextNode, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
+  let elems: E[] = [];
+  for( let i = 0; i < result.snapshotLength; i++ )
+  {
+    let node = result.snapshotItem( i );
+    if( node instanceof HTMLElement )
+    {
+      elems.push( node as E );
+    }
+  }
+  return elems;
+}
+
+export function queryXpathSelector<E extends HTMLElement = HTMLElement>( xpathSelector: string, contextNode: Node = document ): E | null
+{
+  let result = document.evaluate( xpathSelector, contextNode, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null );
+  if( result.singleNodeValue instanceof HTMLElement )
+  {
+    return result.singleNodeValue as E;
+  }
+  else
+  {
+    return null;
+  }
+}

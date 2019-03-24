@@ -23,6 +23,7 @@ interface ControllerSetting
   openInExistingSetting: SettingKey.OpenInExisting;
   colorSetting: SettingKey.ControllerColors;
   description: string;
+  disallowOpenNewContentInExistingTabs?: boolean;
 }
 
 const CONTROLLER_SETTINGS: ControllerSetting[] = [
@@ -95,6 +96,7 @@ const CONTROLLER_SETTINGS: ControllerSetting[] = [
     openInExistingSetting: SettingKey.OpenInExisting.GenericAudioVideo,
     colorSetting: SettingKey.ControllerColors.GenericAudioVideo,
     description: 'Generic Audio/Video',
+    disallowOpenNewContentInExistingTabs: true,
   },
   {
     enabledSetting: SettingKey.ControllersEnabled.Twitch,
@@ -102,6 +104,13 @@ const CONTROLLER_SETTINGS: ControllerSetting[] = [
     openInExistingSetting: SettingKey.OpenInExisting.Twitch,
     colorSetting: SettingKey.ControllerColors.Twitch,
     description: 'Twitch',
+  },
+  {
+    enabledSetting: SettingKey.ControllersEnabled.HboGo,
+    notificationsSetting: SettingKey.Notifications.HboGo,
+    openInExistingSetting: SettingKey.OpenInExisting.HboGo,
+    colorSetting: SettingKey.ControllerColors.HboGo,
+    description: 'HBO Go',
   },
 ];
 
@@ -124,7 +133,7 @@ class ControllerSettings extends React.Component<WithStyles<typeof styles>>
             </TableRow>
           </TableHead>
           <TableBody>
-            {CONTROLLER_SETTINGS.map( ( { description, enabledSetting, notificationsSetting, openInExistingSetting, colorSetting }, i ) => (
+            {CONTROLLER_SETTINGS.map( ( { description, enabledSetting, notificationsSetting, openInExistingSetting, colorSetting, disallowOpenNewContentInExistingTabs }, i ) => (
               <TableRow key={i} hover={true}>
                 <TableCell>
                   {description}
@@ -136,7 +145,9 @@ class ControllerSettings extends React.Component<WithStyles<typeof styles>>
                   <CheckboxSetting setting={notificationsSetting} />
                 </TableCell>
                 <TableCell align="center">
-                  <CheckboxSetting setting={openInExistingSetting} />
+                  {!disallowOpenNewContentInExistingTabs && (
+                    <CheckboxSetting setting={openInExistingSetting} />
+                  )}
                 </TableCell>
                 <TableCell align="center">
                   <ColorSetting setting={colorSetting} />

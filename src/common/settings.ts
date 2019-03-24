@@ -13,6 +13,7 @@ export namespace SettingKey
     Hulu = 'key__notifications__hulu',
     GenericAudioVideo = 'key__notifications__generic_audio_video',
     Twitch = 'key__notifications__twitch',
+    HboGo = 'key__notifications__hbo_go',
   }
 
   export enum ControllersEnabled
@@ -28,6 +29,7 @@ export namespace SettingKey
     Hulu = 'key__controllers_enabled__hulu',
     GenericAudioVideo = 'key__controllers_enabled__generic_audio_video',
     Twitch = 'key__controllers_enabled__twitch',
+    HboGo = 'key__controllers_enabled__hbo_go',
   }
 
   export enum ControllerColors
@@ -43,6 +45,7 @@ export namespace SettingKey
     Hulu = 'key__controller_colors__hulu',
     GenericAudioVideo = 'key__controller_colors__generic_audio_video',
     Twitch = 'key__controller_colors__twitch',
+    HboGo = 'key__controller_colors__hbo_go',
   }
 
   export enum OpenInExisting
@@ -58,6 +61,7 @@ export namespace SettingKey
     Hulu = 'key__open_in_existing__hulu',
     GenericAudioVideo = 'key__open_in_existing__generic_audio_video',
     Twitch = 'key__open_in_existing__twitch',
+    HboGo = 'key__open_in_existing__hbo_go',
   }
 
   export const enum Other
@@ -133,6 +137,7 @@ export enum Sites
   Hulu = 'Hulu',
   GenericAudioVideo = 'GenericAudioVideo',
   Twitch = 'Twitch',
+  HboGo = 'HboGo',
 }
 
 export const enum Controls
@@ -162,6 +167,7 @@ export interface SettingsType
   [ SettingKey.Notifications.Hulu ]: boolean;
   [ SettingKey.Notifications.GenericAudioVideo ]: boolean;
   [ SettingKey.Notifications.Twitch ]: boolean;
+  [ SettingKey.Notifications.HboGo ]: boolean;
 
   [ SettingKey.ControllersEnabled.Pandora ]: boolean;
   [ SettingKey.ControllersEnabled.Spotify ]: boolean;
@@ -174,6 +180,7 @@ export interface SettingsType
   [ SettingKey.ControllersEnabled.Hulu ]: boolean;
   [ SettingKey.ControllersEnabled.GenericAudioVideo ]: boolean;
   [ SettingKey.ControllersEnabled.Twitch ]: boolean;
+  [ SettingKey.ControllersEnabled.HboGo ]: boolean;
 
   [ SettingKey.ControllerColors.Pandora ]: string;
   [ SettingKey.ControllerColors.Spotify ]: string;
@@ -186,6 +193,7 @@ export interface SettingsType
   [ SettingKey.ControllerColors.Hulu ]: string;
   [ SettingKey.ControllerColors.GenericAudioVideo ]: string;
   [ SettingKey.ControllerColors.Twitch ]: string;
+  [ SettingKey.ControllerColors.HboGo ]: string;
 
   [ SettingKey.OpenInExisting.Pandora ]: boolean;
   [ SettingKey.OpenInExisting.Spotify ]: boolean;
@@ -198,6 +206,7 @@ export interface SettingsType
   [ SettingKey.OpenInExisting.Hulu ]: boolean;
   [ SettingKey.OpenInExisting.GenericAudioVideo ]: boolean;
   [ SettingKey.OpenInExisting.Twitch ]: boolean;
+  [ SettingKey.OpenInExisting.HboGo ]: boolean;
 
   [ SettingKey.Other.NoActiveWindowNotifications ]: boolean;
   [ SettingKey.Other.DefaultSite ]: Sites;
@@ -265,6 +274,7 @@ const DEFAULT_SETTINGS: SettingsType = {
   [ SettingKey.Notifications.Hulu ]: true,
   [ SettingKey.Notifications.GenericAudioVideo ]: true,
   [ SettingKey.Notifications.Twitch ]: true,
+  [ SettingKey.Notifications.HboGo ]: true,
 
   [ SettingKey.ControllersEnabled.Pandora ]: true,
   [ SettingKey.ControllersEnabled.Spotify ]: true,
@@ -277,6 +287,7 @@ const DEFAULT_SETTINGS: SettingsType = {
   [ SettingKey.ControllersEnabled.Hulu ]: true,
   [ SettingKey.ControllersEnabled.GenericAudioVideo ]: true,
   [ SettingKey.ControllersEnabled.Twitch ]: true,
+  [ SettingKey.ControllersEnabled.HboGo ]: true,
 
   [ SettingKey.ControllerColors.Pandora ]: '#455774',
   [ SettingKey.ControllerColors.Spotify ]: '#84bd00',
@@ -289,6 +300,7 @@ const DEFAULT_SETTINGS: SettingsType = {
   [ SettingKey.ControllerColors.Hulu ]: '#66AA33',
   [ SettingKey.ControllerColors.GenericAudioVideo ]: '#5b5b5b',
   [ SettingKey.ControllerColors.Twitch ]: '#6441A4',
+  [ SettingKey.ControllerColors.HboGo ]: '#0f0f0f',
 
   [ SettingKey.OpenInExisting.Pandora ]: false,
   [ SettingKey.OpenInExisting.Spotify ]: false,
@@ -301,6 +313,7 @@ const DEFAULT_SETTINGS: SettingsType = {
   [ SettingKey.OpenInExisting.Hulu ]: false,
   [ SettingKey.OpenInExisting.GenericAudioVideo ]: false,
   [ SettingKey.OpenInExisting.Twitch ]: false,
+  [ SettingKey.OpenInExisting.HboGo ]: false,
 
   [ SettingKey.Other.NoActiveWindowNotifications ]: false,
   [ SettingKey.Other.DefaultSite ]: Sites.Youtube,
@@ -356,7 +369,8 @@ const SITE_TO_URL: { [ key in Sites ]: string } = {
   AmazonMusic: 'https://music.amazon.com/',
   Hulu: 'http://www.hulu.com/',
   GenericAudioVideo: '',
-  Twitch: 'https://www.twitch.tv/'
+  Twitch: 'https://www.twitch.tv/',
+  HboGo: 'https://play.hbogo.com/',
 };
 
 export function siteToUrl( site: Sites )

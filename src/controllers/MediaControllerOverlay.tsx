@@ -287,7 +287,12 @@ class MediaControllerOverlay extends React.Component<Props, State>
         disablePortal={false}
         container={this.props.mediaContainer}
       >
-        <Paper className={classes.paper}>
+        <Paper
+          className={classes.paper}
+          onMouseDown={this.onStopEvent}
+          onMouseUp={this.onStopEvent}
+          onClick={this.onStopEvent}
+        >
           <MediaControl
             classes={classes}
             title="Reset Playback Speed"
@@ -436,6 +441,12 @@ class MediaControllerOverlay extends React.Component<Props, State>
       ( screenfull.element === this.props.media ||
         screenfull.element.contains( this.props.media ) )
     );
+  }
+
+  private onStopEvent = ( e: React.SyntheticEvent<{}> ) =>
+  {
+    e.preventDefault();
+    e.stopPropagation();
   }
 
   private onPlaybackRateReset = () =>

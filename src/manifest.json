@@ -84,6 +84,15 @@
     },
     {
       "matches": [
+        "https://play.hbogo.com/*"
+      ],
+      "js": [
+        "hboGo.bundle.js"
+      ],
+      "all_frames": true
+    },
+    {
+      "matches": [
         "https://www.hulu.com/*"
       ],
       "js": [
@@ -146,6 +155,8 @@
         "https://www.amazon.com/Prime-Video/*",
         "https://*.bandcamp.com/*",
         "https://play.google.com/*",
+        "https://play.hbogo.com/*",
+        "https://www.hulu.com/*",
         "https://www.netflix.com/*",
         "https://www.pandora.com/*",
         "https://open.spotify.com/*",
