@@ -206,6 +206,14 @@ class ChangelogPage extends React.Component<WithStyles<typeof pageStyles>>
 
         <Paper className={classes.paper}>
 
+          <ChangelogVersion version="2.0.0">
+            <ChangelogEntry changeType="enhancement" text="Improved extension icon." issueNumber={67} />
+            <ChangelogEntry changeType="feature" text="Added default playback speed option." issueNumber={123} />
+            <ChangelogEntry changeType="feature" text="Added controls popup." issueNumber={101} />
+            <ChangelogEntry changeType="enhancement" text="Updated content notifications to be slient." issueNumber={125} />
+            <ChangelogEntry changeType="enhancement" text="Major re-work of extension." />
+          </ChangelogVersion>
+
           <ChangelogVersion version="1.28.0">
             <ChangelogEntry changeType="enhancement" text="Added playback speed controls to Google Play Music." issueNumber={122} />
             <ChangelogEntry changeType="bug" text="Fix incorrect artwork from displaying for Pandora notification." />
