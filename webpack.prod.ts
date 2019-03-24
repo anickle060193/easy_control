@@ -9,7 +9,7 @@ export default merge( common, {
   plugins: [
     new ZipWebpackPlugin( {
       path: __dirname,
-      filename: 'playlist_subscriber.zip'
+      filename: 'easy_control.zip'
     } )
   ]
 } );
