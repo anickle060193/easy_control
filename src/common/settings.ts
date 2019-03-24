@@ -2,66 +2,66 @@ export namespace SettingKey
 {
   export enum Notifications
   {
+    AmazonMusic = 'key__notifications__amazon_music',
+    AmazonVideo = 'key__notifications__amazon_video',
+    Bandcamp = 'key__notifications__bandcamp',
+    GooglePlayMusic = 'key__notifications__google_play_music',
+    HboGo = 'key__notifications__hbo_go',
+    Hulu = 'key__notifications__hulu',
+    Netflix = 'key__notifications__netflix',
     Pandora = 'key__notifications__pandora',
     Spotify = 'key__notifications__spotify',
-    Youtube = 'key__notifications__youtube',
-    GooglePlayMusic = 'key__notifications__google_play_music',
-    Bandcamp = 'key__notifications__bandcamp',
-    Netflix = 'key__notifications__netflix',
-    AmazonVideo = 'key__notifications__amazon_video',
-    AmazonMusic = 'key__notifications__amazon_music',
-    Hulu = 'key__notifications__hulu',
-    GenericAudioVideo = 'key__notifications__generic_audio_video',
     Twitch = 'key__notifications__twitch',
-    HboGo = 'key__notifications__hbo_go',
+    Youtube = 'key__notifications__youtube',
+    GenericAudioVideo = 'key__notifications__generic_audio_video',
   }
 
   export enum ControllersEnabled
   {
+    AmazonMusic = 'key__controllers_enabled__amazon_music',
+    AmazonVideo = 'key__controllers_enabled__amazon_video',
+    Bandcamp = 'key__controllers_enabled__bandcamp',
+    GooglePlayMusic = 'key__controllers_enabled__google_play_music',
+    HboGo = 'key__controllers_enabled__hbo_go',
+    Hulu = 'key__controllers_enabled__hulu',
+    Netflix = 'key__controllers_enabled__netflix',
     Pandora = 'key__controllers_enabled__pandora',
     Spotify = 'key__controllers_enabled__spotify',
-    Youtube = 'key__controllers_enabled__youtube',
-    GooglePlayMusic = 'key__controllers_enabled__google_play_music',
-    Bandcamp = 'key__controllers_enabled__bandcamp',
-    Netflix = 'key__controllers_enabled__netflix',
-    AmazonVideo = 'key__controllers_enabled__amazon_video',
-    AmazonMusic = 'key__controllers_enabled__amazon_music',
-    Hulu = 'key__controllers_enabled__hulu',
-    GenericAudioVideo = 'key__controllers_enabled__generic_audio_video',
     Twitch = 'key__controllers_enabled__twitch',
-    HboGo = 'key__controllers_enabled__hbo_go',
+    Youtube = 'key__controllers_enabled__youtube',
+    GenericAudioVideo = 'key__controllers_enabled__generic_audio_video',
   }
 
   export enum ControllerColors
   {
+    AmazonMusic = 'key__controller_colors__amazon_music',
+    AmazonVideo = 'key__controller_colors__amazon_video',
+    Bandcamp = 'key__controller_colors__bandcamp',
+    GooglePlayMusic = 'key__controller_colors__google_play_music',
+    HboGo = 'key__controller_colors__hbo_go',
+    Hulu = 'key__controller_colors__hulu',
+    Netflix = 'key__controller_colors__netflix',
     Pandora = 'key__controller_colors__pandora',
     Spotify = 'key__controller_colors__spotify',
-    Youtube = 'key__controller_colors__youtube',
-    GooglePlayMusic = 'key__controller_colors__google_play_music',
-    Bandcamp = 'key__controller_colors__bandcamp',
-    Netflix = 'key__controller_colors__netflix',
-    AmazonVideo = 'key__controller_colors__amazon_video',
-    AmazonMusic = 'key__controller_colors__amazon_music',
-    Hulu = 'key__controller_colors__hulu',
-    GenericAudioVideo = 'key__controller_colors__generic_audio_video',
     Twitch = 'key__controller_colors__twitch',
-    HboGo = 'key__controller_colors__hbo_go',
+    Youtube = 'key__controller_colors__youtube',
+    GenericAudioVideo = 'key__controller_colors__generic_audio_video',
   }
 
   export enum OpenInExisting
   {
+    AmazonMusic = 'key__open_in_existing__amazon_music',
+    AmazonVideo = 'key__open_in_existing__amazon_video',
+    Bandcamp = 'key__open_in_existing__bandcamp',
+    GooglePlayMusic = 'key__open_in_existing__google_play_music',
+    HboGo = 'key__open_in_existing__hbo_go',
+    Hulu = 'key__open_in_existing__hulu',
+    Netflix = 'key__open_in_existing__netflix',
     Pandora = 'key__open_in_existing__pandora',
     Spotify = 'key__open_in_existing__spotify',
-    Youtube = 'key__open_in_existing__youtube',
-    GooglePlayMusic = 'key__open_in_existing__google_play_music',
-    Bandcamp = 'key__open_in_existing__bandcamp',
-    Netflix = 'key__open_in_existing__netflix',
-    AmazonVideo = 'key__open_in_existing__amazon_video',
-    AmazonMusic = 'key__open_in_existing__amazon_music',
-    Hulu = 'key__open_in_existing__hulu',
-    GenericAudioVideo = 'key__open_in_existing__generic_audio_video',
     Twitch = 'key__open_in_existing__twitch',
-    HboGo = 'key__open_in_existing__hbo_go',
+    Youtube = 'key__open_in_existing__youtube',
+    GenericAudioVideo = 'key__open_in_existing__generic_audio_video',
   }
 
   export const enum Other
@@ -96,6 +96,7 @@ export namespace SettingKey
 
     export const enum MediaControls
     {
+      Reset = 'key__controls__playback_speed__reset',
       MuchSlower = 'key__controls__playback_speed__much_slower',
       Slower = 'key__controls__playback_speed__slower',
       SkipBackward = 'key__controls__media_controls__skip_backward',
@@ -103,13 +104,13 @@ export namespace SettingKey
       SkipForward = 'key__controls__media_controls__skip_forward',
       Faster = 'key__controls__playback_speed__faster',
       MuchFaster = 'key__controls__playback_speed__much_faster',
-      Reset = 'key__controls__playback_speed__reset',
       Loop = 'key__controls__playback_speed__loop',
       Fullscreen = 'key__controls__media_controls__fullscreen',
     }
 
     export const enum OverlayControls
     {
+      Reset = 'key__controls__overlay_controls__reset',
       MuchSlower = 'key__controls__overlay_controls__much_slower',
       Slower = 'key__controls__overlay_controls__slower',
       SkipBackward = 'key__controls__overlay_controls__skip_backward',
@@ -117,7 +118,6 @@ export namespace SettingKey
       SkipForward = 'key__controls__overlay_controls__skip_forward',
       Faster = 'key__controls__overlay_controls__faster',
       MuchFaster = 'key__controls__overlay_controls__much_faster',
-      Reset = 'key__controls__overlay_controls__reset',
       Loop = 'key__controls__overlay_controls__loop',
       Fullscreen = 'key__controls__overlay_controls__fullscreen',
     }
@@ -126,18 +126,18 @@ export namespace SettingKey
 
 export enum Sites
 {
+  AmazonMusic = 'AmazonMusic',
+  AmazonVideo = 'AmazonVideo',
+  Bandcamp = 'Bandcamp',
+  GooglePlayMusic = 'GooglePlayMusic',
+  HboGo = 'HboGo',
+  Hulu = 'Hulu',
+  Netflix = 'Netflix',
   Pandora = 'Pandora',
   Spotify = 'Spotify',
-  Youtube = 'Youtube',
-  GooglePlayMusic = 'GooglePlayMusic',
-  Bandcamp = 'Bandcamp',
-  Netflix = 'Netflix',
-  AmazonVideo = 'AmazonVideo',
-  AmazonMusic = 'AmazonMusic',
-  Hulu = 'Hulu',
-  GenericAudioVideo = 'GenericAudioVideo',
   Twitch = 'Twitch',
-  HboGo = 'HboGo',
+  Youtube = 'Youtube',
+  GenericAudioVideo = 'GenericAudioVideo',
 }
 
 export const enum Controls
@@ -156,57 +156,57 @@ export const enum Controls
 
 export interface SettingsType
 {
+  [ SettingKey.Notifications.AmazonMusic ]: boolean;
+  [ SettingKey.Notifications.AmazonVideo ]: boolean;
+  [ SettingKey.Notifications.Bandcamp ]: boolean;
+  [ SettingKey.Notifications.GooglePlayMusic ]: boolean;
+  [ SettingKey.Notifications.HboGo ]: boolean;
+  [ SettingKey.Notifications.Hulu ]: boolean;
+  [ SettingKey.Notifications.Netflix ]: boolean;
   [ SettingKey.Notifications.Pandora ]: boolean;
   [ SettingKey.Notifications.Spotify ]: boolean;
-  [ SettingKey.Notifications.Youtube ]: boolean;
-  [ SettingKey.Notifications.GooglePlayMusic ]: boolean;
-  [ SettingKey.Notifications.Bandcamp ]: boolean;
-  [ SettingKey.Notifications.Netflix ]: boolean;
-  [ SettingKey.Notifications.AmazonVideo ]: boolean;
-  [ SettingKey.Notifications.AmazonMusic ]: boolean;
-  [ SettingKey.Notifications.Hulu ]: boolean;
-  [ SettingKey.Notifications.GenericAudioVideo ]: boolean;
   [ SettingKey.Notifications.Twitch ]: boolean;
-  [ SettingKey.Notifications.HboGo ]: boolean;
+  [ SettingKey.Notifications.Youtube ]: boolean;
+  [ SettingKey.Notifications.GenericAudioVideo ]: boolean;
 
+  [ SettingKey.ControllersEnabled.AmazonMusic ]: boolean;
+  [ SettingKey.ControllersEnabled.AmazonVideo ]: boolean;
+  [ SettingKey.ControllersEnabled.Bandcamp ]: boolean;
+  [ SettingKey.ControllersEnabled.GooglePlayMusic ]: boolean;
+  [ SettingKey.ControllersEnabled.HboGo ]: boolean;
+  [ SettingKey.ControllersEnabled.Hulu ]: boolean;
+  [ SettingKey.ControllersEnabled.Netflix ]: boolean;
   [ SettingKey.ControllersEnabled.Pandora ]: boolean;
   [ SettingKey.ControllersEnabled.Spotify ]: boolean;
-  [ SettingKey.ControllersEnabled.Youtube ]: boolean;
-  [ SettingKey.ControllersEnabled.GooglePlayMusic ]: boolean;
-  [ SettingKey.ControllersEnabled.Bandcamp ]: boolean;
-  [ SettingKey.ControllersEnabled.Netflix ]: boolean;
-  [ SettingKey.ControllersEnabled.AmazonVideo ]: boolean;
-  [ SettingKey.ControllersEnabled.AmazonMusic ]: boolean;
-  [ SettingKey.ControllersEnabled.Hulu ]: boolean;
-  [ SettingKey.ControllersEnabled.GenericAudioVideo ]: boolean;
   [ SettingKey.ControllersEnabled.Twitch ]: boolean;
-  [ SettingKey.ControllersEnabled.HboGo ]: boolean;
+  [ SettingKey.ControllersEnabled.Youtube ]: boolean;
+  [ SettingKey.ControllersEnabled.GenericAudioVideo ]: boolean;
 
+  [ SettingKey.ControllerColors.AmazonMusic ]: string;
+  [ SettingKey.ControllerColors.AmazonVideo ]: string;
+  [ SettingKey.ControllerColors.Bandcamp ]: string;
+  [ SettingKey.ControllerColors.GooglePlayMusic ]: string;
+  [ SettingKey.ControllerColors.HboGo ]: string;
+  [ SettingKey.ControllerColors.Hulu ]: string;
+  [ SettingKey.ControllerColors.Netflix ]: string;
   [ SettingKey.ControllerColors.Pandora ]: string;
   [ SettingKey.ControllerColors.Spotify ]: string;
-  [ SettingKey.ControllerColors.Youtube ]: string;
-  [ SettingKey.ControllerColors.GooglePlayMusic ]: string;
-  [ SettingKey.ControllerColors.Bandcamp ]: string;
-  [ SettingKey.ControllerColors.Netflix ]: string;
-  [ SettingKey.ControllerColors.AmazonVideo ]: string;
-  [ SettingKey.ControllerColors.AmazonMusic ]: string;
-  [ SettingKey.ControllerColors.Hulu ]: string;
-  [ SettingKey.ControllerColors.GenericAudioVideo ]: string;
   [ SettingKey.ControllerColors.Twitch ]: string;
-  [ SettingKey.ControllerColors.HboGo ]: string;
+  [ SettingKey.ControllerColors.Youtube ]: string;
+  [ SettingKey.ControllerColors.GenericAudioVideo ]: string;
 
+  [ SettingKey.OpenInExisting.AmazonMusic ]: boolean;
+  [ SettingKey.OpenInExisting.AmazonVideo ]: boolean;
+  [ SettingKey.OpenInExisting.Bandcamp ]: boolean;
+  [ SettingKey.OpenInExisting.GooglePlayMusic ]: boolean;
+  [ SettingKey.OpenInExisting.HboGo ]: boolean;
+  [ SettingKey.OpenInExisting.Hulu ]: boolean;
+  [ SettingKey.OpenInExisting.Netflix ]: boolean;
   [ SettingKey.OpenInExisting.Pandora ]: boolean;
   [ SettingKey.OpenInExisting.Spotify ]: boolean;
-  [ SettingKey.OpenInExisting.Youtube ]: boolean;
-  [ SettingKey.OpenInExisting.GooglePlayMusic ]: boolean;
-  [ SettingKey.OpenInExisting.Bandcamp ]: boolean;
-  [ SettingKey.OpenInExisting.Netflix ]: boolean;
-  [ SettingKey.OpenInExisting.AmazonVideo ]: boolean;
-  [ SettingKey.OpenInExisting.AmazonMusic ]: boolean;
-  [ SettingKey.OpenInExisting.Hulu ]: boolean;
-  [ SettingKey.OpenInExisting.GenericAudioVideo ]: boolean;
   [ SettingKey.OpenInExisting.Twitch ]: boolean;
-  [ SettingKey.OpenInExisting.HboGo ]: boolean;
+  [ SettingKey.OpenInExisting.Youtube ]: boolean;
+  [ SettingKey.OpenInExisting.GenericAudioVideo ]: boolean;
 
   [ SettingKey.Other.NoActiveWindowNotifications ]: boolean;
   [ SettingKey.Other.DefaultSite ]: Sites;
@@ -228,6 +228,7 @@ export interface SettingsType
   [ SettingKey.Controls.Other.SkipForwardAmount ]: number;
   [ SettingKey.Controls.Other.DefaultPlaybackSpeed ]: number;
 
+  [ SettingKey.Controls.MediaControls.Reset ]: string;
   [ SettingKey.Controls.MediaControls.MuchSlower ]: string;
   [ SettingKey.Controls.MediaControls.Slower ]: string;
   [ SettingKey.Controls.MediaControls.SkipBackward ]: string;
@@ -235,10 +236,10 @@ export interface SettingsType
   [ SettingKey.Controls.MediaControls.SkipForward ]: string;
   [ SettingKey.Controls.MediaControls.Faster ]: string;
   [ SettingKey.Controls.MediaControls.MuchFaster ]: string;
-  [ SettingKey.Controls.MediaControls.Reset ]: string;
   [ SettingKey.Controls.MediaControls.Loop ]: string;
   [ SettingKey.Controls.MediaControls.Fullscreen ]: string;
 
+  [ SettingKey.Controls.OverlayControls.Reset ]: boolean;
   [ SettingKey.Controls.OverlayControls.MuchSlower ]: boolean;
   [ SettingKey.Controls.OverlayControls.Slower ]: boolean;
   [ SettingKey.Controls.OverlayControls.SkipBackward ]: boolean;
@@ -246,7 +247,6 @@ export interface SettingsType
   [ SettingKey.Controls.OverlayControls.SkipForward ]: boolean;
   [ SettingKey.Controls.OverlayControls.Faster ]: boolean;
   [ SettingKey.Controls.OverlayControls.MuchFaster ]: boolean;
-  [ SettingKey.Controls.OverlayControls.Reset ]: boolean;
   [ SettingKey.Controls.OverlayControls.Loop ]: boolean;
   [ SettingKey.Controls.OverlayControls.Fullscreen ]: boolean;
 }
@@ -263,57 +263,57 @@ export type SettingsKey = (
 );
 
 const DEFAULT_SETTINGS: SettingsType = {
+  [ SettingKey.Notifications.AmazonMusic ]: true,
+  [ SettingKey.Notifications.AmazonVideo ]: true,
+  [ SettingKey.Notifications.Bandcamp ]: true,
+  [ SettingKey.Notifications.GooglePlayMusic ]: true,
+  [ SettingKey.Notifications.HboGo ]: true,
+  [ SettingKey.Notifications.Hulu ]: true,
+  [ SettingKey.Notifications.Netflix ]: true,
   [ SettingKey.Notifications.Pandora ]: true,
   [ SettingKey.Notifications.Spotify ]: true,
-  [ SettingKey.Notifications.Youtube ]: true,
-  [ SettingKey.Notifications.GooglePlayMusic ]: true,
-  [ SettingKey.Notifications.Bandcamp ]: true,
-  [ SettingKey.Notifications.Netflix ]: true,
-  [ SettingKey.Notifications.AmazonVideo ]: true,
-  [ SettingKey.Notifications.AmazonMusic ]: true,
-  [ SettingKey.Notifications.Hulu ]: true,
-  [ SettingKey.Notifications.GenericAudioVideo ]: true,
   [ SettingKey.Notifications.Twitch ]: true,
-  [ SettingKey.Notifications.HboGo ]: true,
+  [ SettingKey.Notifications.Youtube ]: true,
+  [ SettingKey.Notifications.GenericAudioVideo ]: true,
 
+  [ SettingKey.ControllersEnabled.AmazonMusic ]: true,
+  [ SettingKey.ControllersEnabled.AmazonVideo ]: true,
+  [ SettingKey.ControllersEnabled.Bandcamp ]: true,
+  [ SettingKey.ControllersEnabled.GooglePlayMusic ]: true,
+  [ SettingKey.ControllersEnabled.HboGo ]: true,
+  [ SettingKey.ControllersEnabled.Hulu ]: true,
+  [ SettingKey.ControllersEnabled.Netflix ]: true,
   [ SettingKey.ControllersEnabled.Pandora ]: true,
   [ SettingKey.ControllersEnabled.Spotify ]: true,
-  [ SettingKey.ControllersEnabled.Youtube ]: true,
-  [ SettingKey.ControllersEnabled.GooglePlayMusic ]: true,
-  [ SettingKey.ControllersEnabled.Bandcamp ]: true,
-  [ SettingKey.ControllersEnabled.Netflix ]: true,
-  [ SettingKey.ControllersEnabled.AmazonVideo ]: true,
-  [ SettingKey.ControllersEnabled.AmazonMusic ]: true,
-  [ SettingKey.ControllersEnabled.Hulu ]: true,
-  [ SettingKey.ControllersEnabled.GenericAudioVideo ]: true,
   [ SettingKey.ControllersEnabled.Twitch ]: true,
-  [ SettingKey.ControllersEnabled.HboGo ]: true,
+  [ SettingKey.ControllersEnabled.Youtube ]: true,
+  [ SettingKey.ControllersEnabled.GenericAudioVideo ]: true,
 
+  [ SettingKey.ControllerColors.AmazonMusic ]: '#fd7c02',
+  [ SettingKey.ControllerColors.AmazonVideo ]: '#FF9900',
+  [ SettingKey.ControllerColors.Bandcamp ]: '#639AA9',
+  [ SettingKey.ControllerColors.GooglePlayMusic ]: '#ff5722',
+  [ SettingKey.ControllerColors.HboGo ]: '#0f0f0f',
+  [ SettingKey.ControllerColors.Hulu ]: '#66AA33',
+  [ SettingKey.ControllerColors.Netflix ]: '#e50914',
   [ SettingKey.ControllerColors.Pandora ]: '#455774',
   [ SettingKey.ControllerColors.Spotify ]: '#84bd00',
-  [ SettingKey.ControllerColors.Youtube ]: '#f12b24',
-  [ SettingKey.ControllerColors.GooglePlayMusic ]: '#ff5722',
-  [ SettingKey.ControllerColors.Bandcamp ]: '#639AA9',
-  [ SettingKey.ControllerColors.Netflix ]: '#e50914',
-  [ SettingKey.ControllerColors.AmazonVideo ]: '#FF9900',
-  [ SettingKey.ControllerColors.AmazonMusic ]: '#fd7c02',
-  [ SettingKey.ControllerColors.Hulu ]: '#66AA33',
-  [ SettingKey.ControllerColors.GenericAudioVideo ]: '#5b5b5b',
   [ SettingKey.ControllerColors.Twitch ]: '#6441A4',
-  [ SettingKey.ControllerColors.HboGo ]: '#0f0f0f',
+  [ SettingKey.ControllerColors.Youtube ]: '#f12b24',
+  [ SettingKey.ControllerColors.GenericAudioVideo ]: '#5b5b5b',
 
+  [ SettingKey.OpenInExisting.AmazonMusic ]: false,
+  [ SettingKey.OpenInExisting.AmazonVideo ]: false,
+  [ SettingKey.OpenInExisting.Bandcamp ]: false,
+  [ SettingKey.OpenInExisting.GooglePlayMusic ]: false,
+  [ SettingKey.OpenInExisting.HboGo ]: false,
+  [ SettingKey.OpenInExisting.Hulu ]: false,
+  [ SettingKey.OpenInExisting.Netflix ]: false,
   [ SettingKey.OpenInExisting.Pandora ]: false,
   [ SettingKey.OpenInExisting.Spotify ]: false,
-  [ SettingKey.OpenInExisting.Youtube ]: false,
-  [ SettingKey.OpenInExisting.GooglePlayMusic ]: false,
-  [ SettingKey.OpenInExisting.Bandcamp ]: false,
-  [ SettingKey.OpenInExisting.Netflix ]: false,
-  [ SettingKey.OpenInExisting.AmazonVideo ]: false,
-  [ SettingKey.OpenInExisting.AmazonMusic ]: false,
-  [ SettingKey.OpenInExisting.Hulu ]: false,
-  [ SettingKey.OpenInExisting.GenericAudioVideo ]: false,
   [ SettingKey.OpenInExisting.Twitch ]: false,
-  [ SettingKey.OpenInExisting.HboGo ]: false,
+  [ SettingKey.OpenInExisting.Youtube ]: false,
+  [ SettingKey.OpenInExisting.GenericAudioVideo ]: false,
 
   [ SettingKey.Other.NoActiveWindowNotifications ]: false,
   [ SettingKey.Other.DefaultSite ]: Sites.Youtube,
@@ -335,6 +335,7 @@ const DEFAULT_SETTINGS: SettingsType = {
   [ SettingKey.Controls.Other.SkipForwardAmount ]: 10,
   [ SettingKey.Controls.Other.DefaultPlaybackSpeed ]: 1.0,
 
+  [ SettingKey.Controls.MediaControls.Reset ]: 'r',
   [ SettingKey.Controls.MediaControls.MuchSlower ]: '',
   [ SettingKey.Controls.MediaControls.Slower ]: 's',
   [ SettingKey.Controls.MediaControls.SkipBackward ]: '',
@@ -342,10 +343,10 @@ const DEFAULT_SETTINGS: SettingsType = {
   [ SettingKey.Controls.MediaControls.SkipForward ]: '',
   [ SettingKey.Controls.MediaControls.Faster ]: 'd',
   [ SettingKey.Controls.MediaControls.MuchFaster ]: '',
-  [ SettingKey.Controls.MediaControls.Reset ]: 'r',
   [ SettingKey.Controls.MediaControls.Loop ]: '',
   [ SettingKey.Controls.MediaControls.Fullscreen ]: '',
 
+  [ SettingKey.Controls.OverlayControls.Reset ]: true,
   [ SettingKey.Controls.OverlayControls.MuchSlower ]: true,
   [ SettingKey.Controls.OverlayControls.Slower ]: true,
   [ SettingKey.Controls.OverlayControls.SkipBackward ]: true,
@@ -353,24 +354,23 @@ const DEFAULT_SETTINGS: SettingsType = {
   [ SettingKey.Controls.OverlayControls.SkipForward ]: true,
   [ SettingKey.Controls.OverlayControls.Faster ]: true,
   [ SettingKey.Controls.OverlayControls.MuchFaster ]: true,
-  [ SettingKey.Controls.OverlayControls.Reset ]: true,
   [ SettingKey.Controls.OverlayControls.Loop ]: true,
   [ SettingKey.Controls.OverlayControls.Fullscreen ]: true,
 };
 
 const SITE_TO_URL: { [ key in Sites ]: string } = {
+  AmazonMusic: 'https://music.amazon.com/',
+  AmazonVideo: 'https://www.amazon.com/gp/video/getstarted/',
+  Bandcamp: 'https://bandcamp.com/',
+  GooglePlayMusic: 'https://play.google.com/music/',
+  HboGo: 'https://play.hbogo.com/',
+  Hulu: 'http://www.hulu.com/',
+  Netflix: 'https://www.netflix.com/',
   Pandora: 'http://www.pandora.com/',
   Spotify: 'https://play.spotify.com/',
-  Youtube: 'https://www.youtube.com/',
-  GooglePlayMusic: 'https://play.google.com/music/',
-  Bandcamp: 'https://bandcamp.com/',
-  Netflix: 'https://www.netflix.com/',
-  AmazonVideo: 'https://www.amazon.com/gp/video/getstarted/',
-  AmazonMusic: 'https://music.amazon.com/',
-  Hulu: 'http://www.hulu.com/',
-  GenericAudioVideo: '',
   Twitch: 'https://www.twitch.tv/',
-  HboGo: 'https://play.hbogo.com/',
+  Youtube: 'https://www.youtube.com/',
+  GenericAudioVideo: '',
 };
 
 export function siteToUrl( site: Sites )

@@ -12,6 +12,7 @@ const KEYBOARD_SHORTCUTS: Array<{
   description: string,
   allowHiding: boolean,
 }> = [
+    { shortcutSetting: SettingKey.Controls.MediaControls.Reset, overlaySetting: SettingKey.Controls.OverlayControls.Reset, description: 'Playback Speed Reset', allowHiding: false },
     { shortcutSetting: SettingKey.Controls.MediaControls.MuchSlower, overlaySetting: SettingKey.Controls.OverlayControls.MuchSlower, description: 'Playback Speed Much Slower', allowHiding: true },
     { shortcutSetting: SettingKey.Controls.MediaControls.Slower, overlaySetting: SettingKey.Controls.OverlayControls.Slower, description: 'Playback Speed Slower', allowHiding: true },
     { shortcutSetting: SettingKey.Controls.MediaControls.SkipBackward, overlaySetting: SettingKey.Controls.OverlayControls.SkipBackward, description: 'Skip Backward', allowHiding: true },
@@ -19,7 +20,6 @@ const KEYBOARD_SHORTCUTS: Array<{
     { shortcutSetting: SettingKey.Controls.MediaControls.SkipForward, overlaySetting: SettingKey.Controls.OverlayControls.SkipForward, description: 'Skip Forward', allowHiding: true },
     { shortcutSetting: SettingKey.Controls.MediaControls.Faster, overlaySetting: SettingKey.Controls.OverlayControls.Faster, description: 'Playback Speed Faster', allowHiding: true },
     { shortcutSetting: SettingKey.Controls.MediaControls.MuchFaster, overlaySetting: SettingKey.Controls.OverlayControls.MuchFaster, description: 'Playback Speed Much Faster', allowHiding: true },
-    { shortcutSetting: SettingKey.Controls.MediaControls.Reset, overlaySetting: SettingKey.Controls.OverlayControls.Reset, description: 'Playback Speed Reset', allowHiding: false },
     { shortcutSetting: SettingKey.Controls.MediaControls.Loop, overlaySetting: SettingKey.Controls.OverlayControls.Loop, description: 'Loop', allowHiding: true },
     { shortcutSetting: SettingKey.Controls.MediaControls.Fullscreen, overlaySetting: SettingKey.Controls.OverlayControls.Fullscreen, description: 'Fullscreen', allowHiding: true },
   ];
