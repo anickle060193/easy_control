@@ -1,7 +1,7 @@
 {
   "name": "easy_control",
   "displayName": "East Control",
-  "version": "1.28.0",
+  "version": "2.0.0",
   "description": "An extension that allows easy control of various media streaming websites.",
   "main": "index.js",
   "repository": "https://github.com/anickle060193/easy_control.git",
