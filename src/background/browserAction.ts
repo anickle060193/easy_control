@@ -1,8 +1,8 @@
 import { BackgroundController } from 'background/controller';
 
-const ICON_WIDTH = 38;
-const ICON_HEIGHT = 38;
-const ICON_PROGRESS_BAR_THICKNESS = ICON_HEIGHT * 0.1;
+const ICON_WIDTH = 32;
+const ICON_HEIGHT = 32;
+const ICON_PROGRESS_BAR_THICKNESS = Math.max( ICON_HEIGHT * 0.1, 1 );
 
 function drawPause( context: CanvasRenderingContext2D, color: string )
 {
@@ -39,7 +39,14 @@ export function updateBrowserActionIcon( controller: BackgroundController | null
 {
   if( !controller )
   {
-    chrome.browserAction.setIcon( { path: { 19: 'icon19.png', 38: 'icon38.png' } } );
+    chrome.browserAction.setIcon( {
+      path: {
+        16: 'icon16.png',
+        32: 'icon32.png',
+        64: 'icon64.png',
+        128: 'icon128.png',
+      }
+    } );
     chrome.browserAction.setTitle( { title: 'Easy Control' } );
   }
   else
