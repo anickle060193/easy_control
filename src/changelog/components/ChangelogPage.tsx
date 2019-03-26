@@ -206,6 +206,14 @@ class ChangelogPage extends React.Component<WithStyles<typeof pageStyles>>
 
         <Paper className={classes.paper}>
 
+          <ChangelogVersion version="2.1.0">
+            <ChangelogEntry changeType="enhancement" text="Do not show media overlay controls is video is not visible." />
+            <ChangelogEntry changeType="bug" text="Fix Youtube channel page vidoes not being handled correctly." />
+            <ChangelogEntry changeType="enhancement" text="Show snackbar message when attempting to use unsupported controller action." />
+            <ChangelogEntry changeType="enhancement" text="Confirm before resetting settings to defaults." />
+            <ChangelogEntry changeType="feature" text="Added support for HBO Go." issueNumber={26} />
+          </ChangelogVersion>
+
           <ChangelogVersion version="2.0.0">
             <ChangelogEntry changeType="enhancement" text="Improved extension icon." issueNumber={67} />
             <ChangelogEntry changeType="feature" text="Added default playback speed option." issueNumber={123} />
