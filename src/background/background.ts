@@ -8,12 +8,11 @@ chrome.runtime.onInstalled.addListener( async ( details ) =>
   if( details.reason === 'install' )
   {
     console.log( 'Installing version ' + version );
-    possiblyShowChangelog = true;
   }
   else if( details.reason === 'update' )
   {
     console.log( 'Updating to version ' + version );
-    possiblyShowChangelog = true;
+    possiblyShowChangelog = ( version !== details.previousVersion );
   }
   else
   {
@@ -28,4 +27,5 @@ chrome.runtime.onInstalled.addListener( async ( details ) =>
   {
     chrome.tabs.create( { url: chrome.runtime.getURL( 'changelog.html' ) } );
   }
+
 } );
