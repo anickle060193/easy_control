@@ -252,7 +252,7 @@ class MediaControllerOverlay extends React.Component<Props, State>
 
   public render()
   {
-    const { classes, allowsFullscreen } = this.props;
+    const { classes, media, allowsFullscreen } = this.props;
     const {
       displayControls, alwaysDisplayPlaybackSpeed, hideControlsWhenIdle,
       mediaSource, removed, paused, playbackRate, looping, fullscreen, hovering, idle
@@ -260,7 +260,8 @@ class MediaControllerOverlay extends React.Component<Props, State>
 
     if( !displayControls
       || removed
-      || !mediaSource )
+      || !mediaSource
+      || !media.offsetParent )
     {
       return null;
     }
@@ -556,11 +557,9 @@ class MediaControllerOverlay extends React.Component<Props, State>
   {
     let shortcut = getKeyboardShortcut( e );
 
-    if( !shortcut )
-    {
-      return true;
-    }
-    else if( !this.state.mediaSource )
+    if( !shortcut
+      || !this.state.mediaSource
+      || !this.props.media.offsetParent )
     {
       return true;
     }
