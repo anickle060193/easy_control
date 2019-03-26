@@ -84,9 +84,27 @@ class Selector<T extends HTMLElement>
     return new Selector( `${this.selector} ${selector}`, Array.from( matches ) );
   }
 
-  public parent()
+  public parent( selector?: string )
   {
-    return new Selector( `${this.selector}:parent`, this.match.map( ( el ) => el.parentElement ).filter( ( el ): el is HTMLElement => el instanceof HTMLElement ) );
+    let parents: Array<HTMLElement | null>;
+    if( !selector )
+    {
+      parents = this.match.map( ( el ) => el.parentElement );
+    }
+    else
+    {
+      parents = this.match.map( ( el ) =>
+      {
+        let p: HTMLElement | null = el;
+        while( p instanceof HTMLElement
+          && !p.matches( selector ) )
+        {
+          p = p.parentElement;
+        }
+        return p;
+      } );
+    }
+    return new Selector( `${this.selector}:parent( ${selector} )`, parents.filter( ( el ): el is HTMLElement => el instanceof HTMLElement ) );
   }
 
   public text()
@@ -181,9 +199,16 @@ class Selector<T extends HTMLElement>
   }
 }
 
-export function select<E extends HTMLElement = HTMLElement>( selector: string )
+export function select<E extends HTMLElement = HTMLElement>( selector: E | string )
 {
-  return new Selector<E>( selector, document.querySelectorAll<E>( selector ) );
+  if( selector instanceof HTMLElement )
+  {
+    return new Selector<E>( ':scope', [ selector ] );
+  }
+  else
+  {
+    return new Selector<E>( 'selector', document.querySelectorAll<E>( selector ) );
+  }
 }
 
 export function selectXPath<E extends HTMLElement = HTMLElement>( xpathSelector: string )

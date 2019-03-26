@@ -278,6 +278,8 @@ type HTMLControllableElement = ( HTMLAudioElement | HTMLVideoElement ) & {
 
 function registerNewMediaCallback( controllerCreatorCallback: ControllerCreatorCallback )
 {
+  let previousMedia: Set<HTMLAudioElement | HTMLVideoElement> = new Set();
+
   function addMedia( element: HTMLElement )
   {
     if( !( element instanceof HTMLAudioElement
@@ -315,53 +317,32 @@ function registerNewMediaCallback( controllerCreatorCallback: ControllerCreatorC
     delete ( element as HTMLControllableElement )[ 'easy-control--controller' ];
   }
 
-  function findMediaElements( node: Node ): Array<HTMLAudioElement | HTMLVideoElement>
+  function onUpdate()
   {
-    if( node instanceof HTMLAudioElement
-      || node instanceof HTMLVideoElement )
-    {
-      return [ node ];
-    }
-    else if( node instanceof HTMLElement
-      || node instanceof Document )
-    {
-      return Array.from( node.querySelectorAll<HTMLAudioElement | HTMLVideoElement>( 'audio, video' ) );
-    }
-    else
-    {
-      return [];
-    }
-  }
+    let currentMediaElements = new Set( Array.from( document.querySelectorAll<HTMLAudioElement | HTMLVideoElement>( 'audio, video' ) ) );
 
-  for( let element of findMediaElements( document ) )
-  {
-    addMedia( element );
-  }
+    let allMediaElements = new Set<HTMLAudioElement | HTMLVideoElement>( [ ...currentMediaElements, ...previousMedia ] );
 
-  doc.addEventListener( 'change:src', ( { detail: mutations } ) =>
-  {
-    for( let mutation of mutations )
+    for( let media of allMediaElements )
     {
-      let modifiedNodes = Array.from( mutation.addedNodes );
-      modifiedNodes.push( mutation.target );
-
-      for( let modifiedNode of modifiedNodes )
+      if( previousMedia.has( media )
+        && !currentMediaElements.has( media ) )
       {
-        for( let element of findMediaElements( modifiedNode ) )
-        {
-          addMedia( element );
-        }
+        removeMedia( media );
       }
-
-      for( let removedNode of Array.from( mutation.removedNodes ) )
+      else if( !previousMedia.has( media )
+        && currentMediaElements.has( media ) )
       {
-        for( let element of findMediaElements( removedNode ) )
-        {
-          removeMedia( element );
-        }
+        addMedia( media );
       }
     }
-  } );
+
+    previousMedia = currentMediaElements;
+  }
+
+  doc.addEventListener( 'change:src', onUpdate );
+
+  onUpdate();
 }
 
 export function createMultiMediaListener( name: string, controllerCreatorCallback: ControllerCreatorCallback )
