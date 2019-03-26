@@ -134,11 +134,6 @@ class PandoraController extends Controller
       return null;
     }
   }
-
-  protected openContentLink( contentLink: string )
-  {
-    console.log( 'openContentLink is not supported.' );
-  }
 }
 
 settings.initialize().then( () =>

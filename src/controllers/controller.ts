@@ -1,6 +1,7 @@
 import { ContentInfo } from 'common/content';
 import { createControllerInitializeMessage, Message, MessageTypes, createStatusMessage, createNewContentMessage, SupportedOperations } from 'common/message';
 import { Sites } from 'common/settings';
+import showSnackbar from 'common/components/snackbar';
 
 // tslint:disable:member-ordering
 export abstract class Controller
@@ -247,17 +248,17 @@ export abstract class Controller
 
   protected previous()
   {
-    console.log( 'previous is not supported' );
+    showSnackbar( 'Previous is not supported for this controller.' );
   }
 
   protected next()
   {
-    console.log( 'next is not supported' );
+    showSnackbar( 'Next is not supported for this controller.' );
   }
 
   protected likeImpl()
   {
-    console.log( 'like not supported.' );
+    showSnackbar( 'Like is not supported for this controller.' );
   }
 
   protected like()
@@ -270,7 +271,7 @@ export abstract class Controller
 
   protected unlikeImpl()
   {
-    console.log( 'unlike not supported.' );
+    showSnackbar( 'Unlike is not supported for this controller.' );
   }
 
   protected unlike()
@@ -283,7 +284,7 @@ export abstract class Controller
 
   protected dislikeImpl()
   {
-    console.log( 'dislike not supported.' );
+    showSnackbar( 'Dislike is not supported for this controller.' );
   }
 
   protected dislike()
@@ -296,7 +297,7 @@ export abstract class Controller
 
   protected undislikeImpl()
   {
-    console.log( 'undislike not supported.' );
+    showSnackbar( 'Undislike is not supported for this controller.' );
   }
 
   protected undislike()
@@ -335,12 +336,12 @@ export abstract class Controller
 
   protected volumeUp()
   {
-    console.log( 'volumeUp is not supported' );
+    showSnackbar( 'Volume-up is not supported for this controller.' );
   }
 
   protected volumeDown()
   {
-    console.log( 'volumeDown is not supported' );
+    showSnackbar( 'Volume-down is not supported for this controller.' );
   }
 
   protected openContentLink( contentLink: string )

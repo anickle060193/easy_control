@@ -3,6 +3,7 @@ import { MediaController, createMultiMediaListener } from 'controllers/media_con
 import { Sites, SettingKey, settings } from 'common/settings';
 import { select } from 'common/selector';
 import { ContentInfo } from 'common/content';
+import showSnackbar from 'common/components/snackbar';
 
 class AudioVideoController extends MediaController
 {
@@ -30,7 +31,7 @@ class AudioVideoController extends MediaController
 
   protected openContentLink( contentLink: string )
   {
-    console.log( 'openContentLink is not supported' );
+    showSnackbar( 'Opening content link is not supported for this controller.' );
   }
 }
 
