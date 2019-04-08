@@ -87,7 +87,7 @@ export abstract class MediaController extends Controller
       return;
     }
 
-    if( !this.isVideo )
+    if( !( this.media instanceof HTMLVideoElement ) )
     {
       return;
     }
@@ -334,6 +334,16 @@ function registerNewMediaCallback( controllerCreatorCallback: ControllerCreatorC
         && currentMediaElements.has( media ) )
       {
         addMedia( media );
+      }
+    }
+
+    for( let media of currentMediaElements )
+    {
+      let controllerMedia = media as HTMLControllableElement;
+      let controller = controllerMedia[ 'easy-control--controller' ];
+      if( controller )
+      {
+        controller.updateControls();
       }
     }
 

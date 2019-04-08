@@ -123,7 +123,7 @@ const MediaControl: React.SFC<{
 
 interface OwnProps
 {
-  media: HTMLMediaElement;
+  media: HTMLVideoElement;
   mediaContainer: HTMLElement | null;
   allowsFullscreen: boolean;
   onSkipBackward: () => void;
@@ -210,11 +210,8 @@ class MediaControllerOverlay extends React.Component<Props, State>
     this.props.media.addEventListener( 'playing', this.onMediaPlayingPaused );
     this.props.media.addEventListener( 'pause', this.onMediaPlayingPaused );
 
-    if( this.props.media instanceof HTMLVideoElement )
-    {
-      this.props.media.addEventListener( 'mouseenter', this.onMediaMouseEnter );
-      this.props.media.addEventListener( 'mouseleave', this.onMediaMouseLeave );
-    }
+    this.props.media.addEventListener( 'mouseenter', this.onMediaMouseEnter );
+    this.props.media.addEventListener( 'mouseleave', this.onMediaMouseLeave );
 
     settings.addOnChangeListener( this.onSettingsChange );
 
