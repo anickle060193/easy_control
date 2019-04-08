@@ -206,6 +206,10 @@ class ChangelogPage extends React.Component<WithStyles<typeof pageStyles>>
 
         <Paper className={classes.paper}>
 
+          <ChangelogVersion version="2.2.0">
+            <ChangelogEntry changeType="enhancement" text="Improving media controls overlay updating." />
+          </ChangelogVersion>
+
           <ChangelogVersion version="2.1.0">
             <ChangelogEntry changeType="enhancement" text="Do not show media overlay controls is video is not visible." />
             <ChangelogEntry changeType="bug" text="Fix Youtube channel page vidoes not being handled correctly." />
