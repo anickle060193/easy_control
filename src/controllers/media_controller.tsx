@@ -162,10 +162,10 @@ export abstract class MediaController extends Controller
 
   private onSkipBackwardScope = () =>
   {
-    this.onSkipBackward();
+    this.skipBackward();
   }
 
-  protected onSkipBackward()
+  protected skipBackward()
   {
     this.media.currentTime -= settings.get( SettingKey.Controls.Other.SkipBackwardAmount );
   }
@@ -184,10 +184,10 @@ export abstract class MediaController extends Controller
 
   private onSkipForwardScope = () =>
   {
-    this.onSkipForward();
+    this.skipForward();
   }
 
-  protected onSkipForward()
+  protected skipForward()
   {
     this.media.currentTime += settings.get( SettingKey.Controls.Other.SkipForwardAmount );
   }

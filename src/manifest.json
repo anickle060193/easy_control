@@ -179,6 +179,12 @@
     "3_previous": {
       "description": "Previous"
     },
+    "3a_skip_backward": {
+      "description": "Skip Backward"
+    },
+    "3b_skip_forward": {
+      "description": "Skip Forward"
+    },
     "4_like": {
       "description": "Like"
     },

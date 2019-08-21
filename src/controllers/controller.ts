@@ -99,6 +99,16 @@ export abstract class Controller
       console.log( 'Recieved: PREVIOUS' );
       this.previous();
     }
+    else if( message.type === MessageTypes.FromBackground.SkipBackward )
+    {
+      console.log( 'Recieved: SKIP BACKWARD' );
+      this.skipBackward();
+    }
+    else if( message.type === MessageTypes.FromBackground.SkipForward )
+    {
+      console.log( 'Recieved: SKIP FORWARD' );
+      this.skipForward();
+    }
     else if( message.type === MessageTypes.FromBackground.Dislike )
     {
       console.log( 'Recieved: DISLIKE' );
@@ -254,6 +264,16 @@ export abstract class Controller
   protected next()
   {
     showSnackbar( 'Next is not supported for this controller.' );
+  }
+
+  protected skipBackward()
+  {
+    showSnackbar( 'Skip backward is not supported for this controller.' );
+  }
+
+  protected skipForward()
+  {
+    showSnackbar( 'Skip forward is not supported for this controller.' );
   }
 
   protected likeImpl()

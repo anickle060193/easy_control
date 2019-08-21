@@ -1,67 +1,65 @@
-import
-{
-  playPauseCurrentController,
-  nextCurrentController,
-  previousCurrentController,
-  likeCurrentController,
-  unlikeCurrentController,
-  dislikeCurrentController,
-  undislikeCurrentController,
-  volumeUpCurrentController,
-  volumeDownCurrentController,
-  copyCurrentControllerContentLink
-} from 'background/controllers';
+import * as controllers from 'background/controllers';
 
 chrome.browserAction.onClicked.addListener( () =>
 {
   console.log( 'BrowserAction clicked' );
-  playPauseCurrentController();
+  controllers.playPauseCurrentController();
 } );
 
 chrome.commands.onCommand.addListener( ( command ) =>
 {
+  console.log( 'Command Received:', command );
+
   if( command === '1_play_pause' )
   {
-    playPauseCurrentController();
+    controllers.playPauseCurrentController();
   }
   else if( command === '2_next' )
   {
-    nextCurrentController();
+    controllers.nextCurrentController();
   }
   else if( command === '3_previous' )
   {
-    previousCurrentController();
+    controllers.previousCurrentController();
+  }
+  else if( command === '3a_skip_backward' )
+  {
+    controllers.skipBackwardCurrentController();
+  }
+  else if( command === '3b_skip_forward' )
+  {
+    controllers.skipForwardCurrentController();
   }
   else if( command === '4_like' )
   {
-    likeCurrentController();
+    controllers.likeCurrentController();
   }
   else if( command === '5_unlike' )
   {
-    unlikeCurrentController();
+    controllers.unlikeCurrentController();
   }
   else if( command === '6_dislike' )
   {
-    dislikeCurrentController();
+    controllers.dislikeCurrentController();
   }
   else if( command === '7_undislike' )
   {
-    undislikeCurrentController();
+    controllers.undislikeCurrentController();
   }
   else if( command === '8_volume_up' )
   {
-    volumeUpCurrentController();
+    controllers.volumeUpCurrentController();
   }
   else if( command === '9_volume_down' )
   {
-    volumeDownCurrentController();
+    controllers.volumeDownCurrentController();
   }
   else if( command === 'a_copy_content_link' )
   {
-    copyCurrentControllerContentLink();
+    controllers.copyCurrentControllerContentLink();
   }
   else
   {
-    console.log( 'Unrecognized Command:', command );
+    console.warn( 'Unrecognized Command:', command );
   }
 } );

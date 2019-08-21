@@ -15,6 +15,8 @@ export namespace MessageTypes
     Play = 'from_background.play',
     Next = 'from_background.next',
     Previous = 'from_background.previous',
+    SkipBackward = 'from_background.skip_backward',
+    SkipForward = 'from_background.skip_forward',
     Like = 'from_background.like',
     Unlike = 'from_background.unlike',
     Dislike = 'from_background.dislike',
@@ -62,6 +64,8 @@ type BasicMessageType = (
   MessageTypes.FromBackground.Play |
   MessageTypes.FromBackground.Next |
   MessageTypes.FromBackground.Previous |
+  MessageTypes.FromBackground.SkipBackward |
+  MessageTypes.FromBackground.SkipForward |
   MessageTypes.FromBackground.Like |
   MessageTypes.FromBackground.Unlike |
   MessageTypes.FromBackground.Dislike |

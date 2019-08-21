@@ -98,6 +98,16 @@ export class BackgroundController
     this.port.postMessage( createBasicMessage( MessageTypes.FromBackground.Previous ) );
   }
 
+  public skipBackward()
+  {
+    this.port.postMessage( createBasicMessage( MessageTypes.FromBackground.SkipBackward ) );
+  }
+
+  public skipForward()
+  {
+    this.port.postMessage( createBasicMessage( MessageTypes.FromBackground.SkipForward ) );
+  }
+
   public like()
   {
     this.port.postMessage( createBasicMessage( MessageTypes.FromBackground.Like ) );

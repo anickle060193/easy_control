@@ -122,6 +122,22 @@ export function previousCurrentController()
   }
 }
 
+export function skipBackwardCurrentController()
+{
+  if( currentController )
+  {
+    currentController.skipBackward();
+  }
+}
+
+export function skipForwardCurrentController()
+{
+  if( currentController )
+  {
+    currentController.skipForward();
+  }
+}
+
 export function likeCurrentController()
 {
   if( currentController )
