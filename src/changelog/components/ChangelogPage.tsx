@@ -206,6 +206,10 @@ class ChangelogPage extends React.Component<WithStyles<typeof pageStyles>>
 
         <Paper className={classes.paper}>
 
+          <ChangelogVersion version="2.3.0">
+            <ChangelogEntry changeType="enhancement" text="Added Skip Forward and Skip Backward to extension keyboard shortcuts." issueNumber={126} />
+          </ChangelogVersion>
+
           <ChangelogVersion version="2.2.0">
             <ChangelogEntry changeType="enhancement" text="Improving media controls overlay updating." />
           </ChangelogVersion>
