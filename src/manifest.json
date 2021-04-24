@@ -1,0 +1,85 @@
+{
+  "manifest_version": 2,
+  "minimum_chrome_version": "49",
+  "icons": {
+    "16": "assets/icon16.png",
+    "32": "assets/icon32.png",
+    "64": "assets/icon64.png",
+    "128": "assets/icon128.png"
+  },
+  "permissions": [
+    "clipboardWrite",
+    "contextMenus",
+    "idle",
+    "notifications",
+    "storage",
+    "tabs",
+    "http://*/",
+    "https://*/"
+  ],
+  "content_security_policy": "default-src 'none'; script-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.pandora.com/ https://*.p-cdn.com/ https://*.p-cdn.us/ https://*.scdn.co/ https://*.cloudfront.net/ https://*.googleusercontent.com/ https://*.ggpht.com/ https://*.bcbits.com/ https://*.ssl-images-amazon.com/ https://*.amazonaws.com/ https://*.media-amazon.com/images/ https://*.ssl-images-amazon.com/images/ https://static-cdn.jtvnw.net/ https://*.hulu.com/",
+  "web_accessible_resources": [],
+  "browser_action": {
+    "default_icon": {
+      "16": "assets/icon16.png",
+      "32": "assets/icon32.png",
+      "64": "assets/icon64.png",
+      "128": "assets/icon128.png"
+    }
+  },
+  "background": {
+    "persistent": true,
+    "scripts": [
+      "background.bundle.js"
+    ]
+  },
+  "options_page": "options.html",
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.bundle.js"
+      ]
+    }
+  ],
+  "commands": {
+    "1_play_pause": {
+      "description": "Plays/Pause"
+    },
+    "2_next": {
+      "description": "Next"
+    },
+    "3_previous": {
+      "description": "Previous"
+    },
+    "3a_skip_backward": {
+      "description": "Skip Backward"
+    },
+    "3b_skip_forward": {
+      "description": "Skip Forward"
+    },
+    "4_like": {
+      "description": "Like"
+    },
+    "5_unlike": {
+      "description": "Unlike"
+    },
+    "6_dislike": {
+      "description": "Dislike"
+    },
+    "7_undislike": {
+      "description": "Undislike"
+    },
+    "8_volume_up": {
+      "description": "Volume Up"
+    },
+    "9_volume_down": {
+      "description": "Volume Down"
+    },
+    "a_copy_content_link": {
+      "description": "Copy current content link"
+    }
+  }
+}
