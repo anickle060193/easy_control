@@ -4,10 +4,11 @@
       "@babel/preset-env",
       {
         "useBuiltIns": "usage",
-        "corejs": "3.11.0"
+        "corejs": "3.11.0",
+        "shippedProposals": true
       }
     ],
-    "@babel/preset-typescript",
-    "@babel/preset-react"
+    "@babel/preset-react",
+    "@babel/preset-typescript"
   ]
 }

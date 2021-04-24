@@ -2,7 +2,7 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "rootDir": "./",
-    "baseUrl": "./",
+    "baseUrl": "../",
     "types": [
       "chrome"
     ]
