@@ -10,6 +10,7 @@ const src = path.resolve( root, 'src' );
 
 const config: webpack.Configuration = {
   entry: {
+    background: path.resolve( src, 'background', 'index.ts' ),
     content: path.resolve( src, 'content', 'index.ts' ),
   },
   output: {
@@ -32,6 +33,7 @@ const config: webpack.Configuration = {
     new CleanWebpackPlugin(),
     new ForkTsCheckerWebpackPlugin( {
       typescript: {
+        configFile: path.resolve( src, 'tsconfig.json' ),
         diagnosticOptions: {
           semantic: true,
           syntactic: true,

@@ -1,7 +1,8 @@
-import Controller from './controller';
-import { onReady } from './util';
+import { BackgroundMessage, BackgroundMessageId } from '../common/background_messages';
+import { ContentMessageId, UpdateContentMessage } from '../common/content_messages';
 
-import { controller as pandoraController } from './controllers/pandora';
+import { onReady } from './util';
+import CONTROLLERS from './config';
 
 type UrlMatch = string | RegExp | UrlMatch[];
 
@@ -21,42 +22,45 @@ function urlMatches( matches: UrlMatch, url: string ): boolean
   }
 }
 
-interface ControllerConfig
-{
-  label: string;
-  matches: UrlMatch;
-  controller: Controller;
-}
-
-const CONTROLLERS: ControllerConfig[] = [
-  {
-    label: 'Pandora',
-    matches: /^https:\/\/www.pandora.com(\/.*)?$/,
-    controller: pandoraController,
-  },
-];
-
 onReady( () =>
 {
-  for( const { label, matches, controller } of CONTROLLERS )
+  const c = CONTROLLERS.find( ( { matches } ) => urlMatches( matches, window.location.href ) );
+  if( !c )
   {
-    try
-    {
-      if( urlMatches( matches, window.location.href ) )
-      {
-        console.log( 'Found matching controller:', label, controller );
-
-        controller.registerListener( () =>
-        {
-          console.log( 'Controller update:', label, controller.isPlaying() );
-        } );
-
-        return;
-      }
-    }
-    catch( e )
-    {
-      console.error( 'Failed to match controller:', e );
-    }
+    return;
   }
-});
+
+  const { label, controller } = c;
+  console.log( 'Found matching controller:', label, controller );
+
+  const port = chrome.runtime.connect( { name: label } );
+  console.log( 'Connected port for', label, ':', port );
+
+  const unregister = controller.registerListener( () =>
+  {
+    const message: UpdateContentMessage = {
+      id: ContentMessageId.Update,
+      playing: controller.isPlaying(),
+    };
+    port.postMessage( message );
+  } );
+
+  port.onMessage.addListener( ( message: BackgroundMessage ) =>
+  {
+    if( message.id === BackgroundMessageId.Pause )
+    {
+      console.log( 'Pausing', label );
+      controller.pause();
+    }
+    else
+    {
+      console.warn( 'Unknown message:', message );
+    }
+  } );
+
+  port.onDisconnect.addListener( ( p ) =>
+  {
+    console.log( 'Port disconnected for', label, p );
+    unregister();
+  } );
+} );

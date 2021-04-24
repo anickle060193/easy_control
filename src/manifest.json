@@ -27,6 +27,12 @@
       "128": "assets/icon128.png"
     }
   },
+  "background": {
+    "persistent": false,
+    "scripts": [
+      "background.bundle.js"
+    ]
+  },
   "content_scripts": [
     {
       "matches": [

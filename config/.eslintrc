@@ -1,9 +1,0 @@
-{
-  "root": false,
-  "extends": [
-    "../.eslintrc"
-  ],
-  "parserOptions": {
-    "project": "./tsconfig.json"
-  }
-}

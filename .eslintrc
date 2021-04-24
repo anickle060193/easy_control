@@ -32,6 +32,10 @@
       "warn",
       2
     ],
+    "space-in-parens": [
+      "warn",
+      "always"
+    ],
     "semi": [
       "error",
       "always"
