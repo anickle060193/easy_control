@@ -1,6 +1,8 @@
+import { updateBrowserActionIcon } from './browserAction';
+import { BackgroundController } from './controller';
+
 import { BackgroundMessage, BackgroundMessageId } from '../common/background_messages';
 import { ContentMessage, ContentMessageId } from '../common/content_messages';
-import { BackgroundController } from './controller';
 
 const controllers: BackgroundController[] = [];
 
@@ -23,6 +25,8 @@ export default (): void =>
     {
       if( message.id === ContentMessageId.Update )
       {
+        const previousCurrentController = getCurrentController();
+
         const startedPlaying = ( message.mediaInfo.playing && !controller.mediaInfo.playing );
         const mediaChanged = (
           controller.mediaInfo.track !== message.mediaInfo.track
@@ -33,12 +37,12 @@ export default (): void =>
 
         if( startedPlaying )
         {
-          console.log( 'Controller started playing:', controller );
+          console.log( 'Controller started playing:', controller.name, controller, message );
 
           const index = controllers.indexOf( controller );
           if( index >= 0 )
           {
-            controllers.slice( index, 1 );
+            controllers.splice( index, 1 );
           }
           controllers.push( controller );
 
@@ -57,10 +61,9 @@ export default (): void =>
 
         if( mediaChanged
         && message.mediaInfo.track
-        && message.mediaInfo
         && message.mediaInfo.artwork )
         {
-          console.log( 'Media changed:', controller  , message );
+          console.log( 'Media changed:', controller.name, controller  , message );
           chrome.notifications.create( {
             type: 'basic',
             silent: true,
@@ -74,10 +77,17 @@ export default (): void =>
         controller.mediaInfo = {
           ...message.mediaInfo,
         };
+
+        const currentController = getCurrentController();
+        if( controller === currentController
+        || currentController !== previousCurrentController )
+        {
+          updateBrowserActionIcon();
+        }
       }
       else
       {
-        console.warn( 'Unknown message:', message );
+        console.warn( 'Unknown message:', controller.name, message );
       }
     } );
 
@@ -88,6 +98,10 @@ export default (): void =>
       if( index >= 0 )
       {
         controllers.splice( index, 1 );
+      }
+      else
+      {
+        console.warn( 'Failed to remove disconnected port:', controller.name, controller );
       }
     } );
   } );

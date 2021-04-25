@@ -1,6 +1,8 @@
 import { BackgroundMessage, BackgroundMessageId } from '../common/background_messages';
 import { MediaInfo } from '../common/controllers';
 
+let controllerCount = 0;
+
 export class BackgroundController
 {
   public readonly name: string;
@@ -10,7 +12,7 @@ export class BackgroundController
     public readonly port: chrome.runtime.Port
   )
   {
-    this.name = port.name;
+    this.name = `${port.name}-${++controllerCount}`;
     this.mediaInfo = {
       playing: false,
       track: null,
