@@ -53,39 +53,37 @@ export default (): void =>
           }
         }
 
-        if( message.mediaInfo.playing )
+        const fields: ( keyof BackgroundController[ 'mediaInfo' ] )[] = [ 'track' ];
+
+        let mediaChangedField: keyof BackgroundController[ 'mediaInfo' ] | null = null;
+        for( const field of fields )
         {
-          const fields: ( keyof BackgroundController[ 'mediaInfo' ] )[] = [ 'track' ];
-
-          let mediaChangedField: keyof BackgroundController[ 'mediaInfo' ] | null = null;
-          for( const field of fields )
+          if( controller.mediaInfo[ field ] !== message.mediaInfo[ field ] )
           {
-            if( controller.mediaInfo[ field ] !== message.mediaInfo[ field ] )
-            {
-              mediaChangedField = field;
-              break;
-            }
+            mediaChangedField = field;
+            break;
           }
-
-          if( mediaChangedField
-          && message.mediaInfo.track
-          && message.mediaInfo.artwork )
-          {
-            console.log( 'Media changed:', controller.name, mediaChangedField, ':', controller.mediaInfo[ mediaChangedField ], '->', message.mediaInfo[ mediaChangedField ], controller, message );
-            chrome.notifications.create( {
-              type: 'basic',
-              silent: true,
-              title: message.mediaInfo.track,
-              message: message.mediaInfo.artist ?? undefined,
-              contextMessage: message.mediaInfo.album ?? undefined,
-              iconUrl: message.mediaInfo.artwork,
-            } );
-          }
-
-          controller.mediaInfo = {
-            ...message.mediaInfo,
-          };
         }
+
+        if( message.mediaInfo.playing
+        && mediaChangedField
+        && message.mediaInfo.track
+        && message.mediaInfo.artwork )
+        {
+          console.log( 'Media changed:', controller.name, mediaChangedField, ':', controller.mediaInfo[ mediaChangedField ], '->', message.mediaInfo[ mediaChangedField ], controller, message );
+          chrome.notifications.create( {
+            type: 'basic',
+            silent: true,
+            title: message.mediaInfo.track,
+            message: message.mediaInfo.artist ?? undefined,
+            contextMessage: message.mediaInfo.album ?? undefined,
+            iconUrl: message.mediaInfo.artwork,
+          } );
+        }
+
+        controller.mediaInfo = {
+          ...message.mediaInfo,
+        };
 
         const currentController = getCurrentController();
         if( controller === currentController
