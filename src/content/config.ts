@@ -2,6 +2,7 @@ import Controller from './controller';
 
 import { controller as pandoraController } from './controllers/pandora';
 import { controller as youtubeController } from './controllers/youtube';
+import { controller as spotifyController } from './controllers/spotify';
 
 type UrlMatch = string | RegExp | UrlMatch[];
 
@@ -22,6 +23,11 @@ const CONTROLLERS: ControllerConfig[] = [
     label: 'Youtube',
     matches: /^https:\/\/www.youtube.com(\/.*)?$/i,
     controller: youtubeController,
+  },
+  {
+    label: 'Spotify',
+    matches: /^https:\/\/[^.]+.spotify.com(\/.*)?$/i,
+    controller: spotifyController,
   },
 ];
 

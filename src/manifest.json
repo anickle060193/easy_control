@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "minimum_chrome_version": "49",
+  "minimum_chrome_version": "73",
   "icons": {
     "16": "assets/icon16.png",
     "32": "assets/icon32.png",
@@ -17,7 +17,7 @@
     "http://*/",
     "https://*/"
   ],
-  "content_security_policy": "default-src 'none'; script-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.pandora.com/ https://*.p-cdn.com/ https://*.p-cdn.us/ https://*.scdn.co/ https://*.cloudfront.net/ https://*.googleusercontent.com/ https://*.ggpht.com/ https://*.bcbits.com/ https://*.ssl-images-amazon.com/ https://*.amazonaws.com/ https://*.media-amazon.com/images/ https://*.ssl-images-amazon.com/images/ https://static-cdn.jtvnw.net/ https://*.hulu.com/",
+  "content_security_policy": "default-src 'none'; script-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.pandora.com/ https://*.p-cdn.com/ https://*.p-cdn.us/ https://*.scdn.co/ https://*.cloudfront.net/ https://*.googleusercontent.com/ https://*.ggpht.com/ https://*.bcbits.com/ https://*.ssl-images-amazon.com/ https://*.amazonaws.com/ https://*.media-amazon.com/images/ https://*.ssl-images-amazon.com/images/ https://static-cdn.jtvnw.net/ https://*.hulu.com/ https://i.ytimg.com/",
   "web_accessible_resources": [],
   "browser_action": {
     "default_icon": {

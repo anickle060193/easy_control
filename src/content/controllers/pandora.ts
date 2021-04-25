@@ -1,11 +1,45 @@
 import Controller from '../controller';
 
-export const controller = new Controller();
+export const controller = new Controller( {
+  mediaSelector: 'audio:last-of-type',
 
-controller.mediaSelector = 'audio:last-of-type';
-controller.useMediaForIsPlaying = true;
+  playButtonSelector: 'button[data-qa="play_button"]',
+  pauseButtonSelector: 'button[data-qa="pause_button"]',
 
-controller.playButtonSelector = 'button[data-qa="play_button"]';
-controller.pauseButtonSelector = 'button[data-qa="pause_button"]';
+  useMediaForIsPlaying: true,
+  useMediaSessionForIsPlaying: false,
+  usePlayButtonForPlaying: false,
+  usePauseButtonForPlaying: false,
 
-controller.useDocumentMediaEventsForPolling = true;
+  usePlayButtonForPlay: true,
+  useMediaForPlay: true,
+
+  usePauseButtonForPause: true,
+  useMediaForPause: true,
+
+  useDocumentMediaEventsForPolling: true,
+  useMediaForPolling: false,
+  useMutationObserverForPolling: false,
+
+  playerSelector: null,
+
+  useMediaSessionForTrack: false,
+  useMediaSessionForAlbum: false,
+  useMediaSessionForArtist: false,
+  useMediaSessionForArtwork: false,
+
+  trackSelector: '.nowPlayingTopInfo__current__trackName',
+  albumSelector: '.nowPlayingTopInfo__current__albumName',
+  artistSelector: '.NowPlayingTopInfo__current__artistName',
+  artworkSelector: 'img.NowPlayinfTopInfo__artContainer__img',
+
+  useMediaForTime: true,
+
+  currentTimeSelector: null,
+  remainingTimeSelector: null,
+  durationSelector: null,
+
+  currentTimeFormat: null,
+  remainingTimeFormat: null,
+  durationFormat: null,
+} );

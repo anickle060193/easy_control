@@ -40,7 +40,14 @@ onReady( () =>
   {
     const message: UpdateContentMessage = {
       id: ContentMessageId.Update,
-      playing: controller.isPlaying(),
+      mediaInfo: {
+        playing: controller.isPlaying(),
+        track: controller.getTrack(),
+        artist: controller.getArtist(),
+        album: controller.getAlbum(),
+        artwork: controller.getArtwork(),
+        progress: controller.getProgress(),
+      },
     };
     port.postMessage( message );
   } );

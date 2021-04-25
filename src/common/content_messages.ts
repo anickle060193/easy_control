@@ -1,3 +1,5 @@
+import { MediaInfo } from './controllers';
+
 export enum ContentMessageId
 {
   Update = 'content_message_id__update',
@@ -10,7 +12,7 @@ export interface BaseContentMessage<T extends ContentMessageId>
 
 export interface UpdateContentMessage extends BaseContentMessage<ContentMessageId.Update>
 {
-  playing: boolean;
+  mediaInfo: MediaInfo;
 }
 
 export type ContentMessage = (
