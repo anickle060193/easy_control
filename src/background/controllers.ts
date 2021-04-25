@@ -1,35 +1,12 @@
 import { BackgroundMessage, BackgroundMessageId } from '../common/background_messages';
 import { ContentMessage, ContentMessageId } from '../common/content_messages';
-import { MediaInfo } from '../common/controllers';
+import { BackgroundController } from './controller';
 
-interface Controller
+const controllers: BackgroundController[] = [];
+
+export function getCurrentController(): BackgroundController | null
 {
-  name: string;
-  port: chrome.runtime.Port;
-  mediaInfo: MediaInfo;
-}
-
-const controllers: { [ id: string ]: Controller | undefined } = {};
-
-function getController( port: chrome.runtime.Port ): Controller
-{
-  let controller = controllers[ port.name ];
-  if( !controller )
-  {
-    controllers[ port.name ] = controller = {
-      name: port.name,
-      port: port,
-      mediaInfo: {
-        playing: false,
-        track: null,
-        artist: null,
-        album: null,
-        artwork: null,
-        progress: 0,
-      },
-    };
-  }
-  return controller;
+  return controllers[ controllers.length - 1 ] ?? null;
 }
 
 export default (): void =>
@@ -38,14 +15,14 @@ export default (): void =>
   {
     console.log( 'Port connected:', port.name, port );
 
-    const controller = getController( port );
+    const controller = new BackgroundController( port );
+
+    controllers.push( controller );
 
     port.onMessage.addListener( ( message: ContentMessage ) =>
     {
       if( message.id === ContentMessageId.Update )
       {
-        console.log( 'Media Update:', port.name, message );
-
         const startedPlaying = ( message.mediaInfo.playing && !controller.mediaInfo.playing );
         const mediaChanged = (
           controller.mediaInfo.track !== message.mediaInfo.track
@@ -58,11 +35,18 @@ export default (): void =>
         {
           console.log( 'Controller started playing:', controller );
 
+          const index = controllers.indexOf( controller );
+          if( index >= 0 )
+          {
+            controllers.slice( index, 1 );
+          }
+          controllers.push( controller );
+
           const pauseMessage: BackgroundMessage = {
             id: BackgroundMessageId.Pause,
           };
 
-          for( const c of Object.values( controllers ) )
+          for( const c of controllers )
           {
             if( c && c !== controller )
             {
@@ -76,6 +60,7 @@ export default (): void =>
         && message.mediaInfo
         && message.mediaInfo.artwork )
         {
+          console.log( 'Media changed:', controller  , message );
           chrome.notifications.create( {
             type: 'basic',
             silent: true,
@@ -99,7 +84,11 @@ export default (): void =>
     port.onDisconnect.addListener( () =>
     {
       console.log( 'Controller disconnected:', controller.name, controller );
-      delete controllers[ port.name ];
+      const index = controllers.indexOf( controller );
+      if( index >= 0 )
+      {
+        controllers.splice( index, 1 );
+      }
     } );
   } );
 };

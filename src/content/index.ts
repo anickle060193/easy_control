@@ -54,10 +54,42 @@ onReady( () =>
 
   port.onMessage.addListener( ( message: BackgroundMessage ) =>
   {
-    if( message.id === BackgroundMessageId.Pause )
+    if( message.id === BackgroundMessageId.PlayPause )
     {
-      console.log( 'Pausing', label );
-      controller.pause();
+      if( controller.isPlaying() )
+      {
+        console.log( 'Pausing controller:', label );
+        controller.pause();
+      }
+      else
+      {
+        console.log( 'Playing controller:', label );
+        controller.play();
+      }
+    }
+    else if( message.id === BackgroundMessageId.Play )
+    {
+      if( !controller.isPlaying() )
+      {
+        console.log( 'Playing controller:', label );
+        controller.play();
+      }
+      else
+      {
+        console.log( 'Controller is already playing:', label );
+      }
+    }
+    else if( message.id === BackgroundMessageId.Pause )
+    {
+      if( controller.isPlaying() )
+      {
+        console.log( 'Pausing controller:', label );
+        controller.pause();
+      }
+      else
+      {
+        console.log( 'Controller is already paused:', label );
+      }
     }
     else
     {
