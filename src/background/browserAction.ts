@@ -1,6 +1,7 @@
 import { getCurrentController } from './controllers';
 
 import { BackgroundMessageId } from '../common/background_messages';
+import { CONTROLLER_COLORS } from '../common/controllers';
 
 const ICON_WIDTH = 32;
 const ICON_HEIGHT = 32;
@@ -72,15 +73,15 @@ export function updateBrowserActionIcon(): void
     return;
   }
 
-  const CONTROLLER_COLOR = 'white';
+  const controllerColor = CONTROLLER_COLORS[ controller.id ] ?? 'rgb( 33, 150, 243 )';
 
   if( controller.mediaInfo.playing )
   {
-    drawPause( context, CONTROLLER_COLOR );
+    drawPause( context, controllerColor );
   }
   else
   {
-    drawPlay( context, CONTROLLER_COLOR );
+    drawPlay( context, controllerColor );
   }
 
   context.lineWidth = ICON_PROGRESS_BAR_THICKNESS;
@@ -91,7 +92,7 @@ export function updateBrowserActionIcon(): void
   context.lineTo( ICON_WIDTH, ICON_HEIGHT );
   context.stroke();
 
-  context.strokeStyle = CONTROLLER_COLOR;
+  context.strokeStyle = controllerColor;
   context.beginPath();
   context.moveTo( 0, ICON_HEIGHT );
   context.lineTo( ICON_WIDTH * controller.mediaInfo.progress, ICON_HEIGHT );

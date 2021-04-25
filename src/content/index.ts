@@ -24,16 +24,16 @@ function urlMatches( matches: UrlMatch, url: string ): boolean
 
 onReady( () =>
 {
-  const c = CONTROLLERS.find( ( { matches } ) => urlMatches( matches, window.location.href ) );
+  const c = Object.entries( CONTROLLERS ).find( ( [ , { matches } ] ) => urlMatches( matches, window.location.href ) );
   if( !c )
   {
     return;
   }
 
-  const { label, controller } = c;
+  const [ controllerId, { label, controller } ] = c;
   console.log( 'Found matching controller:', label, controller );
 
-  const port = chrome.runtime.connect( { name: label } );
+  const port = chrome.runtime.connect( { name: controllerId } );
   console.log( 'Connected port for', label, ':', port );
 
   const unregister = controller.registerListener( () =>
