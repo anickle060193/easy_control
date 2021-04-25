@@ -3,8 +3,8 @@ import Controller from '../controller';
 export const controller = new Controller( {
   mediaSelector: 'audio:last-of-type',
 
-  playButtonSelector: 'button[data-qa="play_button"]',
-  pauseButtonSelector: 'button[data-qa="pause_button"]',
+  playButtonSelector: 'button.Tuner__Control__Play__Button[data-qa="play_button"]',
+  pauseButtonSelector: 'button.Tuner__Control__Play__Button[data-qa="pause_button"]',
 
   useMediaForIsPlaying: true,
   useMediaSessionForIsPlaying: false,
@@ -28,10 +28,10 @@ export const controller = new Controller( {
   useMediaSessionForArtist: false,
   useMediaSessionForArtwork: false,
 
-  trackSelector: '.nowPlayingTopInfo__current__trackName',
-  albumSelector: '.nowPlayingTopInfo__current__albumName',
+  trackSelector: '.Tuner__Audio__TrackDetail__title',
+  albumSelector: null,
   artistSelector: '.NowPlayingTopInfo__current__artistName',
-  artworkSelector: 'img.NowPlayinfTopInfo__artContainer__img',
+  artworkSelector: '.Tuner__Audio__TrackDetail__img img',
 
   useMediaForTime: true,
 
