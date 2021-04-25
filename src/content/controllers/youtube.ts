@@ -1,6 +1,10 @@
 import Controller from '../controller';
 
 export const controller = new Controller( {
+  isEnabledElementSelector: null,
+  useMediaForIsEnabled: true,
+  usePlayPauseButtonsForIsEnabled: false,
+
   mediaSelector: 'video',
 
   playButtonSelector: null,

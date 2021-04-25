@@ -1,6 +1,10 @@
 import Controller from '../controller';
 
 export const controller = new Controller( {
+  isEnabledElementSelector: null,
+  useMediaForIsEnabled: true,
+  usePlayPauseButtonsForIsEnabled: true,
+
   mediaSelector: 'audio:last-of-type',
 
   playButtonSelector: 'button.Tuner__Control__Play__Button[data-qa="play_button"]',

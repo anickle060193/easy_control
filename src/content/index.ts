@@ -38,6 +38,11 @@ onReady( () =>
 
   const unregister = controller.registerListener( () =>
   {
+    if( !controller.isEnabled() )
+    {
+      return;
+    }
+
     const message: UpdateContentMessage = {
       id: ContentMessageId.Update,
       mediaInfo: {

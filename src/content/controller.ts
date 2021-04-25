@@ -1,5 +1,9 @@
 export interface ControllerOptions
 {
+  isEnabledElementSelector: string | null;
+  useMediaForIsEnabled: boolean;
+  usePlayPauseButtonsForIsEnabled: boolean;
+
   mediaSelector: string | null;
 
   playButtonSelector: string | null;
@@ -44,6 +48,10 @@ export interface ControllerOptions
 }
 
 export const DEFAULT_OPTIONS: ControllerOptions = {
+  isEnabledElementSelector: null,
+  useMediaForIsEnabled: false,
+  usePlayPauseButtonsForIsEnabled: false,
+
   mediaSelector: null,
 
   playButtonSelector: null,
@@ -95,6 +103,35 @@ export default class Controller
     public options: ControllerOptions
   )
   {}
+
+  public isEnabled = (): boolean =>
+  {
+    if( this.options.useMediaForIsEnabled )
+    {
+      if( this.media() )
+      {
+        return true;
+      }
+    }
+
+    if( this.options.usePlayPauseButtonsForIsEnabled )
+    {
+      if( this.playButton() || this.pauseButton() )
+      {
+        return true;
+      }
+    }
+
+    if( this.options.isEnabledElementSelector )
+    {
+      if( document.querySelector( this.options.isEnabledElementSelector ) )
+      {
+        return true;
+      }
+    }
+
+    return false;
+  }
 
   public playButton = (): HTMLElement | null => this.options.playButtonSelector ? document.querySelector<HTMLElement>( this.options.playButtonSelector ) : null;
   public pauseButton = (): HTMLElement | null => this.options.pauseButtonSelector ? document.querySelector<HTMLElement>( this.options.pauseButtonSelector ) : null;
