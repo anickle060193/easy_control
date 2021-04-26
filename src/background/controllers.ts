@@ -6,6 +6,9 @@ import { ContentMessage, ContentMessageId } from '../common/content_messages';
 
 const controllers: BackgroundController[] = [];
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
+( window as any ).CONTROLLERS = controllers;
+
 export function getCurrentController(): BackgroundController | null
 {
   return controllers[ controllers.length - 1 ] ?? null;
@@ -19,7 +22,9 @@ export default (): void =>
 
     const controller = new BackgroundController( port );
 
-    controllers.push( controller );
+    controllers.unshift( controller );
+
+    updateBrowserActionIcon();
 
     port.onMessage.addListener( ( message: ContentMessage ) =>
     {
@@ -68,6 +73,7 @@ export default (): void =>
         if( message.mediaInfo.playing
         && mediaChangedField
         && message.mediaInfo.track
+        && message.mediaInfo.artist
         && message.mediaInfo.artwork )
         {
           console.log( 'Media changed:', controller.name, mediaChangedField, ':', controller.mediaInfo[ mediaChangedField ], '->', message.mediaInfo[ mediaChangedField ], controller, message );
@@ -75,7 +81,7 @@ export default (): void =>
             type: 'basic',
             silent: true,
             title: message.mediaInfo.track,
-            message: message.mediaInfo.artist ?? undefined,
+            message: message.mediaInfo.artist,
             contextMessage: message.mediaInfo.album ?? undefined,
             iconUrl: message.mediaInfo.artwork,
           } );
@@ -110,6 +116,8 @@ export default (): void =>
       {
         console.warn( 'Failed to remove disconnected port:', controller.name, controller );
       }
+
+      updateBrowserActionIcon();
     } );
   } );
 };

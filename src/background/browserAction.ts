@@ -42,10 +42,10 @@ function setDefaultBrowserAction()
 {
   chrome.browserAction.setIcon( {
     path: {
-      16: 'icon16.png',
-      32: 'icon32.png',
-      64: 'icon64.png',
-      128: 'icon128.png',
+      16: 'assets/icon16.png',
+      32: 'assets/icon32.png',
+      64: 'assets/icon64.png',
+      128: 'assets/icon128.png',
     },
   } );
   chrome.browserAction.setTitle( { title: 'Easy Control' } );
