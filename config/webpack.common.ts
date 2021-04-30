@@ -3,6 +3,8 @@ import webpack from 'webpack';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 const root = path.resolve( __dirname, '..' );
 const build = path.resolve( root, 'build' );
@@ -12,6 +14,7 @@ const config: webpack.Configuration = {
   entry: {
     background: path.resolve( src, 'background', 'index.ts' ),
     content: path.resolve( src, 'content', 'index.ts' ),
+    options: path.resolve( src, 'options', 'index.tsx' ),
   },
   output: {
     path: build,
@@ -20,14 +23,26 @@ const config: webpack.Configuration = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx|ts|tsx)$/,
+        test: /\.(js|jsx|ts|tsx)$/i,
         exclude: /node_modules/,
         use: 'babel-loader',
+      },
+      {
+        test: /\.(scss|css)$/i,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'sass-loader',
+        ],
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        type: 'asset/resource',
       },
     ],
   },
   resolve: {
-    extensions: [ '.js', '.jsx', '.ts', '.tsx', '.json' ],
+    extensions: [ '.js', '.jsx', '.ts', '.tsx', '.json', '.html', '.css', '.scss' ],
   },
   plugins: [
     new CleanWebpackPlugin(),
@@ -42,6 +57,12 @@ const config: webpack.Configuration = {
       eslint: {
         files: path.resolve( src, '**', '*.{js,jsx,ts,tsx}' ),
       },
+    } ),
+    new MiniCssExtractPlugin(),
+    new HtmlWebpackPlugin( {
+      template: path.resolve( src, 'options', 'index.html' ),
+      filename: 'options.html',
+      chunks: [ 'options' ],
     } ),
     new CopyWebpackPlugin( {
       patterns: [

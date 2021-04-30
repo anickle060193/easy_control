@@ -4,5 +4,5 @@ import common from './webpack.common';
 
 export default merge( common, {
   mode: 'development',
-  devtool: 'source-map',
+  devtool: 'inline-source-map',
 } );
