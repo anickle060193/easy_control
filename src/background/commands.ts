@@ -4,22 +4,22 @@ import { BackgroundMessageId } from '../common/background_messages';
 
 enum ControllerCommandId
 {
-    PlayPause = '1_play_pause',
-    Next = '2_next',
-    Previous = '3_previous',
-    SkipBackward = '3a_skip_backward',
-    SkipForward = '3b_skip_forward',
-    Like = '4_like',
-    Unlike = '5_unlike',
-    Dislike = '6_dislike',
-    Undislike = '7_undislike',
-    VolumeUp = '8_volume_up',
-    VolumeDown = '9_volume_down',
+  PlayPause = '1_play_pause',
+  Next = '2_next',
+  Previous = '3_previous',
+  SkipBackward = '3a_skip_backward',
+  SkipForward = '3b_skip_forward',
+  Like = '4_like',
+  Unlike = '5_unlike',
+  Dislike = '6_dislike',
+  Undislike = '7_undislike',
+  VolumeUp = '8_volume_up',
+  VolumeDown = '9_volume_down',
 }
 
 enum OtherCommandId
 {
-    CopyContentLink = 'a_copy_content_link',
+  CopyContentLink = 'a_copy_content_link',
 }
 
 const CONTROLLER_COMMANDS_MAPPING: { [ key in ControllerCommandId ]: BackgroundMessageId } = {
@@ -36,7 +36,7 @@ const CONTROLLER_COMMANDS_MAPPING: { [ key in ControllerCommandId ]: BackgroundM
   [ ControllerCommandId.VolumeDown ]: BackgroundMessageId.VolumeDown,
 };
 
-export default (): void =>
+export function initCommands(): void
 {
   chrome.commands.onCommand.addListener( ( command ) =>
   {
@@ -64,4 +64,4 @@ export default (): void =>
       console.warn( 'Unknown command:', command );
     }
   } );
-};
+}

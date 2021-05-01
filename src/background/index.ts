@@ -1,11 +1,11 @@
-import registerContextMenus from './contextMenus';
-import registerCommands from './commands';
-import registerBrowserAction from './browserAction';
+import { initContextMenus } from './contextMenus';
+import { initCommands } from './commands';
+import { initBrowserAction } from './browserAction';
+import { initIdle } from './idle';
+import { initControllers } from './controllers';
 
-import registerControllers from './controllers';
-
-registerContextMenus();
-registerCommands();
-registerBrowserAction();
-
-registerControllers();
+initContextMenus();
+initCommands();
+initBrowserAction();
+initIdle();
+initControllers();

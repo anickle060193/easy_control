@@ -5,6 +5,7 @@ import { useSettingsInitialized } from '../common/hooks/useSettingsInitialized';
 import { SettingKey } from '../common/settings';
 
 import { CheckboxSetting } from './components/CheckboxSetting';
+import { NumberSetting } from './components/NumberSetting';
 
 const useStyles = makeStyles( ( theme ) => createStyles( {
   root: {
@@ -26,6 +27,9 @@ const useStyles = makeStyles( ( theme ) => createStyles( {
     left: '50%',
     top: '30%',
     transform: 'translate( -50%, -50% )',
+  },
+  numberInput: {
+    marginTop: theme.spacing( 1 ),
   },
 } ) );
 
@@ -50,8 +54,27 @@ export const OptionsPage: React.FC = () =>
       <>
         <CheckboxSetting
           setting={SettingKey.Other.NotificationsEnabled}
-          label="Notifications Enabled?"
+          label="Notifications Enabled"
         />
+        <CheckboxSetting
+          setting={SettingKey.Other.NoActiveWindowNotifications}
+          label="Do not show notifications for active tab"
+        />
+        <CheckboxSetting
+          setting={SettingKey.Other.PauseOnLock}
+          label="Pause media when computer is locked"
+        />
+        <CheckboxSetting
+          setting={SettingKey.Other.PauseOnInactivity}
+          label="Pause media when computer goes inactive"
+        />
+        <div className={styles.numberInput}>
+          <NumberSetting
+            setting={SettingKey.Other.InactivityTimeout}
+            label="Inactivity timeout (seconds)"
+            minimum={15}
+          />
+        </div>
       </>
     );
   }

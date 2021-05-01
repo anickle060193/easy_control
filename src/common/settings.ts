@@ -68,11 +68,11 @@ enum OpenInExistingSettingId
 enum OtherSettingId
 {
   NotificationsEnabled = 'key__other__notifications_enabled',
-  // NoActiveWindowNotifications = 'key__no_active_window_notifications',
+  NoActiveWindowNotifications = 'key__no_active_window_notifications',
   // DefaultSite = 'key__default_site',
-  // PauseOnLock = 'key__pause_on_lock',
-  // PauseOnInactivity = 'key__pause_on_inactivity',
-  // InactivityTimeout = 'key__inactivity_timeout',
+  PauseOnLock = 'key__pause_on_lock',
+  PauseOnInactivity = 'key__pause_on_inactivity',
+  InactivityTimeout = 'key__inactivity_timeout',
   // AutoPauseEnabled = 'key__auto_pause_enabled',
   // ShowChangeLogOnUpdate = 'key__show_change_log_on_update',
   // ShowAutoPausedNotification = 'key__show_auto_paused_notification',
@@ -188,11 +188,11 @@ export interface SettingsType
   // [ SettingKey.OpenInExisting.GenericAudioVideo ]: boolean;
 
   [ SettingKey.Other.NotificationsEnabled ]: boolean;
-  // [ SettingKey.Other.NoActiveWindowNotifications ]: boolean;
+  [ SettingKey.Other.NoActiveWindowNotifications ]: boolean;
   // [ SettingKey.Other.DefaultSite ]: Sites;
-  // [ SettingKey.Other.PauseOnLock ]: boolean;
-  // [ SettingKey.Other.PauseOnInactivity ]: boolean;
-  // [ SettingKey.Other.InactivityTimeout ]: number;
+  [ SettingKey.Other.PauseOnLock ]: boolean;
+  [ SettingKey.Other.PauseOnInactivity ]: boolean;
+  [ SettingKey.Other.InactivityTimeout ]: number;
   // [ SettingKey.Other.AutoPauseEnabled ]: boolean;
   // [ SettingKey.Other.ShowChangeLogOnUpdate ]: boolean;
   // [ SettingKey.Other.ShowAutoPausedNotification ]: boolean;
@@ -300,11 +300,11 @@ const DEFAULT_SETTINGS: SettingsType = {
   // [ SettingKey.OpenInExisting.GenericAudioVideo ]: false,
 
   [ SettingKey.Other.NotificationsEnabled ]: true,
-  // [ SettingKey.Other.NoActiveWindowNotifications ]: false,
+  [ SettingKey.Other.NoActiveWindowNotifications ]: false,
   // [ SettingKey.Other.DefaultSite ]: Sites.Youtube,
-  // [ SettingKey.Other.PauseOnLock ]: true,
-  // [ SettingKey.Other.PauseOnInactivity ]: false,
-  // [ SettingKey.Other.InactivityTimeout ]: 60 * 5,
+  [ SettingKey.Other.PauseOnLock ]: true,
+  [ SettingKey.Other.PauseOnInactivity ]: false,
+  [ SettingKey.Other.InactivityTimeout ]: 60 * 5,
   // [ SettingKey.Other.AutoPauseEnabled ]: true,
   // [ SettingKey.Other.ShowChangeLogOnUpdate ]: true,
   // [ SettingKey.Other.ShowAutoPausedNotification ]: false,

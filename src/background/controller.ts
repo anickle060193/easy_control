@@ -81,6 +81,47 @@ export class BackgroundController
     }
   }
 
+  public async isActiveTab(): Promise<boolean>
+  {
+    const tabId = this.port.sender?.tab?.id;
+    if( typeof tabId !== 'number' )
+    {
+      console.warn( 'Controller port has no tab ID:', this.name, this.port );
+      return false;
+    }
+
+    return new Promise<boolean>( ( resolve ) =>
+    {
+      chrome.tabs.get( tabId, ( tab ) =>
+      {
+        if( chrome.runtime.lastError )
+        {
+          console.error( 'Failed to retrieve controller tab:', this, chrome.runtime.lastError );
+          resolve( false );
+          return;
+        }
+
+        if( !tab.active )
+        {
+          resolve( false );
+          return;
+        }
+
+        chrome.windows.get( tab.windowId, ( window ) =>
+        {
+          if( chrome.runtime.lastError )
+          {
+            console.error( 'Failed to retrieve controller tab window:', this, tab, chrome.runtime.lastError );
+            resolve( false );
+            return;
+          }
+
+          resolve( window.focused );
+        } );
+      } );
+    } );
+  }
+
   public sendMessage( messageId: BackgroundMessageId ): void
   {
     const message: BackgroundMessage = {

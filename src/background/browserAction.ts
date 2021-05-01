@@ -103,10 +103,10 @@ export function updateBrowserActionIcon(): void
   chrome.browserAction.setTitle( { title: controller.name } );
 }
 
-export default (): void =>
+export function initBrowserAction(): void
 {
   chrome.browserAction.onClicked.addListener( () =>
   {
     getCurrentController()?.sendMessage( BackgroundMessageId.PlayPause );
   } );
-};
+}

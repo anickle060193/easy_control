@@ -5,7 +5,7 @@ enum ContextMenuId
 
 const DEBUG = ( process.env.NODE_ENV === 'development' );
 
-export default (): void =>
+export function initContextMenus(): void
 {
   chrome.runtime.onInstalled.addListener( () =>
   {
@@ -24,4 +24,4 @@ export default (): void =>
       chrome.runtime.reload();
     }
   } );
-};
+}

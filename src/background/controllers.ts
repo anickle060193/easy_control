@@ -28,9 +28,9 @@ function onNewController( controller: BackgroundController )
     updateBrowserActionIcon();
   }
 
-  controller.onPlayed.addEventListener( () =>
+  controller.onPlayed.addEventListener( async () =>
   {
-    console.log( 'onPlayed:', controller.name, controller );
+    console.log( 'onPlayed:', controller.name, await controller.isActiveTab(), controller );
 
     const index = controllers.indexOf( controller );
     if( index < 0 )
@@ -74,7 +74,7 @@ function onNewController( controller: BackgroundController )
     }
   } );
 
-  controller.onMediaChanged.addEventListener( () =>
+  controller.onMediaChanged.addEventListener( async () =>
   {
     console.log( 'onMediaChanged:', controller.name, controller.media );
 
@@ -86,20 +86,24 @@ function onNewController( controller: BackgroundController )
           && controller.media.artist
           && controller.media.artwork )
         {
-          chrome.notifications.create( {
-            type: 'basic',
-            silent: true,
-            title: controller.media.track,
-            message: controller.media.artist,
-            contextMessage: controller.media.album ?? undefined,
-            iconUrl: controller.media.artwork,
-          }, () =>
+          if( !settings.get( SettingKey.Other.NoActiveWindowNotifications )
+            || !( await controller.isActiveTab() ) )
           {
-            if( chrome.runtime.lastError )
+            chrome.notifications.create( {
+              type: 'basic',
+              silent: true,
+              title: controller.media.track,
+              message: controller.media.artist,
+              contextMessage: controller.media.album ?? undefined,
+              iconUrl: controller.media.artwork,
+            }, () =>
             {
-              console.log( 'Failed to create media notification:', controller.name, controller, chrome.runtime.lastError );
-            }
-          } );
+              if( chrome.runtime.lastError )
+              {
+                console.log( 'Failed to create media notification:', controller.name, controller, chrome.runtime.lastError );
+              }
+            } );
+          }
         }
       }
     }
@@ -127,7 +131,7 @@ function onNewController( controller: BackgroundController )
   } );
 }
 
-export default (): void =>
+export function initControllers(): void
 {
   chrome.runtime.onConnect.addListener( ( port ) =>
   {
@@ -135,4 +139,4 @@ export default (): void =>
 
     onNewController( new BackgroundController( port ) );
   } );
-};
+}
