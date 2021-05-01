@@ -102,7 +102,7 @@ export default class Controller
   public constructor(
     public options: ControllerOptions
   )
-  {}
+  { }
 
   public isEnabled = (): boolean =>
   {
@@ -155,10 +155,10 @@ export default class Controller
 
     if( this.options.useMediaSessionForIsPlaying )
     {
-      if( navigator.mediaSession
-      && navigator.mediaSession.playbackState !== 'none' )
+      if( window.navigator.mediaSession
+        && window.navigator.mediaSession.playbackState !== 'none' )
       {
-        return navigator.mediaSession.playbackState === 'playing';
+        return window.navigator.mediaSession.playbackState === 'playing';
       }
     }
 
@@ -295,7 +295,7 @@ export default class Controller
     return () => window.clearInterval( intervalId );
   }
 
-  public mediaMetaData = (): MediaMetadata | null => navigator.mediaSession?.metadata ?? null;
+  public mediaMetaData = (): MediaMetadata | null => window.navigator.mediaSession?.metadata ?? null;
 
   public getTrack = (): string | null =>
   {
@@ -577,7 +577,7 @@ export default class Controller
     const duration = this.getDuration();
 
     if( typeof currentTime === 'number'
-    && typeof duration === 'number' )
+      && typeof duration === 'number' )
     {
       if( duration === 0 )
       {
@@ -589,7 +589,7 @@ export default class Controller
       }
     }
     else if( typeof currentTime === 'number'
-    && typeof remainingTime === 'number' )
+      && typeof remainingTime === 'number' )
     {
       const dur = currentTime + remainingTime;
       if( dur === 0 )
@@ -602,7 +602,7 @@ export default class Controller
       }
     }
     else if( typeof remainingTime === 'number'
-    && typeof duration === 'number' )
+      && typeof duration === 'number' )
     {
       const cur = duration - remainingTime;
       if( duration === 0 )

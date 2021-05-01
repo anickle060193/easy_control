@@ -5,13 +5,17 @@ export enum ControllerId
   Spotify = 'controller_id__spotify',
 }
 
-export interface MediaInfo
+export interface ControllerMedia
 {
-  playing: boolean;
   track: string | null;
   artist: string | null;
   album: string | null;
   artwork: string | null;
+}
+
+export interface ControllerStatus
+{
+  playing: boolean;
   progress: number;
 }
 

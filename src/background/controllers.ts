@@ -1,8 +1,8 @@
 import { updateBrowserActionIcon } from './browserAction';
 import { BackgroundController } from './controller';
 
-import { BackgroundMessage, BackgroundMessageId } from '../common/background_messages';
-import { ContentMessage, ContentMessageId } from '../common/content_messages';
+import { BackgroundMessageId } from '../common/background_messages';
+import settings, { SettingKey } from '../common/settings';
 
 const controllers: BackgroundController[] = [];
 
@@ -14,110 +14,125 @@ export function getCurrentController(): BackgroundController | null
   return controllers[ controllers.length - 1 ] ?? null;
 }
 
+function isCurrentController( controller: BackgroundController )
+{
+  return controller === getCurrentController();
+}
+
+function onNewController( controller: BackgroundController )
+{
+  controllers.unshift( controller );
+
+  if( getCurrentController() === controller )
+  {
+    updateBrowserActionIcon();
+  }
+
+  controller.onPlayed.addEventListener( () =>
+  {
+    console.log( 'onPlayed:', controller.name, controller );
+
+    const index = controllers.indexOf( controller );
+    if( index < 0 )
+    {
+      console.warn( 'Could not find controller in controllers:', controller );
+    }
+    else
+    {
+      controllers.splice( index, 1 );
+    }
+    controllers.push( controller );
+
+    for( const c of controllers )
+    {
+      if( c !== controller )
+      {
+        c.sendMessage( BackgroundMessageId.Pause );
+      }
+    }
+
+    updateBrowserActionIcon();
+  } );
+
+  controller.onPaused.addEventListener( () =>
+  {
+    console.log( 'onPaused:', controller.name, controller );
+
+    if( isCurrentController( controller ) )
+    {
+      updateBrowserActionIcon();
+    }
+  } );
+
+  controller.onProgressChanged.addEventListener( () =>
+  {
+    // console.log( 'onProgressChanged:', controller.name, '-', controller.status.progress );
+
+    if( isCurrentController( controller ) )
+    {
+      updateBrowserActionIcon();
+    }
+  } );
+
+  controller.onMediaChanged.addEventListener( () =>
+  {
+    console.log( 'onMediaChanged:', controller.name, controller.media );
+
+    if( settings.get( SettingKey.Other.NotificationsEnabled ) )
+    {
+      if( controller.status.playing )
+      {
+        if( controller.media.track
+          && controller.media.artist
+          && controller.media.artwork )
+        {
+          chrome.notifications.create( {
+            type: 'basic',
+            silent: true,
+            title: controller.media.track,
+            message: controller.media.artist,
+            contextMessage: controller.media.album ?? undefined,
+            iconUrl: controller.media.artwork,
+          }, () =>
+          {
+            if( chrome.runtime.lastError )
+            {
+              console.log( 'Failed to create media notification:', controller.name, controller, chrome.runtime.lastError );
+            }
+          } );
+        }
+      }
+    }
+  } );
+
+  controller.onDisconnected.addEventListener( () =>
+  {
+    console.log( 'onDisconnected:', controller.name, controller );
+    const wasCurrentController = isCurrentController( controller );
+
+    const index = controllers.indexOf( controller );
+    if( index >= 0 )
+    {
+      controllers.splice( index, 1 );
+    }
+    else
+    {
+      console.warn( 'Failed to remove disconnected port:', controller.name, controller );
+    }
+
+    if( wasCurrentController )
+    {
+      updateBrowserActionIcon();
+    }
+  } );
+}
+
 export default (): void =>
 {
   chrome.runtime.onConnect.addListener( ( port ) =>
   {
     console.log( 'Port connected:', port.name, port );
 
-    const controller = new BackgroundController( port );
-
-    controllers.unshift( controller );
-
-    updateBrowserActionIcon();
-
-    port.onMessage.addListener( ( message: ContentMessage ) =>
-    {
-      if( message.id === ContentMessageId.Update )
-      {
-        const previousCurrentController = getCurrentController();
-
-        const startedPlaying = ( message.mediaInfo.playing && !controller.mediaInfo.playing );
-
-        if( startedPlaying )
-        {
-          console.log( 'Controller started playing:', controller.name, controller, message );
-
-          const index = controllers.indexOf( controller );
-          if( index >= 0 )
-          {
-            controllers.splice( index, 1 );
-          }
-          controllers.push( controller );
-
-          const pauseMessage: BackgroundMessage = {
-            id: BackgroundMessageId.Pause,
-          };
-
-          for( const c of controllers )
-          {
-            if( c && c !== controller )
-            {
-              c.port.postMessage( pauseMessage );
-            }
-          }
-        }
-
-        const fields: ( keyof BackgroundController[ 'mediaInfo' ] )[] = [ 'track' ];
-
-        let mediaChangedField: keyof BackgroundController[ 'mediaInfo' ] | null = null;
-        for( const field of fields )
-        {
-          if( controller.mediaInfo[ field ] !== message.mediaInfo[ field ] )
-          {
-            mediaChangedField = field;
-            break;
-          }
-        }
-
-        if( message.mediaInfo.playing
-        && mediaChangedField
-        && message.mediaInfo.track
-        && message.mediaInfo.artist
-        && message.mediaInfo.artwork )
-        {
-          console.log( 'Media changed:', controller.name, mediaChangedField, ':', controller.mediaInfo[ mediaChangedField ], '->', message.mediaInfo[ mediaChangedField ], controller, message );
-          chrome.notifications.create( {
-            type: 'basic',
-            silent: true,
-            title: message.mediaInfo.track,
-            message: message.mediaInfo.artist,
-            contextMessage: message.mediaInfo.album ?? undefined,
-            iconUrl: message.mediaInfo.artwork,
-          } );
-        }
-
-        controller.mediaInfo = {
-          ...message.mediaInfo,
-        };
-
-        const currentController = getCurrentController();
-        if( controller === currentController
-        || currentController !== previousCurrentController )
-        {
-          updateBrowserActionIcon();
-        }
-      }
-      else
-      {
-        console.warn( 'Unknown message:', controller.name, message );
-      }
-    } );
-
-    port.onDisconnect.addListener( () =>
-    {
-      console.log( 'Controller disconnected:', controller.name, controller );
-      const index = controllers.indexOf( controller );
-      if( index >= 0 )
-      {
-        controllers.splice( index, 1 );
-      }
-      else
-      {
-        console.warn( 'Failed to remove disconnected port:', controller.name, controller );
-      }
-
-      updateBrowserActionIcon();
-    } );
+    onNewController( new BackgroundController( port ) );
   } );
 };

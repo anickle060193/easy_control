@@ -45,13 +45,15 @@ onReady( () =>
 
     const message: UpdateContentMessage = {
       id: ContentMessageId.Update,
-      mediaInfo: {
+      status: {
         playing: controller.isPlaying(),
+        progress: controller.getProgress(),
+      },
+      media: {
         track: controller.getTrack(),
         artist: controller.getArtist(),
         album: controller.getAlbum(),
         artwork: controller.getArtwork(),
-        progress: controller.getProgress(),
       },
     };
     port.postMessage( message );

@@ -1,4 +1,4 @@
-import { MediaInfo } from './controllers';
+import { ControllerMedia, ControllerStatus } from './controllers';
 
 export enum ContentMessageId
 {
@@ -12,7 +12,8 @@ export interface BaseContentMessage<T extends ContentMessageId>
 
 export interface UpdateContentMessage extends BaseContentMessage<ContentMessageId.Update>
 {
-  mediaInfo: MediaInfo;
+  status: ControllerStatus
+  media: ControllerMedia;
 }
 
 export type ContentMessage = (

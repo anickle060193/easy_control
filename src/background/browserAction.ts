@@ -75,7 +75,7 @@ export function updateBrowserActionIcon(): void
 
   const controllerColor = CONTROLLER_COLORS[ controller.id ] ?? 'rgb( 33, 150, 243 )';
 
-  if( controller.mediaInfo.playing )
+  if( controller.status.playing )
   {
     drawPause( context, controllerColor );
   }
@@ -95,7 +95,7 @@ export function updateBrowserActionIcon(): void
   context.strokeStyle = controllerColor;
   context.beginPath();
   context.moveTo( 0, ICON_HEIGHT );
-  context.lineTo( ICON_WIDTH * controller.mediaInfo.progress, ICON_HEIGHT );
+  context.lineTo( ICON_WIDTH * controller.status.progress, ICON_HEIGHT );
   context.stroke();
 
   const imageData = context.getImageData( 0, 0, ICON_WIDTH, ICON_HEIGHT );
