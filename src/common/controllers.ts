@@ -17,6 +17,7 @@ export interface ControllerMedia
 
 export interface ControllerStatus
 {
+  enabled: boolean;
   playing: boolean;
   progress: number;
 }

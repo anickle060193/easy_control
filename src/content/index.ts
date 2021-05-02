@@ -49,7 +49,22 @@ onReady( () =>
   {
     if( !controller.isEnabled() )
     {
-      return;
+      const message: UpdateContentMessage = {
+        id: ContentMessageId.Update,
+        status: {
+          enabled: false,
+          playing: false,
+          progress: 0.0,
+        },
+        mediaChangedIndication: null,
+        media: {
+          track: null,
+          artist: null,
+          album: null,
+          artwork: null,
+        },
+      };
+      port.postMessage( message );
     }
 
     const indication = controller.getMediaChangedIndication();
@@ -66,6 +81,7 @@ onReady( () =>
     const message: UpdateContentMessage = {
       id: ContentMessageId.Update,
       status: {
+        enabled: true,
         playing: controller.isPlaying(),
         progress: controller.getProgress(),
       },

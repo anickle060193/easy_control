@@ -174,7 +174,7 @@ export default class Controller
       return !!pauseButton && !!pauseButton.offsetParent;
     }
 
-    return true;
+    return false;
   }
 
   public play = (): void =>

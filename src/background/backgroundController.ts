@@ -19,6 +19,7 @@ export class BackgroundController
   public readonly onMediaChanged = new EventEmitter();
   public readonly onDisconnected = new EventEmitter();
 
+  public lastOnPlayedTime = 0;
   public mediaChangedHandled = false;
 
   public get tabId(): number | undefined
@@ -34,6 +35,7 @@ export class BackgroundController
     this.id = `${this.controllerId}-${++controllerCount}`;
 
     this.status = {
+      enabled: false,
       playing: false,
       progress: 0,
     };
@@ -66,6 +68,7 @@ export class BackgroundController
 
       if( !previousStatus.playing && this.status.playing )
       {
+        this.lastOnPlayedTime = Date.now();
         this.onPlayed.dispatch();
       }
       else if( previousStatus.playing && !this.status.playing )

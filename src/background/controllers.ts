@@ -13,7 +13,17 @@ const controllers: BackgroundController[] = [];
 
 export function getCurrentController(): BackgroundController | null
 {
-  return controllers[ controllers.length - 1 ] ?? null;
+  let currentController: BackgroundController | null = null;
+  for( const controller of controllers )
+  {
+    if( controller.status.enabled
+      && controller.lastOnPlayedTime > ( currentController?.lastOnPlayedTime ?? 0 ) )
+    {
+      currentController = controller;
+    }
+  }
+
+  return currentController;
 }
 
 function isCurrentController( controller: BackgroundController )
@@ -23,7 +33,7 @@ function isCurrentController( controller: BackgroundController )
 
 function onNewController( controller: BackgroundController )
 {
-  controllers.unshift( controller );
+  controllers.push( controller );
 
   if( getCurrentController() === controller )
   {
@@ -33,17 +43,6 @@ function onNewController( controller: BackgroundController )
   controller.onPlayed.addEventListener( async () =>
   {
     console.log( 'onPlayed:', controller.id, await controller.isActiveTab(), controller );
-
-    const index = controllers.indexOf( controller );
-    if( index < 0 )
-    {
-      console.warn( 'Could not find controller in controllers:', controller );
-    }
-    else
-    {
-      controllers.splice( index, 1 );
-    }
-    controllers.push( controller );
 
     if( settings.get( SettingKey.Other.AutoPauseEnabled ) )
     {
@@ -113,7 +112,7 @@ function onNewController( controller: BackgroundController )
     }
     else
     {
-      console.warn( 'Failed to remove disconnected port:', controller.id, controller );
+      console.warn( 'Could not find controller in controllers list on disconnect:', controller.id, controller );
     }
 
     if( wasCurrentController )
