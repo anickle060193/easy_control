@@ -7,7 +7,7 @@ let controllerCount = 0;
 
 export class BackgroundController
 {
-  public readonly id: ControllerId;
+  public readonly controllerId: ControllerId;
   public readonly name: string;
   public status: Readonly<ControllerStatus>;
   public media: Readonly<ControllerMedia>;
@@ -18,12 +18,17 @@ export class BackgroundController
   public readonly onMediaChanged = new EventEmitter();
   public readonly onDisconnected = new EventEmitter();
 
+  public get tabId(): number | undefined
+  {
+    return this.port.sender?.tab?.id;
+  }
+
   constructor(
     private readonly port: chrome.runtime.Port
   )
   {
-    this.id = port.name as ControllerId;
-    this.name = `${this.id}-${++controllerCount}`;
+    this.controllerId = port.name as ControllerId;
+    this.name = `${this.controllerId}-${++controllerCount}`;
 
     this.status = {
       playing: false,
@@ -53,9 +58,6 @@ export class BackgroundController
       const previousStatus = this.status;
       this.status = message.status;
 
-      const previousMedia = this.media;
-      this.media = message.media;
-
       if( !previousStatus.playing && this.status.playing )
       {
         this.onPlayed.dispatch();
@@ -70,9 +72,15 @@ export class BackgroundController
         this.onProgressChanged.dispatch();
       }
 
-      if( previousMedia.track !== this.media.track )
+      if( this.status.playing )
       {
-        this.onMediaChanged.dispatch();
+        const previousMedia = this.media;
+        this.media = message.media;
+
+        if( previousMedia.track !== this.media.track )
+        {
+          this.onMediaChanged.dispatch();
+        }
       }
     }
     else

@@ -14,8 +14,7 @@
     "**/.git": true,
     "**/node_modules": true,
     "**/build": true,
-    "**/dist": true,
-    "src/common/validations": true
+    "**/dist": true
   },
   "files.trimFinalNewlines": true,
   "files.insertFinalNewline": true,

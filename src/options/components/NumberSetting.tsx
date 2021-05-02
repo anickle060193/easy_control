@@ -1,5 +1,5 @@
 import React from 'react';
-import { InputAdornment, TextField } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 
 import { SettingKeyFromValue } from '../../common/settings';
 import { useSetting } from '../../common/hooks/useSetting';
@@ -20,13 +20,12 @@ interface Props
 {
   setting: SettingKeyFromValue<number>;
   label: string;
-  units?: string;
   integer?: boolean;
   minimum?: number;
   maximum?: number;
 }
 
-export const NumberSetting: React.FC<Props> = ( { setting, label, units, integer = true, minimum, maximum } ) =>
+export const NumberSetting: React.FC<Props> = ( { setting, label, integer = true, minimum, maximum } ) =>
 {
   const [ value, setValue ] = useSetting( setting );
 
@@ -64,13 +63,6 @@ export const NumberSetting: React.FC<Props> = ( { setting, label, units, integer
       type="numeric"
       variant="outlined"
       label={label}
-      InputProps={{
-        endAdornment: (
-          <InputAdornment position="end">
-            {units}
-          </InputAdornment>
-        ),
-      }}
       inputProps={{
         min: minimum,
         max: maximum,

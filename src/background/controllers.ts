@@ -1,8 +1,8 @@
 import { updateBrowserActionIcon } from './browserAction';
-import { BackgroundController } from './controller';
+import { BackgroundController } from './backgroundController';
 
 import { BackgroundMessageId } from '../common/background_messages';
-import settings, { SettingKey } from '../common/settings';
+import { showAutoPauseNotification, showStartedPlayingNotification } from './notifications';
 
 const controllers: BackgroundController[] = [];
 
@@ -45,8 +45,11 @@ function onNewController( controller: BackgroundController )
 
     for( const c of controllers )
     {
-      if( c !== controller )
+      if( c !== controller
+        && c.status.playing )
       {
+        showAutoPauseNotification( c );
+
         c.sendMessage( BackgroundMessageId.Pause );
       }
     }
@@ -74,39 +77,11 @@ function onNewController( controller: BackgroundController )
     }
   } );
 
-  controller.onMediaChanged.addEventListener( async () =>
+  controller.onMediaChanged.addEventListener( () =>
   {
     console.log( 'onMediaChanged:', controller.name, controller.media );
 
-    if( settings.get( SettingKey.Other.NotificationsEnabled ) )
-    {
-      if( controller.status.playing )
-      {
-        if( controller.media.track
-          && controller.media.artist
-          && controller.media.artwork )
-        {
-          if( !settings.get( SettingKey.Other.NoActiveWindowNotifications )
-            || !( await controller.isActiveTab() ) )
-          {
-            chrome.notifications.create( {
-              type: 'basic',
-              silent: true,
-              title: controller.media.track,
-              message: controller.media.artist,
-              contextMessage: controller.media.album ?? undefined,
-              iconUrl: controller.media.artwork,
-            }, () =>
-            {
-              if( chrome.runtime.lastError )
-              {
-                console.log( 'Failed to create media notification:', controller.name, controller, chrome.runtime.lastError );
-              }
-            } );
-          }
-        }
-      }
-    }
+    void showStartedPlayingNotification( controller );
   } );
 
   controller.onDisconnected.addEventListener( () =>

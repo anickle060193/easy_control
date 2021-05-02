@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppBar, CircularProgress, createStyles, makeStyles, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, CircularProgress, createStyles, Divider, makeStyles, Toolbar, Typography } from '@material-ui/core';
 
 import { useSettingsInitialized } from '../common/hooks/useSettingsInitialized';
 import { SettingKey } from '../common/settings';
@@ -28,6 +28,11 @@ const useStyles = makeStyles( ( theme ) => createStyles( {
     top: '30%',
     transform: 'translate( -50%, -50% )',
   },
+  divider: {
+    width: '100%',
+    marginTop: theme.spacing( 2 ),
+    marginBottom: theme.spacing( 2 ),
+  },
   numberInput: {
     marginTop: theme.spacing( 1 ),
   },
@@ -51,7 +56,8 @@ export const OptionsPage: React.FC = () =>
   else
   {
     content = (
-      <>
+      <div className={styles.content}>
+        <Typography variant="h5">Notifications</Typography>
         <CheckboxSetting
           setting={SettingKey.Other.NotificationsEnabled}
           label="Notifications Enabled"
@@ -60,6 +66,14 @@ export const OptionsPage: React.FC = () =>
           setting={SettingKey.Other.NoActiveWindowNotifications}
           label="Do not show notifications for active tab"
         />
+        <CheckboxSetting
+          setting={SettingKey.Other.ShowAutoPausedNotification}
+          label="Show notification when media is auto-paused"
+        />
+
+        <Divider className={styles.divider} />
+
+        <Typography variant="h5">Idle</Typography>
         <CheckboxSetting
           setting={SettingKey.Other.PauseOnLock}
           label="Pause media when computer is locked"
@@ -75,7 +89,7 @@ export const OptionsPage: React.FC = () =>
             minimum={15}
           />
         </div>
-      </>
+      </div>
     );
   }
 
@@ -86,9 +100,7 @@ export const OptionsPage: React.FC = () =>
           <Typography variant="h6">Easy Control Options</Typography>
         </Toolbar>
       </AppBar>
-      <div className={styles.content}>
-        {content}
-      </div>
+      {content}
     </div>
   );
 };

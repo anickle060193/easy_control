@@ -73,7 +73,7 @@ export function updateBrowserActionIcon(): void
     return;
   }
 
-  const controllerColor = CONTROLLER_COLORS[ controller.id ] ?? 'rgb( 33, 150, 243 )';
+  const controllerColor = CONTROLLER_COLORS[ controller.controllerId ] ?? 'rgb( 33, 150, 243 )';
 
   if( controller.status.playing )
   {

@@ -10,24 +10,20 @@ type UrlMatch = string | RegExp | UrlMatch[];
 
 interface ControllerConfig
 {
-  label: string;
   matches: UrlMatch;
   controller: Controller;
 }
 
 const CONTROLLERS: { [ key in ControllerId ]: ControllerConfig } = {
-  [ ControllerId.Pandora] : {
-    label: 'Pandora',
+  [ ControllerId.Pandora ]: {
     matches: /^https:\/\/www.pandora.com(\/.*)?$/i,
     controller: pandoraController,
   },
-  [ ControllerId.Youtube] : {
-    label: 'Youtube',
+  [ ControllerId.Youtube ]: {
     matches: /^https:\/\/www.youtube.com(\/.*)?$/i,
     controller: youtubeController,
   },
-  [ ControllerId.Spotify] : {
-    label: 'Spotify',
+  [ ControllerId.Spotify ]: {
     matches: /^https:\/\/[^.]+.spotify.com(\/.*)?$/i,
     controller: spotifyController,
   },

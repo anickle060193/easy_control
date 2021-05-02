@@ -24,3 +24,9 @@ export const CONTROLLER_COLORS: { [ key in ControllerId ]: string } = {
   [ ControllerId.Youtube ]: '#f00',
   [ ControllerId.Spotify ]: '#1db954',
 };
+
+export const CONTROLLER_NAMES: { [ key in ControllerId ]: string } = {
+  [ ControllerId.Pandora ]: 'Pandora',
+  [ ControllerId.Youtube ]: 'Youtube',
+  [ ControllerId.Spotify ]: 'Spotify',
+};

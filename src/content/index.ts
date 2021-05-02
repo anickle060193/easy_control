@@ -30,11 +30,11 @@ onReady( () =>
     return;
   }
 
-  const [ controllerId, { label, controller } ] = c;
-  console.log( 'Found matching controller:', label, controller );
+  const [ controllerId, { controller } ] = c;
+  console.log( 'Found matching controller:', controllerId, controller );
 
   const port = chrome.runtime.connect( { name: controllerId } );
-  console.log( 'Connected port for', label, ':', port );
+  console.log( 'Connected port for', controllerId, ':', port );
 
   const unregister = controller.registerListener( () =>
   {
@@ -65,12 +65,12 @@ onReady( () =>
     {
       if( controller.isPlaying() )
       {
-        console.log( 'Pausing controller:', label );
+        console.log( 'Pausing controller:', controllerId );
         controller.pause();
       }
       else
       {
-        console.log( 'Playing controller:', label );
+        console.log( 'Playing controller:', controllerId );
         controller.play();
       }
     }
@@ -78,24 +78,24 @@ onReady( () =>
     {
       if( !controller.isPlaying() )
       {
-        console.log( 'Playing controller:', label );
+        console.log( 'Playing controller:', controllerId );
         controller.play();
       }
       else
       {
-        console.log( 'Controller is already playing:', label );
+        console.log( 'Controller is already playing:', controllerId );
       }
     }
     else if( message.id === BackgroundMessageId.Pause )
     {
       if( controller.isPlaying() )
       {
-        console.log( 'Pausing controller:', label );
+        console.log( 'Pausing controller:', controllerId );
         controller.pause();
       }
       else
       {
-        console.log( 'Controller is already paused:', label );
+        console.log( 'Controller is already paused:', controllerId );
       }
     }
     else
@@ -106,7 +106,7 @@ onReady( () =>
 
   port.onDisconnect.addListener( ( p ) =>
   {
-    console.log( 'Port disconnected for', label, p );
+    console.log( 'Port disconnected for', controllerId, p );
     unregister();
   } );
 } );
