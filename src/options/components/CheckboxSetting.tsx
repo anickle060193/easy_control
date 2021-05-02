@@ -7,22 +7,29 @@ import { SettingKeyFromValue } from '../../common/settings';
 interface Props
 {
   setting: SettingKeyFromValue<boolean>;
-  label: string;
+  label?: string;
 }
 
 export const CheckboxSetting: React.FC<Props> = ( { setting, label } ) =>
 {
   const [ checked, setChecked ] = useSetting( setting );
 
+  const checkbox = (
+    <Checkbox
+      checked={checked}
+      onChange={( _e, checked ) => setChecked( checked )}
+    />
+  );
+
+  if( !label )
+  {
+    return checkbox;
+  }
+
   return (
     <FormControlLabel
       label={label}
-      control={(
-        <Checkbox
-          checked={checked}
-          onChange={( _e, checked ) => setChecked( checked )}
-        />
-      )}
+      control={checkbox}
     />
   );
 };

@@ -14,7 +14,7 @@ interface ControllerConfig
   controller: Controller;
 }
 
-const CONTROLLERS: { [ key in ControllerId ]: ControllerConfig } = {
+export const CONTROLLERS_CONFIG: { [ key in ControllerId ]: ControllerConfig } = {
   [ ControllerId.Pandora ]: {
     matches: /^https:\/\/www.pandora.com(\/.*)?$/i,
     controller: pandoraController,
@@ -28,5 +28,3 @@ const CONTROLLERS: { [ key in ControllerId ]: ControllerConfig } = {
     controller: spotifyController,
   },
 };
-
-export default CONTROLLERS;

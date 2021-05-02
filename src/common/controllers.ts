@@ -1,3 +1,5 @@
+import { ControllersEnabledSettingId, NotificationsSettingId, SettingKey, SettingKeyFromValue } from './settings';
+
 export enum ControllerId
 {
   Pandora = 'controller_id__pandora',
@@ -19,14 +21,31 @@ export interface ControllerStatus
   progress: number;
 }
 
-export const CONTROLLER_COLORS: { [ key in ControllerId ]: string } = {
-  [ ControllerId.Pandora ]: '#3668ff',
-  [ ControllerId.Youtube ]: '#f00',
-  [ ControllerId.Spotify ]: '#1db954',
-};
+export interface ControllerDetails
+{
+  name: string;
+  color: string;
+  enabledSetting: SettingKeyFromValue<boolean, ControllersEnabledSettingId>;
+  notificationsEnabledSetting: SettingKeyFromValue<boolean, NotificationsSettingId>;
+}
 
-export const CONTROLLER_NAMES: { [ key in ControllerId ]: string } = {
-  [ ControllerId.Pandora ]: 'Pandora',
-  [ ControllerId.Youtube ]: 'Youtube',
-  [ ControllerId.Spotify ]: 'Spotify',
+export const CONTROLLERS: { [ id in ControllerId ]: ControllerDetails } = {
+  [ ControllerId.Pandora ]: {
+    name: 'Pandora',
+    color: '#3668ff',
+    enabledSetting: SettingKey.ControllersEnabled.Pandora,
+    notificationsEnabledSetting: SettingKey.Notifications.Pandora,
+  },
+  [ ControllerId.Spotify ]: {
+    name: 'Spotify',
+    color: '#1db954',
+    enabledSetting: SettingKey.ControllersEnabled.Spotify,
+    notificationsEnabledSetting: SettingKey.Notifications.Spotify,
+  },
+  [ ControllerId.Youtube ]: {
+    name: 'Youtube',
+    color: '#f00',
+    enabledSetting: SettingKey.ControllersEnabled.Youtube,
+    notificationsEnabledSetting: SettingKey.Notifications.Youtube,
+  },
 };

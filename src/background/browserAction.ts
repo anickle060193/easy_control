@@ -1,7 +1,7 @@
 import { getCurrentController } from './controllers';
 
 import { BackgroundMessageId } from '../common/backgroundMessages';
-import { CONTROLLER_COLORS } from '../common/controllers';
+import { CONTROLLERS } from '../common/controllers';
 
 const ICON_WIDTH = 32;
 const ICON_HEIGHT = 32;
@@ -73,7 +73,7 @@ export function updateBrowserActionIcon(): void
     return;
   }
 
-  const controllerColor = CONTROLLER_COLORS[ controller.controllerId ] ?? 'rgb( 33, 150, 243 )';
+  const controllerColor = CONTROLLERS[ controller.controllerId ]?.color ?? 'rgb( 33, 150, 243 )';
 
   if( controller.status.playing )
   {

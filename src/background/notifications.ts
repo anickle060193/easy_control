@@ -1,7 +1,7 @@
 import { BackgroundController } from './backgroundController';
 
 import settings, { SettingKey } from '../common/settings';
-import { CONTROLLER_NAMES } from '../common/controllers';
+import { CONTROLLERS } from '../common/controllers';
 import { getTab, getWindow } from '../common/browserExtension';
 import { BackgroundMessageId } from '../common/backgroundMessages';
 
@@ -21,7 +21,8 @@ const autoPauseNotifications: { [ notificationId: string ]: BackgroundController
 
 export async function showStartedPlayingNotification( controller: BackgroundController ): Promise<void>
 {
-  if( !settings.get( SettingKey.Other.NotificationsEnabled ) )
+  if( !settings.get( SettingKey.Other.NotificationsEnabled )
+    || !settings.get( CONTROLLERS[ controller.controllerId ].notificationsEnabledSetting ) )
   {
     return;
   }
@@ -76,7 +77,7 @@ export function showAutoPauseNotification( controller: BackgroundController ): v
   chrome.notifications.create( {
     type: 'basic',
     silent: true,
-    title: `${CONTROLLER_NAMES[ controller.controllerId ]} has been auto-paused`,
+    title: `${CONTROLLERS[ controller.controllerId ].name} has been auto-paused`,
     message: controller.media.track ?? '',
     iconUrl: 'assets/icon64.png',
     buttons,

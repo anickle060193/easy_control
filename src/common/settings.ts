@@ -1,7 +1,7 @@
 import { EventEmitter } from './EventEmitter';
 import { SingleFireEventEmitter } from './SingleFireEventEmitter';
 
-enum NotificationsSettingId
+export enum NotificationsSettingId
 {
   // AmazonMusic = 'key__notifications__amazon_music',
   // AmazonVideo = 'key__notifications__amazon_video',
@@ -10,14 +10,14 @@ enum NotificationsSettingId
   // HboGo = 'key__notifications__hbo_go',
   // Hulu = 'key__notifications__hulu',
   // Netflix = 'key__notifications__netflix',
-  // Pandora = 'key__notifications__pandora',
-  // Spotify = 'key__notifications__spotify',
+  Pandora = 'key__notifications__pandora',
+  Spotify = 'key__notifications__spotify',
   // Twitch = 'key__notifications__twitch',
-  // Youtube = 'key__notifications__youtube',
+  Youtube = 'key__notifications__youtube',
   // GenericAudioVideo = 'key__notifications__generic_audio_video',
 }
 
-enum ControllersEnabledSettingId
+export enum ControllersEnabledSettingId
 {
   // AmazonMusic = 'key__controllers_enabled__amazon_music',
   // AmazonVideo = 'key__controllers_enabled__amazon_video',
@@ -26,14 +26,14 @@ enum ControllersEnabledSettingId
   // HboGo = 'key__controllers_enabled__hbo_go',
   // Hulu = 'key__controllers_enabled__hulu',
   // Netflix = 'key__controllers_enabled__netflix',
-  // Pandora = 'key__controllers_enabled__pandora',
-  // Spotify = 'key__controllers_enabled__spotify',
+  Pandora = 'key__controllers_enabled__pandora',
+  Spotify = 'key__controllers_enabled__spotify',
   // Twitch = 'key__controllers_enabled__twitch',
-  // Youtube = 'key__controllers_enabled__youtube',
+  Youtube = 'key__controllers_enabled__youtube',
   // GenericAudioVideo = 'key__controllers_enabled__generic_audio_video',
 }
 
-enum ControllerColorsSettingId
+export enum ControllerColorsSettingId
 {
   // AmazonMusic = 'key__controller_colors__amazon_music',
   // AmazonVideo = 'key__controller_colors__amazon_video',
@@ -42,14 +42,14 @@ enum ControllerColorsSettingId
   // HboGo = 'key__controller_colors__hbo_go',
   // Hulu = 'key__controller_colors__hulu',
   // Netflix = 'key__controller_colors__netflix',
-  // Pandora = 'key__controller_colors__pandora',
-  // Spotify = 'key__controller_colors__spotify',
+  Pandora = 'key__controller_colors__pandora',
+  Spotify = 'key__controller_colors__spotify',
   // Twitch = 'key__controller_colors__twitch',
-  // Youtube = 'key__controller_colors__youtube',
+  Youtube = 'key__controller_colors__youtube',
   // GenericAudioVideo = 'key__controller_colors__generic_audio_video',
 }
 
-enum OpenInExistingSettingId
+export enum OpenInExistingSettingId
 {
   // AmazonMusic = 'key__open_in_existing__amazon_music',
   // AmazonVideo = 'key__open_in_existing__amazon_video',
@@ -58,14 +58,14 @@ enum OpenInExistingSettingId
   // HboGo = 'key__open_in_existing__hbo_go',
   // Hulu = 'key__open_in_existing__hulu',
   // Netflix = 'key__open_in_existing__netflix',
-  // Pandora = 'key__open_in_existing__pandora',
-  // Spotify = 'key__open_in_existing__spotify',
+  Pandora = 'key__open_in_existing__pandora',
+  Spotify = 'key__open_in_existing__spotify',
   // Twitch = 'key__open_in_existing__twitch',
-  // Youtube = 'key__open_in_existing__youtube',
+  Youtube = 'key__open_in_existing__youtube',
   // GenericAudioVideo = 'key__open_in_existing__generic_audio_video',
 }
 
-enum OtherSettingId
+export enum OtherSettingId
 {
   NotificationsEnabled = 'key__other__notifications_enabled',
   NoActiveWindowNotifications = 'key__no_active_window_notifications',
@@ -81,7 +81,7 @@ enum OtherSettingId
   // ControlsPopupHeight = 'key__controls_popup_height',
 }
 
-enum ControlsOtherSettingId
+export enum ControlsOtherSettingId
 {
   // DisplayControls = 'key__controls__display_controls',
   // AlwaysDisplayPlaybackSpeed = 'key__controls__always_display_playback_speed',
@@ -92,7 +92,7 @@ enum ControlsOtherSettingId
   // DefaultPlaybackSpeed = 'key__controls__other__default_playback_speed',
 }
 
-enum ControlsMediaControlsSettingId
+export enum ControlsMediaControlsSettingId
 {
   // Reset = 'key__controls__playback_speed__reset',
   // MuchSlower = 'key__controls__playback_speed__much_slower',
@@ -106,7 +106,7 @@ enum ControlsMediaControlsSettingId
   // Fullscreen = 'key__controls__media_controls__fullscreen',
 }
 
-enum ControlsOverlayControlsSettingId
+export enum ControlsOverlayControlsSettingId
 {
   // Reset = 'key__controls__overlay_controls__reset',
   // MuchSlower = 'key__controls__overlay_controls__much_slower',
@@ -142,10 +142,10 @@ export interface SettingsType
   // [ SettingKey.Notifications.HboGo ]: boolean;
   // [ SettingKey.Notifications.Hulu ]: boolean;
   // [ SettingKey.Notifications.Netflix ]: boolean;
-  // [ SettingKey.Notifications.Pandora ]: boolean;
-  // [ SettingKey.Notifications.Spotify ]: boolean;
+  [ SettingKey.Notifications.Pandora ]: boolean;
+  [ SettingKey.Notifications.Spotify ]: boolean;
   // [ SettingKey.Notifications.Twitch ]: boolean;
-  // [ SettingKey.Notifications.Youtube ]: boolean;
+  [ SettingKey.Notifications.Youtube ]: boolean;
   // [ SettingKey.Notifications.GenericAudioVideo ]: boolean;
 
   // [ SettingKey.ControllersEnabled.AmazonMusic ]: boolean;
@@ -155,10 +155,10 @@ export interface SettingsType
   // [ SettingKey.ControllersEnabled.HboGo ]: boolean;
   // [ SettingKey.ControllersEnabled.Hulu ]: boolean;
   // [ SettingKey.ControllersEnabled.Netflix ]: boolean;
-  // [ SettingKey.ControllersEnabled.Pandora ]: boolean;
-  // [ SettingKey.ControllersEnabled.Spotify ]: boolean;
+  [ SettingKey.ControllersEnabled.Pandora ]: boolean;
+  [ SettingKey.ControllersEnabled.Spotify ]: boolean;
   // [ SettingKey.ControllersEnabled.Twitch ]: boolean;
-  // [ SettingKey.ControllersEnabled.Youtube ]: boolean;
+  [ SettingKey.ControllersEnabled.Youtube ]: boolean;
   // [ SettingKey.ControllersEnabled.GenericAudioVideo ]: boolean;
 
   // [ SettingKey.ControllerColors.AmazonMusic ]: string;
@@ -232,8 +232,8 @@ export interface SettingsType
 }
 
 export type SettingKeyType = (
-  // NotificationsSettingId |
-  // ControllersEnabledSettingId |
+  NotificationsSettingId |
+  ControllersEnabledSettingId |
   // ControllerColorsSettingId |
   // OpenInExistingSettingId |
   OtherSettingId // |
@@ -244,7 +244,7 @@ export type SettingKeyType = (
 
 export type SettingValue = SettingsType[ SettingKeyType ];
 
-export type SettingKeyFromValue<V> = { [ setting in keyof SettingsType ]: SettingsType[ setting ] extends V ? setting : never }[ keyof SettingsType ];
+export type SettingKeyFromValue<V, S extends SettingKeyType = SettingKeyType> = { [ setting in S ]: SettingsType[ setting ] extends V ? setting : never }[ S ];
 
 const DEFAULT_SETTINGS: SettingsType = {
   // [ SettingKey.Notifications.AmazonMusic ]: true,
@@ -254,10 +254,10 @@ const DEFAULT_SETTINGS: SettingsType = {
   // [ SettingKey.Notifications.HboGo ]: true,
   // [ SettingKey.Notifications.Hulu ]: true,
   // [ SettingKey.Notifications.Netflix ]: true,
-  // [ SettingKey.Notifications.Pandora ]: true,
-  // [ SettingKey.Notifications.Spotify ]: true,
+  [ SettingKey.Notifications.Pandora ]: true,
+  [ SettingKey.Notifications.Spotify ]: true,
   // [ SettingKey.Notifications.Twitch ]: true,
-  // [ SettingKey.Notifications.Youtube ]: true,
+  [ SettingKey.Notifications.Youtube ]: true,
   // [ SettingKey.Notifications.GenericAudioVideo ]: true,
 
   // [ SettingKey.ControllersEnabled.AmazonMusic ]: true,
@@ -267,10 +267,10 @@ const DEFAULT_SETTINGS: SettingsType = {
   // [ SettingKey.ControllersEnabled.HboGo ]: true,
   // [ SettingKey.ControllersEnabled.Hulu ]: true,
   // [ SettingKey.ControllersEnabled.Netflix ]: true,
-  // [ SettingKey.ControllersEnabled.Pandora ]: true,
-  // [ SettingKey.ControllersEnabled.Spotify ]: true,
+  [ SettingKey.ControllersEnabled.Pandora ]: true,
+  [ SettingKey.ControllersEnabled.Spotify ]: true,
   // [ SettingKey.ControllersEnabled.Twitch ]: true,
-  // [ SettingKey.ControllersEnabled.Youtube ]: true,
+  [ SettingKey.ControllersEnabled.Youtube ]: true,
   // [ SettingKey.ControllersEnabled.GenericAudioVideo ]: true,
 
   // [ SettingKey.ControllerColors.AmazonMusic ]: '#fd7c02',

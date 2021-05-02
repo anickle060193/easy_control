@@ -2,7 +2,9 @@ import { BackgroundMessage, BackgroundMessageId } from '../common/backgroundMess
 import { ContentMessageId, UpdateContentMessage } from '../common/contentMessages';
 
 import { onReady } from './util';
-import CONTROLLERS from './config';
+import { CONTROLLERS_CONFIG } from './config';
+import settings from '../common/settings';
+import { ControllerId, CONTROLLERS } from '../common/controllers';
 
 type UrlMatch = string | RegExp | UrlMatch[];
 
@@ -24,14 +26,21 @@ function urlMatches( matches: UrlMatch, url: string ): boolean
 
 onReady( () =>
 {
-  const c = Object.entries( CONTROLLERS ).find( ( [ , { matches } ] ) => urlMatches( matches, window.location.href ) );
+  const c = Object.entries( CONTROLLERS_CONFIG ).find( ( [ , { matches } ] ) => urlMatches( matches, window.location.href ) );
   if( !c )
   {
     return;
   }
 
-  const [ controllerId, { controller } ] = c;
+  const controllerId = c[ 0 ] as ControllerId;
+  const { controller } = c[ 1 ];
   console.log( 'Found matching controller:', controllerId, controller );
+
+  if( !settings.get( CONTROLLERS[ controllerId ].enabledSetting ) )
+  {
+    console.log( 'Controller is not enabled:', controllerId );
+    return;
+  }
 
   const port = chrome.runtime.connect( { name: controllerId } );
   console.log( 'Connected port for', controllerId, ':', port );

@@ -1,11 +1,17 @@
 import React from 'react';
-import { AppBar, CircularProgress, createStyles, Divider, makeStyles, Toolbar, Typography } from '@material-ui/core';
-
-import { useSettingsInitialized } from '../common/hooks/useSettingsInitialized';
-import { SettingKey } from '../common/settings';
+import { AppBar, CircularProgress, createStyles, Divider, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from '@material-ui/core';
 
 import { CheckboxSetting } from './components/CheckboxSetting';
 import { NumberSetting } from './components/NumberSetting';
+
+import { useSettingsInitialized } from '../common/hooks/useSettingsInitialized';
+import { SettingKey } from '../common/settings';
+import { ControllerDetails, ControllerId, CONTROLLERS } from '../common/controllers';
+
+function mapControllerSettings<T>( mapper: ( id: ControllerId, details: ControllerDetails ) => T ): T[]
+{
+  return Object.entries( CONTROLLERS ).map( ( [ id, details ] ) => mapper( id as ControllerId, details ) );
+}
 
 const useStyles = makeStyles( ( theme ) => createStyles( {
   root: {
@@ -33,6 +39,9 @@ const useStyles = makeStyles( ( theme ) => createStyles( {
     marginTop: theme.spacing( 2 ),
     marginBottom: theme.spacing( 2 ),
   },
+  table: {
+    marginBottom: theme.spacing( 2 ),
+  },
   numberInput: {
     marginTop: theme.spacing( 1 ),
   },
@@ -57,7 +66,33 @@ export const OptionsPage: React.FC = () =>
   {
     content = (
       <div className={styles.content}>
-        <Typography variant="h5">Notifications</Typography>
+        <Typography variant="h5">Controller Options</Typography>
+        <TableContainer className={styles.table}>
+          <Table padding="none">
+            <TableHead>
+              <TableRow>
+                <TableCell></TableCell>
+                <TableCell>Enabled?</TableCell>
+                <TableCell>Notifications Enabled?</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {mapControllerSettings( ( id, { name, enabledSetting, notificationsEnabledSetting } ) => (
+                <TableRow key={id}>
+                  <TableCell>{name}</TableCell>
+                  <TableCell>
+                    <CheckboxSetting setting={enabledSetting} />
+                  </TableCell>
+                  <TableCell>
+                    <CheckboxSetting setting={notificationsEnabledSetting} />
+                  </TableCell>
+                </TableRow>
+              ) )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+
+        <Typography variant="h5">Notification Options</Typography>
         <CheckboxSetting
           setting={SettingKey.Other.NotificationsEnabled}
           label="Notifications Enabled"
@@ -73,7 +108,7 @@ export const OptionsPage: React.FC = () =>
 
         <Divider className={styles.divider} />
 
-        <Typography variant="h5">Idle</Typography>
+        <Typography variant="h5">Idle Options</Typography>
         <CheckboxSetting
           setting={SettingKey.Other.PauseOnLock}
           label="Pause media when computer is locked"
