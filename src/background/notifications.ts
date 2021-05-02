@@ -3,7 +3,7 @@ import { BackgroundController } from './backgroundController';
 import settings, { SettingKey } from '../common/settings';
 import { CONTROLLER_NAMES } from '../common/controllers';
 import { getTab, getWindow } from '../common/browserExtension';
-import { BackgroundMessageId } from '../common/background_messages';
+import { BackgroundMessageId } from '../common/backgroundMessages';
 
 enum StartedPlayingNotificationButtions
 {

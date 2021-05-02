@@ -1,4 +1,4 @@
-import { BackgroundMessageId } from '../common/background_messages';
+import { BackgroundMessageId } from '../common/backgroundMessages';
 import settings, { SettingKey } from '../common/settings';
 
 import { getCurrentController } from './controllers';

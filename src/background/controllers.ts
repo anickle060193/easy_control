@@ -1,7 +1,7 @@
 import { updateBrowserActionIcon } from './browserAction';
 import { BackgroundController } from './backgroundController';
 
-import { BackgroundMessageId } from '../common/background_messages';
+import { BackgroundMessageId } from '../common/backgroundMessages';
 import { showAutoPauseNotification, showStartedPlayingNotification } from './notifications';
 
 const controllers: BackgroundController[] = [];

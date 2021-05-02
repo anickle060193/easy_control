@@ -1,5 +1,5 @@
-import { BackgroundMessage, BackgroundMessageId } from '../common/background_messages';
-import { ContentMessage, ContentMessageId } from '../common/content_messages';
+import { BackgroundMessage, BackgroundMessageId } from '../common/backgroundMessages';
+import { ContentMessage, ContentMessageId } from '../common/contentMessages';
 import { ControllerId, ControllerMedia, ControllerStatus } from '../common/controllers';
 import { EventEmitter } from '../common/EventEmitter';
 

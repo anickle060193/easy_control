@@ -1,5 +1,5 @@
-import { BackgroundMessage, BackgroundMessageId } from '../common/background_messages';
-import { ContentMessageId, UpdateContentMessage } from '../common/content_messages';
+import { BackgroundMessage, BackgroundMessageId } from '../common/backgroundMessages';
+import { ContentMessageId, UpdateContentMessage } from '../common/contentMessages';
 
 import { onReady } from './util';
 import CONTROLLERS from './config';

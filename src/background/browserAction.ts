@@ -1,6 +1,6 @@
 import { getCurrentController } from './controllers';
 
-import { BackgroundMessageId } from '../common/background_messages';
+import { BackgroundMessageId } from '../common/backgroundMessages';
 import { CONTROLLER_COLORS } from '../common/controllers';
 
 const ICON_WIDTH = 32;
