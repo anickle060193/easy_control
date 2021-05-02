@@ -73,7 +73,7 @@ enum OtherSettingId
   PauseOnLock = 'key__pause_on_lock',
   PauseOnInactivity = 'key__pause_on_inactivity',
   InactivityTimeout = 'key__inactivity_timeout',
-  // AutoPauseEnabled = 'key__auto_pause_enabled',
+  AutoPauseEnabled = 'key__auto_pause_enabled',
   // ShowChangeLogOnUpdate = 'key__show_change_log_on_update',
   ShowAutoPausedNotification = 'key__show_auto_paused_notification',
   // SiteBlacklist = 'key__site_blacklist',
@@ -193,7 +193,7 @@ export interface SettingsType
   [ SettingKey.Other.PauseOnLock ]: boolean;
   [ SettingKey.Other.PauseOnInactivity ]: boolean;
   [ SettingKey.Other.InactivityTimeout ]: number;
-  // [ SettingKey.Other.AutoPauseEnabled ]: boolean;
+  [ SettingKey.Other.AutoPauseEnabled ]: boolean;
   // [ SettingKey.Other.ShowChangeLogOnUpdate ]: boolean;
   [ SettingKey.Other.ShowAutoPausedNotification ]: boolean;
   // [ SettingKey.Other.SiteBlacklist ]: string[];
@@ -305,7 +305,7 @@ const DEFAULT_SETTINGS: SettingsType = {
   [ SettingKey.Other.PauseOnLock ]: true,
   [ SettingKey.Other.PauseOnInactivity ]: false,
   [ SettingKey.Other.InactivityTimeout ]: 60 * 5,
-  // [ SettingKey.Other.AutoPauseEnabled ]: true,
+  [ SettingKey.Other.AutoPauseEnabled ]: true,
   // [ SettingKey.Other.ShowChangeLogOnUpdate ]: true,
   [ SettingKey.Other.ShowAutoPausedNotification ]: false,
   // [ SettingKey.Other.SiteBlacklist ]: [ 'imgur.com' ],
@@ -367,41 +367,41 @@ class SettingsStorage
         ...items,
       };
 
-      chrome.storage.onChanged.addListener( ( changes, areaName ) =>
-      {
-        if( areaName !== 'sync' )
-        {
-          return;
-        }
-
-        let settingChanged = false;
-
-        for( const key of Object.keys( changes ) as SettingKeyType[] )
-        {
-          if( !( key in DEFAULT_SETTINGS ) )
-          {
-            continue;
-          }
-
-          settingChanged = true;
-
-          const change = changes[ key ];
-          console.log( 'Setting changed:', key, ':', change.oldValue, '->', change.newValue );
-
-          if( this.isValid( key, change.newValue ) )
-          {
-            this.cache[ key ] = change.newValue as never;
-          }
-        }
-
-        if( settingChanged )
-        {
-          this.onChanged.dispatch();
-        }
-      } );
-
       this.onInitialized.dispatch();
       this.onChanged.dispatch();
+    } );
+
+    chrome.storage.onChanged.addListener( ( changes, areaName ) =>
+    {
+      if( areaName !== 'sync' )
+      {
+        return;
+      }
+
+      let settingChanged = false;
+
+      for( const key of Object.keys( changes ) as SettingKeyType[] )
+      {
+        if( !( key in DEFAULT_SETTINGS ) )
+        {
+          continue;
+        }
+
+        settingChanged = true;
+
+        const change = changes[ key ];
+        console.log( 'Setting changed:', key, ':', change.oldValue, '->', change.newValue );
+
+        if( this.isValid( key, change.newValue ) )
+        {
+          this.cache[ key ] = change.newValue as never;
+        }
+      }
+
+      if( settingChanged )
+      {
+        this.onChanged.dispatch();
+      }
     } );
   }
 

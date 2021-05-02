@@ -3,6 +3,8 @@ import { BackgroundController } from './backgroundController';
 
 import { BackgroundMessageId } from '../common/backgroundMessages';
 import { showAutoPauseNotification, showStartedPlayingNotification } from './notifications';
+import settings, { SettingKey } from '../common/settings';
+import { isAutoPauseEnabledForTab } from './autoPause';
 
 const controllers: BackgroundController[] = [];
 
@@ -43,11 +45,26 @@ function onNewController( controller: BackgroundController )
     }
     controllers.push( controller );
 
-    for( const c of controllers )
+    if( settings.get( SettingKey.Other.AutoPauseEnabled ) )
     {
-      if( c !== controller
-        && c.status.playing )
+      for( const c of controllers )
       {
+        if( c === controller
+          || !c.status.playing )
+        {
+          continue;
+        }
+
+        const tabId = c.tabId;
+        if( typeof tabId !== 'number' )
+        {
+          console.warn( 'Controller has no associated tab ID:', c );
+        }
+        else if( !isAutoPauseEnabledForTab( tabId ) )
+        {
+          continue;
+        }
+
         showAutoPauseNotification( c );
 
         c.sendMessage( BackgroundMessageId.Pause );

@@ -14,7 +14,6 @@ enum StartedPlayingNotificationButtions
 enum AutoPauseNotificationButtons
 {
   Resume,
-  ResumeAndDisableAutoPause,
 }
 
 const startedPlayingNotifications: { [ notificationId: string ]: BackgroundController | undefined } = {};
@@ -73,7 +72,6 @@ export function showAutoPauseNotification( controller: BackgroundController ): v
 
   const buttons: chrome.notifications.ButtonOptions[] = [];
   buttons[ AutoPauseNotificationButtons.Resume ] = { title: 'Resume' };
-  buttons[ AutoPauseNotificationButtons.ResumeAndDisableAutoPause ] = { title: 'Resume and Disable Auto-Pause for Tab' };
 
   chrome.notifications.create( {
     type: 'basic',
@@ -161,10 +159,6 @@ function onAutoPauseNotificationButtonClicked( notificationId: string, buttonInd
   if( buttonIndex === AutoPauseNotificationButtons.Resume )
   {
     controller.sendMessage( BackgroundMessageId.Play );
-  }
-  else if( buttonIndex === AutoPauseNotificationButtons.ResumeAndDisableAutoPause )
-  {
-    // TODO
   }
   else
   {
