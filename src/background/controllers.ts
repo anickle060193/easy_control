@@ -1,10 +1,10 @@
+import { isAutoPauseEnabledForTab } from './autoPause';
 import { updateBrowserActionIcon } from './browserAction';
 import { BackgroundController } from './backgroundController';
+import { showAutoPauseNotification, showStartedPlayingNotification } from './notifications';
 
 import { BackgroundMessageId } from '../common/backgroundMessages';
-import { showAutoPauseNotification, showStartedPlayingNotification } from './notifications';
 import settings, { SettingKey } from '../common/settings';
-import { isAutoPauseEnabledForTab } from './autoPause';
 
 const controllers: BackgroundController[] = [];
 
