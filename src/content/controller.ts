@@ -453,6 +453,8 @@ export default class Controller
     return null;
   }
 
+  public getMediaChangedIndication = (): ( string | null | undefined )[] => [ this.getTrack() ];
+
   public parseTime = ( name: string, selector: string, format: RegExp ): number | null =>
   {
     const timeElement = document.querySelector( selector );

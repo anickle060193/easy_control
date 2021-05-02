@@ -19,32 +19,33 @@ enum AutoPauseNotificationButtons
 const startedPlayingNotifications: { [ notificationId: string ]: BackgroundController | undefined } = {};
 const autoPauseNotifications: { [ notificationId: string ]: BackgroundController | undefined } = {};
 
-export async function showStartedPlayingNotification( controller: BackgroundController ): Promise<void>
+export async function showStartedPlayingNotification( controller: BackgroundController ): Promise<boolean>
 {
-  if( !settings.get( SettingKey.Other.NotificationsEnabled )
-    || !settings.get( CONTROLLERS[ controller.controllerId ].notificationsEnabledSetting ) )
-  {
-    return;
-  }
-
   if( !controller.media.track
     || !controller.media.artist
     || !controller.media.artwork )
   {
-    return;
+    console.warn( 'Missing track, artist, and/or artwork for media changed notification:', controller.id, controller );
+    return false;
+  }
+
+  if( !settings.get( SettingKey.Other.NotificationsEnabled )
+    || !settings.get( CONTROLLERS[ controller.controllerId ].notificationsEnabledSetting ) )
+  {
+    return true;
   }
 
   if( settings.get( SettingKey.Other.NoActiveWindowNotifications )
     && ( await controller.isActiveTab() ) )
   {
-    return;
+    return true;
   }
 
   const buttons: chrome.notifications.ButtonOptions[] = [];
   buttons[ StartedPlayingNotificationButtions.Pause ] = { title: 'Pause' };
   buttons[ StartedPlayingNotificationButtions.Next ] = { title: 'Next' };
 
-  chrome.notifications.create( {
+  chrome.notifications.create( `notification::started-playing::${controller.id}`, {
     type: 'basic',
     silent: true,
     title: controller.media.track,
@@ -56,12 +57,14 @@ export async function showStartedPlayingNotification( controller: BackgroundCont
   {
     if( chrome.runtime.lastError )
     {
-      console.log( 'Failed to create media notification:', controller.name, controller, chrome.runtime.lastError );
+      console.log( 'Failed to create media notification:', controller.id, controller, chrome.runtime.lastError );
       return;
     }
 
     startedPlayingNotifications[ notificationId ] = controller;
   } );
+
+  return true;
 }
 
 export function showAutoPauseNotification( controller: BackgroundController ): void
@@ -74,7 +77,7 @@ export function showAutoPauseNotification( controller: BackgroundController ): v
   const buttons: chrome.notifications.ButtonOptions[] = [];
   buttons[ AutoPauseNotificationButtons.Resume ] = { title: 'Resume' };
 
-  chrome.notifications.create( {
+  chrome.notifications.create( `notification::auto-pause::${controller.id}`, {
     type: 'basic',
     silent: true,
     title: `${CONTROLLERS[ controller.controllerId ].name} has been auto-paused`,
@@ -85,7 +88,7 @@ export function showAutoPauseNotification( controller: BackgroundController ): v
   {
     if( chrome.runtime.lastError )
     {
-      console.error( 'Failed to create auto-pause notification:', controller.name, controller, chrome.runtime.lastError );
+      console.error( 'Failed to create auto-pause notification:', controller.id, controller, chrome.runtime.lastError );
     }
 
     autoPauseNotifications[ notificationId ] = controller;

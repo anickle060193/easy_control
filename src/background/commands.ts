@@ -51,7 +51,7 @@ export function initCommands(): void
       }
       else
       {
-        console.log( 'Sending', backgroundMessageId, 'to', controller.name, ':', controller );
+        console.log( 'Sending', backgroundMessageId, 'to', controller.id, ':', controller );
         controller.sendMessage( backgroundMessageId );
       }
     }

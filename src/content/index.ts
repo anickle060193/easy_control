@@ -52,12 +52,24 @@ onReady( () =>
       return;
     }
 
+    const indication = controller.getMediaChangedIndication();
+    let mediaChangedIndication: string | null;
+    if( indication.some( ( s ) => typeof s !== 'string' ) )
+    {
+      mediaChangedIndication = null;
+    }
+    else
+    {
+      mediaChangedIndication = indication.join( '::' );
+    }
+
     const message: UpdateContentMessage = {
       id: ContentMessageId.Update,
       status: {
         playing: controller.isPlaying(),
         progress: controller.getProgress(),
       },
+      mediaChangedIndication,
       media: {
         track: controller.getTrack(),
         artist: controller.getArtist(),

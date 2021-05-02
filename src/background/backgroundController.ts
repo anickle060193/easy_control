@@ -8,8 +8,9 @@ let controllerCount = 0;
 export class BackgroundController
 {
   public readonly controllerId: ControllerId;
-  public readonly name: string;
+  public readonly id: string;
   public status: Readonly<ControllerStatus>;
+  public previousMediaChangedIndication: string | null;
   public media: Readonly<ControllerMedia>;
 
   public readonly onPlayed = new EventEmitter();
@@ -17,6 +18,8 @@ export class BackgroundController
   public readonly onProgressChanged = new EventEmitter();
   public readonly onMediaChanged = new EventEmitter();
   public readonly onDisconnected = new EventEmitter();
+
+  public mediaChangedHandled = false;
 
   public get tabId(): number | undefined
   {
@@ -28,12 +31,14 @@ export class BackgroundController
   )
   {
     this.controllerId = port.name as ControllerId;
-    this.name = `${this.controllerId}-${++controllerCount}`;
+    this.id = `${this.controllerId}-${++controllerCount}`;
 
     this.status = {
       playing: false,
       progress: 0,
     };
+
+    this.previousMediaChangedIndication = null;
 
     this.media = {
       track: null,
@@ -57,6 +62,7 @@ export class BackgroundController
     {
       const previousStatus = this.status;
       this.status = message.status;
+      this.media = message.media;
 
       if( !previousStatus.playing && this.status.playing )
       {
@@ -74,11 +80,13 @@ export class BackgroundController
 
       if( this.status.playing )
       {
-        const previousMedia = this.media;
-        this.media = message.media;
-
-        if( previousMedia.track !== this.media.track )
+        if( !this.mediaChangedHandled
+          || ( typeof message.mediaChangedIndication === 'string'
+            && message.mediaChangedIndication !== this.previousMediaChangedIndication ) )
         {
+          this.previousMediaChangedIndication = message.mediaChangedIndication;
+          this.mediaChangedHandled = false;
+
           this.onMediaChanged.dispatch();
         }
       }
@@ -94,7 +102,7 @@ export class BackgroundController
     const tabId = this.port.sender?.tab?.id;
     if( typeof tabId !== 'number' )
     {
-      console.warn( 'Controller port has no tab ID:', this.name, this.port );
+      console.warn( 'Controller port has no tab ID:', this.id, this.port );
       return false;
     }
 

@@ -100,7 +100,7 @@ export function updateBrowserActionIcon(): void
 
   const imageData = context.getImageData( 0, 0, ICON_WIDTH, ICON_HEIGHT );
   chrome.browserAction.setIcon( { imageData: imageData } );
-  chrome.browserAction.setTitle( { title: controller.name } );
+  chrome.browserAction.setTitle( { title: CONTROLLERS[ controller.controllerId ].name } );
 }
 
 export function initBrowserAction(): void

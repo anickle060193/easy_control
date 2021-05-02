@@ -32,7 +32,7 @@ function onNewController( controller: BackgroundController )
 
   controller.onPlayed.addEventListener( async () =>
   {
-    console.log( 'onPlayed:', controller.name, await controller.isActiveTab(), controller );
+    console.log( 'onPlayed:', controller.id, await controller.isActiveTab(), controller );
 
     const index = controllers.indexOf( controller );
     if( index < 0 )
@@ -76,7 +76,7 @@ function onNewController( controller: BackgroundController )
 
   controller.onPaused.addEventListener( () =>
   {
-    console.log( 'onPaused:', controller.name, controller );
+    console.log( 'onPaused:', controller.id, controller );
 
     if( isCurrentController( controller ) )
     {
@@ -94,16 +94,16 @@ function onNewController( controller: BackgroundController )
     }
   } );
 
-  controller.onMediaChanged.addEventListener( () =>
+  controller.onMediaChanged.addEventListener( async () =>
   {
-    console.log( 'onMediaChanged:', controller.name, controller.media );
+    console.log( 'onMediaChanged:', controller.id, controller.media );
 
-    void showStartedPlayingNotification( controller );
+    controller.mediaChangedHandled = await showStartedPlayingNotification( controller );
   } );
 
   controller.onDisconnected.addEventListener( () =>
   {
-    console.log( 'onDisconnected:', controller.name, controller );
+    console.log( 'onDisconnected:', controller.id, controller );
     const wasCurrentController = isCurrentController( controller );
 
     const index = controllers.indexOf( controller );
@@ -113,7 +113,7 @@ function onNewController( controller: BackgroundController )
     }
     else
     {
-      console.warn( 'Failed to remove disconnected port:', controller.name, controller );
+      console.warn( 'Failed to remove disconnected port:', controller.id, controller );
     }
 
     if( wasCurrentController )

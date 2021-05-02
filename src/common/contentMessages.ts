@@ -13,6 +13,7 @@ export interface BaseContentMessage<T extends ContentMessageId>
 export interface UpdateContentMessage extends BaseContentMessage<ContentMessageId.Update>
 {
   status: ControllerStatus
+  mediaChangedIndication: string | null;
   media: ControllerMedia;
 }
 
