@@ -1,3 +1,2 @@
 Add browser test
-Add media to browser action title
 Add site capabilities

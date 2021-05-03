@@ -100,7 +100,15 @@ export function updateBrowserActionIcon(): void
 
   const imageData = context.getImageData( 0, 0, ICON_WIDTH, ICON_HEIGHT );
   chrome.browserAction.setIcon( { imageData: imageData } );
-  chrome.browserAction.setTitle( { title: CONTROLLERS[ controller.controllerId ].name } );
+
+  chrome.browserAction.setTitle( {
+    title: [
+      `${CONTROLLERS[ controller.controllerId ].name}:`,
+      controller.media.track,
+      controller.media.artist,
+      controller.media.album,
+    ].filter( ( s ): s is string => typeof s === 'string' ).join( '\n' ),
+  } );
 }
 
 export function initBrowserAction(): void
