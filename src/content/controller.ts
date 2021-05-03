@@ -1,13 +1,15 @@
+import { querySelector, Selector } from './selector';
+
 export interface ControllerOptions
 {
-  isEnabledElementSelector: string | null;
+  isEnabledElementSelector: Selector | null;
   useMediaForIsEnabled: boolean;
   usePlayPauseButtonsForIsEnabled: boolean;
 
-  mediaSelector: string | null;
+  mediaSelector: Selector | null;
 
-  playButtonSelector: string | null;
-  pauseButtonSelector: string | null;
+  playButtonSelector: Selector | null;
+  pauseButtonSelector: Selector | null;
 
   useMediaSessionForIsPlaying: boolean;
   useMediaForIsPlaying: boolean;
@@ -24,23 +26,23 @@ export interface ControllerOptions
   useMediaForPolling: boolean;
   useMutationObserverForPolling: boolean;
 
-  playerSelector: string | null;
+  playerSelector: Selector | null;
 
   useMediaSessionForTrack: boolean;
   useMediaSessionForAlbum: boolean;
   useMediaSessionForArtist: boolean;
   useMediaSessionForArtwork: boolean;
 
-  trackSelector: string | null;
-  albumSelector: string | null;
-  artistSelector: string | null;
-  artworkSelector: string | null;
+  trackSelector: Selector | null;
+  albumSelector: Selector | null;
+  artistSelector: Selector | null;
+  artworkSelector: Selector | null;
 
   useMediaForTime: boolean;
 
-  currentTimeSelector: string | null;
-  remainingTimeSelector: string | null;
-  durationSelector: string | null;
+  currentTimeSelector: Selector | null;
+  remainingTimeSelector: Selector | null;
+  durationSelector: Selector | null;
 
   currentTimeFormat: RegExp | null;
   remainingTimeFormat: RegExp | null;
@@ -122,9 +124,9 @@ export default class Controller
       }
     }
 
-    if( this.options.isEnabledElementSelector )
+    if( this.options.isEnabledElementSelector !== null )
     {
-      if( document.querySelector( this.options.isEnabledElementSelector ) )
+      if( querySelector( this.options.isEnabledElementSelector ) )
       {
         return true;
       }
@@ -133,10 +135,25 @@ export default class Controller
     return false;
   }
 
-  public playButton = (): HTMLElement | null => this.options.playButtonSelector ? document.querySelector<HTMLElement>( this.options.playButtonSelector ) : null;
-  public pauseButton = (): HTMLElement | null => this.options.pauseButtonSelector ? document.querySelector<HTMLElement>( this.options.pauseButtonSelector ) : null;
+  public playButton = (): HTMLElement | null => this.options.playButtonSelector !== null ? querySelector( this.options.playButtonSelector ) : null;
+  public pauseButton = (): HTMLElement | null => this.options.pauseButtonSelector !== null ? querySelector( this.options.pauseButtonSelector ) : null;
 
-  public media = (): HTMLMediaElement | null => this.options.mediaSelector ? document.querySelector<HTMLMediaElement>( this.options.mediaSelector ) : null;
+  public media = (): HTMLMediaElement | null =>
+  {
+    if( this.options.mediaSelector === null )
+    {
+      return null;
+    }
+
+    const m = querySelector( this.options.mediaSelector );
+    if( !( m instanceof HTMLMediaElement ) )
+    {
+      console.warn( 'Media selector did not select a media element:', this.options.mediaSelector, m );
+      return null;
+    }
+
+    return m;
+  }
 
   public isPlaying = (): boolean =>
   {
@@ -235,7 +252,7 @@ export default class Controller
     }
   }
 
-  public player = (): HTMLElement | null => this.options.playerSelector ? document.querySelector<HTMLElement>( this.options.playerSelector ) : null;
+  public player = (): HTMLElement | null => this.options.playerSelector !== null ? querySelector( this.options.playerSelector ) : null;
 
   public registerListener = ( callback: () => void ): ( () => void ) =>
   {
@@ -312,9 +329,9 @@ export default class Controller
       }
     }
 
-    if( this.options.trackSelector )
+    if( this.options.trackSelector !== null )
     {
-      const trackElement = document.querySelector( this.options.trackSelector );
+      const trackElement = querySelector( this.options.trackSelector );
       if( !trackElement )
       {
         console.warn( 'Could not find track element:', this.options.trackSelector );
@@ -324,7 +341,7 @@ export default class Controller
         const track = trackElement.textContent?.trim();
         if( !track )
         {
-          console.warn( 'Track element has not text:', trackElement );
+          console.warn( 'Track element has no text:', trackElement );
         }
         else
         {
@@ -351,9 +368,9 @@ export default class Controller
       }
     }
 
-    if( this.options.albumSelector )
+    if( this.options.albumSelector !== null )
     {
-      const albumElement = document.querySelector( this.options.albumSelector );
+      const albumElement = querySelector( this.options.albumSelector );
       if( !albumElement )
       {
         console.warn( 'Could not find album element:', this.options.albumSelector );
@@ -363,7 +380,7 @@ export default class Controller
         const album = albumElement.textContent?.trim();
         if( !album )
         {
-          console.warn( 'Album element has not text:', albumElement );
+          console.warn( 'Album element has no text:', albumElement );
         }
         else
         {
@@ -390,9 +407,9 @@ export default class Controller
       }
     }
 
-    if( this.options.artistSelector )
+    if( this.options.artistSelector !== null )
     {
-      const artistElement = document.querySelector( this.options.artistSelector );
+      const artistElement = querySelector( this.options.artistSelector );
       if( !artistElement )
       {
         console.warn( 'Could not find artist element:', this.options.artistSelector );
@@ -402,7 +419,7 @@ export default class Controller
         const artist = artistElement.textContent?.trim();
         if( !artist )
         {
-          console.warn( 'Artist element has not text:', artistElement );
+          console.warn( 'Artist element has no text:', artistElement );
         }
         else
         {
@@ -429,9 +446,9 @@ export default class Controller
       }
     }
 
-    if( this.options.artworkSelector )
+    if( this.options.artworkSelector !== null )
     {
-      const artworkElement = document.querySelector( this.options.artworkSelector );
+      const artworkElement = querySelector( this.options.artworkSelector );
       if( !artworkElement )
       {
         console.warn( 'Could not find artwork element:', this.options.artworkSelector );
@@ -455,9 +472,9 @@ export default class Controller
 
   public getMediaChangedIndication = (): ( string | null | undefined )[] => [ this.getTrack() ];
 
-  public parseTime = ( name: string, selector: string, format: RegExp ): number | null =>
+  public parseTime = ( name: string, selector: Selector, format: RegExp ): number | null =>
   {
-    const timeElement = document.querySelector( selector );
+    const timeElement = querySelector( selector );
     if( !timeElement )
     {
       console.warn( 'Could not find', name, ':', selector );
@@ -494,7 +511,7 @@ export default class Controller
       }
     }
 
-    if( this.options.currentTimeSelector )
+    if( this.options.currentTimeSelector !== null )
     {
       const currentTime = this.parseTime( 'currentTime()', this.options.currentTimeSelector, this.options.currentTimeFormat ?? DEFAULT_TIME_FORMAT );
       if( typeof currentTime !== 'number' )
@@ -525,7 +542,7 @@ export default class Controller
       }
     }
 
-    if( this.options.remainingTimeSelector )
+    if( this.options.remainingTimeSelector !== null )
     {
       const remainingTime = this.parseTime( 'remainingTime()', this.options.remainingTimeSelector, this.options.remainingTimeFormat ?? DEFAULT_TIME_FORMAT );
       if( typeof remainingTime !== 'number' )
@@ -556,7 +573,7 @@ export default class Controller
       }
     }
 
-    if( this.options.durationSelector )
+    if( this.options.durationSelector !== null )
     {
       const duration = this.parseTime( 'duration()', this.options.durationSelector, this.options.durationFormat ?? DEFAULT_TIME_FORMAT );
       if( typeof duration !== 'number' )
