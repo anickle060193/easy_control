@@ -32,10 +32,10 @@ export const controller = new Controller( {
   useMediaSessionForArtist: false,
   useMediaSessionForArtwork: false,
 
-  trackSelector: '.Tuner__Audio__TrackDetail__title',
-  albumSelector: null,
-  artistSelector: '.NowPlayingTopInfo__current__artistName',
-  artworkSelector: '.Tuner__Audio__TrackDetail__img img',
+  trackSelector: [ '.Tuner__Audio__TrackDetail__title', '.nowPlayingTopInfo__current__trackName .Marquee__wrapper__content__child:first-child', '.nowPlayingTopInfo__current__trackName' ],
+  albumSelector: '.nowPlayingTopInfo__current__albumName',
+  artistSelector: [ '.Tuner__Audio__TrackDetail__artist', '.NowPlayingTopInfo__current__artistName' ],
+  artworkSelector: [ '.Tuner__Audio__TrackDetail__img img', '.NowPlayinfTopInfo__artContainer__img' ],
 
   useMediaForTime: true,
 
