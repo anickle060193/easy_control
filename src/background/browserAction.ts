@@ -40,15 +40,14 @@ function drawPlay( context: CanvasRenderingContext2D, color: string )
 
 function setDefaultBrowserAction()
 {
+  const manifest = chrome.runtime.getManifest();
+
   chrome.browserAction.setIcon( {
-    path: {
-      16: 'assets/icon16.png',
-      32: 'assets/icon32.png',
-      64: 'assets/icon64.png',
-      128: 'assets/icon128.png',
-    },
+    path: manifest.browser_action?.default_icon,
   } );
-  chrome.browserAction.setTitle( { title: 'Easy Control' } );
+  chrome.browserAction.setTitle( {
+    title: manifest.browser_action?.default_title ?? 'Easy Control',
+  } );
 }
 
 export function updateBrowserActionIcon(): void
