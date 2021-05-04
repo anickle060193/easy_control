@@ -13,14 +13,58 @@ export interface ControllerMedia
   artist: string | null;
   album: string | null;
   artwork: string | null;
+  liked: boolean;
+  disliked: boolean;
 }
+
+export const DEFAULT_CONTROLLER_MEDIA: Readonly<ControllerMedia> = {
+  track: null,
+  artist: null,
+  album: null,
+  artwork: null,
+  liked: false,
+  disliked: false,
+};
 
 export interface ControllerStatus
 {
   enabled: boolean;
   playing: boolean;
   progress: number;
+  volume: number;
 }
+
+export const DEFAULT_CONTROLLER_STATUS: Readonly<ControllerStatus> = {
+  enabled: false,
+  playing: false,
+  progress: 0.0,
+  volume: 0.0,
+};
+
+export interface ControllerCapabilities
+{
+  next: boolean;
+  previous: boolean;
+  skipBackward: boolean;
+  skipForward: boolean;
+  like: boolean;
+  unlike: boolean;
+  dislike: boolean;
+  undislike: boolean;
+  volume: boolean;
+}
+
+export const DEFAULT_CONTROLLER_CAPABILITIES: Readonly<ControllerCapabilities> = {
+  next: false,
+  previous: false,
+  skipBackward: false,
+  skipForward: false,
+  like: false,
+  unlike: false,
+  dislike: false,
+  undislike: false,
+  volume: false,
+};
 
 export interface ControllerDetails
 {

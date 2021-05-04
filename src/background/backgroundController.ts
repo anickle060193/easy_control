@@ -1,6 +1,6 @@
 import { BackgroundMessage, BackgroundMessageId } from '../common/backgroundMessages';
 import { ContentMessage, ContentMessageId } from '../common/contentMessages';
-import { ControllerId, ControllerMedia, ControllerStatus } from '../common/controllers';
+import { ControllerCapabilities, ControllerId, ControllerMedia, ControllerStatus, DEFAULT_CONTROLLER_CAPABILITIES, DEFAULT_CONTROLLER_MEDIA, DEFAULT_CONTROLLER_STATUS } from '../common/controllers';
 import { EventEmitter } from '../common/EventEmitter';
 
 let controllerCount = 0;
@@ -12,6 +12,7 @@ export class BackgroundController
   public status: Readonly<ControllerStatus>;
   public previousMediaChangedIndication: string | null;
   public media: Readonly<ControllerMedia>;
+  public capabilities: Readonly<ControllerCapabilities>;
 
   public readonly onPlayed = new EventEmitter();
   public readonly onPaused = new EventEmitter();
@@ -34,20 +35,10 @@ export class BackgroundController
     this.controllerId = port.name as ControllerId;
     this.id = `${this.controllerId}-${++controllerCount}`;
 
-    this.status = {
-      enabled: false,
-      playing: false,
-      progress: 0,
-    };
-
+    this.status = DEFAULT_CONTROLLER_STATUS;
     this.previousMediaChangedIndication = null;
-
-    this.media = {
-      track: null,
-      artist: null,
-      album: null,
-      artwork: null,
-    };
+    this.media = DEFAULT_CONTROLLER_MEDIA;
+    this.capabilities = DEFAULT_CONTROLLER_CAPABILITIES;
 
     this.port.onMessage.addListener( this.onMessage );
     this.port.onDisconnect.addListener( this.onDisconnect );

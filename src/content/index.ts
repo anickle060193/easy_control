@@ -4,7 +4,7 @@ import { ContentMessageId, UpdateContentMessage } from '../common/contentMessage
 import { onReady } from './util';
 import { CONTROLLERS_CONFIG } from './config';
 import settings from '../common/settings';
-import { ControllerId, CONTROLLERS } from '../common/controllers';
+import { ControllerId, CONTROLLERS, DEFAULT_CONTROLLER_CAPABILITIES, DEFAULT_CONTROLLER_MEDIA, DEFAULT_CONTROLLER_STATUS } from '../common/controllers';
 
 type UrlMatch = string | RegExp | UrlMatch[];
 
@@ -51,18 +51,10 @@ onReady( () =>
     {
       const message: UpdateContentMessage = {
         id: ContentMessageId.Update,
-        status: {
-          enabled: false,
-          playing: false,
-          progress: 0.0,
-        },
+        status: DEFAULT_CONTROLLER_STATUS,
         mediaChangedIndication: null,
-        media: {
-          track: null,
-          artist: null,
-          album: null,
-          artwork: null,
-        },
+        media: DEFAULT_CONTROLLER_MEDIA,
+        capabilities: DEFAULT_CONTROLLER_CAPABILITIES,
       };
       port.postMessage( message );
     }
@@ -84,6 +76,7 @@ onReady( () =>
         enabled: true,
         playing: controller.isPlaying(),
         progress: controller.getProgress(),
+        volume: controller.getVolume(),
       },
       mediaChangedIndication,
       media: {
@@ -91,6 +84,19 @@ onReady( () =>
         artist: controller.getArtist(),
         album: controller.getAlbum(),
         artwork: controller.getArtwork(),
+        liked: controller.isLiked(),
+        disliked: controller.isDisliked(),
+      },
+      capabilities: {
+        next: controller.canNext(),
+        previous: controller.canPrevious(),
+        skipBackward: controller.canSkipBackward(),
+        skipForward: controller.canSkipForward(),
+        like: controller.canLike(),
+        unlike: controller.canUnlike(),
+        dislike: controller.canDislike(),
+        undislike: controller.canUndislike(),
+        volume: controller.canVolume(),
       },
     };
     port.postMessage( message );
@@ -103,12 +109,12 @@ onReady( () =>
       if( controller.isPlaying() )
       {
         console.log( 'Pausing controller:', controllerId );
-        controller.pause();
+        controller.performPause();
       }
       else
       {
         console.log( 'Playing controller:', controllerId );
-        controller.play();
+        controller.performPlay();
       }
     }
     else if( message.id === BackgroundMessageId.Play )
@@ -116,7 +122,7 @@ onReady( () =>
       if( !controller.isPlaying() )
       {
         console.log( 'Playing controller:', controllerId );
-        controller.play();
+        controller.performPlay();
       }
       else
       {
@@ -128,12 +134,52 @@ onReady( () =>
       if( controller.isPlaying() )
       {
         console.log( 'Pausing controller:', controllerId );
-        controller.pause();
+        controller.performPause();
       }
       else
       {
         console.log( 'Controller is already paused:', controllerId );
       }
+    }
+    else if( message.id === BackgroundMessageId.Next )
+    {
+      controller.performNext();
+    }
+    else if( message.id === BackgroundMessageId.Previous )
+    {
+      controller.performPrevious();
+    }
+    else if( message.id === BackgroundMessageId.SkipBackward )
+    {
+      controller.performSkipBackward();
+    }
+    else if( message.id === BackgroundMessageId.SkipForward )
+    {
+      controller.performSkipForward();
+    }
+    else if( message.id === BackgroundMessageId.Like )
+    {
+      controller.performLike();
+    }
+    else if( message.id === BackgroundMessageId.Unlike )
+    {
+      controller.performUnlike();
+    }
+    else if( message.id === BackgroundMessageId.Dislike )
+    {
+      controller.performDislike();
+    }
+    else if( message.id === BackgroundMessageId.Undislike )
+    {
+      controller.performUndislike();
+    }
+    else if( message.id === BackgroundMessageId.VolumeUp )
+    {
+      controller.performVolumeUp();
+    }
+    else if( message.id === BackgroundMessageId.VolumeDown )
+    {
+      controller.performVolumeDown();
     }
     else
     {

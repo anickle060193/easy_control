@@ -2,9 +2,13 @@ import { assertNever } from '../common/util';
 
 export type Selector = string | HTMLElement | ( () => HTMLElement | null ) | Selector[];
 
-export function querySelector( selector: Selector ): HTMLElement | null
+export function querySelector( selector: Selector | null ): HTMLElement | null
 {
-  if( Array.isArray( selector ) )
+  if( selector === null )
+  {
+    return null;
+  }
+  else if( Array.isArray( selector ) )
   {
     for( const s of selector )
     {

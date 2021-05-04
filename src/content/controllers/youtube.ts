@@ -21,6 +21,20 @@ export const controller = new Controller( {
   usePauseButtonForPause: false,
   useMediaForPause: true,
 
+  nextSelector: '.ytp-next-button',
+  previousSelector: null,
+  skipFowardSelector: null,
+  skipBackwardSelector: null,
+  likeSelector: '#info #top-level-buttons ytd-toggle-button-renderer:nth-child( 1 ) button[aria-pressed="false"]',
+  unlikeSelector: '#info #top-level-buttons ytd-toggle-button-renderer:nth-child( 1 ) button[aria-pressed="true"]',
+  dislikeSelector: '#info #top-level-buttons ytd-toggle-button-renderer:nth-child( 2 ) button[aria-pressed="false"]',
+  undislikeSelector: '#info #top-level-buttons ytd-toggle-button-renderer:nth-child( 2 ) button[aria-pressed="true"]',
+
+  volumeSelector: null,
+
+  useMediaForSkipping: true,
+  useMediaForVolume: true,
+
   useDocumentMediaEventsForPolling: true,
   useMediaForPolling: false,
   useMutationObserverForPolling: false,

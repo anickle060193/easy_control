@@ -21,11 +21,28 @@ export const controller = new Controller( {
   usePauseButtonForPause: true,
   useMediaForPause: false,
 
+  nextSelector: '.Root__now-playing-bar button[data-testid="control-button-skip-forward"]',
+  previousSelector: [
+    '.Root__now-playing-bar button[data-testid="control-button-skip-backward"]',
+    '.Root__now-playing-bar .player-controls__buttons > button:nth-child( 2 )',
+  ],
+  skipFowardSelector: null,
+  skipBackwardSelector: null,
+  likeSelector: '.Root__now-playing-bar .control-button-heart button[aria-checked="false"]',
+  unlikeSelector: '.Root__now-playing-bar .control-button-heart button[aria-checked="true"]',
+  dislikeSelector: null,
+  undislikeSelector: null,
+
+  volumeSelector: null,
+
+  useMediaForSkipping: false,
+  useMediaForVolume: false,
+
   useDocumentMediaEventsForPolling: false,
   useMediaForPolling: false,
   useMutationObserverForPolling: true,
 
-  playerSelector: '.playback-bar',
+  playerSelector: '.Root__now-playing-bar .playback-bar',
 
   useMediaSessionForTrack: true,
   useMediaSessionForAlbum: true,
@@ -39,9 +56,9 @@ export const controller = new Controller( {
 
   useMediaForTime: false,
 
-  currentTimeSelector: '.playback-bar .playback-bar__progress-time',
+  currentTimeSelector: '.Root__now-playing-bar .playback-bar .playback-bar__progress-time',
   remainingTimeSelector: null,
-  durationSelector: '.playback-bar > :nth-child( 3 )',
+  durationSelector: '.Root__now-playing-bar .playback-bar > :nth-child( 3 )',
 
   currentTimeFormat: null,
   remainingTimeFormat: null,

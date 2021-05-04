@@ -1,4 +1,4 @@
-import { ControllerMedia, ControllerStatus } from './controllers';
+import { ControllerCapabilities, ControllerMedia, ControllerStatus } from './controllers';
 
 export enum ContentMessageId
 {
@@ -12,9 +12,10 @@ export interface BaseContentMessage<T extends ContentMessageId>
 
 export interface UpdateContentMessage extends BaseContentMessage<ContentMessageId.Update>
 {
-  status: ControllerStatus
-  mediaChangedIndication: string | null;
-  media: ControllerMedia;
+  status: Readonly<ControllerStatus>;
+  mediaChangedIndication: Readonly<string | null>;
+  media: Readonly<ControllerMedia>;
+  capabilities: Readonly<ControllerCapabilities>;
 }
 
 export type ContentMessage = (

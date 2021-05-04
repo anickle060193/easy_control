@@ -21,6 +21,20 @@ export const controller = new Controller( {
   usePauseButtonForPause: true,
   useMediaForPause: true,
 
+  nextSelector: 'button.SkipButton',
+  previousSelector: null,
+  skipFowardSelector: null,
+  skipBackwardSelector: null,
+  likeSelector: '.ThumbUpButton:not( .ThumbUpButton--active )',
+  unlikeSelector: '.ThumbUpButton.ThumbUpButton--active',
+  dislikeSelector: '.ThumbDownButton:not( .ThumbDownButton--active )',
+  undislikeSelector: '.ThumbDownButton.ThumbDownButton--active',
+
+  volumeSelector: null,
+
+  useMediaForSkipping: false,
+  useMediaForVolume: true,
+
   useDocumentMediaEventsForPolling: true,
   useMediaForPolling: false,
   useMutationObserverForPolling: false,
