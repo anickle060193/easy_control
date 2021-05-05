@@ -1,4 +1,5 @@
 export function assertNever( value: never ): never
 {
-  throw new Error( `Value is not never: ${Object.prototype.toString.call( value )}` );
+  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+  throw new Error( `Value is not never: ${value}` );
 }

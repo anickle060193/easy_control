@@ -1,10 +1,11 @@
 import { BackgroundMessage, BackgroundMessageId } from '../common/backgroundMessages';
 import { ContentMessageId, UpdateContentMessage } from '../common/contentMessages';
-
-import { onReady } from './util';
-import { CONTROLLERS_CONFIG } from './config';
 import settings from '../common/settings';
 import { ControllerId, CONTROLLERS, DEFAULT_CONTROLLER_CAPABILITIES, DEFAULT_CONTROLLER_MEDIA, DEFAULT_CONTROLLER_STATUS } from '../common/controllers';
+
+import { CONTROLLERS_CONFIG } from './config';
+import { onReady } from './util';
+import { removeDebugIndication, updateDebugIndication } from './DebugControllerData';
 
 type UrlMatch = string | RegExp | UrlMatch[];
 
@@ -47,59 +48,65 @@ onReady( () =>
 
   const unregister = controller.registerListener( () =>
   {
+    let message: UpdateContentMessage;
+
     if( !controller.isEnabled() )
     {
-      const message: UpdateContentMessage = {
+      message = {
         id: ContentMessageId.Update,
         status: DEFAULT_CONTROLLER_STATUS,
         mediaChangedIndication: null,
         media: DEFAULT_CONTROLLER_MEDIA,
         capabilities: DEFAULT_CONTROLLER_CAPABILITIES,
       };
-      port.postMessage( message );
-    }
-
-    const indication = controller.getMediaChangedIndication();
-    let mediaChangedIndication: string | null;
-    if( indication.some( ( s ) => typeof s !== 'string' ) )
-    {
-      mediaChangedIndication = null;
     }
     else
     {
-      mediaChangedIndication = indication.join( '::' );
+      const indication = controller.getMediaChangedIndication();
+      let mediaChangedIndication: string | null;
+      if( indication.some( ( s ) => typeof s !== 'string' ) )
+      {
+        mediaChangedIndication = null;
+      }
+      else
+      {
+        mediaChangedIndication = indication.join( '::' );
+      }
+
+      message = {
+        id: ContentMessageId.Update,
+        status: {
+          enabled: true,
+          playing: controller.isPlaying(),
+          progress: controller.getProgress(),
+          volume: controller.getVolume(),
+        },
+        mediaChangedIndication,
+        media: {
+          track: controller.getTrack(),
+          artist: controller.getArtist(),
+          album: controller.getAlbum(),
+          artwork: controller.getArtwork(),
+          liked: controller.isLiked(),
+          disliked: controller.isDisliked(),
+        },
+        capabilities: {
+          next: controller.canNext(),
+          previous: controller.canPrevious(),
+          skipBackward: controller.canSkipBackward(),
+          skipForward: controller.canSkipForward(),
+          like: controller.canLike(),
+          unlike: controller.canUnlike(),
+          dislike: controller.canDislike(),
+          undislike: controller.canUndislike(),
+          volume: controller.canVolume(),
+        },
+      };
     }
 
-    const message: UpdateContentMessage = {
-      id: ContentMessageId.Update,
-      status: {
-        enabled: true,
-        playing: controller.isPlaying(),
-        progress: controller.getProgress(),
-        volume: controller.getVolume(),
-      },
-      mediaChangedIndication,
-      media: {
-        track: controller.getTrack(),
-        artist: controller.getArtist(),
-        album: controller.getAlbum(),
-        artwork: controller.getArtwork(),
-        liked: controller.isLiked(),
-        disliked: controller.isDisliked(),
-      },
-      capabilities: {
-        next: controller.canNext(),
-        previous: controller.canPrevious(),
-        skipBackward: controller.canSkipBackward(),
-        skipForward: controller.canSkipForward(),
-        like: controller.canLike(),
-        unlike: controller.canUnlike(),
-        dislike: controller.canDislike(),
-        undislike: controller.canUndislike(),
-        volume: controller.canVolume(),
-      },
-    };
     port.postMessage( message );
+
+    updateDebugIndication( controllerId, message );
   } );
 
   port.onMessage.addListener( ( message: BackgroundMessage ) =>
@@ -191,5 +198,7 @@ onReady( () =>
   {
     console.log( 'Port disconnected for', controllerId, p );
     unregister();
+
+    removeDebugIndication();
   } );
 } );
