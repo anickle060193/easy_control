@@ -43,10 +43,10 @@ function setDefaultBrowserAction()
   const manifest = chrome.runtime.getManifest();
 
   chrome.browserAction.setIcon( {
-    path: manifest.browser_action?.default_icon,
+    path: manifest.browser_action?.default_icon ?? manifest.icons,
   } );
   chrome.browserAction.setTitle( {
-    title: manifest.browser_action?.default_title ?? 'Easy Control',
+    title: manifest.browser_action?.default_title ?? manifest.name,
   } );
 }
 
