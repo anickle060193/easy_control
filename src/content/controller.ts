@@ -667,7 +667,9 @@ export default class Controller
     const duration = this.getDuration();
 
     if( typeof currentTime === 'number'
-      && typeof duration === 'number' )
+      && isFinite( currentTime )
+      && typeof duration === 'number'
+      && isFinite( duration ) )
     {
       if( duration === 0 )
       {
@@ -679,7 +681,9 @@ export default class Controller
       }
     }
     else if( typeof currentTime === 'number'
-      && typeof remainingTime === 'number' )
+      && isFinite( currentTime )
+      && typeof remainingTime === 'number'
+      && isFinite( remainingTime ) )
     {
       const dur = currentTime + remainingTime;
       if( dur === 0 )
@@ -692,7 +696,9 @@ export default class Controller
       }
     }
     else if( typeof remainingTime === 'number'
-      && typeof duration === 'number' )
+      && isFinite( remainingTime )
+      && typeof duration === 'number'
+      && isFinite( duration ) )
     {
       const cur = duration - remainingTime;
       if( duration === 0 )
