@@ -1,4 +1,4 @@
-import { BackgroundMessageId } from '../common/backgroundMessages';
+import { ControllerCommand } from '../common/controllers';
 import settings, { SettingKey } from '../common/settings';
 
 import { getCurrentController } from './controllers';
@@ -21,7 +21,7 @@ export function initIdle(): void
 
       if( settings.get( SettingKey.Other.PauseOnLock ) )
       {
-        getCurrentController()?.sendMessage( BackgroundMessageId.Pause );
+        getCurrentController()?.sendCommand( ControllerCommand.Pause );
       }
     }
     else if( newState === 'idle' )
@@ -30,7 +30,7 @@ export function initIdle(): void
 
       if( settings.get( SettingKey.Other.PauseOnInactivity ) )
       {
-        getCurrentController()?.sendMessage( BackgroundMessageId.Pause );
+        getCurrentController()?.sendCommand( ControllerCommand.Pause );
       }
     }
   } );

@@ -1,7 +1,7 @@
 import { BackgroundMessage, BackgroundMessageId } from '../common/backgroundMessages';
 import { ContentMessageId, UpdateContentMessage } from '../common/contentMessages';
 import settings from '../common/settings';
-import { ControllerId, CONTROLLERS, DEFAULT_CONTROLLER_CAPABILITIES, DEFAULT_CONTROLLER_MEDIA, DEFAULT_CONTROLLER_STATUS } from '../common/controllers';
+import { ControllerCommand, ControllerId, CONTROLLERS, DEFAULT_CONTROLLER_CAPABILITIES, DEFAULT_CONTROLLER_MEDIA, DEFAULT_CONTROLLER_STATUS } from '../common/controllers';
 
 import { CONTROLLERS_CONFIG } from './config';
 import { onReady } from './util';
@@ -111,86 +111,93 @@ onReady( () =>
 
   port.onMessage.addListener( ( message: BackgroundMessage ) =>
   {
-    if( message.id === BackgroundMessageId.PlayPause )
+    if( message.id === BackgroundMessageId.Command )
     {
-      if( controller.isPlaying() )
+      if( message.command === ControllerCommand.PlayPause )
       {
-        console.log( 'Pausing controller:', controllerId );
-        controller.performPause();
+        if( controller.isPlaying() )
+        {
+          console.log( 'Pausing controller:', controllerId );
+          controller.performPause();
+        }
+        else
+        {
+          console.log( 'Playing controller:', controllerId );
+          controller.performPlay();
+        }
+      }
+      else if( message.command === ControllerCommand.Play )
+      {
+        if( !controller.isPlaying() )
+        {
+          console.log( 'Playing controller:', controllerId );
+          controller.performPlay();
+        }
+        else
+        {
+          console.log( 'Controller is already playing:', controllerId );
+        }
+      }
+      else if( message.command === ControllerCommand.Pause )
+      {
+        if( controller.isPlaying() )
+        {
+          console.log( 'Pausing controller:', controllerId );
+          controller.performPause();
+        }
+        else
+        {
+          console.log( 'Controller is already paused:', controllerId );
+        }
+      }
+      else if( message.command === ControllerCommand.Next )
+      {
+        controller.performNext();
+      }
+      else if( message.command === ControllerCommand.Previous )
+      {
+        controller.performPrevious();
+      }
+      else if( message.command === ControllerCommand.SkipBackward )
+      {
+        controller.performSkipBackward();
+      }
+      else if( message.command === ControllerCommand.SkipForward )
+      {
+        controller.performSkipForward();
+      }
+      else if( message.command === ControllerCommand.Like )
+      {
+        controller.performLike();
+      }
+      else if( message.command === ControllerCommand.Unlike )
+      {
+        controller.performUnlike();
+      }
+      else if( message.command === ControllerCommand.Dislike )
+      {
+        controller.performDislike();
+      }
+      else if( message.command === ControllerCommand.Undislike )
+      {
+        controller.performUndislike();
+      }
+      else if( message.command === ControllerCommand.VolumeUp )
+      {
+        controller.performVolumeUp();
+      }
+      else if( message.command === ControllerCommand.VolumeDown )
+      {
+        controller.performVolumeDown();
       }
       else
       {
-        console.log( 'Playing controller:', controllerId );
-        controller.performPlay();
+        console.warn( 'Unhandled controller command:', message.command, message );
       }
-    }
-    else if( message.id === BackgroundMessageId.Play )
-    {
-      if( !controller.isPlaying() )
-      {
-        console.log( 'Playing controller:', controllerId );
-        controller.performPlay();
-      }
-      else
-      {
-        console.log( 'Controller is already playing:', controllerId );
-      }
-    }
-    else if( message.id === BackgroundMessageId.Pause )
-    {
-      if( controller.isPlaying() )
-      {
-        console.log( 'Pausing controller:', controllerId );
-        controller.performPause();
-      }
-      else
-      {
-        console.log( 'Controller is already paused:', controllerId );
-      }
-    }
-    else if( message.id === BackgroundMessageId.Next )
-    {
-      controller.performNext();
-    }
-    else if( message.id === BackgroundMessageId.Previous )
-    {
-      controller.performPrevious();
-    }
-    else if( message.id === BackgroundMessageId.SkipBackward )
-    {
-      controller.performSkipBackward();
-    }
-    else if( message.id === BackgroundMessageId.SkipForward )
-    {
-      controller.performSkipForward();
-    }
-    else if( message.id === BackgroundMessageId.Like )
-    {
-      controller.performLike();
-    }
-    else if( message.id === BackgroundMessageId.Unlike )
-    {
-      controller.performUnlike();
-    }
-    else if( message.id === BackgroundMessageId.Dislike )
-    {
-      controller.performDislike();
-    }
-    else if( message.id === BackgroundMessageId.Undislike )
-    {
-      controller.performUndislike();
-    }
-    else if( message.id === BackgroundMessageId.VolumeUp )
-    {
-      controller.performVolumeUp();
-    }
-    else if( message.id === BackgroundMessageId.VolumeDown )
-    {
-      controller.performVolumeDown();
     }
     else
     {
-      console.warn( 'Unknown message:', message );
+      console.warn( 'Unhandled message:', message );
     }
   } );
 

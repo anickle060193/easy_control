@@ -1,6 +1,6 @@
 import { BackgroundMessage, BackgroundMessageId } from '../common/backgroundMessages';
 import { ContentMessage, ContentMessageId } from '../common/contentMessages';
-import { ControllerCapabilities, ControllerId, ControllerMedia, ControllerStatus, DEFAULT_CONTROLLER_CAPABILITIES, DEFAULT_CONTROLLER_MEDIA, DEFAULT_CONTROLLER_STATUS } from '../common/controllers';
+import { ControllerCapabilities, ControllerCommand, ControllerId, ControllerMedia, ControllerStatus, DEFAULT_CONTROLLER_CAPABILITIES, DEFAULT_CONTROLLER_MEDIA, DEFAULT_CONTROLLER_STATUS } from '../common/controllers';
 import { EventEmitter } from '../common/EventEmitter';
 
 let controllerCount = 0;
@@ -56,6 +56,7 @@ export class BackgroundController
       const previousStatus = this.status;
       this.status = message.status;
       this.media = message.media;
+      this.capabilities = message.capabilities;
 
       if( !previousStatus.playing && this.status.playing )
       {
@@ -132,11 +133,16 @@ export class BackgroundController
     } );
   }
 
-  public sendMessage( messageId: BackgroundMessageId ): void
+  public sendMessage( message: BackgroundMessage ): void
   {
-    const message: BackgroundMessage = {
-      id: messageId,
-    };
     this.port.postMessage( message );
+  }
+
+  public sendCommand( command: ControllerCommand ): void
+  {
+    this.sendMessage( {
+      id: BackgroundMessageId.Command,
+      command,
+    } );
   }
 }

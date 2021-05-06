@@ -7,6 +7,23 @@ export enum ControllerId
   Spotify = 'controller_id__spotify',
 }
 
+export enum ControllerCommand
+{
+  PlayPause = 'controller_command__play_pause',
+  Play = 'controller_command__play',
+  Pause = 'controller_command__pause',
+  Next = 'controller_command__next',
+  Previous = 'controller_command__previous',
+  SkipBackward = 'controller_command__skip_backward',
+  SkipForward = 'controller_command__skip_foward',
+  Like = 'controller_command__like',
+  Unlike = 'controller_command__unlike',
+  Dislike = 'controller_command__dislike',
+  Undislike = 'controller_command__undislike',
+  VolumeUp = 'controller_command__volume_up',
+  VolumeDown = 'controller_command__volume_down',
+}
+
 export interface ControllerMedia
 {
   track: string | null;

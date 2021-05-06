@@ -1,9 +1,8 @@
 import { BackgroundController } from './backgroundController';
 
 import settings, { SettingKey } from '../common/settings';
-import { CONTROLLERS } from '../common/controllers';
+import { ControllerCommand, CONTROLLERS } from '../common/controllers';
 import { getTab, getWindow } from '../common/browserExtension';
-import { BackgroundMessageId } from '../common/backgroundMessages';
 
 enum StartedPlayingNotificationButtions
 {
@@ -146,11 +145,11 @@ function onStartedPlayingNotificationButtonClicked( notificationId: string, butt
 {
   if( buttonIndex === StartedPlayingNotificationButtions.Pause )
   {
-    controller.sendMessage( BackgroundMessageId.Pause );
+    controller.sendCommand( ControllerCommand.Pause );
   }
   else if( buttonIndex === StartedPlayingNotificationButtions.Next )
   {
-    controller.sendMessage( BackgroundMessageId.Next );
+    controller.sendCommand( ControllerCommand.Next );
   }
   else
   {
@@ -162,7 +161,7 @@ function onAutoPauseNotificationButtonClicked( notificationId: string, buttonInd
 {
   if( buttonIndex === AutoPauseNotificationButtons.Resume )
   {
-    controller.sendMessage( BackgroundMessageId.Play );
+    controller.sendCommand( ControllerCommand.Play );
   }
   else
   {

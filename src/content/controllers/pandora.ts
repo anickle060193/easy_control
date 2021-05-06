@@ -61,3 +61,6 @@ export const controller = new Controller( {
   remainingTimeFormat: null,
   durationFormat: null,
 } );
+
+const superGetArtwork = controller.getArtwork;
+controller.getArtwork = () => superGetArtwork()?.replace( /\d+W_\d+H/, '500W_500H' ) ?? null;

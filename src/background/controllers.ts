@@ -1,10 +1,11 @@
+import settings, { SettingKey } from '../common/settings';
+import { ControllerCommand } from '../common/controllers';
+
 import { isAutoPauseEnabledForTab } from './autoPause';
 import { updateBrowserActionIcon } from './browserAction';
 import { BackgroundController } from './backgroundController';
 import { showAutoPauseNotification, showStartedPlayingNotification } from './notifications';
-
-import { BackgroundMessageId } from '../common/backgroundMessages';
-import settings, { SettingKey } from '../common/settings';
+import { updateControlsPopup } from './controlsPopup';
 
 const controllers: BackgroundController[] = [];
 
@@ -31,13 +32,19 @@ function isCurrentController( controller: BackgroundController )
   return controller === getCurrentController();
 }
 
+function onCurrentControllerChanged()
+{
+  updateBrowserActionIcon();
+  updateControlsPopup();
+}
+
 function onNewController( controller: BackgroundController )
 {
   controllers.push( controller );
 
   if( getCurrentController() === controller )
   {
-    updateBrowserActionIcon();
+    onCurrentControllerChanged();
   }
 
   controller.onPlayed.addEventListener( async () =>
@@ -66,11 +73,11 @@ function onNewController( controller: BackgroundController )
 
         showAutoPauseNotification( c );
 
-        c.sendMessage( BackgroundMessageId.Pause );
+        c.sendCommand( ControllerCommand.Pause );
       }
     }
 
-    updateBrowserActionIcon();
+    onCurrentControllerChanged();
   } );
 
   controller.onPaused.addEventListener( () =>
@@ -79,7 +86,7 @@ function onNewController( controller: BackgroundController )
 
     if( isCurrentController( controller ) )
     {
-      updateBrowserActionIcon();
+      onCurrentControllerChanged();
     }
   } );
 
@@ -89,7 +96,7 @@ function onNewController( controller: BackgroundController )
 
     if( isCurrentController( controller ) )
     {
-      updateBrowserActionIcon();
+      onCurrentControllerChanged();
     }
   } );
 
@@ -117,7 +124,7 @@ function onNewController( controller: BackgroundController )
 
     if( wasCurrentController )
     {
-      updateBrowserActionIcon();
+      onCurrentControllerChanged();
     }
   } );
 }

@@ -1,7 +1,6 @@
-import { getCurrentController } from './controllers';
+import { ControllerCommand, CONTROLLERS } from '../common/controllers';
 
-import { BackgroundMessageId } from '../common/backgroundMessages';
-import { CONTROLLERS } from '../common/controllers';
+import { getCurrentController } from './controllers';
 
 const ICON_WIDTH = 32;
 const ICON_HEIGHT = 32;
@@ -114,6 +113,6 @@ export function initBrowserAction(): void
 {
   chrome.browserAction.onClicked.addListener( () =>
   {
-    getCurrentController()?.sendMessage( BackgroundMessageId.PlayPause );
+    getCurrentController()?.sendCommand( ControllerCommand.PlayPause );
   } );
 }

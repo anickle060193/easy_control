@@ -1,6 +1,6 @@
 import { getCurrentController } from './controllers';
 
-import { BackgroundMessageId } from '../common/backgroundMessages';
+import { ControllerCommand } from '../common/controllers';
 
 enum ControllerCommandId
 {
@@ -22,46 +22,46 @@ enum OtherCommandId
   CopyContentLink = 'a_copy_content_link',
 }
 
-const CONTROLLER_COMMANDS_MAPPING: { [ key in ControllerCommandId ]: BackgroundMessageId } = {
-  [ ControllerCommandId.PlayPause ]: BackgroundMessageId.PlayPause,
-  [ ControllerCommandId.Next ]: BackgroundMessageId.Next,
-  [ ControllerCommandId.Previous ]: BackgroundMessageId.Previous,
-  [ ControllerCommandId.SkipBackward ]: BackgroundMessageId.SkipBackward,
-  [ ControllerCommandId.SkipForward ]: BackgroundMessageId.SkipForward,
-  [ ControllerCommandId.Like ]: BackgroundMessageId.Like,
-  [ ControllerCommandId.Unlike ]: BackgroundMessageId.Unlike,
-  [ ControllerCommandId.Dislike ]: BackgroundMessageId.Dislike,
-  [ ControllerCommandId.Undislike ]: BackgroundMessageId.Undislike,
-  [ ControllerCommandId.VolumeUp ]: BackgroundMessageId.VolumeUp,
-  [ ControllerCommandId.VolumeDown ]: BackgroundMessageId.VolumeDown,
+const CONTROLLER_COMMANDS_MAPPING: { [ key in ControllerCommandId ]: ControllerCommand } = {
+  [ ControllerCommandId.PlayPause ]: ControllerCommand.PlayPause,
+  [ ControllerCommandId.Next ]: ControllerCommand.Next,
+  [ ControllerCommandId.Previous ]: ControllerCommand.Previous,
+  [ ControllerCommandId.SkipBackward ]: ControllerCommand.SkipBackward,
+  [ ControllerCommandId.SkipForward ]: ControllerCommand.SkipForward,
+  [ ControllerCommandId.Like ]: ControllerCommand.Like,
+  [ ControllerCommandId.Unlike ]: ControllerCommand.Unlike,
+  [ ControllerCommandId.Dislike ]: ControllerCommand.Dislike,
+  [ ControllerCommandId.Undislike ]: ControllerCommand.Undislike,
+  [ ControllerCommandId.VolumeUp ]: ControllerCommand.VolumeUp,
+  [ ControllerCommandId.VolumeDown ]: ControllerCommand.VolumeDown,
 };
 
 export function initCommands(): void
 {
-  chrome.commands.onCommand.addListener( ( command ) =>
+  chrome.commands.onCommand.addListener( ( commandId ) =>
   {
     const controller = getCurrentController();
 
-    const backgroundMessageId = CONTROLLER_COMMANDS_MAPPING[ command as ControllerCommandId ];
-    if( typeof backgroundMessageId === 'string' )
+    const command = CONTROLLER_COMMANDS_MAPPING[ commandId as ControllerCommandId ];
+    if( typeof command === 'string' )
     {
       if( !controller )
       {
-        console.log( 'No current controller for', backgroundMessageId, 'command' );
+        console.log( 'No current controller for', command, 'command' );
       }
       else
       {
-        console.log( 'Sending', backgroundMessageId, 'to', controller.id, ':', controller );
-        controller.sendMessage( backgroundMessageId );
+        console.log( 'Sending', command, 'to', controller.id, ':', controller );
+        controller.sendCommand( command );
       }
     }
-    else if( command === OtherCommandId.CopyContentLink )
+    else if( commandId === OtherCommandId.CopyContentLink )
     {
-      // Blank
+      // TODO
     }
     else
     {
-      console.warn( 'Unknown command:', command );
+      console.warn( 'Unknown command:', commandId );
     }
   } );
 }

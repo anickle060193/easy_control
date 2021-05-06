@@ -1,12 +1,14 @@
-import { isAutoPauseEnabledForTab, setAutoPauseEnabledForTab } from './autoPause';
-
 import settings, { SettingKey } from '../common/settings';
+
+import { isAutoPauseEnabledForTab, setAutoPauseEnabledForTab } from './autoPause';
+import { openControlsPopup } from './controlsPopup';
 
 enum ContextMenuId
 {
   ReloadExtension = 'context_menu__reload_extension',
   AutoPauseEnabled = 'context_menu__auto_pause_enabled',
   AutoPauseEnabledForTab = 'context_menu__auto_pause_enabled_for_tab',
+  OpenControls = 'context_menu__open_controls',
 }
 
 export function initContextMenus(): void
@@ -56,6 +58,18 @@ export function initContextMenus(): void
       }
     } );
 
+    chrome.contextMenus.create( {
+      id: ContextMenuId.OpenControls,
+      title: 'Open Controls',
+      contexts: [ 'browser_action' ],
+    }, () =>
+    {
+      if( chrome.runtime.lastError )
+      {
+        console.error( 'Failed to create "Open Controls" context menu:', chrome.runtime.lastError );
+      }
+    } );
+
     function onSettingsChanged()
     {
       chrome.contextMenus.update( ContextMenuId.AutoPauseEnabled, {
@@ -89,6 +103,10 @@ export function initContextMenus(): void
         console.log( 'Toggle auto-pause for tab:', info, tab );
         setAutoPauseEnabledForTab( tab.id, info.checked ?? true );
       }
+    }
+    else if( info.menuItemId === ContextMenuId.OpenControls )
+    {
+      openControlsPopup();
     }
     else
     {

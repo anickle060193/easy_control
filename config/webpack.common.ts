@@ -14,6 +14,7 @@ const config: webpack.Configuration = {
   entry: {
     background: path.resolve( src, 'background', 'index.ts' ),
     content: path.resolve( src, 'content', 'index.ts' ),
+    controlsPopup: path.resolve( src, 'controlsPopup', 'index.tsx' ),
     options: path.resolve( src, 'options', 'index.tsx' ),
   },
   output: {
@@ -63,6 +64,11 @@ const config: webpack.Configuration = {
       template: path.resolve( src, 'options', 'index.html' ),
       filename: 'options.html',
       chunks: [ 'options' ],
+    } ),
+    new HtmlWebpackPlugin( {
+      template: path.resolve( src, 'controlsPopup', 'index.html' ),
+      filename: 'controlsPopup.html',
+      chunks: [ 'controlsPopup' ],
     } ),
     new CopyWebpackPlugin( {
       patterns: [

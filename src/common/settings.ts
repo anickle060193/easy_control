@@ -77,8 +77,8 @@ export enum OtherSettingId
   // ShowChangeLogOnUpdate = 'key__show_change_log_on_update',
   ShowAutoPausedNotification = 'key__show_auto_paused_notification',
   // SiteBlacklist = 'key__site_blacklist',
-  // ControlsPopupWidth = 'key__controls_popup_width',
-  // ControlsPopupHeight = 'key__controls_popup_height',
+  ControlsPopupWidth = 'key__controls_popup_width',
+  ControlsPopupHeight = 'key__controls_popup_height',
 }
 
 export enum ControlsOtherSettingId
@@ -197,8 +197,8 @@ export interface SettingsType
   // [ SettingKey.Other.ShowChangeLogOnUpdate ]: boolean;
   [ SettingKey.Other.ShowAutoPausedNotification ]: boolean;
   // [ SettingKey.Other.SiteBlacklist ]: string[];
-  // [ SettingKey.Other.ControlsPopupWidth ]: number;
-  // [ SettingKey.Other.ControlsPopupHeight ]: number;
+  [ SettingKey.Other.ControlsPopupWidth ]: number;
+  [ SettingKey.Other.ControlsPopupHeight ]: number;
 
   // [ SettingKey.Controls.Other.DisplayControls ]: boolean;
   // [ SettingKey.Controls.Other.AlwaysDisplayPlaybackSpeed ]: boolean;
@@ -309,8 +309,8 @@ const DEFAULT_SETTINGS: SettingsType = {
   // [ SettingKey.Other.ShowChangeLogOnUpdate ]: true,
   [ SettingKey.Other.ShowAutoPausedNotification ]: false,
   // [ SettingKey.Other.SiteBlacklist ]: [ 'imgur.com' ],
-  // [ SettingKey.Other.ControlsPopupWidth ]: 315,
-  // [ SettingKey.Other.ControlsPopupHeight ]: 450,
+  [ SettingKey.Other.ControlsPopupWidth ]: 315,
+  [ SettingKey.Other.ControlsPopupHeight ]: 450,
 
   // [ SettingKey.Controls.Other.DisplayControls ]: true,
   // [ SettingKey.Controls.Other.AlwaysDisplayPlaybackSpeed ]: true,
