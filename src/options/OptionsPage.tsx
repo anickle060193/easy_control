@@ -21,6 +21,10 @@ const useStyles = makeStyles( ( theme ) => createStyles( {
   },
   appBarRight: {
     marginLeft: 'auto',
+
+    '& > *': {
+      marginLeft: theme.spacing( 1 ),
+    },
   },
   content: {
     flex: 1,
@@ -147,6 +151,18 @@ export const OptionsPage: React.FC = () =>
             Easy Control Options
           </Typography>
           <div className={styles.appBarRight}>
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={( e ) =>
+              {
+                e.preventDefault();
+
+                chrome.tabs.create( { url: 'chrome://extensions/shortcuts' } );
+              }}
+            >
+              Open Keyboard Shortcuts
+            </Button>
             <Button
               variant="outlined"
               color="secondary"
