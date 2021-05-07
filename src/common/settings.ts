@@ -33,22 +33,6 @@ export enum ControllersEnabledSettingId
   // GenericAudioVideo = 'key__controllers_enabled__generic_audio_video',
 }
 
-export enum ControllerColorsSettingId
-{
-  // AmazonMusic = 'key__controller_colors__amazon_music',
-  // AmazonVideo = 'key__controller_colors__amazon_video',
-  // Bandcamp = 'key__controller_colors__bandcamp',
-  // GooglePlayMusic = 'key__controller_colors__google_play_music',
-  // HboGo = 'key__controller_colors__hbo_go',
-  // Hulu = 'key__controller_colors__hulu',
-  // Netflix = 'key__controller_colors__netflix',
-  Pandora = 'key__controller_colors__pandora',
-  Spotify = 'key__controller_colors__spotify',
-  // Twitch = 'key__controller_colors__twitch',
-  Youtube = 'key__controller_colors__youtube',
-  // GenericAudioVideo = 'key__controller_colors__generic_audio_video',
-}
-
 export enum OpenInExistingSettingId
 {
   // AmazonMusic = 'key__open_in_existing__amazon_music',
@@ -69,7 +53,6 @@ export enum OtherSettingId
 {
   NotificationsEnabled = 'key__other__notifications_enabled',
   NoActiveWindowNotifications = 'key__no_active_window_notifications',
-  // DefaultSite = 'key__default_site',
   PauseOnLock = 'key__pause_on_lock',
   PauseOnInactivity = 'key__pause_on_inactivity',
   InactivityTimeout = 'key__inactivity_timeout',
@@ -123,7 +106,6 @@ export enum ControlsOverlayControlsSettingId
 export const SettingKey = {
   Notifications: NotificationsSettingId,
   ControllersEnabled: ControllersEnabledSettingId,
-  ControllerColors: ControllerColorsSettingId,
   OpenInExisting: OpenInExistingSettingId,
   Other: OtherSettingId,
   Controls: {
@@ -161,19 +143,6 @@ export interface SettingsType
   [ SettingKey.ControllersEnabled.Youtube ]: boolean;
   // [ SettingKey.ControllersEnabled.GenericAudioVideo ]: boolean;
 
-  // [ SettingKey.ControllerColors.AmazonMusic ]: string;
-  // [ SettingKey.ControllerColors.AmazonVideo ]: string;
-  // [ SettingKey.ControllerColors.Bandcamp ]: string;
-  // [ SettingKey.ControllerColors.GooglePlayMusic ]: string;
-  // [ SettingKey.ControllerColors.HboGo ]: string;
-  // [ SettingKey.ControllerColors.Hulu ]: string;
-  // [ SettingKey.ControllerColors.Netflix ]: string;
-  // [ SettingKey.ControllerColors.Pandora ]: string;
-  // [ SettingKey.ControllerColors.Spotify ]: string;
-  // [ SettingKey.ControllerColors.Twitch ]: string;
-  // [ SettingKey.ControllerColors.Youtube ]: string;
-  // [ SettingKey.ControllerColors.GenericAudioVideo ]: string;
-
   // [ SettingKey.OpenInExisting.AmazonMusic ]: boolean;
   // [ SettingKey.OpenInExisting.AmazonVideo ]: boolean;
   // [ SettingKey.OpenInExisting.Bandcamp ]: boolean;
@@ -189,7 +158,6 @@ export interface SettingsType
 
   [ SettingKey.Other.NotificationsEnabled ]: boolean;
   [ SettingKey.Other.NoActiveWindowNotifications ]: boolean;
-  // [ SettingKey.Other.DefaultSite ]: Sites;
   [ SettingKey.Other.PauseOnLock ]: boolean;
   [ SettingKey.Other.PauseOnInactivity ]: boolean;
   [ SettingKey.Other.InactivityTimeout ]: number;
@@ -234,7 +202,6 @@ export interface SettingsType
 export type SettingKeyType = (
   NotificationsSettingId |
   ControllersEnabledSettingId |
-  // ControllerColorsSettingId |
   // OpenInExistingSettingId |
   OtherSettingId // |
   // ControlsOtherSettingId |
@@ -273,19 +240,6 @@ const DEFAULT_SETTINGS: SettingsType = {
   [ SettingKey.ControllersEnabled.Youtube ]: true,
   // [ SettingKey.ControllersEnabled.GenericAudioVideo ]: true,
 
-  // [ SettingKey.ControllerColors.AmazonMusic ]: '#fd7c02',
-  // [ SettingKey.ControllerColors.AmazonVideo ]: '#FF9900',
-  // [ SettingKey.ControllerColors.Bandcamp ]: '#639AA9',
-  // [ SettingKey.ControllerColors.GooglePlayMusic ]: '#ff5722',
-  // [ SettingKey.ControllerColors.HboGo ]: '#0f0f0f',
-  // [ SettingKey.ControllerColors.Hulu ]: '#66AA33',
-  // [ SettingKey.ControllerColors.Netflix ]: '#e50914',
-  // [ SettingKey.ControllerColors.Pandora ]: '#455774',
-  // [ SettingKey.ControllerColors.Spotify ]: '#84bd00',
-  // [ SettingKey.ControllerColors.Twitch ]: '#6441A4',
-  // [ SettingKey.ControllerColors.Youtube ]: '#f12b24',
-  // [ SettingKey.ControllerColors.GenericAudioVideo ]: '#5b5b5b',
-
   // [ SettingKey.OpenInExisting.AmazonMusic ]: false,
   // [ SettingKey.OpenInExisting.AmazonVideo ]: false,
   // [ SettingKey.OpenInExisting.Bandcamp ]: false,
@@ -301,7 +255,6 @@ const DEFAULT_SETTINGS: SettingsType = {
 
   [ SettingKey.Other.NotificationsEnabled ]: true,
   [ SettingKey.Other.NoActiveWindowNotifications ]: false,
-  // [ SettingKey.Other.DefaultSite ]: Sites.Youtube,
   [ SettingKey.Other.PauseOnLock ]: true,
   [ SettingKey.Other.PauseOnInactivity ]: false,
   [ SettingKey.Other.InactivityTimeout ]: 60 * 5,
