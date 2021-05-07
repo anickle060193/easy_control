@@ -1,3 +1,2 @@
 Add browser test
-Add install details
 Add loop control
