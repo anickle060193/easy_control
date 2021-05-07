@@ -1,29 +1,13 @@
+import { initExtension } from './extension';
 import { initContextMenus } from './contextMenus';
 import { initCommands } from './commands';
 import { initBrowserAction } from './browserAction';
-import { initIdle } from './idle';
-import { initControllers } from './controllers';
 import { initNotifications } from './notifications';
+import { initIdle } from './idle';
 import { initControlsPopup } from './controlsPopup';
+import { initControllers } from './controllers';
 
-chrome.runtime.onInstalled.addListener( ( details ) =>
-{
-  const version = chrome.runtime.getManifest().version;
-
-  if( details.reason === 'install' )
-  {
-    console.log( 'Installed:', version );
-  }
-  else if( details.reason === 'update' )
-  {
-    console.log( 'Updated:', details.previousVersion, '->', version );
-  }
-  else
-  {
-    console.log( 'Unknown Install Reason:', details );
-  }
-} );
-
+initExtension();
 initContextMenus();
 initCommands();
 initBrowserAction();

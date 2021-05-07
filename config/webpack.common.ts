@@ -16,6 +16,7 @@ const config: webpack.Configuration = {
     content: path.resolve( src, 'content', 'index.ts' ),
     controlsPopup: path.resolve( src, 'controlsPopup', 'index.tsx' ),
     options: path.resolve( src, 'options', 'index.tsx' ),
+    changelog: path.resolve( src, 'changelog', 'index.tsx' ),
   },
   output: {
     path: build,
@@ -40,6 +41,10 @@ const config: webpack.Configuration = {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
         type: 'asset/resource',
       },
+      {
+        test: /\.(png)$/i,
+        type: 'asset/resource',
+      },
     ],
   },
   resolve: {
@@ -61,14 +66,19 @@ const config: webpack.Configuration = {
     } ),
     new MiniCssExtractPlugin(),
     new HtmlWebpackPlugin( {
+      template: path.resolve( src, 'controlsPopup', 'index.html' ),
+      filename: 'controlsPopup.html',
+      chunks: [ 'controlsPopup' ],
+    } ),
+    new HtmlWebpackPlugin( {
       template: path.resolve( src, 'options', 'index.html' ),
       filename: 'options.html',
       chunks: [ 'options' ],
     } ),
     new HtmlWebpackPlugin( {
-      template: path.resolve( src, 'controlsPopup', 'index.html' ),
-      filename: 'controlsPopup.html',
-      chunks: [ 'controlsPopup' ],
+      template: path.resolve( src, 'changelog', 'index.html' ),
+      filename: 'changelog.html',
+      chunks: [ 'changelog' ],
     } ),
     new CopyWebpackPlugin( {
       patterns: [

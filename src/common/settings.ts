@@ -57,7 +57,7 @@ export enum OtherSettingId
   PauseOnInactivity = 'key__pause_on_inactivity',
   InactivityTimeout = 'key__inactivity_timeout',
   AutoPauseEnabled = 'key__auto_pause_enabled',
-  // ShowChangeLogOnUpdate = 'key__show_change_log_on_update',
+  ShowChangeLogOnUpdate = 'key__show_change_log_on_update',
   ShowAutoPausedNotification = 'key__show_auto_paused_notification',
   // SiteBlacklist = 'key__site_blacklist',
   ControlsPopupWidth = 'key__controls_popup_width',
@@ -162,7 +162,7 @@ export interface SettingsType
   [ SettingKey.Other.PauseOnInactivity ]: boolean;
   [ SettingKey.Other.InactivityTimeout ]: number;
   [ SettingKey.Other.AutoPauseEnabled ]: boolean;
-  // [ SettingKey.Other.ShowChangeLogOnUpdate ]: boolean;
+  [ SettingKey.Other.ShowChangeLogOnUpdate ]: boolean;
   [ SettingKey.Other.ShowAutoPausedNotification ]: boolean;
   // [ SettingKey.Other.SiteBlacklist ]: string[];
   [ SettingKey.Other.ControlsPopupWidth ]: number;
@@ -259,7 +259,7 @@ const DEFAULT_SETTINGS: SettingsType = {
   [ SettingKey.Other.PauseOnInactivity ]: false,
   [ SettingKey.Other.InactivityTimeout ]: 60 * 5,
   [ SettingKey.Other.AutoPauseEnabled ]: true,
-  // [ SettingKey.Other.ShowChangeLogOnUpdate ]: true,
+  [ SettingKey.Other.ShowChangeLogOnUpdate ]: true,
   [ SettingKey.Other.ShowAutoPausedNotification ]: false,
   // [ SettingKey.Other.SiteBlacklist ]: [ 'imgur.com' ],
   [ SettingKey.Other.ControlsPopupWidth ]: 315,

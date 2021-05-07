@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppBar, CircularProgress, createStyles, Divider, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Button, CircularProgress, createStyles, Divider, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from '@material-ui/core';
 
 import { CheckboxSetting } from './components/CheckboxSetting';
 import { NumberSetting } from './components/NumberSetting';
@@ -18,6 +18,9 @@ const useStyles = makeStyles( ( theme ) => createStyles( {
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
+  },
+  appBarRight: {
+    marginLeft: 'auto',
   },
   content: {
     flex: 1,
@@ -124,6 +127,14 @@ export const OptionsPage: React.FC = () =>
             minimum={15}
           />
         </div>
+
+        <Divider className={styles.divider} />
+
+        <Typography variant="h5">Other Options</Typography>
+        <CheckboxSetting
+          label="Show changelog on update"
+          setting={SettingKey.Other.ShowChangeLogOnUpdate}
+        />
       </div>
     );
   }
@@ -132,7 +143,20 @@ export const OptionsPage: React.FC = () =>
     <div className={styles.root}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6">Easy Control Options</Typography>
+          <Typography variant="h6" color="inherit">
+            Easy Control Options
+          </Typography>
+          <div className={styles.appBarRight}>
+            <Button
+              variant="outlined"
+              color="secondary"
+              href={chrome.runtime.getURL( 'changelog.html' )}
+              target="_blank"
+              rel="noopener noreferrer nofollower"
+            >
+              Open Changelog
+            </Button>
+          </div>
         </Toolbar>
       </AppBar>
       {content}
