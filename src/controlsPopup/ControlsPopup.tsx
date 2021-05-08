@@ -5,6 +5,8 @@ import PlayIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
 import PreviousIcon from '@material-ui/icons/SkipPrevious';
 import NextIcon from '@material-ui/icons/SkipNext';
+import SkipBackwardIcon from '@material-ui/icons/Replay10';
+import SkipForwardIcon from '@material-ui/icons/Forward10';
 import LikeIcon from '@material-ui/icons/ThumbUpOutlined';
 import UnlikeIcon from '@material-ui/icons/ThumbUp';
 import DislikeIcon from '@material-ui/icons/ThumbDownOutlined';
@@ -174,6 +176,15 @@ export const ControlsPopup: React.FC = () =>
       <Typography className={styles.mediaText} variant="body1" title={media.artist ?? undefined}>{media.artist}</Typography>
       <Typography className={styles.mediaText} variant="body2" title={media.album ?? undefined}>{media.album}</Typography>
       <div className={styles.buttonRow}>
+        {( capabilities.skipBackward || capabilities.skipForward ) && (
+          <ControlButton
+            label="Skip Backward"
+            icon={SkipBackwardIcon}
+            command={ControllerCommand.SkipBackward}
+            enabled={capabilities.skipBackward}
+            onClick={onCommandClick}
+          />
+        )}
         <ControlButton
           label="Previous"
           icon={PreviousIcon}
@@ -205,6 +216,15 @@ export const ControlsPopup: React.FC = () =>
           enabled={capabilities.next}
           onClick={onCommandClick}
         />
+        {( capabilities.skipBackward || capabilities.skipForward ) && (
+          <ControlButton
+            label="Skip Forward"
+            icon={SkipForwardIcon}
+            command={ControllerCommand.SkipForward}
+            enabled={capabilities.skipForward}
+            onClick={onCommandClick}
+          />
+        )}
       </div>
       <div className={styles.buttonRow}>
         {media.disliked ? (
