@@ -120,16 +120,47 @@ export function initContextMenus(): void
     settings.onChanged.addEventListener( onSettingsChanged );
   } );
 
-  chrome.tabs.onActivated.addListener( ( activeTab ) =>
+  function onTabChange()
   {
-    chrome.contextMenus.update( ContextMenuId.AutoPauseEnabledForTab, {
-      checked: isAutoPauseEnabledForTab( activeTab.tabId ),
-    }, () =>
+    chrome.tabs.query( { active: true, currentWindow: true }, ( tabs ) =>
     {
       if( chrome.runtime.lastError )
       {
-        console.warn( 'Failed to update "Auto-Pause Enabled for Tab" context menu following tab activation.' );
+        console.warn( 'Failed to retrieve active tab for context menus:', chrome.runtime.lastError );
+        return;
       }
+
+      if( tabs.length <= 0 )
+      {
+        console.log( 'No active tabs currently.' );
+        return;
+      }
+
+      const tab = tabs[ 0 ];
+      if( tabs.length > 1 )
+      {
+        console.log( 'Multiple active tabs in the current window:', tabs );
+      }
+
+      if( typeof tab.id !== 'number' )
+      {
+        console.warn( 'Active window tab has no ID:', tab );
+        return;
+      }
+
+      chrome.contextMenus.update( ContextMenuId.AutoPauseEnabledForTab, {
+        checked: isAutoPauseEnabledForTab( tab.id ),
+      }, () =>
+      {
+        if( chrome.runtime.lastError )
+        {
+          console.warn( 'Failed to update "Auto-Pause Enabled for Tab" context menu following tab activation.' );
+        }
+      } );
     } );
-  } );
+  }
+
+  chrome.tabs.onActivated.addListener( onTabChange );
+  chrome.windows.onFocusChanged.addListener( onTabChange );
+  onTabChange();
 }
