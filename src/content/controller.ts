@@ -143,7 +143,7 @@ export default class Controller
   {
     if( this.options.useMediaForIsEnabled )
     {
-      if( this.mediaElement() )
+      if( this.findMediaElement() )
       {
         return true;
       }
@@ -151,7 +151,7 @@ export default class Controller
 
     if( this.options.usePlayPauseButtonsForIsEnabled )
     {
-      if( this.playButton() || this.pauseButton() )
+      if( this.findPlayButton() || this.findPauseButton() )
       {
         return true;
       }
@@ -168,10 +168,10 @@ export default class Controller
     return false;
   }
 
-  public playButton = (): HTMLElement | null => querySelector( this.options.playButtonSelector );
-  public pauseButton = (): HTMLElement | null => querySelector( this.options.pauseButtonSelector );
+  public findPlayButton = (): HTMLElement | null => querySelector( this.options.playButtonSelector );
+  public findPauseButton = (): HTMLElement | null => querySelector( this.options.pauseButtonSelector );
 
-  public mediaElement = (): HTMLMediaElement | null =>
+  public findMediaElement = (): HTMLMediaElement | null =>
   {
     if( this.options.mediaSelector === null )
     {
@@ -192,7 +192,7 @@ export default class Controller
   {
     if( this.options.useMediaForIsPlaying )
     {
-      const media = this.mediaElement();
+      const media = this.findMediaElement();
       if( !media )
       {
         console.warn( 'Could not find media element for isPlaying:', this.options.mediaSelector );
@@ -214,13 +214,13 @@ export default class Controller
 
     if( this.options.usePlayButtonForPlaying )
     {
-      const playButton = this.playButton();
+      const playButton = this.findPlayButton();
       return !playButton || !playButton.offsetParent;
     }
 
     if( this.options.usePauseButtonForPlaying )
     {
-      const pauseButton = this.pauseButton();
+      const pauseButton = this.findPauseButton();
       return !!pauseButton && !!pauseButton.offsetParent;
     }
 
@@ -231,7 +231,7 @@ export default class Controller
   {
     if( this.options.usePlayButtonForPlay )
     {
-      const playButton = this.playButton();
+      const playButton = this.findPlayButton();
       if( !playButton )
       {
         console.warn( 'Could not find play button for play():', this.options.playButtonSelector );
@@ -245,7 +245,7 @@ export default class Controller
 
     if( this.options.useMediaForPlay )
     {
-      const media = this.mediaElement();
+      const media = this.findMediaElement();
       if( !media )
       {
         console.warn( 'Could not find media element for play():', this.options.mediaSelector );
@@ -262,7 +262,7 @@ export default class Controller
   {
     if( this.options.usePauseButtonForPause )
     {
-      const pauseButton = this.pauseButton();
+      const pauseButton = this.findPauseButton();
       if( pauseButton )
       {
         pauseButton.click();
@@ -274,7 +274,7 @@ export default class Controller
 
     if( this.options.useMediaForPause )
     {
-      const media = this.mediaElement();
+      const media = this.findMediaElement();
       if( media )
       {
         void media.pause();
@@ -285,7 +285,7 @@ export default class Controller
     }
   }
 
-  public player = (): HTMLElement | null => querySelector( this.options.playerSelector );
+  public findPlayer = (): HTMLElement | null => querySelector( this.options.playerSelector );
 
   public registerListener = ( callback: () => void ): void =>
   {
@@ -308,7 +308,7 @@ export default class Controller
 
     if( this.options.useMediaForPolling )
     {
-      const media = this.mediaElement();
+      const media = this.findMediaElement();
       if( !media )
       {
         console.warn( 'Could not find media element for registerListener():', this.options.mediaSelector );
@@ -331,7 +331,7 @@ export default class Controller
 
     if( this.options.useMutationObserverForPolling )
     {
-      const player = this.player();
+      const player = this.findPlayer();
       if( !player )
       {
         console.warn( 'Could not find player element for registerListener():', this.options.playerSelector );
@@ -371,13 +371,13 @@ export default class Controller
     }
   }
 
-  public mediaMetaData = (): MediaMetadata | null => window.navigator.mediaSession?.metadata ?? null;
+  public getMediaMetaData = (): MediaMetadata | null => window.navigator.mediaSession?.metadata ?? null;
 
   public getTrack = (): string | null =>
   {
     if( this.options.useMediaSessionForTrack )
     {
-      const metaData = this.mediaMetaData();
+      const metaData = this.getMediaMetaData();
       if( !metaData?.title )
       {
         console.warn( 'Media session had no track title:', metaData );
@@ -416,7 +416,7 @@ export default class Controller
   {
     if( this.options.useMediaSessionForAlbum )
     {
-      const metaData = this.mediaMetaData();
+      const metaData = this.getMediaMetaData();
       if( !metaData?.album )
       {
         console.warn( 'Media session had no album:', metaData );
@@ -455,7 +455,7 @@ export default class Controller
   {
     if( this.options.useMediaSessionForArtist )
     {
-      const metaData = this.mediaMetaData();
+      const metaData = this.getMediaMetaData();
       if( !metaData?.artist )
       {
         console.warn( 'Media session had no artist:', metaData );
@@ -494,7 +494,7 @@ export default class Controller
   {
     if( this.options.useMediaSessionForArtwork )
     {
-      const metaData = this.mediaMetaData();
+      const metaData = this.getMediaMetaData();
       if( !metaData?.artwork?.[ 0 ]?.src )
       {
         console.warn( 'Media session had no artwork:', metaData );
@@ -528,7 +528,7 @@ export default class Controller
 
     if( this.options.useMediaForArtwork )
     {
-      const media = this.mediaElement();
+      const media = this.findMediaElement();
       if( !media )
       {
         console.warn( 'Could not find media element for getArtwork():', this.options.mediaSelector );
@@ -556,47 +556,47 @@ export default class Controller
 
   public getMediaChangedIndication = (): ( string | null | undefined )[] => [ this.getTrack() ];
 
-  public likeButton = (): HTMLElement | null => querySelector( this.options.likeSelector );
-  public unlikeButton = (): HTMLElement | null => querySelector( this.options.unlikeSelector );
-  public dislikeButton = (): HTMLElement | null => querySelector( this.options.dislikeSelector );
-  public undislikeButton = (): HTMLElement | null => querySelector( this.options.undislikeSelector );
+  public findLikeButton = (): HTMLElement | null => querySelector( this.options.likeSelector );
+  public findUnlikeButton = (): HTMLElement | null => querySelector( this.options.unlikeSelector );
+  public findDislikeButton = (): HTMLElement | null => querySelector( this.options.dislikeSelector );
+  public findUndislikeButton = (): HTMLElement | null => querySelector( this.options.undislikeSelector );
 
   public isLiked = (): boolean =>
   {
-    return this.unlikeButton() !== null;
+    return this.findUnlikeButton() !== null;
   }
 
   public isDisliked = (): boolean =>
   {
-    return this.undislikeButton() !== null;
+    return this.findUndislikeButton() !== null;
   }
 
-  public canLike = (): boolean => this.likeButton() !== null;
+  public canLike = (): boolean => this.findLikeButton() !== null;
 
   public performLike = (): void =>
   {
-    this.likeButton()?.click();
+    this.findLikeButton()?.click();
   }
 
-  public canUnlike = (): boolean => this.unlikeButton() !== null;
+  public canUnlike = (): boolean => this.findUnlikeButton() !== null;
 
   public performUnlike = (): void =>
   {
-    this.unlikeButton()?.click();
+    this.findUnlikeButton()?.click();
   }
 
-  public canDislike = (): boolean => this.dislikeButton() !== null;
+  public canDislike = (): boolean => this.findDislikeButton() !== null;
 
   public performDislike = (): void =>
   {
-    this.dislikeButton()?.click();
+    this.findDislikeButton()?.click();
   }
 
-  public canUndislike = (): boolean => this.undislikeButton() !== null;
+  public canUndislike = (): boolean => this.findUndislikeButton() !== null;
 
   public performUndislike = (): void =>
   {
-    this.undislikeButton()?.click();
+    this.findUndislikeButton()?.click();
   }
 
   public parseTime = ( name: string, selector: Selector, format: RegExp ): number | null =>
@@ -627,7 +627,7 @@ export default class Controller
   {
     if( this.options.useMediaForTime )
     {
-      const media = this.mediaElement();
+      const media = this.findMediaElement();
       if( !media )
       {
         console.warn( 'Could not find media element for currentTime():', this.options.mediaSelector );
@@ -658,7 +658,7 @@ export default class Controller
   {
     if( this.options.useMediaForTime )
     {
-      const media = this.mediaElement();
+      const media = this.findMediaElement();
       if( !media )
       {
         console.warn( 'Could not find media element for remainingTime():', this.options.mediaSelector );
@@ -689,7 +689,7 @@ export default class Controller
   {
     if( this.options.useMediaForTime )
     {
-      const media = this.mediaElement();
+      const media = this.findMediaElement();
       if( !media )
       {
         console.warn( 'Could not find media element for duration():', this.options.mediaSelector );
@@ -772,38 +772,38 @@ export default class Controller
     }
   }
 
-  public nextButton = (): HTMLElement | null => querySelector( this.options.nextSelector );
+  public findNextButton = (): HTMLElement | null => querySelector( this.options.nextSelector );
 
-  public canNext = (): boolean => this.nextButton() !== null;
+  public canNext = (): boolean => this.findNextButton() !== null;
 
   public performNext = (): void =>
   {
-    this.nextButton()?.click();
+    this.findNextButton()?.click();
   }
 
-  public previousButton = (): HTMLElement | null => querySelector( this.options.previousSelector );
+  public findPreviousButton = (): HTMLElement | null => querySelector( this.options.previousSelector );
 
-  public canPrevious = (): boolean => this.previousButton() !== null;
+  public canPrevious = (): boolean => this.findPreviousButton() !== null;
 
   public performPrevious = (): void =>
   {
-    this.previousButton()?.click();
+    this.findPreviousButton()?.click();
   }
 
-  public skipForwardButton = (): HTMLElement | null => querySelector( this.options.skipFowardSelector );
+  public findSkipForwardButton = (): HTMLElement | null => querySelector( this.options.skipFowardSelector );
 
   public canSkipForward = (): boolean =>
   {
     if( this.options.useMediaForSkipping )
     {
-      const media = this.mediaElement();
+      const media = this.findMediaElement();
       if( media )
       {
         return true;
       }
     }
 
-    if( this.skipForwardButton() )
+    if( this.findSkipForwardButton() )
     {
       return true;
     }
@@ -815,7 +815,7 @@ export default class Controller
   {
     if( this.options.useMediaForSkipping )
     {
-      const media = this.mediaElement();
+      const media = this.findMediaElement();
       if( media )
       {
         media.currentTime += 10;
@@ -823,23 +823,23 @@ export default class Controller
       }
     }
 
-    this.skipForwardButton()?.click();
+    this.findSkipForwardButton()?.click();
   }
 
-  public skipBackwardButton = (): HTMLElement | null => querySelector( this.options.skipBackwardSelector );
+  public findSkipBackwardButton = (): HTMLElement | null => querySelector( this.options.skipBackwardSelector );
 
   public canSkipBackward = (): boolean =>
   {
     if( this.options.useMediaForSkipping )
     {
-      const media = this.mediaElement();
+      const media = this.findMediaElement();
       if( media )
       {
         return true;
       }
     }
 
-    if( this.skipBackwardButton() )
+    if( this.findSkipBackwardButton() )
     {
       return true;
     }
@@ -851,7 +851,7 @@ export default class Controller
   {
     if( this.options.useMediaForSkipping )
     {
-      const media = this.mediaElement();
+      const media = this.findMediaElement();
       if( media )
       {
         media.currentTime -= 10;
@@ -859,16 +859,16 @@ export default class Controller
       }
     }
 
-    this.skipBackwardButton()?.click();
+    this.findSkipBackwardButton()?.click();
   }
 
-  public volumeElement = (): HTMLElement | null => querySelector( this.options.volumeSelector );
+  public findVolumeElement = (): HTMLElement | null => querySelector( this.options.volumeSelector );
 
   public canVolume = (): boolean =>
   {
     if( this.options.useMediaForVolume )
     {
-      return this.mediaElement() !== null;
+      return this.findMediaElement() !== null;
     }
 
     return false;
@@ -878,7 +878,7 @@ export default class Controller
   {
     if( this.options.useMediaForVolume )
     {
-      const media = this.mediaElement();
+      const media = this.findMediaElement();
       if( !media )
       {
         console.warn( 'Could not find media element for volume:', this.options.mediaSelector );
@@ -889,7 +889,7 @@ export default class Controller
       }
     }
 
-    const volume = parseFloat( this.volumeElement()?.textContent ?? '' );
+    const volume = parseFloat( this.findVolumeElement()?.textContent ?? '' );
     if( isFinite( volume ) )
     {
       return volume / 100;
@@ -902,7 +902,7 @@ export default class Controller
   {
     if( this.options.useMediaForVolume )
     {
-      const media = this.mediaElement();
+      const media = this.findMediaElement();
       if( media )
       {
         media.volume += 0.05;
@@ -914,7 +914,7 @@ export default class Controller
   {
     if( this.options.useMediaForVolume )
     {
-      const media = this.mediaElement();
+      const media = this.findMediaElement();
       if( media )
       {
         media.volume -= 0.05;

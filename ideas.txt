@@ -1,3 +1,2 @@
 Add browser test
 Add loop control
-Rename selector getters to be getters.
