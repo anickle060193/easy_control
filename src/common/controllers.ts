@@ -5,6 +5,7 @@ export enum ControllerId
   Pandora = 'controller_id__pandora',
   Youtube = 'controller_id__youtube',
   Spotify = 'controller_id__spotify',
+  GenericAudioVideo = 'controller_id__generic_audio_video',
 }
 
 export enum ControllerCommand
@@ -109,5 +110,11 @@ export const CONTROLLERS: { [ id in ControllerId ]: ControllerDetails } = {
     color: '#f00',
     enabledSetting: SettingKey.ControllersEnabled.Youtube,
     notificationsEnabledSetting: SettingKey.Notifications.Youtube,
+  },
+  [ ControllerId.GenericAudioVideo ]: {
+    name: 'Generic Audio/Video',
+    color: '#299af4',
+    enabledSetting: SettingKey.ControllersEnabled.GenericAudioVideo,
+    notificationsEnabledSetting: SettingKey.Notifications.GenericAudioVideo,
   },
 };

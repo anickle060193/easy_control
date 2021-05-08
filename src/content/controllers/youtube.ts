@@ -51,6 +51,8 @@ export const controller = new Controller( {
   artistSelector: '#primary #channel-name a',
   artworkSelector: '#meta-contents #avatar img',
 
+  useMediaForArtwork: false,
+
   useMediaForTime: true,
 
   currentTimeSelector: null,

@@ -14,7 +14,7 @@ export enum NotificationsSettingId
   Spotify = 'key__notifications__spotify',
   // Twitch = 'key__notifications__twitch',
   Youtube = 'key__notifications__youtube',
-  // GenericAudioVideo = 'key__notifications__generic_audio_video',
+  GenericAudioVideo = 'key__notifications__generic_audio_video',
 }
 
 export enum ControllersEnabledSettingId
@@ -30,7 +30,7 @@ export enum ControllersEnabledSettingId
   Spotify = 'key__controllers_enabled__spotify',
   // Twitch = 'key__controllers_enabled__twitch',
   Youtube = 'key__controllers_enabled__youtube',
-  // GenericAudioVideo = 'key__controllers_enabled__generic_audio_video',
+  GenericAudioVideo = 'key__controllers_enabled__generic_audio_video',
 }
 
 export enum OpenInExistingSettingId
@@ -42,10 +42,10 @@ export enum OpenInExistingSettingId
   // HboGo = 'key__open_in_existing__hbo_go',
   // Hulu = 'key__open_in_existing__hulu',
   // Netflix = 'key__open_in_existing__netflix',
-  Pandora = 'key__open_in_existing__pandora',
-  Spotify = 'key__open_in_existing__spotify',
+  // Pandora = 'key__open_in_existing__pandora',
+  // Spotify = 'key__open_in_existing__spotify',
   // Twitch = 'key__open_in_existing__twitch',
-  Youtube = 'key__open_in_existing__youtube',
+  // Youtube = 'key__open_in_existing__youtube',
   // GenericAudioVideo = 'key__open_in_existing__generic_audio_video',
 }
 
@@ -59,7 +59,7 @@ export enum OtherSettingId
   AutoPauseEnabled = 'key__auto_pause_enabled',
   ShowChangeLogOnUpdate = 'key__show_change_log_on_update',
   ShowAutoPausedNotification = 'key__show_auto_paused_notification',
-  // SiteBlacklist = 'key__site_blacklist',
+  SiteBlacklist = 'key__site_blacklist',
   ControlsPopupWidth = 'key__controls_popup_width',
   ControlsPopupHeight = 'key__controls_popup_height',
 }
@@ -128,7 +128,7 @@ export interface SettingsType
   [ SettingKey.Notifications.Spotify ]: boolean;
   // [ SettingKey.Notifications.Twitch ]: boolean;
   [ SettingKey.Notifications.Youtube ]: boolean;
-  // [ SettingKey.Notifications.GenericAudioVideo ]: boolean;
+  [ SettingKey.Notifications.GenericAudioVideo ]: boolean;
 
   // [ SettingKey.ControllersEnabled.AmazonMusic ]: boolean;
   // [ SettingKey.ControllersEnabled.AmazonVideo ]: boolean;
@@ -141,7 +141,7 @@ export interface SettingsType
   [ SettingKey.ControllersEnabled.Spotify ]: boolean;
   // [ SettingKey.ControllersEnabled.Twitch ]: boolean;
   [ SettingKey.ControllersEnabled.Youtube ]: boolean;
-  // [ SettingKey.ControllersEnabled.GenericAudioVideo ]: boolean;
+  [ SettingKey.ControllersEnabled.GenericAudioVideo ]: boolean;
 
   // [ SettingKey.OpenInExisting.AmazonMusic ]: boolean;
   // [ SettingKey.OpenInExisting.AmazonVideo ]: boolean;
@@ -164,7 +164,7 @@ export interface SettingsType
   [ SettingKey.Other.AutoPauseEnabled ]: boolean;
   [ SettingKey.Other.ShowChangeLogOnUpdate ]: boolean;
   [ SettingKey.Other.ShowAutoPausedNotification ]: boolean;
-  // [ SettingKey.Other.SiteBlacklist ]: string[];
+  [ SettingKey.Other.SiteBlacklist ]: string[];
   [ SettingKey.Other.ControlsPopupWidth ]: number;
   [ SettingKey.Other.ControlsPopupHeight ]: number;
 
@@ -225,7 +225,7 @@ const DEFAULT_SETTINGS: SettingsType = {
   [ SettingKey.Notifications.Spotify ]: true,
   // [ SettingKey.Notifications.Twitch ]: true,
   [ SettingKey.Notifications.Youtube ]: true,
-  // [ SettingKey.Notifications.GenericAudioVideo ]: true,
+  [ SettingKey.Notifications.GenericAudioVideo ]: true,
 
   // [ SettingKey.ControllersEnabled.AmazonMusic ]: true,
   // [ SettingKey.ControllersEnabled.AmazonVideo ]: true,
@@ -238,7 +238,7 @@ const DEFAULT_SETTINGS: SettingsType = {
   [ SettingKey.ControllersEnabled.Spotify ]: true,
   // [ SettingKey.ControllersEnabled.Twitch ]: true,
   [ SettingKey.ControllersEnabled.Youtube ]: true,
-  // [ SettingKey.ControllersEnabled.GenericAudioVideo ]: true,
+  [ SettingKey.ControllersEnabled.GenericAudioVideo ]: true,
 
   // [ SettingKey.OpenInExisting.AmazonMusic ]: false,
   // [ SettingKey.OpenInExisting.AmazonVideo ]: false,
@@ -261,7 +261,7 @@ const DEFAULT_SETTINGS: SettingsType = {
   [ SettingKey.Other.AutoPauseEnabled ]: true,
   [ SettingKey.Other.ShowChangeLogOnUpdate ]: true,
   [ SettingKey.Other.ShowAutoPausedNotification ]: false,
-  // [ SettingKey.Other.SiteBlacklist ]: [ 'imgur.com' ],
+  [ SettingKey.Other.SiteBlacklist ]: [ 'imgur.com' ],
   [ SettingKey.Other.ControlsPopupWidth ]: 315,
   [ SettingKey.Other.ControlsPopupHeight ]: 450,
 

@@ -54,6 +54,8 @@ export const controller = new Controller( {
   artistSelector: 'a[data-testid="nowplaying-artist"]',
   artworkSelector: '.Root__now-playing-bar img.cover-art-image',
 
+  useMediaForArtwork: false,
+
   useMediaForTime: false,
 
   currentTimeSelector: '.Root__now-playing-bar .playback-bar .playback-bar__progress-time',

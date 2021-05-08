@@ -1,8 +1,9 @@
 import React from 'react';
-import { AppBar, Button, CircularProgress, createStyles, Divider, makeStyles, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Button, CircularProgress, createStyles, Divider, makeStyles, Table, TableBody, TableCell, TableHead, TableRow, Toolbar, Typography } from '@material-ui/core';
 
 import { CheckboxSetting } from './components/CheckboxSetting';
 import { NumberSetting } from './components/NumberSetting';
+import { StringArraySetting } from './components/StringArraySetting';
 
 import { useSettingsInitialized } from '../common/hooks/useSettingsInitialized';
 import { SettingKey } from '../common/settings';
@@ -18,6 +19,7 @@ const useStyles = makeStyles( ( theme ) => createStyles( {
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
+    overflow: 'hidden',
   },
   appBarRight: {
     marginLeft: 'auto',
@@ -27,7 +29,6 @@ const useStyles = makeStyles( ( theme ) => createStyles( {
     },
   },
   content: {
-    flex: 1,
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
@@ -52,6 +53,10 @@ const useStyles = makeStyles( ( theme ) => createStyles( {
   numberInput: {
     marginTop: theme.spacing( 1 ),
   },
+  stringsInput: {
+    width: 'min( 500px, 100% )',
+    marginBottom: theme.spacing( 1 ),
+  },
 } ) );
 
 export const OptionsPage: React.FC = () =>
@@ -74,30 +79,43 @@ export const OptionsPage: React.FC = () =>
     content = (
       <div className={styles.content}>
         <Typography variant="h5">Controller Options</Typography>
-        <TableContainer className={styles.table}>
-          <Table padding="none">
-            <TableHead>
-              <TableRow>
-                <TableCell></TableCell>
-                <TableCell>Enabled?</TableCell>
-                <TableCell>Notifications Enabled?</TableCell>
+
+        <Typography variant="body2">Changing these settings may require refreshing the tab that includes the media to fully apply.</Typography>
+
+        <Table
+          className={styles.table}
+          padding="none"
+        >
+          <TableHead>
+            <TableRow>
+              <TableCell></TableCell>
+              <TableCell>Enabled?</TableCell>
+              <TableCell>Notifications Enabled?</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {mapControllerSettings( ( id, { name, enabledSetting, notificationsEnabledSetting } ) => (
+              <TableRow key={id}>
+                <TableCell>{name}</TableCell>
+                <TableCell>
+                  <CheckboxSetting setting={enabledSetting} />
+                </TableCell>
+                <TableCell>
+                  <CheckboxSetting setting={notificationsEnabledSetting} />
+                </TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {mapControllerSettings( ( id, { name, enabledSetting, notificationsEnabledSetting } ) => (
-                <TableRow key={id}>
-                  <TableCell>{name}</TableCell>
-                  <TableCell>
-                    <CheckboxSetting setting={enabledSetting} />
-                  </TableCell>
-                  <TableCell>
-                    <CheckboxSetting setting={notificationsEnabledSetting} />
-                  </TableCell>
-                </TableRow>
-              ) )}
-            </TableBody>
-          </Table>
-        </TableContainer>
+            ) )}
+          </TableBody>
+        </Table>
+        <div className={styles.stringsInput}>
+          <StringArraySetting
+            label="Generic Audio/Video Controller Site Blacklist"
+            setting={SettingKey.Other.SiteBlacklist}
+            rows={5}
+          />
+        </div>
+
+        <Divider className={styles.divider} />
 
         <Typography variant="h5">Notification Options</Typography>
         <CheckboxSetting

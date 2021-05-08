@@ -1,4 +1,5 @@
 import { querySelector, Selector } from './selector';
+import { extractImageDataUrlFromVideo } from './util';
 
 export interface ControllerOptions
 {
@@ -51,6 +52,8 @@ export interface ControllerOptions
   albumSelector: Selector | null;
   artistSelector: Selector | null;
   artworkSelector: Selector | null;
+
+  useMediaForArtwork: boolean;
 
   useMediaForTime: boolean;
 
@@ -113,6 +116,8 @@ export const DEFAULT_OPTIONS: ControllerOptions = {
   albumSelector: null,
   artistSelector: null,
   artworkSelector: null,
+
+  useMediaForArtwork: false,
 
   useMediaForTime: false,
 
@@ -282,20 +287,23 @@ export default class Controller
 
   public player = (): HTMLElement | null => querySelector( this.options.playerSelector );
 
-  public registerListener = ( callback: () => void ): ( () => void ) =>
+  public registerListener = ( callback: () => void ): void =>
   {
+    this.unregisterListener();
+
     if( this.options.useDocumentMediaEventsForPolling )
     {
       document.addEventListener( 'timeupdate', callback, { capture: true } );
       document.addEventListener( 'play', callback, { capture: true } );
       document.addEventListener( 'pause', callback, { capture: true } );
 
-      return () =>
+      this.unregisterListenerCallback = () =>
       {
         document.removeEventListener( 'timeupdate', callback, { capture: true } );
         document.removeEventListener( 'play', callback, { capture: true } );
         document.removeEventListener( 'pause', callback, { capture: true } );
       };
+      return;
     }
 
     if( this.options.useMediaForPolling )
@@ -311,12 +319,13 @@ export default class Controller
         media.addEventListener( 'play', callback );
         media.addEventListener( 'pause', callback );
 
-        return () =>
+        this.unregisterListenerCallback = () =>
         {
           media.removeEventListener( 'timeupdate', callback );
           media.removeEventListener( 'play', callback );
           media.removeEventListener( 'pause', callback );
         };
+        return;
       }
     }
 
@@ -332,12 +341,34 @@ export default class Controller
         const observer = new MutationObserver( callback );
         observer.observe( player, { subtree: true, childList: true, attributes: true } );
 
-        return () => observer.disconnect();
+        this.unregisterListenerCallback = () =>
+        {
+          observer.disconnect();
+        };
+        return;
       }
     }
 
-    const intervalId = window.setInterval( callback, 500 );
-    return () => window.clearInterval( intervalId );
+    const intervalId = window.setInterval( () =>
+    {
+      callback.call( undefined );
+    }, 500 );
+
+    this.unregisterListenerCallback = () =>
+    {
+      window.clearInterval( intervalId );
+    };
+  }
+
+  protected unregisterListenerCallback: ( () => void ) | null = null;
+
+  public unregisterListener = (): void =>
+  {
+    if( this.unregisterListenerCallback )
+    {
+      this.unregisterListenerCallback.call( undefined );
+      this.unregisterListenerCallback = null;
+    }
   }
 
   public mediaMetaData = (): MediaMetadata | null => window.navigator.mediaSession?.metadata ?? null;
@@ -491,6 +522,31 @@ export default class Controller
         if( artwork )
         {
           return artwork;
+        }
+      }
+    }
+
+    if( this.options.useMediaForArtwork )
+    {
+      const media = this.mediaElement();
+      if( !media )
+      {
+        console.warn( 'Could not find media element for getArtwork():', this.options.mediaSelector );
+      }
+      else if( !( media instanceof HTMLVideoElement ) )
+      {
+        console.warn( 'Only video elements can be used for getArtwork():', media );
+      }
+      else if( media.poster )
+      {
+        return media.poster;
+      }
+      else
+      {
+        const frameUrl = extractImageDataUrlFromVideo( media );
+        if( frameUrl )
+        {
+          return frameUrl;
         }
       }
     }

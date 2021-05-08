@@ -51,6 +51,8 @@ export const controller = new Controller( {
   artistSelector: [ '.Tuner__Audio__TrackDetail__artist', '.NowPlayingTopInfo__current__artistName' ],
   artworkSelector: [ '.Tuner__Audio__TrackDetail__img img', '.NowPlayinfTopInfo__artContainer__img' ],
 
+  useMediaForArtwork: false,
+
   useMediaForTime: true,
 
   currentTimeSelector: null,

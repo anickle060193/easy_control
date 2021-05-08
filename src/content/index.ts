@@ -1,52 +1,24 @@
 import { BackgroundMessage, BackgroundMessageId } from '../common/backgroundMessages';
 import { ContentMessageId, UpdateContentMessage } from '../common/contentMessages';
-import settings from '../common/settings';
+import settings, { SettingKey } from '../common/settings';
 import { ControllerCommand, ControllerId, CONTROLLERS, DEFAULT_CONTROLLER_CAPABILITIES, DEFAULT_CONTROLLER_MEDIA, DEFAULT_CONTROLLER_STATUS } from '../common/controllers';
 
-import { CONTROLLERS_CONFIG } from './config';
+import { GenericAudioVideoController } from './controllers/genericAudioVideo';
+import { findMatchingController } from './config';
 import { onReady } from './util';
+import Controller from './controller';
 import { removeDebugIndication, updateDebugIndication } from './DebugControllerData';
 
-type UrlMatch = string | RegExp | UrlMatch[];
+const controllerPorts = new Map<Controller, chrome.runtime.Port>();
 
-function urlMatches( matches: UrlMatch, url: string ): boolean
+function registerController( controllerId: ControllerId, controller: Controller )
 {
-  if( Array.isArray( matches ) )
-  {
-    return matches.some( ( match ) => urlMatches( match, url ) );
-  }
-  else if( matches instanceof RegExp )
-  {
-    return matches.test( url );
-  }
-  else
-  {
-    return url.includes( matches );
-  }
-}
-
-onReady( () =>
-{
-  const c = Object.entries( CONTROLLERS_CONFIG ).find( ( [ , { matches } ] ) => urlMatches( matches, window.location.href ) );
-  if( !c )
-  {
-    return;
-  }
-
-  const controllerId = c[ 0 ] as ControllerId;
-  const { controller } = c[ 1 ];
-  console.log( 'Found matching controller:', controllerId, controller );
-
-  if( !settings.get( CONTROLLERS[ controllerId ].enabledSetting ) )
-  {
-    console.log( 'Controller is not enabled:', controllerId );
-    return;
-  }
-
   const port = chrome.runtime.connect( { name: controllerId } );
   console.log( 'Connected port for', controllerId, ':', port );
 
-  const unregister = controller.registerListener( () =>
+  controllerPorts.set( controller, port );
+
+  controller.registerListener( () =>
   {
     let message: UpdateContentMessage;
 
@@ -204,8 +176,99 @@ onReady( () =>
   port.onDisconnect.addListener( ( p ) =>
   {
     console.log( 'Port disconnected for', controllerId, p );
-    unregister();
+    controller.unregisterListener();
 
     removeDebugIndication();
+
+    controllerPorts.delete( controller );
   } );
+}
+
+function onControllerUrlMatch( controllerId: ControllerId, controller: Controller )
+{
+  console.log( 'Found matching controller:', controllerId, controller );
+
+  if( !settings.get( CONTROLLERS[ controllerId ].enabledSetting ) )
+  {
+    console.log( 'Controller is not enabled:', controllerId );
+    return;
+  }
+
+  registerController( controllerId, controller );
+}
+
+function onNoControllerUrlMatch()
+{
+  if( !settings.get( SettingKey.ControllersEnabled.GenericAudioVideo ) )
+  {
+    return;
+  }
+
+  const siteBlackList = settings.get( SettingKey.Other.SiteBlacklist ).map( ( s ) => s.toLocaleLowerCase() );
+  const url = window.location.href.toLocaleLowerCase();
+  if( siteBlackList.some( ( s ) => url.includes( s ) ) )
+  {
+    console.log( 'Blacklisted site:', url );
+    return;
+  }
+
+  const mediaControllers = new Map<HTMLMediaElement, Controller>();
+
+  function onMutation()
+  {
+    const mediaElements = new Set( Array.from( document.querySelectorAll<HTMLAudioElement | HTMLVideoElement>( 'audio, video' ) ) );
+    const previousMediaElements = new Set( mediaControllers.keys() );
+
+    for( const oldMedia of previousMediaElements )
+    {
+      if( mediaElements.has( oldMedia ) )
+      {
+        continue;
+      }
+
+      const controller = mediaControllers.get( oldMedia );
+      if( controller )
+      {
+        controller.unregisterListener();
+        controllerPorts.get( controller )?.disconnect();
+        mediaControllers.delete( oldMedia );
+      }
+      else
+      {
+        console.warn( 'Unable to get controller for media:', oldMedia );
+      }
+    }
+
+    for( const newMedia of mediaElements )
+    {
+      if( previousMediaElements.has( newMedia ) )
+      {
+        continue;
+      }
+
+      const controller = new GenericAudioVideoController( newMedia );
+      mediaControllers.set( newMedia, controller );
+
+      registerController( ControllerId.GenericAudioVideo, controller );
+    }
+  }
+
+  new MutationObserver( onMutation ).observe( document.body, {
+    subtree: true,
+    childList: true,
+  } );
+  onMutation();
+}
+
+onReady( () =>
+{
+  const match = findMatchingController();
+  if( match )
+  {
+    onControllerUrlMatch( ...match );
+  }
+  else
+  {
+    onNoControllerUrlMatch();
+  }
 } );
