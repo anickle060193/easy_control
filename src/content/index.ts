@@ -7,7 +7,6 @@ import { GenericAudioVideoController } from './controllers/genericAudioVideo';
 import { findMatchingController } from './config';
 import { onReady } from './util';
 import Controller from './controller';
-import { removeDebugIndication, updateDebugIndication } from './DebugControllerData';
 
 const controllerPorts = new Map<Controller, chrome.runtime.Port>();
 
@@ -77,8 +76,6 @@ function registerController( controllerId: ControllerId, controller: Controller 
     }
 
     port.postMessage( message );
-
-    updateDebugIndication( controllerId, message );
   } );
 
   port.onMessage.addListener( ( message: BackgroundMessage ) =>
@@ -177,8 +174,6 @@ function registerController( controllerId: ControllerId, controller: Controller 
   {
     console.log( 'Port disconnected for', controllerId, p );
     controller.unregisterListener();
-
-    removeDebugIndication();
 
     controllerPorts.delete( controller );
   } );
