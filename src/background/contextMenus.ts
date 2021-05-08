@@ -13,7 +13,40 @@ enum ContextMenuId
 
 export function initContextMenus(): void
 {
-  chrome.runtime.onInstalled.addListener( () =>
+  chrome.contextMenus.onClicked.addListener( ( info, tab ) =>
+  {
+    if( info.menuItemId === ContextMenuId.ReloadExtension )
+    {
+      chrome.runtime.reload();
+    }
+    else if( info.menuItemId === ContextMenuId.AutoPauseEnabled )
+    {
+      console.log( 'Auto-Pause Enabled:', info.checked );
+      settings.set( SettingKey.Other.AutoPauseEnabled, info.checked ?? true );
+    }
+    else if( info.menuItemId === ContextMenuId.AutoPauseEnabledForTab )
+    {
+      if( typeof tab?.id !== 'number' )
+      {
+        console.warn( 'Could not toggle auto-pause enabled for tab with no ID:', info, tab );
+      }
+      else
+      {
+        console.log( 'Toggle auto-pause for tab:', info, tab );
+        setAutoPauseEnabledForTab( tab.id, info.checked ?? true );
+      }
+    }
+    else if( info.menuItemId === ContextMenuId.OpenControls )
+    {
+      openControlsPopup();
+    }
+    else
+    {
+      console.warn( 'Unhandled context menu item:', info );
+    }
+  } );
+
+  chrome.contextMenus.removeAll( () =>
   {
     if( process.env.NODE_ENV === 'development' )
     {
@@ -74,6 +107,12 @@ export function initContextMenus(): void
     {
       chrome.contextMenus.update( ContextMenuId.AutoPauseEnabled, {
         checked: settings.get( SettingKey.Other.AutoPauseEnabled ),
+      }, () =>
+      {
+        if( chrome.runtime.lastError )
+        {
+          console.warn( 'Failed to update "Auto-Pause Enabled" context menu following settings initialization/change.' );
+        }
       } );
     }
 
@@ -81,43 +120,16 @@ export function initContextMenus(): void
     settings.onChanged.addEventListener( onSettingsChanged );
   } );
 
-  chrome.contextMenus.onClicked.addListener( ( info, tab ) =>
-  {
-    if( info.menuItemId === ContextMenuId.ReloadExtension )
-    {
-      chrome.runtime.reload();
-    }
-    else if( info.menuItemId === ContextMenuId.AutoPauseEnabled )
-    {
-      console.log( 'Auto-Pause Enabled:', info.checked );
-      settings.set( SettingKey.Other.AutoPauseEnabled, info.checked ?? true );
-    }
-    else if( info.menuItemId === ContextMenuId.AutoPauseEnabledForTab )
-    {
-      if( typeof tab?.id !== 'number' )
-      {
-        console.warn( 'Could not toggle auto-pause enabled for tab with no ID:', info, tab );
-      }
-      else
-      {
-        console.log( 'Toggle auto-pause for tab:', info, tab );
-        setAutoPauseEnabledForTab( tab.id, info.checked ?? true );
-      }
-    }
-    else if( info.menuItemId === ContextMenuId.OpenControls )
-    {
-      openControlsPopup();
-    }
-    else
-    {
-      console.warn( 'Unhandled context menu item:', info );
-    }
-  } );
-
   chrome.tabs.onActivated.addListener( ( activeTab ) =>
   {
     chrome.contextMenus.update( ContextMenuId.AutoPauseEnabledForTab, {
       checked: isAutoPauseEnabledForTab( activeTab.tabId ),
+    }, () =>
+    {
+      if( chrome.runtime.lastError )
+      {
+        console.warn( 'Failed to update "Auto-Pause Enabled for Tab" context menu following tab activation.' );
+      }
     } );
   } );
 }

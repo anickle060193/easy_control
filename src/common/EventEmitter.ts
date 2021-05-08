@@ -8,14 +8,7 @@ export class EventEmitter<AX extends unknown[] = []>
   {
     for( const listener of this.listeners )
     {
-      try
-      {
-        listener.call( undefined );
-      }
-      catch( e )
-      {
-        console.warn( 'Error occurred in listener:', e );
-      }
+      window.setTimeout( () => listener.call( undefined ), 0 );
     }
   }
 

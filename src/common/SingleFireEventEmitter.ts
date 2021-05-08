@@ -22,7 +22,7 @@ export class SingleFireEventEmitter<AX extends unknown[]> extends EventEmitter<A
   {
     if( this.alreadyFired )
     {
-      listener.call( undefined );
+      window.setTimeout( () => listener.call( undefined ), 0 );
     }
     else
     {
