@@ -22,7 +22,7 @@ export const controller = new Controller( {
   useMediaForPause: true,
 
   nextSelector: '.ytp-next-button',
-  previousSelector: null,
+  previousSelector: '.ytp-prev-button',
   skipFowardSelector: null,
   skipBackwardSelector: null,
   likeSelector: '#info #top-level-buttons ytd-toggle-button-renderer:nth-child( 1 ) button[aria-pressed="false"]',
