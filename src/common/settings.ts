@@ -262,8 +262,8 @@ const DEFAULT_SETTINGS: SettingsType = {
   [ SettingKey.Other.ShowChangeLogOnUpdate ]: true,
   [ SettingKey.Other.ShowAutoPausedNotification ]: false,
   [ SettingKey.Other.SiteBlacklist ]: [ 'imgur.com' ],
-  [ SettingKey.Other.ControlsPopupWidth ]: 315,
-  [ SettingKey.Other.ControlsPopupHeight ]: 450,
+  [ SettingKey.Other.ControlsPopupWidth ]: 620,
+  [ SettingKey.Other.ControlsPopupHeight ]: 220,
 
   // [ SettingKey.Controls.Other.DisplayControls ]: true,
   // [ SettingKey.Controls.Other.AlwaysDisplayPlaybackSpeed ]: true,

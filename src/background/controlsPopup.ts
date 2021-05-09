@@ -44,13 +44,14 @@ export function openControlsPopup(): void
 
 export function updateControlsPopup(): void
 {
-  if( !controlsPopupWindow
-    || controlsPopupWindow.closed )
+  if( !controlsPopupWindow )
   {
-    if( controlsPopupWindow?.closed === true )
-    {
-      console.log( 'Controls Popup Window closed' );
-    }
+    return;
+  }
+  else if( controlsPopupWindow.closed )
+  {
+    console.warn( 'Controls Popup Window was closed.' );
+    controlsPopupWindow = null;
     return;
   }
 
@@ -76,16 +77,29 @@ export function initControlsPopup(): void
       return;
     }
 
-    if( message.id === ControlsPopupMessageId.Command )
+    if( message.id === ControlsPopupMessageId.Loaded )
     {
-      const curentController = getCurrentController();
-      if( !curentController )
+      updateControlsPopup();
+    }
+    else if( message.id === ControlsPopupMessageId.Command )
+    {
+      const currentController = getCurrentController();
+      if( !currentController )
       {
         console.warn( 'No controller to handle controls popup command:', message );
         return;
       }
 
-      curentController.sendCommand( message.command );
+      currentController.sendCommand( message.command );
+    }
+  } );
+
+  chrome.windows.onRemoved.addListener( () =>
+  {
+    if( controlsPopupWindow?.closed === true )
+    {
+      console.log( 'Controls popup window has closed.' );
+      controlsPopupWindow = null;
     }
   } );
 }
