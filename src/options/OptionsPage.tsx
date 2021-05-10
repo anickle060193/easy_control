@@ -7,12 +7,7 @@ import { StringArraySetting } from './components/StringArraySetting';
 
 import { useSettingsInitialized } from '../common/hooks/useSettingsInitialized';
 import { SettingKey } from '../common/settings';
-import { ControllerDetails, ControllerId, CONTROLLERS } from '../common/controllers';
-
-function mapControllerSettings<T>( mapper: ( id: ControllerId, details: ControllerDetails ) => T ): T[]
-{
-  return Object.entries( CONTROLLERS ).map( ( [ id, details ] ) => mapper( id as ControllerId, details ) );
-}
+import { CONTROLLERS } from '../common/controllers';
 
 const useStyles = makeStyles( ( theme ) => createStyles( {
   root: {
@@ -48,7 +43,12 @@ const useStyles = makeStyles( ( theme ) => createStyles( {
     marginBottom: theme.spacing( 2 ),
   },
   table: {
-    marginBottom: theme.spacing( 2 ),
+    margin: theme.spacing( 2, 0, 4 ),
+  },
+  headerCell: {
+    padding: theme.spacing( 0, 2 ),
+    whiteSpace: 'pre',
+    textAlign: 'center',
   },
   numberInput: {
     marginTop: theme.spacing( 1 ),
@@ -82,31 +82,34 @@ export const OptionsPage: React.FC = () =>
 
         <Typography variant="body2">Changing these settings may require refreshing the tab that includes the media to fully apply.</Typography>
 
-        <Table
-          className={styles.table}
-          padding="none"
-        >
-          <TableHead>
-            <TableRow>
-              <TableCell></TableCell>
-              <TableCell>Enabled?</TableCell>
-              <TableCell>Notifications Enabled?</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {mapControllerSettings( ( id, { name, enabledSetting, notificationsEnabledSetting } ) => (
-              <TableRow key={id}>
-                <TableCell>{name}</TableCell>
-                <TableCell>
-                  <CheckboxSetting setting={enabledSetting} />
-                </TableCell>
-                <TableCell>
-                  <CheckboxSetting setting={notificationsEnabledSetting} />
-                </TableCell>
+        <div>
+          <Table
+            className={styles.table}
+            padding="none"
+          >
+            <TableHead>
+              <TableRow>
+                <TableCell></TableCell>
+                <TableCell className={styles.headerCell}>Enabled?</TableCell>
+                <TableCell className={styles.headerCell}>Notifications?</TableCell>
               </TableRow>
-            ) )}
-          </TableBody>
-        </Table>
+            </TableHead>
+            <TableBody>
+              {Object.values( CONTROLLERS ).map( ( { id, name, enabledSetting, notificationsEnabledSetting } ) => (
+                <TableRow key={id}>
+                  <TableCell>{name}</TableCell>
+                  <TableCell padding="checkbox" align="center">
+                    <CheckboxSetting setting={enabledSetting} />
+                  </TableCell>
+                  <TableCell padding="checkbox" align="center">
+                    <CheckboxSetting setting={notificationsEnabledSetting} />
+                  </TableCell>
+                </TableRow>
+              ) )}
+            </TableBody>
+          </Table>
+        </div>
+
         <div className={styles.stringsInput}>
           <StringArraySetting
             label="Generic Audio/Video Controller Site Blacklist"

@@ -86,35 +86,41 @@ export const DEFAULT_CONTROLLER_CAPABILITIES: Readonly<ControllerCapabilities> =
 
 export interface ControllerDetails
 {
+  id: ControllerId;
   name: string;
   color: string;
   enabledSetting: SettingKeyFromValue<boolean, ControllersEnabledSettingId>;
   notificationsEnabledSetting: SettingKeyFromValue<boolean, NotificationsSettingId>;
 }
 
+function createControllerConfig(
+  controller: keyof typeof ControllerId,
+  config: Pick<ControllerDetails, 'name' | 'color'>
+): ControllerDetails
+{
+  return {
+    ...config,
+    id: ControllerId[ controller ],
+    enabledSetting: SettingKey.ControllersEnabled[ controller ],
+    notificationsEnabledSetting: SettingKey.Notifications[ controller ],
+  };
+}
+
 export const CONTROLLERS: { [ id in ControllerId ]: ControllerDetails } = {
-  [ ControllerId.Pandora ]: {
+  [ ControllerId.Pandora ]: createControllerConfig( 'Pandora', {
     name: 'Pandora',
     color: '#3668ff',
-    enabledSetting: SettingKey.ControllersEnabled.Pandora,
-    notificationsEnabledSetting: SettingKey.Notifications.Pandora,
-  },
-  [ ControllerId.Spotify ]: {
+  } ),
+  [ ControllerId.Spotify ]: createControllerConfig( 'Spotify', {
     name: 'Spotify',
     color: '#1db954',
-    enabledSetting: SettingKey.ControllersEnabled.Spotify,
-    notificationsEnabledSetting: SettingKey.Notifications.Spotify,
-  },
-  [ ControllerId.Youtube ]: {
+  } ),
+  [ ControllerId.Youtube ]: createControllerConfig( 'Youtube', {
     name: 'Youtube',
     color: '#f00',
-    enabledSetting: SettingKey.ControllersEnabled.Youtube,
-    notificationsEnabledSetting: SettingKey.Notifications.Youtube,
-  },
-  [ ControllerId.GenericAudioVideo ]: {
+  } ),
+  [ ControllerId.GenericAudioVideo ]: createControllerConfig( 'GenericAudioVideo', {
     name: 'Generic Audio/Video',
     color: '#299af4',
-    enabledSetting: SettingKey.ControllersEnabled.GenericAudioVideo,
-    notificationsEnabledSetting: SettingKey.Notifications.GenericAudioVideo,
-  },
+  } ),
 };
