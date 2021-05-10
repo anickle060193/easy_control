@@ -33,22 +33,6 @@ export enum ControllersEnabledSettingId
   GenericAudioVideo = 'key__controllers_enabled__generic_audio_video',
 }
 
-export enum OpenInExistingSettingId
-{
-  // AmazonMusic = 'key__open_in_existing__amazon_music',
-  // AmazonVideo = 'key__open_in_existing__amazon_video',
-  // Bandcamp = 'key__open_in_existing__bandcamp',
-  // GooglePlayMusic = 'key__open_in_existing__google_play_music',
-  // HboGo = 'key__open_in_existing__hbo_go',
-  // Hulu = 'key__open_in_existing__hulu',
-  // Netflix = 'key__open_in_existing__netflix',
-  // Pandora = 'key__open_in_existing__pandora',
-  // Spotify = 'key__open_in_existing__spotify',
-  // Twitch = 'key__open_in_existing__twitch',
-  // Youtube = 'key__open_in_existing__youtube',
-  // GenericAudioVideo = 'key__open_in_existing__generic_audio_video',
-}
-
 export enum OtherSettingId
 {
   NotificationsEnabled = 'key__other__notifications_enabled',
@@ -106,7 +90,6 @@ export enum ControlsOverlayControlsSettingId
 export const SettingKey = {
   Notifications: NotificationsSettingId,
   ControllersEnabled: ControllersEnabledSettingId,
-  OpenInExisting: OpenInExistingSettingId,
   Other: OtherSettingId,
   Controls: {
     Other: ControlsOtherSettingId,
@@ -142,19 +125,6 @@ export interface SettingsType
   // [ SettingKey.ControllersEnabled.Twitch ]: boolean;
   [ SettingKey.ControllersEnabled.Youtube ]: boolean;
   [ SettingKey.ControllersEnabled.GenericAudioVideo ]: boolean;
-
-  // [ SettingKey.OpenInExisting.AmazonMusic ]: boolean;
-  // [ SettingKey.OpenInExisting.AmazonVideo ]: boolean;
-  // [ SettingKey.OpenInExisting.Bandcamp ]: boolean;
-  // [ SettingKey.OpenInExisting.GooglePlayMusic ]: boolean;
-  // [ SettingKey.OpenInExisting.HboGo ]: boolean;
-  // [ SettingKey.OpenInExisting.Hulu ]: boolean;
-  // [ SettingKey.OpenInExisting.Netflix ]: boolean;
-  // [ SettingKey.OpenInExisting.Pandora ]: boolean;
-  // [ SettingKey.OpenInExisting.Spotify ]: boolean;
-  // [ SettingKey.OpenInExisting.Twitch ]: boolean;
-  // [ SettingKey.OpenInExisting.Youtube ]: boolean;
-  // [ SettingKey.OpenInExisting.GenericAudioVideo ]: boolean;
 
   [ SettingKey.Other.NotificationsEnabled ]: boolean;
   [ SettingKey.Other.NoActiveWindowNotifications ]: boolean;
@@ -202,7 +172,6 @@ export interface SettingsType
 export type SettingKeyType = (
   NotificationsSettingId |
   ControllersEnabledSettingId |
-  // OpenInExistingSettingId |
   OtherSettingId // |
   // ControlsOtherSettingId |
   // ControlsMediaControlsSettingId |
@@ -239,19 +208,6 @@ const DEFAULT_SETTINGS: SettingsType = {
   // [ SettingKey.ControllersEnabled.Twitch ]: true,
   [ SettingKey.ControllersEnabled.Youtube ]: true,
   [ SettingKey.ControllersEnabled.GenericAudioVideo ]: true,
-
-  // [ SettingKey.OpenInExisting.AmazonMusic ]: false,
-  // [ SettingKey.OpenInExisting.AmazonVideo ]: false,
-  // [ SettingKey.OpenInExisting.Bandcamp ]: false,
-  // [ SettingKey.OpenInExisting.GooglePlayMusic ]: false,
-  // [ SettingKey.OpenInExisting.HboGo ]: false,
-  // [ SettingKey.OpenInExisting.Hulu ]: false,
-  // [ SettingKey.OpenInExisting.Netflix ]: false,
-  // [ SettingKey.OpenInExisting.Pandora ]: false,
-  // [ SettingKey.OpenInExisting.Spotify ]: false,
-  // [ SettingKey.OpenInExisting.Twitch ]: false,
-  // [ SettingKey.OpenInExisting.Youtube ]: false,
-  // [ SettingKey.OpenInExisting.GenericAudioVideo ]: false,
 
   [ SettingKey.Other.NotificationsEnabled ]: true,
   [ SettingKey.Other.NoActiveWindowNotifications ]: false,
