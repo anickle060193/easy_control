@@ -1,3 +1,7 @@
+import { ContentMessageId, UpdateContentMessage } from '../common/contentMessages';
+import { DEFAULT_CONTROLLER_CAPABILITIES, DEFAULT_CONTROLLER_MEDIA, DEFAULT_CONTROLLER_STATUS } from '../common/controllers';
+import { EventEmitter } from '../common/EventEmitter';
+
 import { querySelector, Selector } from './selector';
 import { extractImageDataUrlFromVideo } from './util';
 
@@ -134,10 +138,161 @@ export const DEFAULT_TIME_FORMAT = /(\d+):(\d+)/;
 
 export default class Controller
 {
+  public readonly onUpdate = new EventEmitter<[ UpdateContentMessage ]>();
+
+  private stopCallback: ( () => void ) | null = null;
+
   public constructor(
     public options: ControllerOptions
   )
-  { }
+  {
+  }
+
+  public getUpdateMessage = (): UpdateContentMessage =>
+  {
+    if( !this.isEnabled() )
+    {
+      return {
+        id: ContentMessageId.Update,
+        status: DEFAULT_CONTROLLER_STATUS,
+        mediaChangedIndication: null,
+        media: DEFAULT_CONTROLLER_MEDIA,
+        capabilities: DEFAULT_CONTROLLER_CAPABILITIES,
+      };
+    }
+    else
+    {
+      const indication = this.getMediaChangedIndication();
+      let mediaChangedIndication: string | null;
+      if( indication.some( ( s ) => typeof s !== 'string' ) )
+      {
+        mediaChangedIndication = null;
+      }
+      else
+      {
+        mediaChangedIndication = indication.join( '::' );
+      }
+
+      return {
+        id: ContentMessageId.Update,
+        status: {
+          enabled: true,
+          playing: this.isPlaying(),
+          progress: this.getProgress(),
+          volume: this.getVolume(),
+        },
+        mediaChangedIndication,
+        media: {
+          track: this.getTrack(),
+          artist: this.getArtist(),
+          album: this.getAlbum(),
+          artwork: this.getArtwork(),
+          liked: this.isLiked(),
+          disliked: this.isDisliked(),
+        },
+        capabilities: {
+          next: this.canNext(),
+          previous: this.canPrevious(),
+          skipBackward: this.canSkipBackward(),
+          skipForward: this.canSkipForward(),
+          like: this.canLike(),
+          unlike: this.canUnlike(),
+          dislike: this.canDislike(),
+          undislike: this.canUndislike(),
+          volume: this.canVolume(),
+        },
+      };
+    }
+  }
+
+  private onUpdateCallback = () =>
+  {
+    this.onUpdate.dispatch( this.getUpdateMessage() );
+  }
+
+  public onStart = (): ( () => void ) =>
+  {
+    if( this.options.useDocumentMediaEventsForPolling )
+    {
+      document.addEventListener( 'timeupdate', this.onUpdateCallback, { capture: true } );
+      document.addEventListener( 'play', this.onUpdateCallback, { capture: true } );
+      document.addEventListener( 'pause', this.onUpdateCallback, { capture: true } );
+
+      return () =>
+      {
+        document.removeEventListener( 'timeupdate', this.onUpdateCallback, { capture: true } );
+        document.removeEventListener( 'play', this.onUpdateCallback, { capture: true } );
+        document.removeEventListener( 'pause', this.onUpdateCallback, { capture: true } );
+      };
+    }
+
+    if( this.options.useMediaForPolling )
+    {
+      const media = this.findMediaElement();
+      if( !media )
+      {
+        console.warn( 'Could not find media element for registerListener():', this.options.mediaSelector );
+      }
+      else
+      {
+        media.addEventListener( 'timeupdate', this.onUpdateCallback );
+        media.addEventListener( 'play', this.onUpdateCallback );
+        media.addEventListener( 'pause', this.onUpdateCallback );
+
+        return () =>
+        {
+          media.removeEventListener( 'timeupdate', this.onUpdateCallback );
+          media.removeEventListener( 'play', this.onUpdateCallback );
+          media.removeEventListener( 'pause', this.onUpdateCallback );
+        };
+      }
+    }
+
+    if( this.options.useMutationObserverForPolling )
+    {
+      const player = this.findPlayer();
+      if( !player )
+      {
+        console.warn( 'Could not find player element for registerListener():', this.options.playerSelector );
+      }
+      else
+      {
+        const observer = new MutationObserver( this.onUpdateCallback );
+        observer.observe( player, { subtree: true, childList: true, attributes: true } );
+
+        return () =>
+        {
+          observer.disconnect();
+        };
+      }
+    }
+
+    const intervalId = window.setInterval( () =>
+    {
+      this.onUpdateCallback();
+    }, 500 );
+
+    return () =>
+    {
+      window.clearInterval( intervalId );
+    };
+  }
+
+  public start(): void
+  {
+    if( this.stopCallback )
+    {
+      console.warn( 'Controller is already running.' );
+      return;
+    }
+
+    this.stopCallback = this.onStart();
+  }
+
+  public stop(): void
+  {
+    this.stopCallback?.();
+  }
 
   public isEnabled = (): boolean =>
   {
@@ -286,90 +441,6 @@ export default class Controller
   }
 
   public findPlayer = (): HTMLElement | null => querySelector( this.options.playerSelector );
-
-  public registerListener = ( callback: () => void ): void =>
-  {
-    this.unregisterListener();
-
-    if( this.options.useDocumentMediaEventsForPolling )
-    {
-      document.addEventListener( 'timeupdate', callback, { capture: true } );
-      document.addEventListener( 'play', callback, { capture: true } );
-      document.addEventListener( 'pause', callback, { capture: true } );
-
-      this.unregisterListenerCallback = () =>
-      {
-        document.removeEventListener( 'timeupdate', callback, { capture: true } );
-        document.removeEventListener( 'play', callback, { capture: true } );
-        document.removeEventListener( 'pause', callback, { capture: true } );
-      };
-      return;
-    }
-
-    if( this.options.useMediaForPolling )
-    {
-      const media = this.findMediaElement();
-      if( !media )
-      {
-        console.warn( 'Could not find media element for registerListener():', this.options.mediaSelector );
-      }
-      else
-      {
-        media.addEventListener( 'timeupdate', callback );
-        media.addEventListener( 'play', callback );
-        media.addEventListener( 'pause', callback );
-
-        this.unregisterListenerCallback = () =>
-        {
-          media.removeEventListener( 'timeupdate', callback );
-          media.removeEventListener( 'play', callback );
-          media.removeEventListener( 'pause', callback );
-        };
-        return;
-      }
-    }
-
-    if( this.options.useMutationObserverForPolling )
-    {
-      const player = this.findPlayer();
-      if( !player )
-      {
-        console.warn( 'Could not find player element for registerListener():', this.options.playerSelector );
-      }
-      else
-      {
-        const observer = new MutationObserver( callback );
-        observer.observe( player, { subtree: true, childList: true, attributes: true } );
-
-        this.unregisterListenerCallback = () =>
-        {
-          observer.disconnect();
-        };
-        return;
-      }
-    }
-
-    const intervalId = window.setInterval( () =>
-    {
-      callback.call( undefined );
-    }, 500 );
-
-    this.unregisterListenerCallback = () =>
-    {
-      window.clearInterval( intervalId );
-    };
-  }
-
-  protected unregisterListenerCallback: ( () => void ) | null = null;
-
-  public unregisterListener = (): void =>
-  {
-    if( this.unregisterListenerCallback )
-    {
-      this.unregisterListenerCallback.call( undefined );
-      this.unregisterListenerCallback = null;
-    }
-  }
 
   public getMediaMetaData = (): MediaMetadata | null => window.navigator.mediaSession?.metadata ?? null;
 

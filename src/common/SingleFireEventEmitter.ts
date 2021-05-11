@@ -1,6 +1,6 @@
 import { EventEmitter, EventEmitterListener } from './EventEmitter';
 
-export class SingleFireEventEmitter<AX extends unknown[]> extends EventEmitter<AX>
+export class SingleFireEventEmitter extends EventEmitter<[]>
 {
   private alreadyFired = false;
 
@@ -18,7 +18,7 @@ export class SingleFireEventEmitter<AX extends unknown[]> extends EventEmitter<A
     this.listeners.splice( 0, this.listeners.length );
   }
 
-  public addEventListener( listener: EventEmitterListener<AX> ): void
+  public addEventListener( listener: EventEmitterListener<[]> ): void
   {
     if( this.alreadyFired )
     {
@@ -30,7 +30,7 @@ export class SingleFireEventEmitter<AX extends unknown[]> extends EventEmitter<A
     }
   }
 
-  public removeEventListener( listener: EventEmitterListener<AX> ): void
+  public removeEventListener( listener: EventEmitterListener<[]> ): void
   {
     if( !this.alreadyFired )
     {

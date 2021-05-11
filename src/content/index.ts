@@ -1,7 +1,6 @@
 import { BackgroundMessage, BackgroundMessageId } from '../common/backgroundMessages';
-import { ContentMessageId, UpdateContentMessage } from '../common/contentMessages';
 import settings, { SettingKey } from '../common/settings';
-import { ControllerCommand, ControllerId, CONTROLLERS, DEFAULT_CONTROLLER_CAPABILITIES, DEFAULT_CONTROLLER_MEDIA, DEFAULT_CONTROLLER_STATUS } from '../common/controllers';
+import { ControllerCommand, ControllerId, CONTROLLERS } from '../common/controllers';
 
 import { GenericAudioVideoController } from './controllers/genericAudioVideo';
 import { findMatchingController } from './config';
@@ -17,66 +16,12 @@ function registerController( controllerId: ControllerId, controller: Controller 
 
   controllerPorts.set( controller, port );
 
-  controller.registerListener( () =>
+  controller.onUpdate.addEventListener( ( updateMessage ) =>
   {
-    let message: UpdateContentMessage;
-
-    if( !controller.isEnabled() )
-    {
-      message = {
-        id: ContentMessageId.Update,
-        status: DEFAULT_CONTROLLER_STATUS,
-        mediaChangedIndication: null,
-        media: DEFAULT_CONTROLLER_MEDIA,
-        capabilities: DEFAULT_CONTROLLER_CAPABILITIES,
-      };
-    }
-    else
-    {
-      const indication = controller.getMediaChangedIndication();
-      let mediaChangedIndication: string | null;
-      if( indication.some( ( s ) => typeof s !== 'string' ) )
-      {
-        mediaChangedIndication = null;
-      }
-      else
-      {
-        mediaChangedIndication = indication.join( '::' );
-      }
-
-      message = {
-        id: ContentMessageId.Update,
-        status: {
-          enabled: true,
-          playing: controller.isPlaying(),
-          progress: controller.getProgress(),
-          volume: controller.getVolume(),
-        },
-        mediaChangedIndication,
-        media: {
-          track: controller.getTrack(),
-          artist: controller.getArtist(),
-          album: controller.getAlbum(),
-          artwork: controller.getArtwork(),
-          liked: controller.isLiked(),
-          disliked: controller.isDisliked(),
-        },
-        capabilities: {
-          next: controller.canNext(),
-          previous: controller.canPrevious(),
-          skipBackward: controller.canSkipBackward(),
-          skipForward: controller.canSkipForward(),
-          like: controller.canLike(),
-          unlike: controller.canUnlike(),
-          dislike: controller.canDislike(),
-          undislike: controller.canUndislike(),
-          volume: controller.canVolume(),
-        },
-      };
-    }
-
-    port.postMessage( message );
+    port.postMessage( updateMessage );
   } );
+
+  controller.start();
 
   port.onMessage.addListener( ( message: BackgroundMessage ) =>
   {
@@ -173,7 +118,7 @@ function registerController( controllerId: ControllerId, controller: Controller 
   port.onDisconnect.addListener( ( p ) =>
   {
     console.log( 'Port disconnected for', controllerId, p );
-    controller.unregisterListener();
+    controller.stop();
 
     controllerPorts.delete( controller );
   } );
@@ -224,7 +169,7 @@ function onNoControllerUrlMatch()
       const controller = mediaControllers.get( oldMedia );
       if( controller )
       {
-        controller.unregisterListener();
+        controller.stop();
         controllerPorts.get( controller )?.disconnect();
         mediaControllers.delete( oldMedia );
       }

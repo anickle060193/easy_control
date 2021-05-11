@@ -1,14 +1,14 @@
-export type EventEmitterListener<AX> = ( ...args: AX[] ) => void;
+export type EventEmitterListener<AX extends unknown[]> = ( ...args: AX ) => void;
 
 export class EventEmitter<AX extends unknown[] = []>
 {
   protected readonly listeners: EventEmitterListener<AX>[] = [];
 
-  public dispatch(): void
+  public dispatch( ...args: AX ): void
   {
     for( const listener of this.listeners )
     {
-      window.setTimeout( () => listener.call( undefined ), 0 );
+      window.setTimeout( () => listener( ...args ), 0 );
     }
   }
 
