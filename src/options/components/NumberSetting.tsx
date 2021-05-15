@@ -1,5 +1,5 @@
 import React from 'react';
-import { InputAdornment, TextField } from '@material-ui/core';
+import { InputAdornment, OutlinedTextFieldProps, TextField } from '@material-ui/core';
 
 import { SettingKeyFromValue } from '../../common/settings';
 import { useSetting } from '../../common/hooks/useSetting';
@@ -16,7 +16,7 @@ function formatValue( value: number, integer: boolean )
   }
 }
 
-interface Props
+interface Props extends Omit<OutlinedTextFieldProps, 'variant'>
 {
   setting: SettingKeyFromValue<number>;
   label: string;
@@ -26,7 +26,7 @@ interface Props
   endAdornmentText?: string;
 }
 
-export const NumberSetting: React.FC<Props> = ( { setting, label, integer = true, minimum, maximum, endAdornmentText } ) =>
+export const NumberSetting: React.FC<Props> = ( { setting, label, integer = true, minimum, maximum, endAdornmentText, ...textFieldProps } ) =>
 {
   const [ value, setValue ] = useSetting( setting );
 
@@ -61,7 +61,8 @@ export const NumberSetting: React.FC<Props> = ( { setting, label, integer = true
 
   return (
     <TextField
-      type="numeric"
+      {...textFieldProps}
+      type="number"
       variant="outlined"
       label={label}
       inputProps={{
@@ -71,11 +72,14 @@ export const NumberSetting: React.FC<Props> = ( { setting, label, integer = true
       error={!!errorText}
       helperText={errorText}
       InputProps={{
-        endAdornment: endAdornmentText && (
-          <InputAdornment position="end">
-            {endAdornmentText}
-          </InputAdornment>
-        ),
+        ...textFieldProps.InputProps,
+        endAdornment: (
+          endAdornmentText && (
+            <InputAdornment position="end">
+              {endAdornmentText}
+            </InputAdornment>
+          )
+        ) ?? textFieldProps.InputProps?.endAdornment,
       }}
       value={stringValue}
       onChange={( e ) => setStringValue( e.target.value )}

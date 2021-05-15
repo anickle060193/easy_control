@@ -46,6 +46,7 @@ export enum OtherSettingId
   SiteBlacklist = 'key__site_blacklist',
   ControlsPopupWidth = 'key__controls_popup_width',
   ControlsPopupHeight = 'key__controls_popup_height',
+  MaximumGenericAudioVideoControllersPerPage = 'key__maximum_generic_audio_video_controllers_per_page',
 }
 
 export enum ControlsOtherSettingId
@@ -137,6 +138,7 @@ export interface SettingsType
   [ SettingKey.Other.SiteBlacklist ]: string[];
   [ SettingKey.Other.ControlsPopupWidth ]: number;
   [ SettingKey.Other.ControlsPopupHeight ]: number;
+  [ SettingKey.Other.MaximumGenericAudioVideoControllersPerPage ]: number;
 
   [ SettingKey.Controls.Other.DisplayControls ]: boolean;
   [ SettingKey.Controls.Other.AlwaysDisplayPlaybackSpeed ]: boolean;
@@ -220,6 +222,7 @@ const DEFAULT_SETTINGS: SettingsType = {
   [ SettingKey.Other.SiteBlacklist ]: [ 'imgur.com' ],
   [ SettingKey.Other.ControlsPopupWidth ]: 620,
   [ SettingKey.Other.ControlsPopupHeight ]: 220,
+  [ SettingKey.Other.MaximumGenericAudioVideoControllersPerPage ]: 5,
 
   [ SettingKey.Controls.Other.DisplayControls ]: true,
   [ SettingKey.Controls.Other.AlwaysDisplayPlaybackSpeed ]: true,

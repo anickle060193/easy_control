@@ -186,6 +186,11 @@ function onNoControllerUrlMatch()
         continue;
       }
 
+      if( mediaControllers.size > settings.get( SettingKey.Other.MaximumGenericAudioVideoControllersPerPage ) )
+      {
+        break;
+      }
+
       const controller = new GenericAudioVideoController( newMedia );
       mediaControllers.set( newMedia, controller );
 

@@ -59,15 +59,15 @@ const useStyles = makeStyles( ( theme ) => createStyles( {
     marginBottom: theme.spacing( 2 ),
   },
   table: {
-    margin: theme.spacing( 2, 0, 4 ),
+    marginTop: theme.spacing( 1 ),
   },
   headerCell: {
     padding: theme.spacing( 0, 2 ),
     whiteSpace: 'pre',
     textAlign: 'center',
   },
-  numberInput: {
-    marginTop: theme.spacing( 1 ),
+  input: {
+    marginTop: theme.spacing( 2 ),
   },
   stringsInput: {
     width: 'min( 500px, 100% )',
@@ -131,19 +131,26 @@ export const OptionsPage: React.FC = () =>
               </Table>
             </div>
 
-            <div className={styles.stringsInput}>
-              <StringArraySetting
-                label="Generic Audio/Video Controller Site Blacklist"
-                setting={SettingKey.Other.SiteBlacklist}
-                rows={5}
-              />
-            </div>
+            <NumberSetting
+              className={styles.input}
+              setting={SettingKey.Other.MaximumGenericAudioVideoControllersPerPage}
+              label="Maximum generic controllers per page"
+              minimum={1}
+              fullWidth={true}
+            />
+
+            <StringArraySetting
+              className={styles.input}
+              label="Generic Audio/Video Controller Site Blacklist"
+              setting={SettingKey.Other.SiteBlacklist}
+              rows={5}
+            />
+
+            <Divider className={styles.divider} />
 
           </Grid>
 
           <Grid className={styles.section} item={true} xs={12} md={6} lg={4}>
-
-            <Divider className={styles.divider} />
 
             <Typography variant="h5">Notification Options</Typography>
             <CheckboxSetting
@@ -174,14 +181,13 @@ export const OptionsPage: React.FC = () =>
               setting={SettingKey.Controls.Other.HideControlsWhenIdle}
               label="Hide controls when mouse goes idle"
             />
-            <div className={styles.numberInput}>
-              <NumberSetting
-                setting={SettingKey.Controls.Other.HideControlsIdleTime}
-                label="Mouse idle timeout"
-                endAdornmentText="seconds"
-                minimum={0}
-              />
-            </div>
+            <NumberSetting
+              className={styles.input}
+              setting={SettingKey.Controls.Other.HideControlsIdleTime}
+              label="Mouse idle timeout"
+              endAdornmentText="seconds"
+              minimum={0}
+            />
 
             <Divider className={styles.divider} />
 
@@ -194,14 +200,13 @@ export const OptionsPage: React.FC = () =>
               setting={SettingKey.Other.PauseOnInactivity}
               label="Pause media when computer goes inactive"
             />
-            <div className={styles.numberInput}>
-              <NumberSetting
-                setting={SettingKey.Other.InactivityTimeout}
-                label="Inactivity timeout"
-                endAdornmentText="seconds"
-                minimum={15}
-              />
-            </div>
+            <NumberSetting
+              className={styles.input}
+              setting={SettingKey.Other.InactivityTimeout}
+              label="Inactivity timeout"
+              endAdornmentText="seconds"
+              minimum={15}
+            />
 
             <Divider className={styles.divider} />
 

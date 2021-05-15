@@ -4,5 +4,4 @@ Add settings import/export
 Add settings reset
 Add suggest feature/report bug link
 Add helper text for options.
-Add maximum number of generic controllers per tab.
 Add fullscreening support
