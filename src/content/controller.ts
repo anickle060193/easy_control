@@ -2,6 +2,7 @@ import { ContentMessageId, UpdateContentMessage } from '../common/contentMessage
 import { DEFAULT_CONTROLLER_CAPABILITIES, DEFAULT_CONTROLLER_MEDIA, DEFAULT_CONTROLLER_STATUS } from '../common/controllers';
 import { EventEmitter } from '../common/EventEmitter';
 
+import { Controls } from './Controls';
 import { querySelector, Selector } from './selector';
 import { extractImageDataUrlFromVideo } from './util';
 
@@ -140,6 +141,8 @@ export default class Controller
 {
   public readonly onUpdate = new EventEmitter<[ UpdateContentMessage ]>();
 
+  private readonly controls = new Controls( this );
+
   private stopCallback: ( () => void ) | null = null;
 
   public constructor(
@@ -207,10 +210,14 @@ export default class Controller
 
   private onUpdateCallback = () =>
   {
-    this.onUpdate.dispatch( this.getUpdateMessage() );
+    const updateMessage = this.getUpdateMessage();
+
+    this.onUpdate.dispatch( updateMessage );
+
+    this.controls.update( this.findMediaElement(), updateMessage );
   }
 
-  public onStart = (): ( () => void ) =>
+  private onStart = (): ( () => void ) =>
   {
     if( this.options.useDocumentMediaEventsForPolling )
     {
@@ -292,6 +299,8 @@ export default class Controller
   public stop(): void
   {
     this.stopCallback?.();
+
+    this.controls.remove();
   }
 
   public isEnabled = (): boolean =>

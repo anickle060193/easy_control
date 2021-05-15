@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextField } from '@material-ui/core';
+import { InputAdornment, TextField } from '@material-ui/core';
 
 import { SettingKeyFromValue } from '../../common/settings';
 import { useSetting } from '../../common/hooks/useSetting';
@@ -23,9 +23,10 @@ interface Props
   integer?: boolean;
   minimum?: number;
   maximum?: number;
+  endAdornmentText?: string;
 }
 
-export const NumberSetting: React.FC<Props> = ( { setting, label, integer = true, minimum, maximum } ) =>
+export const NumberSetting: React.FC<Props> = ( { setting, label, integer = true, minimum, maximum, endAdornmentText } ) =>
 {
   const [ value, setValue ] = useSetting( setting );
 
@@ -69,6 +70,13 @@ export const NumberSetting: React.FC<Props> = ( { setting, label, integer = true
       }}
       error={!!errorText}
       helperText={errorText}
+      InputProps={{
+        endAdornment: endAdornmentText && (
+          <InputAdornment position="end">
+            {endAdornmentText}
+          </InputAdornment>
+        ),
+      }}
       value={stringValue}
       onChange={( e ) => setStringValue( e.target.value )}
       onBlur={() =>
