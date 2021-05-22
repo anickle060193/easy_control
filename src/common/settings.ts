@@ -49,7 +49,7 @@ export enum OtherSettingId
   MaximumGenericAudioVideoControllersPerPage = 'key__maximum_generic_audio_video_controllers_per_page',
 }
 
-export enum ControlsOtherSettingId
+export enum ControlsOverlayOtherSettingId
 {
   DisplayControls = 'key__controls__display_controls',
   AlwaysDisplayPlaybackSpeed = 'key__controls__always_display_playback_speed',
@@ -60,21 +60,7 @@ export enum ControlsOtherSettingId
   // DefaultPlaybackSpeed = 'key__controls__other__default_playback_speed',
 }
 
-export enum ControlsMediaControlsSettingId
-{
-  Reset = 'key__controls__playback_speed__reset',
-  MuchSlower = 'key__controls__playback_speed__much_slower',
-  Slower = 'key__controls__playback_speed__slower',
-  SkipBackward = 'key__controls__media_controls__skip_backward',
-  PlayPause = 'key__controls__media_controls__play_pause',
-  SkipForward = 'key__controls__media_controls__skip_forward',
-  Faster = 'key__controls__playback_speed__faster',
-  MuchFaster = 'key__controls__playback_speed__much_faster',
-  Loop = 'key__controls__playback_speed__loop',
-  Fullscreen = 'key__controls__media_controls__fullscreen',
-}
-
-export enum ControlsOverlayControlsSettingId
+export enum ControlsOverlayControlVisibleSettingId
 {
   Reset = 'key__controls__overlay_controls__reset',
   MuchSlower = 'key__controls__overlay_controls__much_slower',
@@ -92,10 +78,9 @@ export const SettingKey = {
   Notifications: NotificationsSettingId,
   ControllersEnabled: ControllersEnabledSettingId,
   Other: OtherSettingId,
-  Controls: {
-    Other: ControlsOtherSettingId,
-    MediaControls: ControlsMediaControlsSettingId,
-    OverlayControls: ControlsOverlayControlsSettingId,
+  ControlsOverlay: {
+    Other: ControlsOverlayOtherSettingId,
+    Visible: ControlsOverlayControlVisibleSettingId,
   },
 };
 
@@ -140,44 +125,32 @@ export interface SettingsType
   [ SettingKey.Other.ControlsPopupHeight ]: number;
   [ SettingKey.Other.MaximumGenericAudioVideoControllersPerPage ]: number;
 
-  [ SettingKey.Controls.Other.DisplayControls ]: boolean;
-  [ SettingKey.Controls.Other.AlwaysDisplayPlaybackSpeed ]: boolean;
-  [ SettingKey.Controls.Other.HideControlsWhenIdle ]: boolean;
-  [ SettingKey.Controls.Other.HideControlsIdleTime ]: number;
+  [ SettingKey.ControlsOverlay.Other.DisplayControls ]: boolean;
+  [ SettingKey.ControlsOverlay.Other.AlwaysDisplayPlaybackSpeed ]: boolean;
+  [ SettingKey.ControlsOverlay.Other.HideControlsWhenIdle ]: boolean;
+  [ SettingKey.ControlsOverlay.Other.HideControlsIdleTime ]: number;
   // [ SettingKey.Controls.Other.SkipBackwardAmount ]: number;
   // [ SettingKey.Controls.Other.SkipForwardAmount ]: number;
   // [ SettingKey.Controls.Other.DefaultPlaybackSpeed ]: number;
 
-  [ SettingKey.Controls.MediaControls.Reset ]: string;
-  [ SettingKey.Controls.MediaControls.MuchSlower ]: string;
-  [ SettingKey.Controls.MediaControls.Slower ]: string;
-  [ SettingKey.Controls.MediaControls.SkipBackward ]: string;
-  [ SettingKey.Controls.MediaControls.PlayPause ]: string;
-  [ SettingKey.Controls.MediaControls.SkipForward ]: string;
-  [ SettingKey.Controls.MediaControls.Faster ]: string;
-  [ SettingKey.Controls.MediaControls.MuchFaster ]: string;
-  [ SettingKey.Controls.MediaControls.Loop ]: string;
-  [ SettingKey.Controls.MediaControls.Fullscreen ]: string;
-
-  [ SettingKey.Controls.OverlayControls.Reset ]: boolean;
-  [ SettingKey.Controls.OverlayControls.MuchSlower ]: boolean;
-  [ SettingKey.Controls.OverlayControls.Slower ]: boolean;
-  [ SettingKey.Controls.OverlayControls.SkipBackward ]: boolean;
-  [ SettingKey.Controls.OverlayControls.PlayPause ]: boolean;
-  [ SettingKey.Controls.OverlayControls.SkipForward ]: boolean;
-  [ SettingKey.Controls.OverlayControls.Faster ]: boolean;
-  [ SettingKey.Controls.OverlayControls.MuchFaster ]: boolean;
-  [ SettingKey.Controls.OverlayControls.Loop ]: boolean;
-  [ SettingKey.Controls.OverlayControls.Fullscreen ]: boolean;
+  [ SettingKey.ControlsOverlay.Visible.Reset ]: boolean;
+  [ SettingKey.ControlsOverlay.Visible.MuchSlower ]: boolean;
+  [ SettingKey.ControlsOverlay.Visible.Slower ]: boolean;
+  [ SettingKey.ControlsOverlay.Visible.SkipBackward ]: boolean;
+  [ SettingKey.ControlsOverlay.Visible.PlayPause ]: boolean;
+  [ SettingKey.ControlsOverlay.Visible.SkipForward ]: boolean;
+  [ SettingKey.ControlsOverlay.Visible.Faster ]: boolean;
+  [ SettingKey.ControlsOverlay.Visible.MuchFaster ]: boolean;
+  [ SettingKey.ControlsOverlay.Visible.Loop ]: boolean;
+  [ SettingKey.ControlsOverlay.Visible.Fullscreen ]: boolean;
 }
 
 export type SettingKeyType = (
   NotificationsSettingId |
   ControllersEnabledSettingId |
   OtherSettingId |
-  ControlsOtherSettingId |
-  ControlsMediaControlsSettingId |
-  ControlsOverlayControlsSettingId
+  ControlsOverlayOtherSettingId |
+  ControlsOverlayControlVisibleSettingId
 );
 
 export type SettingValue = SettingsType[ SettingKeyType ];
@@ -224,35 +197,24 @@ const DEFAULT_SETTINGS: SettingsType = {
   [ SettingKey.Other.ControlsPopupHeight ]: 220,
   [ SettingKey.Other.MaximumGenericAudioVideoControllersPerPage ]: 5,
 
-  [ SettingKey.Controls.Other.DisplayControls ]: true,
-  [ SettingKey.Controls.Other.AlwaysDisplayPlaybackSpeed ]: true,
-  [ SettingKey.Controls.Other.HideControlsWhenIdle ]: true,
-  [ SettingKey.Controls.Other.HideControlsIdleTime ]: 5,
+  [ SettingKey.ControlsOverlay.Other.DisplayControls ]: true,
+  [ SettingKey.ControlsOverlay.Other.AlwaysDisplayPlaybackSpeed ]: true,
+  [ SettingKey.ControlsOverlay.Other.HideControlsWhenIdle ]: true,
+  [ SettingKey.ControlsOverlay.Other.HideControlsIdleTime ]: 5,
   // [ SettingKey.Controls.Other.SkipBackwardAmount ]: 10,
   // [ SettingKey.Controls.Other.SkipForwardAmount ]: 10,
   // [ SettingKey.Controls.Other.DefaultPlaybackSpeed ]: 1.0,
 
-  [ SettingKey.Controls.MediaControls.Reset ]: '',
-  [ SettingKey.Controls.MediaControls.MuchSlower ]: '',
-  [ SettingKey.Controls.MediaControls.Slower ]: '',
-  [ SettingKey.Controls.MediaControls.SkipBackward ]: '',
-  [ SettingKey.Controls.MediaControls.PlayPause ]: '',
-  [ SettingKey.Controls.MediaControls.SkipForward ]: '',
-  [ SettingKey.Controls.MediaControls.Faster ]: '',
-  [ SettingKey.Controls.MediaControls.MuchFaster ]: '',
-  [ SettingKey.Controls.MediaControls.Loop ]: '',
-  [ SettingKey.Controls.MediaControls.Fullscreen ]: '',
-
-  [ SettingKey.Controls.OverlayControls.Reset ]: true,
-  [ SettingKey.Controls.OverlayControls.MuchSlower ]: true,
-  [ SettingKey.Controls.OverlayControls.Slower ]: true,
-  [ SettingKey.Controls.OverlayControls.SkipBackward ]: true,
-  [ SettingKey.Controls.OverlayControls.PlayPause ]: true,
-  [ SettingKey.Controls.OverlayControls.SkipForward ]: true,
-  [ SettingKey.Controls.OverlayControls.Faster ]: true,
-  [ SettingKey.Controls.OverlayControls.MuchFaster ]: true,
-  [ SettingKey.Controls.OverlayControls.Loop ]: true,
-  [ SettingKey.Controls.OverlayControls.Fullscreen ]: true,
+  [ SettingKey.ControlsOverlay.Visible.Reset ]: true,
+  [ SettingKey.ControlsOverlay.Visible.MuchSlower ]: true,
+  [ SettingKey.ControlsOverlay.Visible.Slower ]: true,
+  [ SettingKey.ControlsOverlay.Visible.SkipBackward ]: true,
+  [ SettingKey.ControlsOverlay.Visible.PlayPause ]: true,
+  [ SettingKey.ControlsOverlay.Visible.SkipForward ]: true,
+  [ SettingKey.ControlsOverlay.Visible.Faster ]: true,
+  [ SettingKey.ControlsOverlay.Visible.MuchFaster ]: true,
+  [ SettingKey.ControlsOverlay.Visible.Loop ]: true,
+  [ SettingKey.ControlsOverlay.Visible.Fullscreen ]: true,
 };
 
 class SettingsStorage

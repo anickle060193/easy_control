@@ -10,8 +10,28 @@ import { NumberSetting } from './components/NumberSetting';
 import { StringArraySetting } from './components/StringArraySetting';
 
 import { useSettingsInitialized } from '../common/hooks/useSettingsInitialized';
-import settings, { SettingKey } from '../common/settings';
+import settings, { ControlsOverlayControlVisibleSettingId, SettingKey } from '../common/settings';
 import { CONTROLLERS } from '../common/controllers';
+
+interface ControlsOverlaySettings
+{
+  visible: ControlsOverlayControlVisibleSettingId;
+  description: string;
+  allowHiding: boolean;
+}
+
+const CONTROLS_OVERLAY_SETTINGS: ControlsOverlaySettings[] = [
+  { visible: SettingKey.ControlsOverlay.Visible.Reset, description: 'Playback Speed Reset', allowHiding: false },
+  { visible: SettingKey.ControlsOverlay.Visible.MuchSlower, description: 'Playback Speed Much Slower', allowHiding: true },
+  { visible: SettingKey.ControlsOverlay.Visible.Slower, description: 'Playback Speed Slower', allowHiding: true },
+  { visible: SettingKey.ControlsOverlay.Visible.SkipBackward, description: 'Skip Backward', allowHiding: true },
+  { visible: SettingKey.ControlsOverlay.Visible.PlayPause, description: 'Play/Pause', allowHiding: true },
+  { visible: SettingKey.ControlsOverlay.Visible.SkipForward, description: 'Skip Forward', allowHiding: true },
+  { visible: SettingKey.ControlsOverlay.Visible.Faster, description: 'Playback Speed Faster', allowHiding: true },
+  { visible: SettingKey.ControlsOverlay.Visible.MuchFaster, description: 'Playback Speed Much Faster', allowHiding: true },
+  { visible: SettingKey.ControlsOverlay.Visible.Loop, description: 'Loop', allowHiding: true },
+  { visible: SettingKey.ControlsOverlay.Visible.Fullscreen, description: 'Fullscreen', allowHiding: true },
+];
 
 const useStyles = makeStyles( ( theme ) => createStyles( {
   root: {
@@ -123,9 +143,11 @@ export const OptionsPage: React.FC = () =>
     content = (
       <div className={styles.content}>
 
-        <Grid container={true} spacing={4}>
+        <Grid container={true}>
 
-          <Grid className={styles.section} item={true} xs={12} md={6} lg={4}>
+          <Grid item={true} xs={false} md={3} />
+
+          <Grid className={styles.section} item={true} xs={12} md={6}>
 
             <Typography variant="h5">Controller Options</Typography>
 
@@ -176,10 +198,6 @@ export const OptionsPage: React.FC = () =>
 
             <Divider className={styles.divider} />
 
-          </Grid>
-
-          <Grid className={styles.section} item={true} xs={12} md={6} lg={4}>
-
             <Typography variant="h5">Notification Options</Typography>
             <CheckboxSetting
               setting={SettingKey.Other.NotificationsEnabled}
@@ -198,24 +216,45 @@ export const OptionsPage: React.FC = () =>
 
             <Typography variant="h5">Controls Overlay Options</Typography>
             <CheckboxSetting
-              setting={SettingKey.Controls.Other.DisplayControls}
+              setting={SettingKey.ControlsOverlay.Other.DisplayControls}
               label="Display content controls overlay"
             />
             <CheckboxSetting
-              setting={SettingKey.Controls.Other.AlwaysDisplayPlaybackSpeed}
+              setting={SettingKey.ControlsOverlay.Other.AlwaysDisplayPlaybackSpeed}
               label="Always display playback speed overlay"
             />
             <CheckboxSetting
-              setting={SettingKey.Controls.Other.HideControlsWhenIdle}
+              setting={SettingKey.ControlsOverlay.Other.HideControlsWhenIdle}
               label="Hide controls when mouse goes idle"
             />
             <NumberSetting
               className={styles.input}
-              setting={SettingKey.Controls.Other.HideControlsIdleTime}
+              setting={SettingKey.ControlsOverlay.Other.HideControlsIdleTime}
               label="Mouse idle timeout"
               endAdornmentText="seconds"
               minimum={0}
             />
+
+            <Table className={styles.table} padding="none">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Control</TableCell>
+                  <TableCell align="center">Display in Overlay?</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {CONTROLS_OVERLAY_SETTINGS.map( ( { visible, description, allowHiding }, i ) => (
+                  <TableRow key={i} hover={true}>
+                    <TableCell>{description}</TableCell>
+                    <TableCell align="center">
+                      {allowHiding && (
+                        <CheckboxSetting setting={visible} />
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ) )}
+              </TableBody>
+            </Table>
 
             <Divider className={styles.divider} />
 

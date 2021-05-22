@@ -449,6 +449,18 @@ export default class Controller
     }
   }
 
+  public performPlayPause = (): void =>
+  {
+    if( this.isPlaying() )
+    {
+      this.performPause();
+    }
+    else
+    {
+      this.performPlay();
+    }
+  }
+
   public findPlayer = (): HTMLElement | null => querySelector( this.options.playerSelector );
 
   public getMediaMetaData = (): MediaMetadata | null => window.navigator.mediaSession?.metadata ?? null;

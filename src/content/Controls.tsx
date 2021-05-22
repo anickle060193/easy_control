@@ -27,11 +27,17 @@ interface ControlButtonProps
   label: string;
   icon: React.ComponentType<SvgIconProps>;
   enabled: boolean;
+  visible: boolean;
   onClick: () => void;
 }
 
-const ControlButton: React.FC<ControlButtonProps> = ( { className, label, icon: IconComponent, enabled, onClick } ) =>
+const ControlButton: React.FC<ControlButtonProps> = ( { className, label, icon: IconComponent, enabled, visible, onClick } ) =>
 {
+  if( !visible )
+  {
+    return null;
+  }
+
   return (
     <Tooltip title={label}>
       <div className={className}>
@@ -86,21 +92,25 @@ interface Props
   canSkipForward: boolean;
 }
 
-interface SettingsState
-{
-  displayControls: boolean;
-  alwaysDisplayPlaybackRate: boolean;
-  hideConrolsWhenIdle: boolean;
-  hideControlsIdleTime: number;
-}
-
-function getSettingsState(): SettingsState
+function getSettingsState()
 {
   return {
-    displayControls: settings.get( SettingKey.Controls.Other.DisplayControls ),
-    alwaysDisplayPlaybackRate: settings.get( SettingKey.Controls.Other.AlwaysDisplayPlaybackSpeed ),
-    hideConrolsWhenIdle: settings.get( SettingKey.Controls.Other.HideControlsWhenIdle ),
-    hideControlsIdleTime: settings.get( SettingKey.Controls.Other.HideControlsIdleTime ),
+    displayControls: settings.get( SettingKey.ControlsOverlay.Other.DisplayControls ),
+    alwaysDisplayPlaybackRate: settings.get( SettingKey.ControlsOverlay.Other.AlwaysDisplayPlaybackSpeed ),
+    hideControlsWhenIdle: settings.get( SettingKey.ControlsOverlay.Other.HideControlsWhenIdle ),
+    hideControlsIdleTime: settings.get( SettingKey.ControlsOverlay.Other.HideControlsIdleTime ),
+    visible: {
+      reset: settings.get( SettingKey.ControlsOverlay.Visible.Reset ),
+      muchSlower: settings.get( SettingKey.ControlsOverlay.Visible.MuchSlower ),
+      slower: settings.get( SettingKey.ControlsOverlay.Visible.Slower ),
+      skipBackward: settings.get( SettingKey.ControlsOverlay.Visible.SkipBackward ),
+      playPause: settings.get( SettingKey.ControlsOverlay.Visible.PlayPause ),
+      skipForward: settings.get( SettingKey.ControlsOverlay.Visible.SkipForward ),
+      faster: settings.get( SettingKey.ControlsOverlay.Visible.Faster ),
+      muchFaster: settings.get( SettingKey.ControlsOverlay.Visible.MuchFaster ),
+      loop: settings.get( SettingKey.ControlsOverlay.Visible.Loop ),
+      fullscreen: settings.get( SettingKey.ControlsOverlay.Visible.Fullscreen ),
+    },
   };
 }
 
@@ -192,6 +202,8 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
   {
     video.addEventListener( 'loadstart', updateVideoState );
 
+    updateVideoState();
+
     return () =>
     {
       video.removeEventListener( 'loadstart', updateVideoState );
@@ -205,16 +217,59 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
     updateVideoState();
   }
 
-  function changePlaybackRate( changeValue: number )
+  function incrementPlaybackRate( increment: number )
   {
-    setVideoPlaybackRate( playbackRate + changeValue );
-
-    updateVideoState();
+    setVideoPlaybackRate( playbackRate + increment );
   }
 
-  function setLoop( loop: boolean )
+  function onResetPlaybackSpeed()
   {
-    video.loop = loop;
+    setVideoPlaybackRate( video.defaultPlaybackRate ?? 1.0 );
+  }
+
+  function onMuchSlower()
+  {
+    incrementPlaybackRate( -0.5 );
+  }
+
+  function onSlower()
+  {
+    incrementPlaybackRate( -0.1 );
+  }
+
+  function onSkipBackward()
+  {
+    controller.performSkipBackward();
+  }
+
+  function onPlay()
+  {
+    controller.performPlay();
+  }
+
+  function onPause()
+  {
+    controller.performPause();
+  }
+
+  function onSkipForward()
+  {
+    controller.performSkipForward();
+  }
+
+  function onFaster()
+  {
+    incrementPlaybackRate( 0.1 );
+  }
+
+  function onMuchFaster()
+  {
+    incrementPlaybackRate( 0.5 );
+  }
+
+  function onLoop()
+  {
+    video.loop = !looping;
 
     updateVideoState();
   }
@@ -222,7 +277,7 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
   const open = (
     controlsSettings.displayControls
     && !closed
-    && !( controlsSettings.hideConrolsWhenIdle && idle )
+    && !( controlsSettings.hideControlsWhenIdle && idle )
     && ( hoveringControls || hoveringVideo || controlsSettings.alwaysDisplayPlaybackRate )
   );
 
@@ -252,7 +307,7 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
           <Button
             className={styles.playbackRate}
             variant="text"
-            onClick={() => setVideoPlaybackRate( video.defaultPlaybackRate ?? 1.0 )}
+            onClick={onResetPlaybackSpeed}
           >
             {playbackRate.toFixed( 1 )}
           </Button>
@@ -266,21 +321,24 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
             label="Much Slower"
             icon={MuchSlowerIcon}
             enabled={true}
-            onClick={() => changePlaybackRate( -0.5 )}
+            visible={controlsSettings.visible.muchSlower}
+            onClick={onMuchSlower}
           />
           <ControlButton
             className={styles.controlButton}
             label="Slower"
             icon={MuchSlowerIcon}
             enabled={true}
-            onClick={() => changePlaybackRate( -0.1 )}
+            visible={controlsSettings.visible.slower}
+            onClick={onSlower}
           />
           <ControlButton
             className={styles.controlButton}
             label="Skip Backward"
             icon={SkipBackwardIcon}
             enabled={canSkipBackward}
-            onClick={() => controller.performSkipBackward()}
+            visible={controlsSettings.visible.skipBackward}
+            onClick={onSkipBackward}
           />
           {playing ? (
             <ControlButton
@@ -288,7 +346,8 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
               label="Pause"
               icon={PauseIcon}
               enabled={true}
-              onClick={() => controller.performPause()}
+              visible={controlsSettings.visible.playPause}
+              onClick={onPause}
             />
           ) : (
             <ControlButton
@@ -296,7 +355,8 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
               label="Play"
               icon={PlayIcon}
               enabled={true}
-              onClick={() => controller.performPlay()}
+              visible={controlsSettings.visible.playPause}
+              onClick={onPlay}
             />
           )}
           <ControlButton
@@ -304,21 +364,24 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
             label="Skip Forward"
             icon={SkipForwardIcon}
             enabled={canSkipForward}
-            onClick={() => controller.performSkipForward()}
+            visible={controlsSettings.visible.skipForward}
+            onClick={onSkipForward}
           />
           <ControlButton
             className={styles.controlButton}
             label="Faster"
             icon={FasterIcon}
             enabled={true}
-            onClick={() => changePlaybackRate( 0.1 )}
+            visible={controlsSettings.visible.faster}
+            onClick={onFaster}
           />
           <ControlButton
             className={styles.controlButton}
             label="Much Faster"
             icon={MuchFasterIcon}
             enabled={true}
-            onClick={() => changePlaybackRate( 0.5 )}
+            visible={controlsSettings.visible.muchFaster}
+            onClick={onMuchFaster}
           />
           {looping ? (
             <ControlButton
@@ -326,7 +389,8 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
               label="Stop Looping"
               icon={NoLoopIcon}
               enabled={true}
-              onClick={() => setLoop( false )}
+              visible={controlsSettings.visible.loop}
+              onClick={onLoop}
             />
           ) : (
             <ControlButton
@@ -334,7 +398,8 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
               label="Loop"
               icon={LoopIcon}
               enabled={true}
-              onClick={() => setLoop( true )}
+              visible={controlsSettings.visible.loop}
+              onClick={onLoop}
             />
           )}
           <ControlButton
@@ -342,6 +407,7 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
             label="Remove Controls"
             icon={RemoveIcon}
             enabled={true}
+            visible={true}
             onClick={() => setClosed( true )}
           />
         </div>
@@ -387,7 +453,7 @@ export class Controls
       return;
     }
 
-    if( !settings.get( SettingKey.Controls.Other.DisplayControls ) )
+    if( !settings.get( SettingKey.ControlsOverlay.Other.DisplayControls ) )
     {
       this.remove();
       return;
