@@ -302,11 +302,19 @@ class SettingsStorage
         settingChanged = true;
 
         const change = changes[ key ];
-        console.log( 'Setting changed:', key, ':', change.oldValue, '->', change.newValue );
+        if( typeof change.newValue === 'undefined' )
+        {
+          change.newValue = this.getDefault( key );
+        }
 
         if( this.isValid( key, change.newValue ) )
         {
+          console.log( 'Setting changed:', key, ':', change.oldValue, '->', change.newValue );
           this.cache[ key ] = change.newValue as never;
+        }
+        else
+        {
+          console.warn( 'Invalid setting change:', key, ':', change.oldValue, '->', change.newValue );
         }
       }
 
@@ -319,7 +327,11 @@ class SettingsStorage
 
   private isValid<K extends SettingKeyType>( setting: K, value: unknown ): value is SettingsType[ K ]
   {
-    if( setting === SettingKey.Other.SiteBlacklist )
+    if( !( setting in this.cache ) )
+    {
+      return false;
+    }
+    else if( setting === SettingKey.Other.SiteBlacklist )
     {
       if( Array.isArray( value )
         && value.every( ( v ) => typeof v === 'string' ) )
@@ -371,6 +383,28 @@ class SettingsStorage
 
       this.cache[ setting ] = value;
     } );
+  }
+
+  public getExportUrl()
+  {
+    const data = JSON.stringify( this.cache, null, 2 );
+    return `data:application/json;base64,${window.btoa( data )}`;
+  }
+
+  public importSettings( data: unknown ): void
+  {
+    if( typeof data !== 'object'
+      || data === null
+      || data === undefined )
+    {
+      return;
+    }
+
+    for( const [ key, value ] of Object.entries( data ) )
+    {
+      console.log( 'Importing', key, '-', value );
+      this.set( key as SettingKeyType, value );
+    }
   }
 }
 

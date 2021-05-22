@@ -1,5 +1,6 @@
 import React from 'react';
-import { AppBar, Button, CircularProgress, createStyles, Divider, Grid, makeStyles, Table, TableBody, TableCell, TableHead, TableRow, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Button, CircularProgress, createStyles, Divider, Grid, makeStyles, Snackbar, Table, TableBody, TableCell, TableHead, TableRow, Toolbar, Typography } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import KeyboardShortcutsIcon from '@material-ui/icons/Keyboard';
 import ChangelogIcon from '@material-ui/icons/ChangeHistory';
 import BugIcon from '@material-ui/icons/BugReport';
@@ -9,7 +10,7 @@ import { NumberSetting } from './components/NumberSetting';
 import { StringArraySetting } from './components/StringArraySetting';
 
 import { useSettingsInitialized } from '../common/hooks/useSettingsInitialized';
-import { SettingKey } from '../common/settings';
+import settings, { SettingKey } from '../common/settings';
 import { CONTROLLERS } from '../common/controllers';
 
 const useStyles = makeStyles( ( theme ) => createStyles( {
@@ -69,9 +70,16 @@ const useStyles = makeStyles( ( theme ) => createStyles( {
   input: {
     marginTop: theme.spacing( 2 ),
   },
-  stringsInput: {
-    width: 'min( 500px, 100% )',
-    marginBottom: theme.spacing( 1 ),
+  importExportActions: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    '& > *': {
+      marginTop: theme.spacing( 1 ),
+      marginRight: theme.spacing( 1 ),
+    },
   },
 } ) );
 
@@ -80,6 +88,26 @@ export const OptionsPage: React.FC = () =>
   const styles = useStyles();
 
   const initialized = useSettingsInitialized();
+  const [ settingsExportUrl, setSettingsExportUrl ] = React.useState( '' );
+
+  const [ showImportResult, setShowImportResult ] = React.useState( false );
+  const [ importResult, setImportResult ] = React.useState<string | Error | null>( null );
+
+  React.useEffect( () =>
+  {
+    function onSettingsChange()
+    {
+      setSettingsExportUrl( settings.getExportUrl() );
+    }
+
+    onSettingsChange();
+    settings.onChanged.addEventListener( onSettingsChange );
+
+    return () =>
+    {
+      settings.onChanged.removeEventListener( onSettingsChange );
+    };
+  }, [] );
 
   let content: React.ReactNode;
   if( !initialized )
@@ -216,6 +244,68 @@ export const OptionsPage: React.FC = () =>
               setting={SettingKey.Other.ShowChangeLogOnUpdate}
             />
 
+            <Divider className={styles.divider} />
+
+            <Typography variant="h5">Import/Export</Typography>
+
+            <div className={styles.importExportActions}>
+
+              <Button
+                variant="outlined"
+                color="secondary"
+                download="easy_control.json"
+                href={settingsExportUrl}
+                target="_blank"
+                rel="noopener noreferrer nofollower"
+              >
+                Export Settings
+              </Button>
+
+              <input
+                style={{ display: 'none' }}
+                accept="application/json"
+                id="import-settings-input"
+                type="file"
+                onChange={async ( e ) =>
+                {
+                  setShowImportResult( false );
+
+                  const file = e.currentTarget.files?.[ 0 ];
+                  if( !file )
+                  {
+                    return;
+                  }
+
+                  e.currentTarget.value = '';
+
+                  try
+                  {
+                    const content = await file.text();
+                    const data: unknown = JSON.parse( content );
+                    settings.importSettings( data );
+                    setImportResult( 'Successfully imported settings!' );
+                  }
+                  catch( e )
+                  {
+                    console.warn( 'Failed to import settings:', e );
+                    setImportResult( e );
+                  }
+
+                  setShowImportResult( true );
+                }}
+              />
+              <label htmlFor="import-settings-input">
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  component="span"
+                >
+                  Import Settings
+                </Button>
+              </label>
+
+            </div>
+
           </Grid>
 
         </Grid>
@@ -271,6 +361,30 @@ export const OptionsPage: React.FC = () =>
         </div>
         {content}
       </div>
+      <Snackbar
+        open={showImportResult}
+        onClose={( _e, reason ) =>
+        {
+          if( reason === 'clickaway' )
+          {
+            return;
+          }
+
+          setShowImportResult( false );
+        }}
+        autoHideDuration={importResult instanceof Error ? null : 6000}
+        anchorOrigin={{
+          horizontal: 'left',
+          vertical: 'bottom',
+        }}
+      >
+        <Alert
+          severity={importResult instanceof Error ? 'error' : 'success'}
+          onClose={() => setShowImportResult( false )}
+        >
+          {importResult instanceof Error ? `Failed to import settings: ${importResult.message}` : importResult}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

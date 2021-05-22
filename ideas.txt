@@ -1,7 +1,4 @@
 Add browser test
 Add external message handling
-Add settings import/export
-Add settings reset
-Add suggest feature/report bug link
 Add helper text for options.
 Add fullscreening support
