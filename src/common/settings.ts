@@ -184,7 +184,7 @@ const DEFAULT_SETTINGS: SettingsType = {
   [ SettingKey.ControllersEnabled.Youtube ]: true,
   [ SettingKey.ControllersEnabled.GenericAudioVideo ]: true,
 
-  [ SettingKey.Other.NotificationsEnabled ]: true,
+  [ SettingKey.Other.NotificationsEnabled ]: false,
   [ SettingKey.Other.NoActiveWindowNotifications ]: false,
   [ SettingKey.Other.PauseOnLock ]: true,
   [ SettingKey.Other.PauseOnInactivity ]: false,
