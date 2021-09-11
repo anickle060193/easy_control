@@ -27,7 +27,6 @@
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
     "@types/webpack": "^5.28.0",
-    "@types/wicg-mediasession": "^1.1.0",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
     "babel-loader": "^8.2.2",
@@ -49,7 +48,7 @@
     "sass-loader": "^11.0.1",
     "ts-node": "^9.1.1",
     "typeface-roboto": "^1.1.13",
-    "typescript": "^4.2.4",
+    "typescript": "^4.4.3",
     "webpack": "^5.35.1",
     "webpack-cli": "^4.6.0",
     "webpack-merge": "^5.7.3"

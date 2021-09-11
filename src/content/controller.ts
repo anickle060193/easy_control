@@ -374,7 +374,7 @@ export default class Controller
 
     if( this.options.useMediaSessionForIsPlaying )
     {
-      if( window.navigator.mediaSession
+      if( 'mediaSession' in window.navigator
         && window.navigator.mediaSession.playbackState !== 'none' )
       {
         return window.navigator.mediaSession.playbackState === 'playing';
