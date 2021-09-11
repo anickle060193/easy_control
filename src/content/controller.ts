@@ -69,6 +69,14 @@ export interface ControllerOptions
   currentTimeFormat: RegExp | null;
   remainingTimeFormat: RegExp | null;
   durationFormat: RegExp | null;
+
+  controlsContainer: Selector | null;
+
+  enterFullscreenButtonSelector: Selector | null;
+  exitFullscreenButtonSelector: Selector | null;
+  fullscreenElementSelector: Selector | null;
+  useControlsContainerForFullscreen: boolean;
+  useMediaForFullscreen: boolean;
 }
 
 export const DEFAULT_OPTIONS: ControllerOptions = {
@@ -133,6 +141,14 @@ export const DEFAULT_OPTIONS: ControllerOptions = {
   currentTimeFormat: null,
   remainingTimeFormat: null,
   durationFormat: null,
+
+  controlsContainer: null,
+
+  enterFullscreenButtonSelector: null,
+  exitFullscreenButtonSelector: null,
+  fullscreenElementSelector: null,
+  useControlsContainerForFullscreen: false,
+  useMediaForFullscreen: false,
 };
 
 export const DEFAULT_TIME_FORMAT = /(\d+):(\d+)/;
@@ -203,6 +219,7 @@ export default class Controller
           dislike: this.canDislike(),
           undislike: this.canUndislike(),
           volume: this.canVolume(),
+          fullscreen: this.canFullscreen(),
         },
       };
     }
@@ -214,7 +231,7 @@ export default class Controller
 
     this.onUpdate.dispatch( updateMessage );
 
-    this.controls.update( this.findMediaElement(), updateMessage );
+    this.controls.update( this.findMediaElement(), this.findControlsContainerElement(), updateMessage );
   }
 
   private onStart = (): ( () => void ) =>
@@ -236,11 +253,7 @@ export default class Controller
     if( this.options.useMediaForPolling )
     {
       const media = this.findMediaElement();
-      if( !media )
-      {
-        console.warn( 'Could not find media element for registerListener():', this.options.mediaSelector );
-      }
-      else
+      if( media )
       {
         media.addEventListener( 'timeupdate', this.onUpdateCallback );
         media.addEventListener( 'play', this.onUpdateCallback );
@@ -258,11 +271,7 @@ export default class Controller
     if( this.options.useMutationObserverForPolling )
     {
       const player = this.findPlayer();
-      if( !player )
-      {
-        console.warn( 'Could not find player element for registerListener():', this.options.playerSelector );
-      }
-      else
+      if( player )
       {
         const observer = new MutationObserver( this.onUpdateCallback );
         observer.observe( player, { subtree: true, childList: true, attributes: true } );
@@ -357,11 +366,7 @@ export default class Controller
     if( this.options.useMediaForIsPlaying )
     {
       const media = this.findMediaElement();
-      if( !media )
-      {
-        console.warn( 'Could not find media element for isPlaying:', this.options.mediaSelector );
-      }
-      else
+      if( media )
       {
         return !media.paused;
       }
@@ -396,11 +401,7 @@ export default class Controller
     if( this.options.usePlayButtonForPlay )
     {
       const playButton = this.findPlayButton();
-      if( !playButton )
-      {
-        console.warn( 'Could not find play button for play():', this.options.playButtonSelector );
-      }
-      else
+      if( playButton )
       {
         playButton.click();
         return;
@@ -410,11 +411,7 @@ export default class Controller
     if( this.options.useMediaForPlay )
     {
       const media = this.findMediaElement();
-      if( !media )
-      {
-        console.warn( 'Could not find media element for play():', this.options.mediaSelector );
-      }
-      else
+      if( media )
       {
         void media.play();
         return;
@@ -432,8 +429,6 @@ export default class Controller
         pauseButton.click();
         return;
       }
-
-      console.warn( 'Could not find pause button for pause():', this.options.pauseButtonSelector );
     }
 
     if( this.options.useMediaForPause )
@@ -444,8 +439,6 @@ export default class Controller
         void media.pause();
         return;
       }
-
-      console.warn( 'Could not find media element for pause():', this.options.mediaSelector );
     }
   }
 
@@ -470,11 +463,7 @@ export default class Controller
     if( this.options.useMediaSessionForTrack )
     {
       const metaData = this.getMediaMetaData();
-      if( !metaData?.title )
-      {
-        console.warn( 'Media session had no track title:', metaData );
-      }
-      else
+      if( metaData?.title )
       {
         return metaData.title;
       }
@@ -483,18 +472,10 @@ export default class Controller
     if( this.options.trackSelector !== null )
     {
       const trackElement = querySelector( this.options.trackSelector );
-      if( !trackElement )
-      {
-        console.warn( 'Could not find track element:', this.options.trackSelector );
-      }
-      else
+      if( trackElement )
       {
         const track = trackElement.textContent?.trim();
-        if( !track )
-        {
-          console.warn( 'Track element has no text:', trackElement );
-        }
-        else
+        if( track )
         {
           return track;
         }
@@ -509,11 +490,7 @@ export default class Controller
     if( this.options.useMediaSessionForAlbum )
     {
       const metaData = this.getMediaMetaData();
-      if( !metaData?.album )
-      {
-        console.warn( 'Media session had no album:', metaData );
-      }
-      else
+      if( metaData?.album )
       {
         return metaData.album;
       }
@@ -522,18 +499,10 @@ export default class Controller
     if( this.options.albumSelector !== null )
     {
       const albumElement = querySelector( this.options.albumSelector );
-      if( !albumElement )
-      {
-        console.warn( 'Could not find album element:', this.options.albumSelector );
-      }
-      else
+      if( albumElement )
       {
         const album = albumElement.textContent?.trim();
-        if( !album )
-        {
-          console.warn( 'Album element has no text:', albumElement );
-        }
-        else
+        if( album )
         {
           return album;
         }
@@ -548,11 +517,7 @@ export default class Controller
     if( this.options.useMediaSessionForArtist )
     {
       const metaData = this.getMediaMetaData();
-      if( !metaData?.artist )
-      {
-        console.warn( 'Media session had no artist:', metaData );
-      }
-      else
+      if( metaData?.artist )
       {
         return metaData.artist;
       }
@@ -561,18 +526,10 @@ export default class Controller
     if( this.options.artistSelector !== null )
     {
       const artistElement = querySelector( this.options.artistSelector );
-      if( !artistElement )
-      {
-        console.warn( 'Could not find artist element:', this.options.artistSelector );
-      }
-      else
+      if( artistElement )
       {
         const artist = artistElement.textContent?.trim();
-        if( !artist )
-        {
-          console.warn( 'Artist element has no text:', artistElement );
-        }
-        else
+        if( artist )
         {
           return artist;
         }
@@ -587,11 +544,7 @@ export default class Controller
     if( this.options.useMediaSessionForArtwork )
     {
       const metaData = this.getMediaMetaData();
-      if( !metaData?.artwork?.[ 0 ]?.src )
-      {
-        console.warn( 'Media session had no artwork:', metaData );
-      }
-      else
+      if( metaData?.artwork?.[ 0 ]?.src )
       {
         return metaData.artwork[ 0 ].src;
       }
@@ -600,11 +553,7 @@ export default class Controller
     if( this.options.artworkSelector !== null )
     {
       const artworkElement = querySelector( this.options.artworkSelector );
-      if( !artworkElement )
-      {
-        console.warn( 'Could not find artwork element:', this.options.artworkSelector );
-      }
-      else if( !( artworkElement instanceof HTMLImageElement ) )
+      if( !( artworkElement instanceof HTMLImageElement ) )
       {
         console.warn( 'Artwork element is not an image:', this.options.artworkSelector, artworkElement );
       }
@@ -621,11 +570,7 @@ export default class Controller
     if( this.options.useMediaForArtwork )
     {
       const media = this.findMediaElement();
-      if( !media )
-      {
-        console.warn( 'Could not find media element for getArtwork():', this.options.mediaSelector );
-      }
-      else if( !( media instanceof HTMLVideoElement ) )
+      if( !( media instanceof HTMLVideoElement ) )
       {
         console.warn( 'Only video elements can be used for getArtwork():', media );
       }
@@ -691,12 +636,11 @@ export default class Controller
     this.findUndislikeButton()?.click();
   }
 
-  public parseTime = ( name: string, selector: Selector, format: RegExp ): number | null =>
+  public parseTime = ( selector: Selector, format: RegExp ): number | null =>
   {
     const timeElement = querySelector( selector );
     if( !timeElement )
     {
-      console.warn( 'Could not find', name, ':', selector );
       return null;
     }
 
@@ -705,7 +649,6 @@ export default class Controller
     const match = format.exec( timeText );
     if( !match )
     {
-      console.warn( 'Time format did not match time for', name, ':', timeText, format );
       return null;
     }
 
@@ -720,11 +663,7 @@ export default class Controller
     if( this.options.useMediaForTime )
     {
       const media = this.findMediaElement();
-      if( !media )
-      {
-        console.warn( 'Could not find media element for currentTime():', this.options.mediaSelector );
-      }
-      else
+      if( media )
       {
         return media.currentTime;
       }
@@ -732,12 +671,9 @@ export default class Controller
 
     if( this.options.currentTimeSelector !== null )
     {
-      const currentTime = this.parseTime( 'currentTime()', this.options.currentTimeSelector, this.options.currentTimeFormat ?? DEFAULT_TIME_FORMAT );
-      if( typeof currentTime !== 'number' )
-      {
-        console.log( 'Failed to determine current time.' );
-      }
-      else
+      const currentTime = this.parseTime( this.options.currentTimeSelector, this.options.currentTimeFormat ?? DEFAULT_TIME_FORMAT );
+      if( typeof currentTime === 'number'
+        && isFinite( currentTime ) )
       {
         return currentTime;
       }
@@ -751,11 +687,7 @@ export default class Controller
     if( this.options.useMediaForTime )
     {
       const media = this.findMediaElement();
-      if( !media )
-      {
-        console.warn( 'Could not find media element for remainingTime():', this.options.mediaSelector );
-      }
-      else
+      if( media )
       {
         return media.duration - media.currentTime;
       }
@@ -763,12 +695,9 @@ export default class Controller
 
     if( this.options.remainingTimeSelector !== null )
     {
-      const remainingTime = this.parseTime( 'remainingTime()', this.options.remainingTimeSelector, this.options.remainingTimeFormat ?? DEFAULT_TIME_FORMAT );
-      if( typeof remainingTime !== 'number' )
-      {
-        console.warn( 'Failed to determine remaining time.' );
-      }
-      else
+      const remainingTime = this.parseTime( this.options.remainingTimeSelector, this.options.remainingTimeFormat ?? DEFAULT_TIME_FORMAT );
+      if( typeof remainingTime === 'number'
+        && isFinite( remainingTime ) )
       {
         return remainingTime;
       }
@@ -782,11 +711,7 @@ export default class Controller
     if( this.options.useMediaForTime )
     {
       const media = this.findMediaElement();
-      if( !media )
-      {
-        console.warn( 'Could not find media element for duration():', this.options.mediaSelector );
-      }
-      else
+      if( media )
       {
         return media.duration;
       }
@@ -794,12 +719,9 @@ export default class Controller
 
     if( this.options.durationSelector !== null )
     {
-      const duration = this.parseTime( 'duration()', this.options.durationSelector, this.options.durationFormat ?? DEFAULT_TIME_FORMAT );
-      if( typeof duration !== 'number' )
-      {
-        console.warn( 'Could not determine duration.' );
-      }
-      else
+      const duration = this.parseTime( this.options.durationSelector, this.options.durationFormat ?? DEFAULT_TIME_FORMAT );
+      if( typeof duration === 'number'
+        && isFinite( duration ) )
       {
         return duration;
       }
@@ -1012,5 +934,95 @@ export default class Controller
         media.volume -= 0.05;
       }
     }
+  }
+
+  public findControlsContainerElement = (): HTMLElement | null => querySelector( this.options.controlsContainer );
+
+  public findFullscreenElement = (): HTMLElement | null =>
+  {
+    const fullscreenElement = querySelector( this.options.fullscreenElementSelector );
+    if( fullscreenElement )
+    {
+      return fullscreenElement;
+    }
+
+    if( this.options.useControlsContainerForFullscreen )
+    {
+      const controlsContainerElement = this.findControlsContainerElement();
+      if( controlsContainerElement )
+      {
+        return controlsContainerElement;
+      }
+    }
+
+    if( this.options.useMediaForFullscreen )
+    {
+      const media = this.findMediaElement();
+      if( media )
+      {
+        return media;
+      }
+    }
+
+    return null;
+  }
+
+  public canFullscreen = (): boolean =>
+  {
+    return (
+      document.fullscreenEnabled
+      && (
+        !!this.findEnterFullscreenButton()
+        || !!this.findExitFullscreenButton()
+        || !!this.findFullscreenElement()
+      )
+    );
+  }
+
+  public isFullscreen = (): boolean =>
+  {
+    return document.fullscreenElement?.contains( this.findFullscreenElement() ) ?? false;
+  }
+
+  public findEnterFullscreenButton = (): HTMLElement | null => querySelector( this.options.enterFullscreenButtonSelector );
+
+  public performEnterFullscreen = (): void =>
+  {
+    if( this.isFullscreen() )
+    {
+      return;
+    }
+
+    const enterFullscreenButton = this.findEnterFullscreenButton();
+    if( enterFullscreenButton )
+    {
+      enterFullscreenButton.click();
+      return;
+    }
+
+    const fullscreenElement = this.findFullscreenElement();
+    if( fullscreenElement )
+    {
+      void fullscreenElement.requestFullscreen();
+    }
+  }
+
+  public findExitFullscreenButton = (): HTMLElement | null => querySelector( this.options.exitFullscreenButtonSelector );
+
+  public performExitFullscreen = (): void =>
+  {
+    if( !this.isFullscreen() )
+    {
+      return;
+    }
+
+    const exitFullscreenButton = this.findExitFullscreenButton();
+    if( exitFullscreenButton )
+    {
+      exitFullscreenButton.click();
+      return;
+    }
+
+    void document.exitFullscreen();
   }
 }

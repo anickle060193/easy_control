@@ -62,6 +62,14 @@ export const controller = new Controller( {
   currentTimeFormat: null,
   remainingTimeFormat: null,
   durationFormat: null,
+
+  controlsContainer: null,
+
+  enterFullscreenButtonSelector: null,
+  exitFullscreenButtonSelector: null,
+  fullscreenElementSelector: null,
+  useControlsContainerForFullscreen: false,
+  useMediaForFullscreen: false,
 } );
 
 const superGetArtwork = controller.getArtwork;

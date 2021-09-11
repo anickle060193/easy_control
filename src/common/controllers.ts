@@ -70,6 +70,7 @@ export interface ControllerCapabilities
   dislike: boolean;
   undislike: boolean;
   volume: boolean;
+  fullscreen: boolean;
 }
 
 export const DEFAULT_CONTROLLER_CAPABILITIES: Readonly<ControllerCapabilities> = {
@@ -82,6 +83,7 @@ export const DEFAULT_CONTROLLER_CAPABILITIES: Readonly<ControllerCapabilities> =
   dislike: false,
   undislike: false,
   volume: false,
+  fullscreen: false,
 };
 
 export interface ControllerDetails

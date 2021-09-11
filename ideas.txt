@@ -1,3 +1,4 @@
 Add browser test
 Add helper text for options.
 Add fullscreening support
+Remove nusance logging

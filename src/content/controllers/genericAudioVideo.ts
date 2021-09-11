@@ -66,6 +66,14 @@ export class GenericAudioVideoController extends Controller
       currentTimeFormat: null,
       remainingTimeFormat: null,
       durationFormat: null,
+
+      controlsContainer: null,
+
+      enterFullscreenButtonSelector: null,
+      exitFullscreenButtonSelector: null,
+      fullscreenElementSelector: null,
+      useControlsContainerForFullscreen: false,
+      useMediaForFullscreen: true,
     } );
   }
 }

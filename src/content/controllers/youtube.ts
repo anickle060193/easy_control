@@ -62,4 +62,12 @@ export const controller = new Controller( {
   currentTimeFormat: null,
   remainingTimeFormat: null,
   durationFormat: null,
+
+  controlsContainer: '#container.ytd-player',
+
+  enterFullscreenButtonSelector: '.ytp-fullscreen-button',
+  exitFullscreenButtonSelector: '.ytp-fullscreen-button',
+  fullscreenElementSelector: null,
+  useControlsContainerForFullscreen: true,
+  useMediaForFullscreen: true,
 } );

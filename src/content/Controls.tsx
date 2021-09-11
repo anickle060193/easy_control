@@ -11,8 +11,8 @@ import FasterIcon from '@material-ui/icons/PlayArrow';
 import MuchFasterIcon from '@material-ui/icons/FastForward';
 import LoopIcon from '@material-ui/icons/Repeat';
 import NoLoopIcon from '@material-ui/icons/Forward';
-// import FullscreenIcon from '@material-ui/icons/Fullscreen';
-// import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
+import FullscreenIcon from '@material-ui/icons/Fullscreen';
+import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
 import RemoveIcon from '@material-ui/icons/Clear';
 
 import { EasyControlThemeProvider } from '../common/components/EasyControlThemeProvider';
@@ -87,9 +87,11 @@ interface Props
 {
   controller: Controller;
   video: HTMLVideoElement;
+  container: HTMLElement;
   playing: boolean;
   canSkipBackward: boolean;
   canSkipForward: boolean;
+  canFullscreen: boolean;
 }
 
 function getSettingsState()
@@ -114,7 +116,7 @@ function getSettingsState()
   };
 }
 
-export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, video, playing, canSkipBackward, canSkipForward } ) =>
+export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, video, container, playing, canSkipBackward, canSkipForward, canFullscreen } ) =>
 {
   const styles = useStyles();
 
@@ -127,6 +129,7 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
 
   const [ playbackRate, setPlaybackRate ] = React.useState( 1.0 );
   const [ looping, setLooping ] = React.useState( false );
+  const [ isFullscreen, setIsFullscreen ] = React.useState( false );
 
   React.useEffect( () =>
   {
@@ -196,16 +199,23 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
   {
     setPlaybackRate( video.playbackRate );
     setLooping( video.loop );
-  }, [ video ] );
+    setIsFullscreen( controller.isFullscreen() );
+  }, [ video, controller ] );
 
   React.useEffect( () =>
   {
+    document.addEventListener( 'fullscreenchange', updateVideoState );
+    document.addEventListener( 'fullscreenerror', updateVideoState );
+
     video.addEventListener( 'loadstart', updateVideoState );
 
     updateVideoState();
 
     return () =>
     {
+      document.removeEventListener( 'fullscreenchange', updateVideoState );
+      document.removeEventListener( 'fullscreenerror', updateVideoState );
+
       video.removeEventListener( 'loadstart', updateVideoState );
     };
   }, [ video, updateVideoState ] );
@@ -274,6 +284,18 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
     updateVideoState();
   }
 
+  function onFullscreen()
+  {
+    if( controller.isFullscreen() )
+    {
+      controller.performExitFullscreen();
+    }
+    else
+    {
+      controller.performEnterFullscreen();
+    }
+  }
+
   const open = (
     controlsSettings.displayControls
     && !closed
@@ -287,12 +309,19 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
       open={open}
       anchorEl={video}
       placement="top-start"
+      container={container}
       modifiers={{
         flip: {
           enabled: false,
         },
         inner: {
           enabled: true,
+          order: 1,
+        },
+        preventOverflow: {
+          enabled: true,
+          boundariesElement: 'viewport',
+          order: 2,
         },
       }}
     >
@@ -302,6 +331,24 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
         } )}
         onMouseEnter={() => setHoveringControls( true )}
         onMouseLeave={() => setHoveringControls( false )}
+        onClick={( e ) =>
+        {
+          e.stopPropagation();
+          e.preventDefault();
+          return false;
+        }}
+        onDoubleClick={( e ) =>
+        {
+          e.stopPropagation();
+          e.preventDefault();
+          return false;
+        }}
+        onMouseDown={( e ) =>
+        {
+          e.stopPropagation();
+          e.preventDefault();
+          return false;
+        }}
       >
         <Tooltip title="Reset Playback Rate">
           <Button
@@ -402,6 +449,25 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
               onClick={onLoop}
             />
           )}
+          {isFullscreen ? (
+            <ControlButton
+              className={styles.controlButton}
+              label="Exit Fullscreen"
+              icon={FullscreenExitIcon}
+              enabled={canFullscreen}
+              visible={controlsSettings.visible.fullscreen}
+              onClick={onFullscreen}
+            />
+          ) : (
+            <ControlButton
+              className={styles.controlButton}
+              label="Fullscreen"
+              icon={FullscreenIcon}
+              enabled={canFullscreen}
+              visible={controlsSettings.visible.fullscreen}
+              onClick={onFullscreen}
+            />
+          )}
           <ControlButton
             className={styles.controlButton}
             label="Remove Controls"
@@ -445,7 +511,7 @@ export class Controls
     }
   }
 
-  public update( media: HTMLMediaElement | null, updateMessage: UpdateContentMessage ): void
+  public update( media: HTMLMediaElement | null, container: HTMLElement | null, updateMessage: UpdateContentMessage ): void
   {
     if( !( media instanceof HTMLVideoElement ) )
     {
@@ -473,9 +539,11 @@ export class Controls
           <ControlsOverlay
             controller={this.parent}
             video={media}
+            container={container ?? document.body}
             playing={updateMessage.status.playing}
             canSkipBackward={updateMessage.capabilities.skipBackward}
             canSkipForward={updateMessage.capabilities.skipForward}
+            canFullscreen={updateMessage.capabilities.fullscreen}
           />
         </EasyControlThemeProvider>
       ),
