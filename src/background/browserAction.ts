@@ -1,3 +1,5 @@
+import browser from 'webextension-polyfill';
+
 import { ControllerCommand, CONTROLLERS } from '../common/controllers';
 
 import { getCurrentController } from './controllers';
@@ -37,25 +39,25 @@ function drawPlay( context: CanvasRenderingContext2D, color: string )
   context.fill();
 }
 
-function setDefaultBrowserAction()
+async function setDefaultBrowserAction()
 {
-  const manifest = chrome.runtime.getManifest();
+  const manifest = browser.runtime.getManifest() as browser.Manifest.WebExtensionManifest;
 
-  chrome.browserAction.setIcon( {
+  await browser.browserAction.setIcon( {
     path: manifest.browser_action?.default_icon ?? manifest.icons,
   } );
-  chrome.browserAction.setTitle( {
+  await browser.browserAction.setTitle( {
     title: manifest.browser_action?.default_title ?? manifest.name,
   } );
 }
 
-export function updateBrowserActionIcon(): void
+export async function updateBrowserActionIcon(): Promise<void>
 {
   const controller = getCurrentController();
 
   if( !controller )
   {
-    setDefaultBrowserAction();
+    await setDefaultBrowserAction();
     return;
   }
 
@@ -67,7 +69,7 @@ export function updateBrowserActionIcon(): void
   if( !context )
   {
     console.warn( 'Failed to get canvas context.' );
-    setDefaultBrowserAction();
+    await setDefaultBrowserAction();
     return;
   }
 
@@ -97,9 +99,9 @@ export function updateBrowserActionIcon(): void
   context.stroke();
 
   const imageData = context.getImageData( 0, 0, ICON_WIDTH, ICON_HEIGHT );
-  chrome.browserAction.setIcon( { imageData: imageData } );
+  await browser.browserAction.setIcon( { imageData: imageData as browser.Action.ImageDataType } );
 
-  chrome.browserAction.setTitle( {
+  await browser.browserAction.setTitle( {
     title: [
       `${CONTROLLERS[ controller.controllerId ].name}:`,
       controller.media.track,
@@ -111,7 +113,7 @@ export function updateBrowserActionIcon(): void
 
 export function initBrowserAction(): void
 {
-  chrome.browserAction.onClicked.addListener( () =>
+  browser.browserAction.onClicked.addListener( () =>
   {
     getCurrentController()?.sendCommand( ControllerCommand.PlayPause );
   } );

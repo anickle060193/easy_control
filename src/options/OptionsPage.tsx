@@ -1,3 +1,4 @@
+import browser from 'webextension-polyfill';
 import React from 'react';
 import { AppBar, Button, CircularProgress, createStyles, Divider, Grid, makeStyles, Snackbar, Table, TableBody, TableCell, TableHead, TableRow, Toolbar, Typography } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
@@ -321,13 +322,13 @@ export const OptionsPage: React.FC = () =>
                   {
                     const content = await file.text();
                     const data: unknown = JSON.parse( content );
-                    settings.importSettings( data );
+                    await settings.importSettings( data );
                     setImportResult( 'Successfully imported settings!' );
                   }
                   catch( e )
                   {
                     console.warn( 'Failed to import settings:', e );
-                    setImportResult( e );
+                    setImportResult( e as Error );
                   }
 
                   setShowImportResult( true );
@@ -367,11 +368,11 @@ export const OptionsPage: React.FC = () =>
           <Button
             variant="outlined"
             color="secondary"
-            onClick={( e ) =>
+            onClick={async ( e ) =>
             {
               e.preventDefault();
 
-              chrome.tabs.create( { url: 'chrome://extensions/shortcuts' } );
+              await browser.tabs.create( { url: 'chrome://extensions/shortcuts' } );
             }}
             startIcon={<KeyboardShortcutsIcon />}
           >
@@ -380,7 +381,7 @@ export const OptionsPage: React.FC = () =>
           <Button
             variant="outlined"
             color="secondary"
-            href={chrome.runtime.getURL( 'changelog.html' )}
+            href={browser.runtime.getURL( 'changelog.html' )}
             target="_blank"
             rel="noopener noreferrer nofollower"
             startIcon={<ChangelogIcon />}

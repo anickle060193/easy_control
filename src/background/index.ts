@@ -8,13 +8,16 @@ import { initExternal } from './external';
 import { initIdle } from './idle';
 import { initNotifications } from './notifications';
 
-initExtension();
+void ( async () =>
+{
+  initExtension();
 
-initBrowserAction();
-initCommands();
-initContextMenus();
-initControllers();
-initControlsPopup();
-initExternal();
-initIdle();
-initNotifications();
+  initBrowserAction();
+  initCommands();
+  await initContextMenus();
+  initControllers();
+  initControlsPopup();
+  initExternal();
+  initIdle();
+  initNotifications();
+} )();

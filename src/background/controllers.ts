@@ -1,3 +1,5 @@
+import browser from 'webextension-polyfill';
+
 import settings, { SettingKey } from '../common/settings';
 import { ControllerCommand } from '../common/controllers';
 
@@ -32,19 +34,19 @@ function isCurrentController( controller: BackgroundController )
   return controller === getCurrentController();
 }
 
-function onCurrentControllerChanged()
+async function onCurrentControllerChanged()
 {
-  updateBrowserActionIcon();
+  await updateBrowserActionIcon();
   updateControlsPopup();
 }
 
-function onNewController( controller: BackgroundController )
+async function onNewController( controller: BackgroundController )
 {
   controllers.push( controller );
 
   if( getCurrentController() === controller )
   {
-    onCurrentControllerChanged();
+    await onCurrentControllerChanged();
   }
 
   controller.onPlayed.addEventListener( async () =>
@@ -77,26 +79,26 @@ function onNewController( controller: BackgroundController )
       }
     }
 
-    onCurrentControllerChanged();
+    await onCurrentControllerChanged();
   } );
 
-  controller.onPaused.addEventListener( () =>
+  controller.onPaused.addEventListener( async () =>
   {
     console.log( 'onPaused:', controller.id, controller );
 
     if( isCurrentController( controller ) )
     {
-      onCurrentControllerChanged();
+      await onCurrentControllerChanged();
     }
   } );
 
-  controller.onProgressChanged.addEventListener( () =>
+  controller.onProgressChanged.addEventListener( async () =>
   {
     // console.log( 'onProgressChanged:', controller.name, '-', controller.status.progress );
 
     if( isCurrentController( controller ) )
     {
-      onCurrentControllerChanged();
+      await onCurrentControllerChanged();
     }
   } );
 
@@ -107,7 +109,7 @@ function onNewController( controller: BackgroundController )
     controller.mediaChangedHandled = await showStartedPlayingNotification( controller );
   } );
 
-  controller.onDisconnected.addEventListener( () =>
+  controller.onDisconnected.addEventListener( async () =>
   {
     console.log( 'onDisconnected:', controller.id, controller );
     const wasCurrentController = isCurrentController( controller );
@@ -124,17 +126,17 @@ function onNewController( controller: BackgroundController )
 
     if( wasCurrentController )
     {
-      onCurrentControllerChanged();
+      await onCurrentControllerChanged();
     }
   } );
 }
 
 export function initControllers(): void
 {
-  chrome.runtime.onConnect.addListener( ( port ) =>
+  browser.runtime.onConnect.addListener( async ( port ) =>
   {
     console.log( 'Port connected:', port.name, port );
 
-    onNewController( new BackgroundController( port ) );
+    await onNewController( new BackgroundController( port ) );
   } );
 }

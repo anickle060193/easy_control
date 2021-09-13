@@ -25,7 +25,7 @@ export function useSetting<K extends SettingKeyType>( setting: K ): [ SettingsTy
 
   const setSettingValue = React.useCallback( ( value: SettingsType[ K ] ): void =>
   {
-    settings.set( setting, value );
+    void settings.set( setting, value );
   }, [ setting ] );
 
   return [ value, setSettingValue ];

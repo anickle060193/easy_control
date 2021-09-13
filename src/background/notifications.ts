@@ -1,8 +1,9 @@
+import browser from 'webextension-polyfill';
+
 import { BackgroundController } from './backgroundController';
 
 import settings, { SettingKey } from '../common/settings';
 import { ControllerCommand, CONTROLLERS } from '../common/controllers';
-import { getTab, getWindow } from '../common/browserExtension';
 
 enum StartedPlayingNotificationButtions
 {
@@ -40,58 +41,59 @@ export async function showStartedPlayingNotification( controller: BackgroundCont
     return true;
   }
 
-  const buttons: chrome.notifications.ButtonOptions[] = [];
-  buttons[ StartedPlayingNotificationButtions.Pause ] = { title: 'Pause' };
-  buttons[ StartedPlayingNotificationButtions.Next ] = { title: 'Next' };
-
-  chrome.notifications.create( `notification::started-playing::${controller.id}`, {
-    type: 'basic',
-    silent: true,
-    title: controller.media.track,
-    message: controller.media.artist,
-    contextMessage: controller.media.album ?? undefined,
-    iconUrl: controller.media.artwork,
-    buttons,
-  }, ( notificationId ) =>
+  try
   {
-    if( chrome.runtime.lastError )
-    {
-      console.log( 'Failed to create media notification:', controller.id, controller, chrome.runtime.lastError );
-      return;
-    }
+    const buttons: browser.Notifications.ButtonOptions[] = [];
+    buttons[ StartedPlayingNotificationButtions.Pause ] = { title: 'Pause' };
+    buttons[ StartedPlayingNotificationButtions.Next ] = { title: 'Next' };
 
+    const notificationId = await browser.notifications.create( `notification::started-playing::${controller.id}`, {
+      type: 'basic',
+      silent: true,
+      title: controller.media.track,
+      message: controller.media.artist,
+      contextMessage: controller.media.album ?? undefined,
+      iconUrl: controller.media.artwork,
+      buttons,
+    } );
     startedPlayingNotifications[ notificationId ] = controller;
-  } );
+  }
+  catch( e )
+  {
+    console.log( 'Failed to create media notification:', controller.id, controller, e );
+  }
 
   return true;
 }
 
-export function showAutoPauseNotification( controller: BackgroundController ): void
+export async function showAutoPauseNotification( controller: BackgroundController ): Promise<void>
 {
   if( !settings.get( SettingKey.Other.ShowAutoPausedNotification ) )
   {
     return;
   }
 
-  const buttons: chrome.notifications.ButtonOptions[] = [];
-  buttons[ AutoPauseNotificationButtons.Resume ] = { title: 'Resume' };
 
-  chrome.notifications.create( `notification::auto-pause::${controller.id}`, {
-    type: 'basic',
-    silent: true,
-    title: `${CONTROLLERS[ controller.controllerId ].name} has been auto-paused`,
-    message: controller.media.track ?? '',
-    iconUrl: 'assets/icon64.png',
-    buttons,
-  }, ( notificationId ) =>
+  try
   {
-    if( chrome.runtime.lastError )
-    {
-      console.error( 'Failed to create auto-pause notification:', controller.id, controller, chrome.runtime.lastError );
-    }
+    const buttons: browser.Notifications.ButtonOptions[] = [];
+    buttons[ AutoPauseNotificationButtons.Resume ] = { title: 'Resume' };
 
+    const notificationId = await browser.notifications.create( `notification::auto-pause::${controller.id}`, {
+      type: 'basic',
+      silent: true,
+      title: `${CONTROLLERS[ controller.controllerId ].name} has been auto-paused`,
+      message: controller.media.track ?? '',
+      iconUrl: 'assets/icon64.png',
+      buttons,
+    } );
     autoPauseNotifications[ notificationId ] = controller;
-  } );
+
+  }
+  catch( e )
+  {
+    console.error( 'Failed to create auto-pause notification:', controller.id, controller, e );
+  }
 }
 
 function onNotificationClosed( notificationId: string )
@@ -118,22 +120,22 @@ async function onNotificationClicked( notificationId: string )
 
   try
   {
-    const tab = await getTab( tabId );
+    const tab = await browser.tabs.get( tabId );
     if( typeof tab.windowId !== 'number' )
     {
       console.warn( 'Tab has no window ID', notificationId, controller, tab );
       return;
     }
 
-    const window = await getWindow( tab.windowId );
+    const window = await browser.windows.get( tab.windowId );
     if( typeof window.id !== 'number' )
     {
       console.warn( 'Window has no ID:', notificationId, controller, tab, window );
       return;
     }
 
-    chrome.tabs.update( tabId, { active: true } );
-    chrome.windows.update( window.id, { focused: true, drawAttention: true } );
+    await browser.tabs.update( tabId, { active: true } );
+    await browser.windows.update( window.id, { focused: true, drawAttention: true } );
   }
   catch( e )
   {
@@ -186,7 +188,7 @@ function onNotificationButtonClicked( notificationId: string, buttonIndex: numbe
 
 export function initNotifications(): void
 {
-  chrome.notifications.onClosed.addListener( onNotificationClosed );
-  chrome.notifications.onClicked.addListener( onNotificationClicked );
-  chrome.notifications.onButtonClicked.addListener( onNotificationButtonClicked );
+  browser.notifications.onClosed.addListener( onNotificationClosed );
+  browser.notifications.onClicked.addListener( onNotificationClicked );
+  browser.notifications.onButtonClicked.addListener( onNotificationButtonClicked );
 }

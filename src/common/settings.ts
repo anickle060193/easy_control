@@ -1,3 +1,5 @@
+import browser from 'webextension-polyfill';
+
 import { EventEmitter } from './EventEmitter';
 import { SingleFireEventEmitter } from './SingleFireEventEmitter';
 
@@ -228,13 +230,9 @@ class SettingsStorage
 
   constructor()
   {
-    chrome.storage.sync.get( DEFAULT_SETTINGS, ( items ) =>
+    try
     {
-      if( chrome.runtime.lastError )
-      {
-        console.error( 'Failed to retrieve settings:', chrome.runtime.lastError.message );
-        return;
-      }
+      const items = browser.storage.sync.get( DEFAULT_SETTINGS );
 
       this.cache = {
         ...this.cache,
@@ -243,9 +241,13 @@ class SettingsStorage
 
       this.onInitialized.dispatch();
       this.onChanged.dispatch();
-    } );
+    }
+    catch( e )
+    {
+      console.error( 'Failed to retrieve settings:', e );
+    }
 
-    chrome.storage.onChanged.addListener( ( changes, areaName ) =>
+    browser.storage.onChanged.addListener( ( changes, areaName ) =>
     {
       if( areaName !== 'sync' )
       {
@@ -327,7 +329,7 @@ class SettingsStorage
     return value;
   }
 
-  public set<K extends SettingKeyType>( setting: K, value: SettingsType[ K ] )
+  public async set<K extends SettingKeyType>( setting: K, value: SettingsType[ K ] )
   {
     if( !this.isValid( setting, value ) )
     {
@@ -335,16 +337,16 @@ class SettingsStorage
       return;
     }
 
-    chrome.storage.sync.set( { [ setting ]: value }, () =>
+    try
     {
-      if( chrome.runtime.lastError )
-      {
-        console.error( 'Failed to set setting value:', setting, value, chrome.runtime.lastError );
-        return;
-      }
+      await browser.storage.sync.set( { [ setting ]: value } );
 
       this.cache[ setting ] = value;
-    } );
+    }
+    catch( e )
+    {
+      console.error( 'Failed to set setting value:', setting, value, e );
+    }
   }
 
   public getExportUrl()
@@ -353,7 +355,7 @@ class SettingsStorage
     return `data:application/json;base64,${window.btoa( data )}`;
   }
 
-  public importSettings( data: unknown ): void
+  public async importSettings( data: unknown ): Promise<void>
   {
     if( typeof data !== 'object'
       || data === null
@@ -365,7 +367,7 @@ class SettingsStorage
     for( const [ key, value ] of Object.entries( data ) )
     {
       console.log( 'Importing', key, '-', value );
-      this.set( key as SettingKeyType, value );
+      await this.set( key as SettingKeyType, value );
     }
   }
 }

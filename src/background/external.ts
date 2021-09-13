@@ -1,3 +1,5 @@
+import browser from 'webextension-polyfill';
+
 import { ControllerCommand } from '../common/controllers';
 
 import { getCurrentController } from './controllers';
@@ -33,7 +35,7 @@ const COMMAND_TRANSLATION: { [ key in ExternalMessage[ 'id' ] ]: ControllerComma
 
 export function initExternal(): void
 {
-  chrome.runtime.onMessageExternal.addListener( ( message ) =>
+  browser.runtime.onMessageExternal.addListener( ( message ) =>
   {
     if( !isExternalMessage( message ) )
     {

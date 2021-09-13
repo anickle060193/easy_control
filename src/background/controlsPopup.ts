@@ -1,3 +1,5 @@
+import browser from 'webextension-polyfill';
+
 import { getCurrentController } from './controllers';
 
 import { BackgroundMessageId, UpdateBackgroundMessage } from '../common/backgroundMessages';
@@ -27,7 +29,7 @@ export function openControlsPopup(): void
       resizable: 'no',
       scrollbars: 'no',
     } ).map( ( [ key, value ] ) => `${key}=${value}` ).join( ',' );
-    controlsPopupWindow = window.open( chrome.runtime.getURL( 'controlsPopup.html' ), 'easy-control--controls-popup', windowFeatures );
+    controlsPopupWindow = window.open( browser.runtime.getURL( 'controlsPopup.html' ), 'easy-control--controls-popup', windowFeatures );
 
     if( !controlsPopupWindow )
     {
@@ -63,16 +65,18 @@ export function updateControlsPopup(): void
     media: currentController?.media ?? DEFAULT_CONTROLLER_MEDIA,
     capabilities: currentController?.capabilities ?? DEFAULT_CONTROLLER_CAPABILITIES,
   };
-  controlsPopupWindow.postMessage( message, chrome.runtime.getURL( 'controlsPopup.html' ) );
+  controlsPopupWindow.postMessage( message, browser.runtime.getURL( 'controlsPopup.html' ) );
 }
 
 export function initControlsPopup(): void
 {
-  chrome.runtime.onMessage.addListener( ( message: ControlsPopupMessage, sender ) =>
+  const controlsPopupUrl = browser.runtime.getURL( 'controlsPopup.html' );
+
+  browser.runtime.onMessage.addListener( ( message: ControlsPopupMessage, sender ) =>
   {
     console.log( 'Message:', message, sender );
 
-    if( sender.tab?.url !== chrome.runtime.getURL( 'controlsPopup.html' ) )
+    if( sender.tab?.url !== controlsPopupUrl )
     {
       return;
     }
@@ -94,7 +98,7 @@ export function initControlsPopup(): void
     }
   } );
 
-  chrome.windows.onRemoved.addListener( () =>
+  browser.windows.onRemoved.addListener( () =>
   {
     if( controlsPopupWindow?.closed === true )
     {

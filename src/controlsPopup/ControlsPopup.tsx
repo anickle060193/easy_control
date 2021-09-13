@@ -1,3 +1,4 @@
+import browser from 'webextension-polyfill';
 import React from 'react';
 import { createStyles, IconButton, makeStyles, SvgIconProps, Tooltip, Typography } from '@material-ui/core';
 import ArtworkIcon from '@material-ui/icons/MusicNote';
@@ -17,9 +18,9 @@ import { BackgroundMessage, BackgroundMessageId } from '../common/backgroundMess
 import settings, { SettingKey } from '../common/settings';
 import { ControlsPopupMessage, ControlsPopupMessageId } from '../common/controlsPopupMessages';
 
-function sendMessageToBackground( message: ControlsPopupMessage )
+async function sendMessageToBackground( message: ControlsPopupMessage )
 {
-  chrome.runtime.sendMessage( message );
+  await browser.runtime.sendMessage( message );
 }
 
 interface ControlButtonProps
@@ -101,7 +102,7 @@ export const ControlsPopup: React.FC = () =>
   {
     function onMessage( event: MessageEvent )
     {
-      if( event.origin !== chrome.runtime.getURL( '' ).replace( /\/$/, '' ) )
+      if( event.origin !== browser.runtime.getURL( '' ).replace( /\/$/, '' ) )
       {
         console.warn( 'Unknown origin:', event.origin, event );
         return;
@@ -122,7 +123,7 @@ export const ControlsPopup: React.FC = () =>
 
     window.addEventListener( 'message', onMessage );
 
-    sendMessageToBackground( {
+    void sendMessageToBackground( {
       id: ControlsPopupMessageId.Loaded,
     } );
 
@@ -145,10 +146,10 @@ export const ControlsPopup: React.FC = () =>
     {
       window.clearTimeout( resizeTimeoutRef.current );
 
-      resizeTimeoutRef.current = window.setTimeout( () =>
+      resizeTimeoutRef.current = window.setTimeout( async () =>
       {
-        settings.set( SettingKey.Other.ControlsPopupWidth, window.outerWidth );
-        settings.set( SettingKey.Other.ControlsPopupHeight, window.outerHeight );
+        await settings.set( SettingKey.Other.ControlsPopupWidth, window.outerWidth );
+        await settings.set( SettingKey.Other.ControlsPopupHeight, window.outerHeight );
       }, 500 );
     }
 
@@ -162,9 +163,9 @@ export const ControlsPopup: React.FC = () =>
     };
   }, [] );
 
-  function onCommandClick( command: ControllerCommand )
+  async function onCommandClick( command: ControllerCommand )
   {
-    sendMessageToBackground( {
+    await sendMessageToBackground( {
       id: ControlsPopupMessageId.Command,
       command,
     } );

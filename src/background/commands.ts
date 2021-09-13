@@ -1,3 +1,5 @@
+import browser from 'webextension-polyfill';
+
 import { getCurrentController } from './controllers';
 
 import { ControllerCommand } from '../common/controllers';
@@ -38,7 +40,7 @@ const CONTROLLER_COMMANDS_MAPPING: { [ key in ControllerCommandId ]: ControllerC
 
 export function initCommands(): void
 {
-  chrome.commands.onCommand.addListener( ( commandId ) =>
+  browser.commands.onCommand.addListener( ( commandId ) =>
   {
     const controller = getCurrentController();
 

@@ -1,3 +1,5 @@
+import browser from 'webextension-polyfill';
+
 import { BackgroundMessage, BackgroundMessageId } from '../common/backgroundMessages';
 import settings, { SettingKey } from '../common/settings';
 import { ControllerCommand, ControllerId, CONTROLLERS } from '../common/controllers';
@@ -7,11 +9,11 @@ import { findMatchingController } from './config';
 import { onReady } from './util';
 import Controller from './controller';
 
-const controllerPorts = new Map<Controller, chrome.runtime.Port>();
+const controllerPorts = new Map<Controller, browser.Runtime.Port>();
 
 function registerController( controllerId: ControllerId, controller: Controller )
 {
-  const port = chrome.runtime.connect( { name: controllerId } );
+  const port = browser.runtime.connect( { name: controllerId } );
   console.log( 'Connected port for', controllerId, ':', port );
 
   controllerPorts.set( controller, port );

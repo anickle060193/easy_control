@@ -1,3 +1,5 @@
+import browser from 'webextension-polyfill';
+
 import { ControllerCommand } from '../common/controllers';
 import settings, { SettingKey } from '../common/settings';
 
@@ -7,13 +9,13 @@ export function initIdle(): void
 {
   function onSettingsChange()
   {
-    chrome.idle.setDetectionInterval( settings.get( SettingKey.Other.InactivityTimeout ) );
+    browser.idle.setDetectionInterval( settings.get( SettingKey.Other.InactivityTimeout ) );
   }
 
   settings.onInitialized.addEventListener( onSettingsChange );
   settings.onChanged.addEventListener( onSettingsChange );
 
-  chrome.idle.onStateChanged.addListener( ( newState ) =>
+  browser.idle.onStateChanged.addListener( ( newState ) =>
   {
     if( newState === 'locked' )
     {

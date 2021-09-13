@@ -1,10 +1,12 @@
+import browser from 'webextension-polyfill';
+
 import settings, { SettingKey } from '../common/settings';
 
 export function initExtension(): void
 {
-  chrome.runtime.onInstalled.addListener( ( details ) =>
+  browser.runtime.onInstalled.addListener( ( details ) =>
   {
-    const version = chrome.runtime.getManifest().version;
+    const version = browser.runtime.getManifest().version;
 
     let possiblyShowChangelog = false;
     if( details.reason === 'install' )
@@ -23,19 +25,20 @@ export function initExtension(): void
 
     if( possiblyShowChangelog )
     {
-      settings.onInitialized.addEventListener( () =>
+      settings.onInitialized.addEventListener( async () =>
       {
         if( settings.get( SettingKey.Other.ShowChangeLogOnUpdate ) )
         {
-          chrome.tabs.create( {
-            url: chrome.runtime.getURL( 'changelog.html' ),
-          }, () =>
+          try
           {
-            if( chrome.runtime.lastError )
-            {
-              console.warn( 'Failed to create tab for changelog:', chrome.runtime.lastError );
-            }
-          } );
+            await browser.tabs.create( {
+              url: browser.runtime.getURL( 'changelog.html' ),
+            } );
+          }
+          catch( e )
+          {
+            console.warn( 'Failed to create tab for changelog:', e );
+          }
         }
       } );
     }

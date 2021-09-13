@@ -1,3 +1,5 @@
+import browser from 'webextension-polyfill';
+
 import { BackgroundMessage, BackgroundMessageId } from '../common/backgroundMessages';
 import { ContentMessage, ContentMessageId } from '../common/contentMessages';
 import { ControllerCapabilities, ControllerCommand, ControllerId, ControllerMedia, ControllerStatus, DEFAULT_CONTROLLER_CAPABILITIES, DEFAULT_CONTROLLER_MEDIA, DEFAULT_CONTROLLER_STATUS } from '../common/controllers';
@@ -29,7 +31,7 @@ export class BackgroundController
   }
 
   constructor(
-    private readonly port: chrome.runtime.Port
+    private readonly port: browser.Runtime.Port
   )
   {
     this.controllerId = port.name as ControllerId;
@@ -101,36 +103,23 @@ export class BackgroundController
       return false;
     }
 
-    return new Promise<boolean>( ( resolve ) =>
+    try
     {
-      chrome.tabs.get( tabId, ( tab ) =>
+      const tab = await browser.tabs.get( tabId );
+      if( !tab.active
+        || typeof tab.windowId !== 'number' )
       {
-        if( chrome.runtime.lastError )
-        {
-          console.error( 'Failed to retrieve controller tab:', this, chrome.runtime.lastError );
-          resolve( false );
-          return;
-        }
+        return false;
+      }
 
-        if( !tab.active )
-        {
-          resolve( false );
-          return;
-        }
-
-        chrome.windows.get( tab.windowId, ( window ) =>
-        {
-          if( chrome.runtime.lastError )
-          {
-            console.error( 'Failed to retrieve controller tab window:', this, tab, chrome.runtime.lastError );
-            resolve( false );
-            return;
-          }
-
-          resolve( window.focused );
-        } );
-      } );
-    } );
+      const window = await browser.windows.get( tab.windowId );
+      return window.focused;
+    }
+    catch( e )
+    {
+      console.error( 'Failed to retrieve controller tab/window:', this, e );
+      return false;
+    }
   }
 
   public sendMessage( message: BackgroundMessage ): void
