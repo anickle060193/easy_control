@@ -38,7 +38,9 @@
       "background.bundle.js"
     ]
   },
-  "options_page": "options.html",
+  "options_ui": {
+    "page": "options.html"
+  },
   "content_scripts": [
     {
       "matches": [

@@ -1,16 +1,17 @@
 import path from 'path';
-import webpack from 'webpack';
+import { Configuration, ProvidePlugin } from 'webpack';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import EslintWebpackPlugin from 'eslint-webpack-plugin';
 
 const root = path.resolve( __dirname, '..' );
 const build = path.resolve( root, 'build' );
 const src = path.resolve( root, 'src' );
 
-const config: webpack.Configuration = {
+const config: Configuration = {
   entry: {
     background: path.resolve( src, 'background', 'index.ts' ),
     content: path.resolve( src, 'content', 'index.ts' ),
@@ -52,6 +53,9 @@ const config: webpack.Configuration = {
   },
   plugins: [
     new CleanWebpackPlugin(),
+    new ProvidePlugin( {
+      browser: 'webextension-polyfill',
+    } ),
     new ForkTsCheckerWebpackPlugin( {
       typescript: {
         configFile: path.resolve( src, 'tsconfig.json' ),
@@ -60,9 +64,10 @@ const config: webpack.Configuration = {
           syntactic: true,
         },
       },
-      eslint: {
-        files: path.resolve( src, '**', '*.{js,jsx,ts,tsx}' ),
-      },
+    } ),
+    new EslintWebpackPlugin( {
+      files: path.resolve( src, '**', '*.{js,jsx,ts,tsx}' ),
+      threads: false,
     } ),
     new MiniCssExtractPlugin(),
     new HtmlWebpackPlugin( {

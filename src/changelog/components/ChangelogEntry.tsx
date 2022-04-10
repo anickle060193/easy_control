@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, colors, SxProps, Theme, Typography } from '@mui/material';
+import { Box, Button, Chip, ChipProps, Typography } from '@mui/material';
 
 export type Arrayable<T> = T | T[];
 
@@ -18,9 +18,9 @@ function arrayable<T>( v: Arrayable<T> ): T[]
 export type ChangeType = 'bug' | 'feature' | 'enhancement';
 
 const CHANGE_TYPES: { [ key in ChangeType ]: string } = {
-  [ 'bug' ]: 'Bug',
-  [ 'feature' ]: 'Feature',
-  [ 'enhancement' ]: 'Enhancement',
+  bug: 'Bug',
+  feature: 'Feature',
+  enhancement: 'Enhancement',
 };
 
 interface ChangelogEntryImage
@@ -37,23 +37,10 @@ interface Props
   image?: Arrayable<ChangelogEntryImage>;
 }
 
-const BUG_COLOR = colors.red[ 500 ];
-const FEATURE_COLOR = colors.green[ 500 ];
-const ENHANCEMENT_COLOR = colors.blue[ 500 ];
-
-const CHANGE_TYPE_SX: { [ type in ChangeType ]: SxProps<Theme> } = {
-  bug: {
-    background: BUG_COLOR,
-    color: ( theme ) => theme.palette.getContrastText( BUG_COLOR ),
-  },
-  feature: {
-    background: FEATURE_COLOR,
-    color: ( theme ) => theme.palette.getContrastText( FEATURE_COLOR ),
-  },
-  enhancement: {
-    background: ENHANCEMENT_COLOR,
-    color: ( theme ) => theme.palette.getContrastText( ENHANCEMENT_COLOR ),
-  },
+const CHANGE_TYPE_COLOR: { [ type in ChangeType ]: ChipProps[ 'color' ] } = {
+  bug: 'warning',
+  feature: 'success',
+  enhancement: 'info',
 };
 
 export const ChangelogEntry: React.FC<Props> = ( { changeType, text, issueNumber, image } ) =>
@@ -62,19 +49,15 @@ export const ChangelogEntry: React.FC<Props> = ( { changeType, text, issueNumber
     <li>
       {( typeof changeType !== 'undefined' ) && (
         arrayable( changeType ).map( ( c ) => (
-          <Typography
+          <Chip
             key={c}
             sx={{
               marginRight: 0.5,
-              padding: [ 0.25, 0.5 ],
-              borderRadius: 3,
-              ...CHANGE_TYPE_SX[ c ],
             }}
-            component="span"
-            variant="caption"
-          >
-            {CHANGE_TYPES[ c ]}
-          </Typography>
+            size="small"
+            label={CHANGE_TYPES[ c ]}
+            color={CHANGE_TYPE_COLOR[ c ]}
+          />
         ) )
       )}
       <Typography

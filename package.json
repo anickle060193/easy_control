@@ -7,7 +7,7 @@
   "repository": "https://github.com/anickle060193/easy_control.git",
   "author": "Adam Nickle <anickle060193@gmail.com>",
   "scripts": {
-    "start": "webpack --config ./config/webpack.dev.ts --watch --progress",
+    "start": "webpack --config ./config/webpack.dev.ts --progress",
     "build": "webpack --config ./config/webpack.prod.ts --progress"
   },
   "dependencies": {
@@ -36,9 +36,11 @@
     "core-js": "^3.21.1",
     "css-loader": "^6.7.1",
     "eslint": "^8.13.0",
+    "eslint-import-resolver-typescript": "^2.7.1",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.4.0",
+    "eslint-webpack-plugin": "^3.1.1",
     "fork-ts-checker-webpack-plugin": "^7.2.3",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.6.0",

@@ -9,6 +9,7 @@ module.exports = {
     es6: true,
   },
   plugins: [
+    'import',
     '@typescript-eslint',
     'react',
     'react-hooks',
@@ -22,6 +23,15 @@ module.exports = {
     'plugin:import/typescript',
   ],
   settings: {
+    'import/parsers': {
+      '@typescript-eslint/parser': [ '.ts', '.tsx' ],
+    },
+    'import/resolver': {
+      typescript: {
+        alwaysTryTypes: true,
+        project: './tsconfig.json',
+      },
+    },
     react: {
       version: 'detect',
     },
@@ -88,6 +98,7 @@ module.exports = {
         'plugin:@typescript-eslint/recommended-requiring-type-checking',
       ],
       rules: {
+        'import/no-named-as-default-member': 'off',
         'comma-dangle': 'off',
         '@typescript-eslint/comma-dangle': [
           'warn',
