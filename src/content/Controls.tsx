@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import { Box, Button, IconButton, Paper, Popper, SvgIconProps, Tooltip } from '@mui/material';
 import { Close, Forward, Fullscreen, FullscreenExit, KeyboardArrowLeft, KeyboardArrowRight, KeyboardDoubleArrowLeft, KeyboardDoubleArrowRight, Pause, PlayArrow, Repeat, SkipNext, SkipPrevious } from '@mui/icons-material';
 
@@ -450,9 +450,15 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
   );
 } );
 
+interface Root
+{
+  dom: HTMLElement;
+  react: ReactDOM.Root;
+}
+
 export class Controls
 {
-  private root: HTMLElement | null = null;
+  private root: Root | null = null;
 
   constructor(
     private readonly parent: Controller
@@ -460,11 +466,15 @@ export class Controls
   {
   }
 
-  private getRoot(): HTMLElement
+  private getRoot(): Root
   {
     if( !this.root )
     {
-      this.root = document.createElement( 'div' );
+      const dom = document.createElement( 'div' );
+      this.root = {
+        dom: dom,
+        react: ReactDOM.createRoot( dom ),
+      };
     }
     return this.root;
   }
@@ -473,8 +483,8 @@ export class Controls
   {
     if( this.root )
     {
-      ReactDOM.unmountComponentAtNode( this.root );
-      this.root.remove();
+      this.root.react.unmount();
+      this.root.dom.remove();
       this.root = null;
     }
   }
@@ -495,14 +505,14 @@ export class Controls
 
     const root = this.getRoot();
 
-    if( root.parentElement !== document.body )
+    if( root.dom.parentElement !== document.body )
     {
       console.log( 'Appending controls root:', root );
-      document.body.appendChild( root );
+      document.body.appendChild( root.dom );
     }
 
-    ReactDOM.render(
-      (
+    root.react.render(
+      <React.StrictMode>
         <EasyControlThemeProvider forceDarkMode={true}>
           <ControlsOverlay
             controller={this.parent}
@@ -514,8 +524,7 @@ export class Controls
             canFullscreen={updateMessage.capabilities.fullscreen}
           />
         </EasyControlThemeProvider>
-      ),
-      root
+      </React.StrictMode>
     );
   }
 }
