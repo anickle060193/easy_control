@@ -1,5 +1,7 @@
 declare module 'easy-control'
 {
+  import Browser from 'webextension-polyfill';
+
   global
   {
     const process: {
@@ -7,5 +9,7 @@ declare module 'easy-control'
         NODE_ENV: 'development' | 'production',
       },
     };
+
+    const browser = Browser;
   }
 }

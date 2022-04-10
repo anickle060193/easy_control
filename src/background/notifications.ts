@@ -1,5 +1,3 @@
-import browser from 'webextension-polyfill';
-
 import { BackgroundController } from './backgroundController';
 
 import settings, { SettingKey } from '../common/settings';
@@ -43,20 +41,29 @@ export async function showStartedPlayingNotification( controller: BackgroundCont
 
   try
   {
-    const buttons: browser.Notifications.ButtonOptions[] = [];
-    buttons[ StartedPlayingNotificationButtions.Pause ] = { title: 'Pause' };
-    buttons[ StartedPlayingNotificationButtions.Next ] = { title: 'Next' };
-
-    const notificationId = await browser.notifications.create( `notification::started-playing::${controller.id}`, {
-      type: 'basic',
-      silent: true,
-      title: controller.media.track,
-      message: controller.media.artist,
-      contextMessage: controller.media.album ?? undefined,
-      iconUrl: controller.media.artwork,
-      buttons,
+    new Notification( controller.media.track, {
+      tag: `notification::started-playing::${controller.id}`,
+      body: [ controller.media.artist, controller.media.artist ].filter( ( s ): s is string => !!s ).join( '\n' ),
+      icon: controller.media.artwork,
+      actions: [
+        { action: 'pause', title: 'Pause' },
+        { action: 'next', title: 'Next' },
+      ],
     } );
-    startedPlayingNotifications[ notificationId ] = controller;
+
+    // const buttons: browser.Notifications.ButtonOptions[] = [];
+    // buttons[ StartedPlayingNotificationButtions.Pause ] = { title: 'Pause' };
+    // buttons[ StartedPlayingNotificationButtions.Next ] = { title: 'Next' };
+
+    // const notificationId = await browser.notifications.create( `notification::started-playing::${controller.id}`, {
+    //   type: 'basic',
+    //   title: controller.media.track,
+    //   message: controller.media.artist,
+    //   contextMessage: controller.media.album ?? undefined,
+    //   iconUrl: controller.media.artwork,
+    //   buttons,
+    // } );
+    // startedPlayingNotifications[ notificationId ] = controller;
   }
   catch( e )
   {
@@ -66,29 +73,35 @@ export async function showStartedPlayingNotification( controller: BackgroundCont
   return true;
 }
 
-export async function showAutoPauseNotification( controller: BackgroundController ): Promise<void>
+export function showAutoPauseNotification( controller: BackgroundController ): void
 {
   if( !settings.get( SettingKey.Other.ShowAutoPausedNotification ) )
   {
     return;
   }
 
-
   try
   {
-    const buttons: browser.Notifications.ButtonOptions[] = [];
-    buttons[ AutoPauseNotificationButtons.Resume ] = { title: 'Resume' };
-
-    const notificationId = await browser.notifications.create( `notification::auto-pause::${controller.id}`, {
-      type: 'basic',
-      silent: true,
-      title: `${CONTROLLERS[ controller.controllerId ].name} has been auto-paused`,
-      message: controller.media.track ?? '',
-      iconUrl: 'assets/icon64.png',
-      buttons,
+    new Notification( `${CONTROLLERS[ controller.controllerId ].name} has been auto-paused`, {
+      body: controller.media.track ?? undefined,
+      icon: browser.runtime.getURL( 'assets/icon64.png' ),
+      actions: [
+        { action: 'resume', title: 'Resume' },
+      ],
     } );
-    autoPauseNotifications[ notificationId ] = controller;
 
+    // const buttons: browser.Notifications.ButtonOptions[] = [];
+    // buttons[ AutoPauseNotificationButtons.Resume ] = { title: 'Resume' };
+
+    // const notificationId = await browser.notifications.create( `notification::auto-pause::${controller.id}`, {
+    //   type: 'basic',
+    //   silent: true,
+    //   title: `${CONTROLLERS[ controller.controllerId ].name} has been auto-paused`,
+    //   message: controller.media.track ?? '',
+    //   iconUrl: 'assets/icon64.png',
+    //   buttons,
+    // } );
+    // autoPauseNotifications[ notificationId ] = controller;
   }
   catch( e )
   {

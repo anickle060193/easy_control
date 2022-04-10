@@ -1,17 +1,6 @@
-import browser from 'webextension-polyfill';
 import React from 'react';
-import { createStyles, IconButton, makeStyles, SvgIconProps, Tooltip, Typography } from '@material-ui/core';
-import ArtworkIcon from '@material-ui/icons/MusicNote';
-import PlayIcon from '@material-ui/icons/PlayArrow';
-import PauseIcon from '@material-ui/icons/Pause';
-import PreviousIcon from '@material-ui/icons/SkipPrevious';
-import NextIcon from '@material-ui/icons/SkipNext';
-import SkipBackwardIcon from '@material-ui/icons/Replay10';
-import SkipForwardIcon from '@material-ui/icons/Forward10';
-import LikeIcon from '@material-ui/icons/ThumbUpOutlined';
-import UnlikeIcon from '@material-ui/icons/ThumbUp';
-import DislikeIcon from '@material-ui/icons/ThumbDownOutlined';
-import UndislikeIcon from '@material-ui/icons/ThumbDown';
+import { Box, IconButton, styled, SvgIconProps, SxProps, Tooltip, Typography } from '@mui/material';
+import { MusicNote, Pause, PlayArrow, Replay, SkipNext, SkipPrevious, ThumbDown, ThumbDownOutlined, ThumbUp, ThumbUpOutlined } from '@mui/icons-material';
 
 import { ControllerCommand, DEFAULT_CONTROLLER_CAPABILITIES, DEFAULT_CONTROLLER_MEDIA, DEFAULT_CONTROLLER_STATUS } from '../common/controllers';
 import { BackgroundMessage, BackgroundMessageId } from '../common/backgroundMessages';
@@ -48,52 +37,33 @@ const ControlButton: React.FC<ControlButtonProps> = ( { label, icon: IconCompone
   );
 };
 
-const useStyles = makeStyles( ( theme ) => createStyles( {
-  root: {
-    overflow: 'hidden',
-    maxWidth: '100%',
-    maxHeight: '100%',
-  },
-  container: {
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  artworkContainer: {
-    width: 200,
-    flexShrink: 0,
-    position: 'relative',
-  },
-  artwork: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    objectFit: 'contain',
-  },
-  content: {
-    flex: 1,
-    minWidth: 0,
-    display: 'flex',
-    flexDirection: 'column',
-    marginLeft: theme.spacing( 1 ),
-  },
-  mediaText: {
-    maxWidth: '100%',
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    color: theme.palette.text.secondary,
-    flexShrink: 0,
-  },
-  contentRow: {
-    display: 'flex',
-    flexDirection: 'row',
-  },
+const SkipForwardIcon = styled( Replay )( {
+  transform: 'scaleY( -1 )',
+} );
+
+const MediaText = styled( Typography )( ( { theme } ) => ( {
+  maxWidth: '100%',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  color: theme.palette.text.secondary,
+  flexShrink: 0,
 } ) );
+
+const ContentRow = styled( 'div' )( {
+  display: 'flex',
+  flexDirection: 'row',
+} );
+
+const ARTWORK_SX: SxProps = {
+  position: 'absolute',
+  width: '100%',
+  height: '100%',
+  objectFit: 'contain',
+};
 
 export const ControlsPopup: React.FC = () =>
 {
-  const styles = useStyles();
-
   const [ status, setStatus ] = React.useState( DEFAULT_CONTROLLER_STATUS );
   const [ media, setMedia ] = React.useState( DEFAULT_CONTROLLER_MEDIA );
   const [ capabilities, setCapabilities ] = React.useState( DEFAULT_CONTROLLER_CAPABILITIES );
@@ -172,28 +142,54 @@ export const ControlsPopup: React.FC = () =>
   }
 
   return (
-    <div className={styles.root}>
-      <div className={styles.container}>
-        <div className={styles.artworkContainer}>
+    <Box
+      sx={{
+        overflow: 'hidden',
+        maxWidth: '100%',
+        maxHeight: '100%',
+      }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+        }}
+      >
+        <Box
+          sx={{
+            width: 200,
+            flexShrink: 0,
+            position: 'relative',
+          }}
+        >
           {media.artwork ? (
-            <img
-              className={styles.artwork}
+            <Box
+              component="img"
+              sx={ARTWORK_SX}
               src={media.artwork}
               alt={media.track ?? undefined}
             />
           ) : (
-            <ArtworkIcon className={styles.artwork} />
+            <MusicNote sx={ARTWORK_SX} />
           )}
-        </div>
-        <div className={styles.content}>
-          <Typography className={styles.mediaText} component="span" variant="h6" title={media.track ?? undefined}>{media.track}</Typography>
-          <Typography className={styles.mediaText} component="span" variant="body1" title={media.artist ?? undefined}>{media.artist}</Typography>
-          <Typography className={styles.mediaText} component="span" variant="body2" title={media.album ?? undefined}>{media.album}</Typography>
-          <div className={styles.contentRow}>
+        </Box>
+        <Box
+          sx={{
+            flex: 1,
+            minWidth: 0,
+            display: 'flex',
+            flexDirection: 'column',
+            marginLeft: 1,
+          }}
+        >
+          <MediaText variant="h6" title={media.track ?? undefined}>{media.track}</MediaText>
+          <MediaText variant="body1" title={media.artist ?? undefined}>{media.artist}</MediaText>
+          <MediaText variant="body2" title={media.album ?? undefined}>{media.album}</MediaText>
+          <ContentRow>
             {status.playing ? (
               <ControlButton
                 label="Pause"
-                icon={PauseIcon}
+                icon={Pause}
                 command={ControllerCommand.Pause}
                 enabled={status.enabled}
                 onClick={onCommandClick}
@@ -201,7 +197,7 @@ export const ControlsPopup: React.FC = () =>
             ) : (
               <ControlButton
                 label="Play"
-                icon={PlayIcon}
+                icon={PlayArrow}
                 command={ControllerCommand.Play}
                 enabled={status.enabled}
                 onClick={onCommandClick}
@@ -209,14 +205,14 @@ export const ControlsPopup: React.FC = () =>
             )}
             <ControlButton
               label="Previous"
-              icon={PreviousIcon}
+              icon={SkipPrevious}
               command={ControllerCommand.Previous}
               enabled={capabilities.previous}
               onClick={onCommandClick}
             />
             <ControlButton
               label="Next"
-              icon={NextIcon}
+              icon={SkipNext}
               command={ControllerCommand.Next}
               enabled={capabilities.next}
               onClick={onCommandClick}
@@ -225,7 +221,7 @@ export const ControlsPopup: React.FC = () =>
               <>
                 <ControlButton
                   label="Skip Backward"
-                  icon={SkipBackwardIcon}
+                  icon={Replay}
                   command={ControllerCommand.SkipBackward}
                   enabled={capabilities.skipBackward}
                   onClick={onCommandClick}
@@ -239,12 +235,12 @@ export const ControlsPopup: React.FC = () =>
                 />
               </>
             )}
-          </div>
-          <div className={styles.contentRow}>
+          </ContentRow>
+          <ContentRow>
             {media.disliked ? (
               <ControlButton
                 label="Undislike"
-                icon={UndislikeIcon}
+                icon={ThumbDown}
                 command={ControllerCommand.Undislike}
                 enabled={capabilities.undislike}
                 onClick={onCommandClick}
@@ -252,7 +248,7 @@ export const ControlsPopup: React.FC = () =>
             ) : (
               <ControlButton
                 label="Dislike"
-                icon={DislikeIcon}
+                icon={ThumbDownOutlined}
                 command={ControllerCommand.Dislike}
                 enabled={capabilities.dislike}
                 onClick={onCommandClick}
@@ -261,7 +257,7 @@ export const ControlsPopup: React.FC = () =>
             {media.liked ? (
               <ControlButton
                 label="Unlike"
-                icon={UnlikeIcon}
+                icon={ThumbUp}
                 command={ControllerCommand.Unlike}
                 enabled={capabilities.unlike}
                 onClick={onCommandClick}
@@ -269,15 +265,15 @@ export const ControlsPopup: React.FC = () =>
             ) : (
               <ControlButton
                 label="Like"
-                icon={LikeIcon}
+                icon={ThumbUpOutlined}
                 command={ControllerCommand.Like}
                 enabled={capabilities.like}
                 onClick={onCommandClick}
               />
             )}
-          </div>
-        </div>
-      </div>
-    </div>
+          </ContentRow>
+        </Box>
+      </Box>
+    </Box>
   );
 };

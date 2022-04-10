@@ -1,19 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import classNames from 'classnames';
-import { Button, createStyles, IconButton, makeStyles, Paper, Popper, SvgIconProps, Tooltip } from '@material-ui/core';
-import PlayIcon from '@material-ui/icons/PlayCircleFilled';
-import PauseIcon from '@material-ui/icons/Pause';
-import MuchSlowerIcon from '@material-ui/icons/FastRewind';
-import SkipBackwardIcon from '@material-ui/icons/Replay10';
-import SkipForwardIcon from '@material-ui/icons/Forward10';
-import FasterIcon from '@material-ui/icons/PlayArrow';
-import MuchFasterIcon from '@material-ui/icons/FastForward';
-import LoopIcon from '@material-ui/icons/Repeat';
-import NoLoopIcon from '@material-ui/icons/Forward';
-import FullscreenIcon from '@material-ui/icons/Fullscreen';
-import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
-import RemoveIcon from '@material-ui/icons/Clear';
+import { Box, Button, IconButton, Paper, Popper, SvgIconProps, Tooltip } from '@mui/material';
+import { Close, Forward, Fullscreen, FullscreenExit, KeyboardArrowLeft, KeyboardArrowRight, KeyboardDoubleArrowLeft, KeyboardDoubleArrowRight, Pause, PlayArrow, Repeat, SkipNext, SkipPrevious } from '@mui/icons-material';
 
 import { EasyControlThemeProvider } from '../common/components/EasyControlThemeProvider';
 import { UpdateContentMessage } from '../common/contentMessages';
@@ -53,36 +41,6 @@ const ControlButton: React.FC<ControlButtonProps> = ( { className, label, icon: 
   );
 };
 
-const useStyles = makeStyles( ( theme ) => createStyles( {
-  root: {
-    zIndex: 1000000,
-    padding: theme.spacing( 1 ),
-  },
-  paper: {
-    padding: theme.spacing( 0.5, 1 ),
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  fadeControls: {
-    opacity: 0.2,
-  },
-  playbackRate: {
-    padding: 0,
-    minWidth: 'unset',
-  },
-  actions: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  hideActions: {
-    display: 'none',
-  },
-  controlButton: {
-  },
-} ) );
-
 interface Props
 {
   controller: Controller;
@@ -118,8 +76,6 @@ function getSettingsState()
 
 export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, video, container, playing, canSkipBackward, canSkipForward, canFullscreen } ) =>
 {
-  const styles = useStyles();
-
   const [ controlsSettings, setControlsSettings ] = React.useState( getSettingsState );
 
   const [ hoveringControls, setHoveringControls ] = React.useState( false );
@@ -305,30 +261,46 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
 
   return (
     <Popper
-      className={styles.root}
+      sx={{
+        zIndex: 1000000,
+        padding: 1,
+      }}
       open={open}
       anchorEl={video}
       placement="top-start"
       container={container}
-      modifiers={{
-        flip: {
+      modifiers={[
+        {
+          name: 'flip',
           enabled: false,
         },
-        inner: {
+        {
+          name: 'inner',
           enabled: true,
-          order: 1,
+          options: {
+            order: 1,
+          },
         },
-        preventOverflow: {
+        {
+          name: 'preventOverflow',
           enabled: true,
-          boundariesElement: 'viewport',
-          order: 2,
+          options: {
+            boundariesElement: 'viewport',
+            order: 2,
+          },
         },
-      }}
+      ]}
     >
       <Paper
-        className={classNames( styles.paper, {
-          [ styles.fadeControls ]: !hoveringControls,
-        } )}
+        sx={{
+          padding: [ 0.5, 1 ],
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          ...( !hoveringControls && {
+            opacity: 0.2,
+          } ),
+        }}
         onMouseEnter={() => setHoveringControls( true )}
         onMouseLeave={() => setHoveringControls( false )}
         onClick={( e ) =>
@@ -352,98 +324,97 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
       >
         <Tooltip title="Reset Playback Rate">
           <Button
-            className={styles.playbackRate}
+            sx={{
+              padding: 0,
+              minWidth: 'unset',
+            }}
             variant="text"
             onClick={onResetPlaybackSpeed}
           >
             {playbackRate.toFixed( 1 )}
           </Button>
         </Tooltip>
-        <div className={classNames( styles.actions, {
-          [ styles.hideActions ]: !hoveringControls,
-        } )}
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            ...( !hoveringControls && {
+              display: 'none',
+            } ),
+          }}
         >
           <ControlButton
-            className={styles.controlButton}
             label="Much Slower"
-            icon={MuchSlowerIcon}
+            icon={KeyboardDoubleArrowLeft}
             enabled={true}
             visible={controlsSettings.visible.muchSlower}
             onClick={onMuchSlower}
           />
           <ControlButton
-            className={styles.controlButton}
             label="Slower"
-            icon={MuchSlowerIcon}
+            icon={KeyboardArrowLeft}
             enabled={true}
             visible={controlsSettings.visible.slower}
             onClick={onSlower}
           />
           <ControlButton
-            className={styles.controlButton}
             label="Skip Backward"
-            icon={SkipBackwardIcon}
+            icon={SkipPrevious}
             enabled={canSkipBackward}
             visible={controlsSettings.visible.skipBackward}
             onClick={onSkipBackward}
           />
           {playing ? (
             <ControlButton
-              className={styles.controlButton}
               label="Pause"
-              icon={PauseIcon}
+              icon={Pause}
               enabled={true}
               visible={controlsSettings.visible.playPause}
               onClick={onPause}
             />
           ) : (
             <ControlButton
-              className={styles.controlButton}
               label="Play"
-              icon={PlayIcon}
+              icon={PlayArrow}
               enabled={true}
               visible={controlsSettings.visible.playPause}
               onClick={onPlay}
             />
           )}
           <ControlButton
-            className={styles.controlButton}
             label="Skip Forward"
-            icon={SkipForwardIcon}
+            icon={SkipNext}
             enabled={canSkipForward}
             visible={controlsSettings.visible.skipForward}
             onClick={onSkipForward}
           />
           <ControlButton
-            className={styles.controlButton}
             label="Faster"
-            icon={FasterIcon}
+            icon={KeyboardArrowRight}
             enabled={true}
             visible={controlsSettings.visible.faster}
             onClick={onFaster}
           />
           <ControlButton
-            className={styles.controlButton}
             label="Much Faster"
-            icon={MuchFasterIcon}
+            icon={KeyboardDoubleArrowRight}
             enabled={true}
             visible={controlsSettings.visible.muchFaster}
             onClick={onMuchFaster}
           />
           {looping ? (
             <ControlButton
-              className={styles.controlButton}
               label="Stop Looping"
-              icon={NoLoopIcon}
+              icon={Forward}
               enabled={true}
               visible={controlsSettings.visible.loop}
               onClick={onLoop}
             />
           ) : (
             <ControlButton
-              className={styles.controlButton}
               label="Loop"
-              icon={LoopIcon}
+              icon={Repeat}
               enabled={true}
               visible={controlsSettings.visible.loop}
               onClick={onLoop}
@@ -451,32 +422,29 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
           )}
           {isFullscreen ? (
             <ControlButton
-              className={styles.controlButton}
               label="Exit Fullscreen"
-              icon={FullscreenExitIcon}
+              icon={FullscreenExit}
               enabled={canFullscreen}
               visible={controlsSettings.visible.fullscreen}
               onClick={onFullscreen}
             />
           ) : (
             <ControlButton
-              className={styles.controlButton}
               label="Fullscreen"
-              icon={FullscreenIcon}
+              icon={Fullscreen}
               enabled={canFullscreen}
               visible={controlsSettings.visible.fullscreen}
               onClick={onFullscreen}
             />
           )}
           <ControlButton
-            className={styles.controlButton}
             label="Remove Controls"
-            icon={RemoveIcon}
+            icon={Close}
             enabled={true}
             visible={true}
             onClick={() => setClosed( true )}
           />
-        </div>
+        </Box>
       </Paper>
     </Popper>
   );

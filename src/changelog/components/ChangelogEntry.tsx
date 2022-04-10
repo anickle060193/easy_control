@@ -1,6 +1,5 @@
 import React from 'react';
-import { Button, colors, createStyles, makeStyles, Typography } from '@material-ui/core';
-import classNames from 'classnames';
+import { Box, Button, colors, SxProps, Theme, Typography } from '@mui/material';
 
 export type Arrayable<T> = T | T[];
 
@@ -42,48 +41,35 @@ const BUG_COLOR = colors.red[ 500 ];
 const FEATURE_COLOR = colors.green[ 500 ];
 const ENHANCEMENT_COLOR = colors.blue[ 500 ];
 
-const useStyles = makeStyles( ( theme ) => createStyles( {
-  changeType: {
-    marginRight: theme.spacing( 0.5 ),
-    padding: theme.spacing( 0.25, 0.5 ),
-    borderRadius: 3,
-  },
+const CHANGE_TYPE_SX: { [ type in ChangeType ]: SxProps<Theme> } = {
   bug: {
     background: BUG_COLOR,
-    color: theme.palette.getContrastText( BUG_COLOR ),
+    color: ( theme ) => theme.palette.getContrastText( BUG_COLOR ),
   },
   feature: {
     background: FEATURE_COLOR,
-    color: theme.palette.getContrastText( FEATURE_COLOR ),
+    color: ( theme ) => theme.palette.getContrastText( FEATURE_COLOR ),
   },
   enhancement: {
     background: ENHANCEMENT_COLOR,
-    color: theme.palette.getContrastText( ENHANCEMENT_COLOR ),
+    color: ( theme ) => theme.palette.getContrastText( ENHANCEMENT_COLOR ),
   },
-  text: {
-    verticalAlign: 'middle',
-  },
-  issueLink: {
-    whiteSpace: 'nowrap',
-    marginLeft: theme.spacing( 1 ),
-  },
-  image: {
-    display: 'block',
-    marginBlock: theme.spacing( 1 ),
-  },
-} ) );
+};
 
 export const ChangelogEntry: React.FC<Props> = ( { changeType, text, issueNumber, image } ) =>
 {
-  const styles = useStyles();
-
   return (
     <li>
       {( typeof changeType !== 'undefined' ) && (
         arrayable( changeType ).map( ( c ) => (
           <Typography
             key={c}
-            className={classNames( styles.changeType, styles[ c ] )}
+            sx={{
+              marginRight: 0.5,
+              padding: [ 0.25, 0.5 ],
+              borderRadius: 3,
+              ...CHANGE_TYPE_SX[ c ],
+            }}
             component="span"
             variant="caption"
           >
@@ -92,7 +78,9 @@ export const ChangelogEntry: React.FC<Props> = ( { changeType, text, issueNumber
         ) )
       )}
       <Typography
-        className={styles.text}
+        sx={{
+          verticalAlign: 'middle',
+        }}
         variant="body1"
         component="span"
       >
@@ -102,7 +90,10 @@ export const ChangelogEntry: React.FC<Props> = ( { changeType, text, issueNumber
         arrayable( issueNumber ).map( ( issue ) => (
           <Button
             key={issue}
-            className={styles.issueLink}
+            sx={{
+              whiteSpace: 'nowrap',
+              marginLeft: 1,
+            }}
             color="secondary"
             variant="text"
             size="small"
@@ -116,9 +107,13 @@ export const ChangelogEntry: React.FC<Props> = ( { changeType, text, issueNumber
       )}
       {( typeof image !== 'undefined' ) && (
         arrayable( image ).map( ( { src, alt } ) => (
-          <img
+          <Box
             key={src}
-            className={styles.image}
+            component="img"
+            sx={{
+              display: 'block',
+              marginBlock: 1,
+            }}
             src={src}
             alt={alt}
           />

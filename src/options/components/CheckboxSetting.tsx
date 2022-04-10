@@ -1,5 +1,5 @@
 import React from 'react';
-import { Checkbox, FormControlLabel } from '@material-ui/core';
+import { Checkbox, FormControlLabel } from '@mui/material';
 
 import { useSetting } from '../../common/hooks/useSetting';
 import { SettingKeyFromValue } from '../../common/settings';

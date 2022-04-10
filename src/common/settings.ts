@@ -1,5 +1,3 @@
-import browser from 'webextension-polyfill';
-
 import { EventEmitter } from './EventEmitter';
 import { SingleFireEventEmitter } from './SingleFireEventEmitter';
 
@@ -367,7 +365,7 @@ class SettingsStorage
     for( const [ key, value ] of Object.entries( data ) )
     {
       console.log( 'Importing', key, '-', value );
-      await this.set( key as SettingKeyType, value );
+      await this.set( key as SettingKeyType, value as SettingsType[ SettingKeyType ] );
     }
   }
 }

@@ -1,5 +1,3 @@
-import browser from 'webextension-polyfill';
-
 import settings, { SettingKey } from '../common/settings';
 import { ControllerCommand } from '../common/controllers';
 
@@ -73,7 +71,7 @@ async function onNewController( controller: BackgroundController )
           continue;
         }
 
-        showAutoPauseNotification( c );
+        await showAutoPauseNotification( c );
 
         c.sendCommand( ControllerCommand.Pause );
       }

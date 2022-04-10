@@ -1,10 +1,6 @@
-import browser from 'webextension-polyfill';
 import React from 'react';
-import { AppBar, Button, CircularProgress, createStyles, Divider, Grid, makeStyles, Snackbar, Table, TableBody, TableCell, TableHead, TableRow, Toolbar, Typography } from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
-import KeyboardShortcutsIcon from '@material-ui/icons/Keyboard';
-import ChangelogIcon from '@material-ui/icons/ChangeHistory';
-import BugIcon from '@material-ui/icons/BugReport';
+import { Alert, AppBar, Box, Button, CircularProgress, Divider, Grid, Snackbar, styled, SxProps, Table, TableBody, TableCell, TableHead, TableRow, Toolbar, Typography } from '@mui/material';
+import { BugReport, ChangeHistory, Keyboard } from '@mui/icons-material';
 
 import { CheckboxSetting } from './components/CheckboxSetting';
 import { NumberSetting } from './components/NumberSetting';
@@ -13,6 +9,22 @@ import { StringArraySetting } from './components/StringArraySetting';
 import { useSettingsInitialized } from '../common/hooks/useSettingsInitialized';
 import settings, { ControlsOverlayControlVisibleSettingId, SettingKey } from '../common/settings';
 import { CONTROLLERS } from '../common/controllers';
+
+const FullWidthDivider = styled( Divider )( {
+  width: '100%',
+  marginTop: 2,
+  marginBottom: 2,
+} );
+
+const HeaderCell = styled( TableCell )( {
+  padding: [ 0, 2 ],
+  whiteSpace: 'pre',
+  textAlign: 'center',
+} );
+
+const INPUT_SX: SxProps = {
+  marginTop: 2,
+};
 
 interface ControlsOverlaySettings
 {
@@ -34,80 +46,8 @@ const CONTROLS_OVERLAY_SETTINGS: ControlsOverlaySettings[] = [
   { visible: SettingKey.ControlsOverlay.Visible.Fullscreen, description: 'Fullscreen', allowHiding: true },
 ];
 
-const useStyles = makeStyles( ( theme ) => createStyles( {
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-    overflow: 'hidden',
-  },
-  appBarRight: {
-    marginLeft: 'auto',
-
-    '& > *': {
-      marginLeft: theme.spacing( 1 ),
-    },
-  },
-  loading: {
-    position: 'absolute',
-    left: '50%',
-    top: '30%',
-    transform: 'translate( -50%, -50% )',
-  },
-  content: {
-    position: 'relative',
-    padding: theme.spacing( 2 ),
-    overflowY: 'auto',
-  },
-  actions: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    flexWrap: 'wrap',
-    marginTop: theme.spacing( -1 ),
-    '& > *': {
-      margin: theme.spacing( 1, 1, 0 ),
-      whiteSpace: 'nowrap',
-    },
-  },
-  section: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-  },
-  divider: {
-    width: '100%',
-    marginTop: theme.spacing( 2 ),
-    marginBottom: theme.spacing( 2 ),
-  },
-  table: {
-    marginTop: theme.spacing( 1 ),
-  },
-  headerCell: {
-    padding: theme.spacing( 0, 2 ),
-    whiteSpace: 'pre',
-    textAlign: 'center',
-  },
-  input: {
-    marginTop: theme.spacing( 2 ),
-  },
-  importExportActions: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    '& > *': {
-      marginTop: theme.spacing( 1 ),
-      marginRight: theme.spacing( 1 ),
-    },
-  },
-} ) );
-
 export const OptionsPage: React.FC = () =>
 {
-  const styles = useStyles();
-
   const initialized = useSettingsInitialized();
   const [ settingsExportUrl, setSettingsExportUrl ] = React.useState( '' );
 
@@ -134,21 +74,42 @@ export const OptionsPage: React.FC = () =>
   if( !initialized )
   {
     content = (
-      <div className={styles.loading}>
+      <Box
+        sx={{
+          position: 'absolute',
+          left: '50%',
+          top: '30%',
+          transform: 'translate( -50%, -50% )',
+        }}
+      >
         <CircularProgress variant="indeterminate" />
-      </div>
+      </Box>
     );
   }
   else
   {
     content = (
-      <div className={styles.content}>
-
+      <Box
+        sx={{
+          position: 'relative',
+          padding: 2,
+          overflowY: 'auto',
+        }}
+      >
         <Grid container={true}>
 
           <Grid item={true} xs={false} md={3} />
 
-          <Grid className={styles.section} item={true} xs={12} md={6}>
+          <Grid
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+            }}
+            item={true}
+            xs={12}
+            md={6}
+          >
 
             <Typography variant="h5">Controller Options</Typography>
 
@@ -156,14 +117,16 @@ export const OptionsPage: React.FC = () =>
 
             <div>
               <Table
-                className={styles.table}
+                sx={{
+                  marginTop: 1,
+                }}
                 padding="none"
               >
                 <TableHead>
                   <TableRow>
                     <TableCell></TableCell>
-                    <TableCell className={styles.headerCell}>Enabled?</TableCell>
-                    <TableCell className={styles.headerCell}>Notifications?</TableCell>
+                    <HeaderCell>Enabled?</HeaderCell>
+                    <HeaderCell>Notifications?</HeaderCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -183,7 +146,7 @@ export const OptionsPage: React.FC = () =>
             </div>
 
             <NumberSetting
-              className={styles.input}
+              sx={INPUT_SX}
               setting={SettingKey.Other.MaximumGenericAudioVideoControllersPerPage}
               label="Maximum generic controllers per page"
               minimum={1}
@@ -191,13 +154,13 @@ export const OptionsPage: React.FC = () =>
             />
 
             <StringArraySetting
-              className={styles.input}
+              sx={INPUT_SX}
               label="Generic Audio/Video Controller Site Blacklist"
               setting={SettingKey.Other.SiteBlacklist}
               rows={5}
             />
 
-            <Divider className={styles.divider} />
+            <FullWidthDivider />
 
             <Typography variant="h5">Notification Options</Typography>
             <CheckboxSetting
@@ -213,7 +176,7 @@ export const OptionsPage: React.FC = () =>
               label="Show notification when media is auto-paused"
             />
 
-            <Divider className={styles.divider} />
+            <FullWidthDivider />
 
             <Typography variant="h5">Controls Overlay Options</Typography>
             <CheckboxSetting
@@ -229,14 +192,19 @@ export const OptionsPage: React.FC = () =>
               label="Hide controls when mouse goes idle"
             />
             <NumberSetting
-              className={styles.input}
+              sx={INPUT_SX}
               setting={SettingKey.ControlsOverlay.Other.HideControlsIdleTime}
               label="Mouse idle timeout"
               endAdornmentText="seconds"
               minimum={0}
             />
 
-            <Table className={styles.table} padding="none">
+            <Table
+              sx={{
+                marginTop: 1,
+              }}
+              padding="none"
+            >
               <TableHead>
                 <TableRow>
                   <TableCell>Control</TableCell>
@@ -257,7 +225,7 @@ export const OptionsPage: React.FC = () =>
               </TableBody>
             </Table>
 
-            <Divider className={styles.divider} />
+            <FullWidthDivider />
 
             <Typography variant="h5">Idle Options</Typography>
             <CheckboxSetting
@@ -269,14 +237,14 @@ export const OptionsPage: React.FC = () =>
               label="Pause media when computer goes inactive"
             />
             <NumberSetting
-              className={styles.input}
+              sx={INPUT_SX}
               setting={SettingKey.Other.InactivityTimeout}
               label="Inactivity timeout"
               endAdornmentText="seconds"
               minimum={15}
             />
 
-            <Divider className={styles.divider} />
+            <FullWidthDivider />
 
             <Typography variant="h5">Other Options</Typography>
             <CheckboxSetting
@@ -284,11 +252,23 @@ export const OptionsPage: React.FC = () =>
               setting={SettingKey.Other.ShowChangeLogOnUpdate}
             />
 
-            <Divider className={styles.divider} />
+            <FullWidthDivider />
 
             <Typography variant="h5">Import/Export</Typography>
 
-            <div className={styles.importExportActions}>
+            <Box
+              sx={{
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+                alignItems: 'center',
+                '& > *': {
+                  marginTop: 1,
+                  marginRight: 1,
+                },
+              }}
+            >
 
               <Button
                 variant="outlined"
@@ -344,18 +324,25 @@ export const OptionsPage: React.FC = () =>
                 </Button>
               </label>
 
-            </div>
+            </Box>
 
           </Grid>
 
         </Grid>
 
-      </div>
+      </Box>
     );
   }
 
   return (
-    <div className={styles.root}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        overflow: 'hidden',
+      }}
+    >
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" color="inherit">
@@ -363,8 +350,26 @@ export const OptionsPage: React.FC = () =>
           </Typography>
         </Toolbar>
       </AppBar>
-      <div className={styles.content}>
-        <div className={styles.actions}>
+      <Box
+        sx={{
+          position: 'relative',
+          padding: 2,
+          overflowY: 'auto',
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            flexWrap: 'wrap',
+            marginTop: -1,
+            '& > *': {
+              margin: [ 1, 1, 0 ],
+              whiteSpace: 'nowrap',
+            },
+          }}
+        >
           <Button
             variant="outlined"
             color="secondary"
@@ -374,7 +379,7 @@ export const OptionsPage: React.FC = () =>
 
               await browser.tabs.create( { url: 'chrome://extensions/shortcuts' } );
             }}
-            startIcon={<KeyboardShortcutsIcon />}
+            startIcon={<Keyboard />}
           >
             Set Keyboard Shortcuts
           </Button>
@@ -384,7 +389,7 @@ export const OptionsPage: React.FC = () =>
             href={browser.runtime.getURL( 'changelog.html' )}
             target="_blank"
             rel="noopener noreferrer nofollower"
-            startIcon={<ChangelogIcon />}
+            startIcon={<ChangeHistory />}
           >
             Open Changelog
           </Button>
@@ -394,13 +399,13 @@ export const OptionsPage: React.FC = () =>
             href="https://github.com/anickle060193/easy_control/issues"
             target="_blank"
             rel="noopener noreferrer nofollower"
-            startIcon={<BugIcon />}
+            startIcon={<BugReport />}
           >
             Suggest Feature/Report Issue
           </Button>
-        </div>
+        </Box>
         {content}
-      </div>
+      </Box>
       <Snackbar
         open={showImportResult}
         onClose={( _e, reason ) =>
@@ -425,6 +430,6 @@ export const OptionsPage: React.FC = () =>
           {importResult instanceof Error ? `Failed to import settings: ${importResult.message}` : importResult}
         </Alert>
       </Snackbar>
-    </div>
+    </Box>
   );
 };

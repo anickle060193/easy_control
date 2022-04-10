@@ -1,5 +1,3 @@
-import browser from 'webextension-polyfill';
-
 import { BackgroundMessage, BackgroundMessageId } from '../common/backgroundMessages';
 import { ContentMessage, ContentMessageId } from '../common/contentMessages';
 import { ControllerCapabilities, ControllerCommand, ControllerId, ControllerMedia, ControllerStatus, DEFAULT_CONTROLLER_CAPABILITIES, DEFAULT_CONTROLLER_MEDIA, DEFAULT_CONTROLLER_STATUS } from '../common/controllers';
@@ -49,7 +47,7 @@ export class BackgroundController
   private onDisconnect = (): void =>
   {
     this.onDisconnected.dispatch();
-  }
+  };
 
   private onMessage = ( message: ContentMessage ): void =>
   {
@@ -92,7 +90,7 @@ export class BackgroundController
     {
       console.warn( 'Unknown message:', message );
     }
-  }
+  };
 
   public async isActiveTab(): Promise<boolean>
   {

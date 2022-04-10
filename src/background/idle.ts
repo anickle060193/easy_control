@@ -1,5 +1,3 @@
-import browser from 'webextension-polyfill';
-
 import { ControllerCommand } from '../common/controllers';
 import settings, { SettingKey } from '../common/settings';
 

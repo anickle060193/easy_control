@@ -1,7 +1,5 @@
 import React from 'react';
-import { colors, createMuiTheme, ThemeProvider } from '@material-ui/core';
-
-import useIsDarkMode from '../hooks/useIsDarkMode';
+import { colors, createTheme, ThemeProvider, useMediaQuery } from '@mui/material';
 
 function getHtmlFontSize()
 {
@@ -28,15 +26,15 @@ interface Props
 
 export const EasyControlThemeProvider: React.FC<Props> = ( { allowDarkMode = false, forceDarkMode = false, children } ) =>
 {
-  const isDarkMode = useIsDarkMode();
+  const isDarkMode = useMediaQuery( '(prefers-color-scheme: dark)', { matchMedia: window.matchMedia } );
 
   const darkMode = forceDarkMode || ( allowDarkMode && isDarkMode );
 
   const theme = React.useMemo( () =>
   {
-    return createMuiTheme( {
+    return createTheme( {
       palette: {
-        type: darkMode ? 'dark' : 'light',
+        mode: darkMode ? 'dark' : 'light',
         primary: colors.lightBlue,
         secondary: colors.amber,
       },

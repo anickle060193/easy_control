@@ -223,7 +223,7 @@ export default class Controller
         },
       };
     }
-  }
+  };
 
   private onUpdateCallback = () =>
   {
@@ -232,7 +232,7 @@ export default class Controller
     this.onUpdate.dispatch( updateMessage );
 
     this.controls.update( this.findMediaElement(), this.findControlsContainerElement(), updateMessage );
-  }
+  };
 
   private onStart = (): ( () => void ) =>
   {
@@ -292,7 +292,7 @@ export default class Controller
     {
       window.clearInterval( intervalId );
     };
-  }
+  };
 
   public start(): void
   {
@@ -339,7 +339,7 @@ export default class Controller
     }
 
     return false;
-  }
+  };
 
   public findPlayButton = (): HTMLElement | null => querySelector( this.options.playButtonSelector );
   public findPauseButton = (): HTMLElement | null => querySelector( this.options.pauseButtonSelector );
@@ -359,7 +359,7 @@ export default class Controller
     }
 
     return m;
-  }
+  };
 
   public isPlaying = (): boolean =>
   {
@@ -394,7 +394,7 @@ export default class Controller
     }
 
     return false;
-  }
+  };
 
   public performPlay = (): void =>
   {
@@ -417,7 +417,7 @@ export default class Controller
         return;
       }
     }
-  }
+  };
 
   public performPause = (): void =>
   {
@@ -440,7 +440,7 @@ export default class Controller
         return;
       }
     }
-  }
+  };
 
   public performPlayPause = (): void =>
   {
@@ -452,7 +452,7 @@ export default class Controller
     {
       this.performPlay();
     }
-  }
+  };
 
   public findPlayer = (): HTMLElement | null => querySelector( this.options.playerSelector );
 
@@ -483,7 +483,7 @@ export default class Controller
     }
 
     return null;
-  }
+  };
 
   public getAlbum = (): string | null =>
   {
@@ -510,7 +510,7 @@ export default class Controller
     }
 
     return null;
-  }
+  };
 
   public getArtist = (): string | null =>
   {
@@ -537,7 +537,7 @@ export default class Controller
     }
 
     return null;
-  }
+  };
 
   public getArtwork = (): string | null =>
   {
@@ -589,7 +589,7 @@ export default class Controller
     }
 
     return null;
-  }
+  };
 
   public getMediaChangedIndication = (): ( string | null | undefined )[] => [ this.getTrack() ];
 
@@ -601,40 +601,40 @@ export default class Controller
   public isLiked = (): boolean =>
   {
     return this.findUnlikeButton() !== null;
-  }
+  };
 
   public isDisliked = (): boolean =>
   {
     return this.findUndislikeButton() !== null;
-  }
+  };
 
   public canLike = (): boolean => this.findLikeButton() !== null;
 
   public performLike = (): void =>
   {
     this.findLikeButton()?.click();
-  }
+  };
 
   public canUnlike = (): boolean => this.findUnlikeButton() !== null;
 
   public performUnlike = (): void =>
   {
     this.findUnlikeButton()?.click();
-  }
+  };
 
   public canDislike = (): boolean => this.findDislikeButton() !== null;
 
   public performDislike = (): void =>
   {
     this.findDislikeButton()?.click();
-  }
+  };
 
   public canUndislike = (): boolean => this.findUndislikeButton() !== null;
 
   public performUndislike = (): void =>
   {
     this.findUndislikeButton()?.click();
-  }
+  };
 
   public parseTime = ( selector: Selector, format: RegExp ): number | null =>
   {
@@ -656,7 +656,7 @@ export default class Controller
     const seconds = parseInt( match[ 2 ] ?? '', 10 );
 
     return minutes * 60 + seconds;
-  }
+  };
 
   public getCurrentTime = (): number | null =>
   {
@@ -680,7 +680,7 @@ export default class Controller
     }
 
     return null;
-  }
+  };
 
   public getRemainingTime = (): number | null =>
   {
@@ -704,7 +704,7 @@ export default class Controller
     }
 
     return null;
-  }
+  };
 
   public getDuration = (): number | null =>
   {
@@ -728,7 +728,7 @@ export default class Controller
     }
 
     return null;
-  }
+  };
 
   public getProgress = (): number =>
   {
@@ -784,7 +784,7 @@ export default class Controller
     {
       return 0;
     }
-  }
+  };
 
   public findNextButton = (): HTMLElement | null => querySelector( this.options.nextSelector );
 
@@ -793,7 +793,7 @@ export default class Controller
   public performNext = (): void =>
   {
     this.findNextButton()?.click();
-  }
+  };
 
   public findPreviousButton = (): HTMLElement | null => querySelector( this.options.previousSelector );
 
@@ -802,7 +802,7 @@ export default class Controller
   public performPrevious = (): void =>
   {
     this.findPreviousButton()?.click();
-  }
+  };
 
   public findSkipForwardButton = (): HTMLElement | null => querySelector( this.options.skipFowardSelector );
 
@@ -823,7 +823,7 @@ export default class Controller
     }
 
     return false;
-  }
+  };
 
   public performSkipForward = (): void =>
   {
@@ -838,7 +838,7 @@ export default class Controller
     }
 
     this.findSkipForwardButton()?.click();
-  }
+  };
 
   public findSkipBackwardButton = (): HTMLElement | null => querySelector( this.options.skipBackwardSelector );
 
@@ -859,7 +859,7 @@ export default class Controller
     }
 
     return false;
-  }
+  };
 
   public performSkipBackward = (): void =>
   {
@@ -874,7 +874,7 @@ export default class Controller
     }
 
     this.findSkipBackwardButton()?.click();
-  }
+  };
 
   public findVolumeElement = (): HTMLElement | null => querySelector( this.options.volumeSelector );
 
@@ -886,7 +886,7 @@ export default class Controller
     }
 
     return false;
-  }
+  };
 
   public getVolume = (): number =>
   {
@@ -910,7 +910,7 @@ export default class Controller
     }
 
     return 0.0;
-  }
+  };
 
   public performVolumeUp = (): void =>
   {
@@ -922,7 +922,7 @@ export default class Controller
         media.volume += 0.05;
       }
     }
-  }
+  };
 
   public performVolumeDown = (): void =>
   {
@@ -934,7 +934,7 @@ export default class Controller
         media.volume -= 0.05;
       }
     }
-  }
+  };
 
   public findControlsContainerElement = (): HTMLElement | null => querySelector( this.options.controlsContainer );
 
@@ -965,7 +965,7 @@ export default class Controller
     }
 
     return null;
-  }
+  };
 
   public canFullscreen = (): boolean =>
   {
@@ -977,12 +977,12 @@ export default class Controller
         || !!this.findFullscreenElement()
       )
     );
-  }
+  };
 
   public isFullscreen = (): boolean =>
   {
     return document.fullscreenElement?.contains( this.findFullscreenElement() ) ?? false;
-  }
+  };
 
   public findEnterFullscreenButton = (): HTMLElement | null => querySelector( this.options.enterFullscreenButtonSelector );
 
@@ -1005,7 +1005,7 @@ export default class Controller
     {
       void fullscreenElement.requestFullscreen();
     }
-  }
+  };
 
   public findExitFullscreenButton = (): HTMLElement | null => querySelector( this.options.exitFullscreenButtonSelector );
 
@@ -1024,5 +1024,5 @@ export default class Controller
     }
 
     void document.exitFullscreen();
-  }
+  };
 }

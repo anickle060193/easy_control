@@ -1,5 +1,3 @@
-import browser from 'webextension-polyfill';
-
 import settings, { SettingKey } from '../common/settings';
 
 export function initExtension(): void

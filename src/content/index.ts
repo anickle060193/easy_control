@@ -1,5 +1,3 @@
-import browser from 'webextension-polyfill';
-
 import { BackgroundMessage, BackgroundMessageId } from '../common/backgroundMessages';
 import settings, { SettingKey } from '../common/settings';
 import { ControllerCommand, ControllerId, CONTROLLERS } from '../common/controllers';

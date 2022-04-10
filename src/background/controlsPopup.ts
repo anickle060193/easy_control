@@ -1,5 +1,3 @@
-import browser from 'webextension-polyfill';
-
 import { getCurrentController } from './controllers';
 
 import { BackgroundMessageId, UpdateBackgroundMessage } from '../common/backgroundMessages';

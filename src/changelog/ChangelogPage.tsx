@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppBar, createStyles, makeStyles, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Box, Toolbar, Typography } from '@mui/material';
 
 import { CheckboxSetting } from '../options/components/CheckboxSetting';
 
@@ -34,44 +34,42 @@ import defaultSite from './images/default_site.png';
 import notification from './images/notification.png';
 import icon from '../../assets/icon48.png';
 
-const useStyles = makeStyles( ( theme ) => createStyles( {
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-  },
-  appBarRight: {
-    marginLeft: 'auto',
-  },
-  content: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    padding: theme.spacing( 4 ),
-    overflowY: 'auto',
-  },
-} ) );
-
 export const ChangelogPage: React.FC = () =>
 {
-  const styles = useStyles();
-
   return (
-    <div className={styles.root}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+      }}
+    >
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" color="inherit">
             Easy Control Options
           </Typography>
-          <div className={styles.appBarRight}>
+          <Box
+            sx={{
+              marginLeft: 'auto',
+            }}
+          >
             <CheckboxSetting
               label="Show changelog on update?"
               setting={SettingKey.Other.ShowChangeLogOnUpdate}
             />
-          </div>
+          </Box>
         </Toolbar>
       </AppBar>
-      <div className={styles.content}>
+      <Box
+        sx={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          padding: 4,
+          overflowY: 'auto',
+        }}
+      >
 
         <ChangelogVersion version="2.4.1">
           <ChangelogEntry changeType="bug" text="Fixed name of extension." />
@@ -346,7 +344,7 @@ export const ChangelogPage: React.FC = () =>
           <ChangelogEntry changeType="feature" text={<>Added support for <a href="http://www.pandora.com/">Pandora</a>.</>} />
         </ChangelogVersion>
 
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };

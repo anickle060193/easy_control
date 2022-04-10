@@ -1,5 +1,5 @@
 import React from 'react';
-import { OutlinedTextFieldProps, TextField } from '@material-ui/core';
+import { OutlinedTextFieldProps, TextField } from '@mui/material';
 
 import { useSetting } from '../../common/hooks/useSetting';
 import { SettingKeyFromValue } from '../../common/settings';

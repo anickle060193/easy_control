@@ -1,5 +1,3 @@
-import browser from 'webextension-polyfill';
-
 import { ControllerCommand, CONTROLLERS } from '../common/controllers';
 
 import { getCurrentController } from './controllers';
@@ -41,7 +39,7 @@ function drawPlay( context: CanvasRenderingContext2D, color: string )
 
 async function setDefaultBrowserAction()
 {
-  const manifest = browser.runtime.getManifest() as browser.Manifest.WebExtensionManifest;
+  const manifest = browser.runtime.getManifest();
 
   await browser.browserAction.setIcon( {
     path: manifest.browser_action?.default_icon ?? manifest.icons,

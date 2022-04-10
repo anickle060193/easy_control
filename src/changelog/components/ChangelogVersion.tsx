@@ -1,35 +1,34 @@
 import React from 'react';
-import { createStyles, makeStyles, Paper, Typography } from '@material-ui/core';
+import { Box, Paper, Typography } from '@mui/material';
 
 interface Props
 {
   version: string;
+  children: React.ReactNode;
 }
-
-const useStyles = makeStyles( ( theme ) => createStyles( {
-  root: {
-    padding: theme.spacing( 1, 2, 2 ),
-
-    '&:not( :last-child )': {
-      marginBottom: theme.spacing( 2 ),
-    },
-  },
-  list: {
-    marginTop: 0,
-    marginBottom: 0,
-  },
-} ) );
 
 export const ChangelogVersion: React.FC<Props> = ( { version, children } ) =>
 {
-  const styles = useStyles();
-
   return (
-    <Paper className={styles.root}>
+    <Paper
+      sx={{
+        padding: [ 1, 2, 2 ],
+
+        '&:not( :last-child )': {
+          marginBottom: 2,
+        },
+      }}
+    >
       <Typography variant="h6">Version {version}</Typography>
-      <ul className={styles.list}>
+      <Box
+        component="ul"
+        sx={{
+          marginTop: 0,
+          marginBottom: 0,
+        }}
+      >
         {children}
-      </ul>
+      </Box>
     </Paper>
   );
 };

@@ -1,5 +1,3 @@
-import browser from 'webextension-polyfill';
-
 import settings, { SettingKey } from '../common/settings';
 
 import { isAutoPauseEnabledForTab, setAutoPauseEnabledForTab } from './autoPause';
