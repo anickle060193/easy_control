@@ -70,6 +70,20 @@ export const ChangelogPage: React.FC = () =>
           overflowY: 'auto',
         }}
       >
+        <ChangelogVersion version="3.1.0">
+          <ChangelogEntry changeType="bug" text="Fix Pandora selectors." />
+          <ChangelogEntry changeType="bug" text="Fix Spotify selectors." />
+          <ChangelogEntry changeType="bug" text="Add 'Options' item to browser action menu." />
+          <ChangelogEntry changeType="bug" text="Fix context menu items." />
+          <ChangelogEntry changeType="bug" text="Fix controls popup." />
+          <ChangelogEntry changeType="bug" text="Fix 'Set Keyboard Shortcuts' button on options page." issueNumber={138} />
+          <ChangelogEntry changeType="bug" text="Limit browser action icon update rate to prevent flashing on Firefox." issueNumber={139} />
+        </ChangelogVersion>
+
+        <ChangelogVersion version="3.0.0">
+          <ChangelogEntry changeType="feature" text="Complete extension re-write." />
+          <ChangelogEntry changeType="feature" text="Added support for Firefox." />
+        </ChangelogVersion>
 
         <ChangelogVersion version="2.4.1">
           <ChangelogEntry changeType="bug" text="Fixed name of extension." />
