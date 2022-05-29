@@ -38,6 +38,7 @@ export interface ControllerOptions
   undislikeSelector: Selector | null;
 
   volumeSelector: Selector | null;
+  volumeAttribute: string | null;
 
   useMediaForSkipping: boolean;
   useMediaForVolume: boolean;
@@ -110,6 +111,7 @@ export const DEFAULT_OPTIONS: ControllerOptions = {
   undislikeSelector: null,
 
   volumeSelector: null,
+  volumeAttribute: null,
 
   useMediaForSkipping: false,
   useMediaForVolume: false,
@@ -171,13 +173,15 @@ export default class Controller
   {
     if( !this.isEnabled() )
     {
-      return {
+      const message: UpdateContentMessage = {
         id: ContentMessageId.Update,
         status: DEFAULT_CONTROLLER_STATUS,
         mediaChangedIndication: null,
         media: DEFAULT_CONTROLLER_MEDIA,
         capabilities: DEFAULT_CONTROLLER_CAPABILITIES,
       };
+
+      return message;
     }
     else
     {
@@ -192,7 +196,7 @@ export default class Controller
         mediaChangedIndication = indication.join( '::' );
       }
 
-      return {
+      const message: UpdateContentMessage = {
         id: ContentMessageId.Update,
         status: {
           enabled: true,
@@ -222,6 +226,8 @@ export default class Controller
           fullscreen: this.canFullscreen(),
         },
       };
+
+      return message;
     }
   };
 
@@ -903,10 +909,18 @@ export default class Controller
       }
     }
 
-    const volume = parseFloat( this.findVolumeElement()?.textContent ?? '' );
-    if( isFinite( volume ) )
+    const volumeElement = this.findVolumeElement();
+    if( volumeElement )
     {
-      return volume / 100;
+      const volumeText = this.options.volumeAttribute ? volumeElement.getAttribute( this.options.volumeAttribute ) : volumeElement.textContent;
+      if( volumeText )
+      {
+        const volume = parseFloat( volumeText );
+        if( isFinite( volume ) )
+        {
+          return volume / 100;
+        }
+      }
     }
 
     return 0.0;

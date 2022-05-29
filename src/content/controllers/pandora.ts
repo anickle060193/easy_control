@@ -2,24 +2,24 @@ import Controller from '../controller';
 
 export const controller = new Controller( {
   isEnabledElementSelector: null,
-  useMediaForIsEnabled: true,
+  useMediaForIsEnabled: false,
   usePlayPauseButtonsForIsEnabled: true,
 
-  mediaSelector: 'audio:last-of-type',
+  mediaSelector: null,
 
   playButtonSelector: 'button.Tuner__Control__Play__Button[data-qa="play_button"]',
   pauseButtonSelector: 'button.Tuner__Control__Play__Button[data-qa="pause_button"]',
 
-  useMediaForIsPlaying: true,
+  useMediaForIsPlaying: false,
   useMediaSessionForIsPlaying: false,
-  usePlayButtonForPlaying: false,
-  usePauseButtonForPlaying: false,
+  usePlayButtonForPlaying: true,
+  usePauseButtonForPlaying: true,
 
   usePlayButtonForPlay: true,
-  useMediaForPlay: true,
+  useMediaForPlay: false,
 
   usePauseButtonForPause: true,
-  useMediaForPause: true,
+  useMediaForPause: false,
 
   nextSelector: 'button.SkipButton',
   previousSelector: null,
@@ -30,14 +30,15 @@ export const controller = new Controller( {
   dislikeSelector: '.ThumbDownButton:not( .ThumbDownButton--active )',
   undislikeSelector: '.ThumbDownButton.ThumbDownButton--active',
 
-  volumeSelector: null,
+  volumeSelector: '*[data-qa="volume_slider_handle"]',
+  volumeAttribute: 'aria-valuenow',
 
   useMediaForSkipping: false,
-  useMediaForVolume: true,
+  useMediaForVolume: false,
 
-  useDocumentMediaEventsForPolling: true,
+  useDocumentMediaEventsForPolling: false,
   useMediaForPolling: false,
-  useMutationObserverForPolling: false,
+  useMutationObserverForPolling: true,
 
   playerSelector: null,
 
@@ -53,11 +54,11 @@ export const controller = new Controller( {
 
   useMediaForArtwork: false,
 
-  useMediaForTime: true,
+  useMediaForTime: false,
 
-  currentTimeSelector: null,
+  currentTimeSelector: 'span[data-qa="elapsed_time"]',
   remainingTimeSelector: null,
-  durationSelector: null,
+  durationSelector: 'span[data-qa="remaining_time"]',
 
   currentTimeFormat: null,
   remainingTimeFormat: null,

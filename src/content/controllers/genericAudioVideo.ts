@@ -35,6 +35,7 @@ export class GenericAudioVideoController extends Controller
       undislikeSelector: null,
 
       volumeSelector: null,
+      volumeAttribute: null,
 
       useMediaForSkipping: true,
       useMediaForVolume: true,

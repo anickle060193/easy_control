@@ -31,6 +31,7 @@ export const controller = new Controller( {
   undislikeSelector: '#info #top-level-buttons ytd-toggle-button-renderer:nth-child( 2 ) button[aria-pressed="true"]',
 
   volumeSelector: null,
+  volumeAttribute: null,
 
   useMediaForSkipping: true,
   useMediaForVolume: true,

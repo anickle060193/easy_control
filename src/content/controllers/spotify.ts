@@ -34,6 +34,7 @@ export const controller = new Controller( {
   undislikeSelector: null,
 
   volumeSelector: null,
+  volumeAttribute: null,
 
   useMediaForSkipping: false,
   useMediaForVolume: false,
