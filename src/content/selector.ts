@@ -1,3 +1,5 @@
+import Sizzle from 'sizzle';
+
 import { assertNever } from '../common/util';
 
 export type Selector = string | HTMLElement | ( () => HTMLElement | null ) | Selector[];
@@ -23,7 +25,8 @@ export function querySelector( selector: Selector | null ): HTMLElement | null
   }
   else if( typeof selector === 'string' )
   {
-    return document.querySelector( selector );
+    const result = Sizzle( selector )[ 0 ];
+    return result instanceof HTMLElement ? result : null;
   }
   else if( selector instanceof HTMLElement )
   {

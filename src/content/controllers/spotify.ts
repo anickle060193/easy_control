@@ -1,5 +1,8 @@
 import Controller from '../controller';
 
+const PLAY_BUTTON_ICON_PATH = 'M3 1.713a.7.7 0 011.05-.607l10.89 6.288a.7.7 0 010 1.212L4.05 14.894A.7.7 0 013 14.288V1.713z';
+const PAUSE_BUTTON_ICON_PATH = 'M2.7 1a.7.7 0 00-.7.7v12.6a.7.7 0 00.7.7h2.6a.7.7 0 00.7-.7V1.7a.7.7 0 00-.7-.7H2.7zm8 0a.7.7 0 00-.7.7v12.6a.7.7 0 00.7.7h2.6a.7.7 0 00.7-.7V1.7a.7.7 0 00-.7-.7h-2.6z';
+
 export const controller = new Controller( {
   isEnabledElementSelector: null,
   useMediaForIsEnabled: false,
@@ -7,8 +10,8 @@ export const controller = new Controller( {
 
   mediaSelector: null,
 
-  playButtonSelector: 'button[data-testid="control-button-play"]',
-  pauseButtonSelector: 'button[data-testid="control-button-pause"]',
+  playButtonSelector: `.Root__now-playing-bar button[data-testid="control-button-playpause"]:has( > svg > path[d="${PLAY_BUTTON_ICON_PATH}"] )`,
+  pauseButtonSelector: `.Root__now-playing-bar button[data-testid="control-button-playpause"]:has( > svg > path[d="${PAUSE_BUTTON_ICON_PATH}"] )`,
 
   useMediaForIsPlaying: false,
   useMediaSessionForIsPlaying: false,
@@ -59,9 +62,17 @@ export const controller = new Controller( {
 
   useMediaForTime: false,
 
-  currentTimeSelector: '.Root__now-playing-bar .playback-bar .playback-bar__progress-time',
+  currentTimeSelector: [
+    '.Root__now-playing-bar .playback-bar *[data-testid="playback-position"]',
+    '.Root__now-playing-bar .playback-bar .playback-bar__progress-time-elapsed',
+    '.Root__now-playing-bar .playback-bar .playback-bar__progress-time',
+    '.Root__now-playing-bar .playback-bar > :nth-child( 1 )',
+  ],
   remainingTimeSelector: null,
-  durationSelector: '.Root__now-playing-bar .playback-bar > :nth-child( 3 )',
+  durationSelector: [
+    '.Root__now-playing-bar .playback-bar *[data-testid="playback-duration"]',
+    '.Root__now-playing-bar .playback-bar > :nth-child( 3 )',
+  ],
 
   currentTimeFormat: null,
   remainingTimeFormat: null,
