@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, AppBar, Box, Button, CircularProgress, Divider, Grid, Snackbar, styled, SxProps, Table, TableBody, TableCell, TableHead, TableRow, Toolbar, Typography } from '@mui/material';
+import { Alert, AppBar, Box, Button, ButtonGroup, CircularProgress, Divider, Grid, Snackbar, styled, SxProps, Table, TableBody, TableCell, TableHead, TableRow, Toolbar, Typography } from '@mui/material';
 import { BugReport, ChangeHistory, Keyboard } from '@mui/icons-material';
 
 import { CheckboxSetting } from './components/CheckboxSetting';
@@ -7,6 +7,7 @@ import { NumberSetting } from './components/NumberSetting';
 import { StringArraySetting } from './components/StringArraySetting';
 
 import { useSettingsInitialized } from '../common/hooks/useSettingsInitialized';
+import { useBrowserName } from '../common/hooks/useBrowserName';
 import settings, { ControlsOverlayControlVisibleSettingId, SettingKey } from '../common/settings';
 import { CONTROLLERS } from '../common/controllers';
 
@@ -53,6 +54,8 @@ export const OptionsPage: React.FC = () =>
 
   const [ showImportResult, setShowImportResult ] = React.useState( false );
   const [ importResult, setImportResult ] = React.useState<string | Error | null>( null );
+
+  const browserName = useBrowserName();
 
   React.useEffect( () =>
   {
@@ -360,49 +363,43 @@ export const OptionsPage: React.FC = () =>
         <Box
           sx={{
             display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            flexWrap: 'wrap',
+            flexDirection: 'column',
+            alignItems: 'center',
             marginTop: -1,
-            '& > *': {
-              margin: [ 1, 1, 0 ],
-              whiteSpace: 'nowrap',
-            },
           }}
         >
-          <Button
-            variant="outlined"
-            color="secondary"
-            onClick={async ( e ) =>
-            {
-              e.preventDefault();
+          <ButtonGroup variant="outlined" color="secondary">
+            {browserName === 'chrome' && (
+              <Button
+                href="#!"
+                onClick={async ( e ) =>
+                {
+                  e.preventDefault();
 
-              await browser.tabs.create( { url: 'chrome://extensions/shortcuts' } );
-            }}
-            startIcon={<Keyboard />}
-          >
-            Set Keyboard Shortcuts
-          </Button>
-          <Button
-            variant="outlined"
-            color="secondary"
-            href={browser.runtime.getURL( 'changelog.html' )}
-            target="_blank"
-            rel="noopener noreferrer nofollower"
-            startIcon={<ChangeHistory />}
-          >
-            Open Changelog
-          </Button>
-          <Button
-            variant="outlined"
-            color="secondary"
-            href="https://github.com/anickle060193/easy_control/issues"
-            target="_blank"
-            rel="noopener noreferrer nofollower"
-            startIcon={<BugReport />}
-          >
-            Suggest Feature/Report Issue
-          </Button>
+                  await browser.tabs.create( { url: 'chrome://extensions/shortcuts' } );
+                }}
+                startIcon={<Keyboard />}
+              >
+                Set Keyboard Shortcuts
+              </Button>
+            )}
+            <Button
+              href={browser.runtime.getURL( 'changelog.html' )}
+              target="_blank"
+              rel="noopener noreferrer nofollower"
+              startIcon={<ChangeHistory />}
+            >
+              Open Changelog
+            </Button>
+            <Button
+              href="https://github.com/anickle060193/easy_control/issues"
+              target="_blank"
+              rel="noopener noreferrer nofollower"
+              startIcon={<BugReport />}
+            >
+              Suggest Feature/Report Issue
+            </Button>
+          </ButtonGroup>
         </Box>
         {content}
       </Box>

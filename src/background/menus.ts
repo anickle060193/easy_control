@@ -61,9 +61,7 @@ export function initMenus()
     {
       try
       {
-        await browser.tabs.create( {
-          url: browser.runtime.getURL( 'options.html' ),
-        } );
+        await browser.runtime.openOptionsPage();
       }
       catch( e )
       {
