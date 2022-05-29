@@ -1,15 +1,12 @@
-declare module 'easy-control'
+import type * as Browser from 'webextension-polyfill';
+
+declare global
 {
-  import Browser from 'webextension-polyfill';
+  const process: {
+    env: {
+      NODE_ENV: 'development' | 'production',
+    },
+  };
 
-  global
-  {
-    const process: {
-      env: {
-        NODE_ENV: 'development' | 'production',
-      },
-    };
-
-    const browser = Browser;
-  }
+  const browser: typeof Browser;
 }

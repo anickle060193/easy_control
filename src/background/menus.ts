@@ -11,7 +11,23 @@ enum ContextMenuId
   OpenControls = 'context_menu__open_controls',
 }
 
-export async function initContextMenus(): Promise<void>
+async function createMenu( createProperties: browser.Menus.CreateCreatePropertiesType )
+{
+  return new Promise<void>( ( resolve, reject ) =>
+  {
+    browser.contextMenus.create( createProperties, () =>
+    {
+      if( browser.runtime.lastError )
+      {
+        return reject( new Error( browser.runtime.lastError.message ) );
+      }
+
+      return resolve();
+    } );
+  } );
+}
+
+export function initMenus()
 {
   browser.contextMenus.onClicked.addListener( async ( info, tab ) =>
   {
@@ -46,60 +62,67 @@ export async function initContextMenus(): Promise<void>
     }
   } );
 
-  await browser.contextMenus.removeAll();
-
-  if( process.env.NODE_ENV === 'development' )
+  browser.runtime.onInstalled.addListener( async () =>
   {
-    chrome.contextMenus.create( {
-      id: ContextMenuId.ReloadExtension,
-      title: 'Reload Extension',
-      contexts: [ 'browser_action' ],
-    }, () =>
+    await browser.contextMenus.removeAll();
+
+    if( process.env.NODE_ENV === 'development' )
     {
-      if( chrome.runtime.lastError )
+      try
       {
-        console.error( 'Failed to create "Reload Extension" context menu:', chrome.runtime.lastError );
+        await createMenu( {
+          id: ContextMenuId.ReloadExtension,
+          title: 'Reload Extension',
+          contexts: [ 'browser_action' ],
+        } );
       }
-    } );
-  }
-
-  chrome.contextMenus.create( {
-    id: ContextMenuId.AutoPauseEnabled,
-    type: 'checkbox',
-    title: 'Auto-Pause Enabled',
-    checked: settings.get( SettingKey.Other.AutoPauseEnabled ),
-    contexts: [ 'browser_action' ],
-  }, () =>
-  {
-    if( chrome.runtime.lastError )
-    {
-      console.error( 'Failed to create "Auto-Pause Enabled" context menu:', chrome.runtime.lastError );
+      catch( e )
+      {
+        console.error( 'Failed to create "Reload Extension" context menu', e );
+      }
     }
-  } );
 
-  chrome.contextMenus.create( {
-    id: ContextMenuId.AutoPauseEnabledForTab,
-    type: 'checkbox',
-    title: 'Auto-Pause Enabled for Tab',
-    checked: true,
-    contexts: [ 'browser_action' ],
-  }, () =>
-  {
-    if( chrome.runtime.lastError )
+    try
     {
-      console.error( 'Failed to create "Auto-Pause Enabled for Tab" context menu:', chrome.runtime.lastError );
+      await createMenu( {
+        id: ContextMenuId.AutoPauseEnabled,
+        type: 'checkbox',
+        title: 'Auto-Pause Enabled',
+        checked: settings.get( SettingKey.Other.AutoPauseEnabled ),
+        contexts: [ 'browser_action' ],
+      } );
     }
-  } );
-
-  chrome.contextMenus.create( {
-    id: ContextMenuId.OpenControls,
-    title: 'Open Controls',
-    contexts: [ 'browser_action' ],
-  }, () =>
-  {
-    if( chrome.runtime.lastError )
+    catch( e )
     {
-      console.error( 'Failed to create "Open Controls" context menu:', chrome.runtime.lastError );
+      console.error( 'Failed to create "Auto-Pause Enabled" context menu', e );
+    }
+
+    try
+    {
+      await createMenu( {
+        id: ContextMenuId.AutoPauseEnabledForTab,
+        type: 'checkbox',
+        title: 'Auto-Pause Enabled for Tab',
+        checked: true,
+        contexts: [ 'browser_action' ],
+      } );
+    }
+    catch( e )
+    {
+      console.error( 'Failed to create "Auto-Pause Enabled for Tab" context menu', e );
+    }
+
+    try
+    {
+      await createMenu( {
+        id: ContextMenuId.OpenControls,
+        title: 'Open Controls',
+        contexts: [ 'browser_action' ],
+      } );
+    }
+    catch( e )
+    {
+      console.error( 'Failed to create "Open Controls" context menu', e );
     }
   } );
 
