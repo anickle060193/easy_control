@@ -6,6 +6,11 @@ const ICON_WIDTH = 32;
 const ICON_HEIGHT = 32;
 const ICON_PROGRESS_BAR_THICKNESS = Math.max( ICON_HEIGHT * 0.1, 1 );
 
+type PlayState = 'play' | 'pause';
+
+let lastState: PlayState | null = null;
+let lastProgressWidth: number | null = null;
+
 function drawPause( context: CanvasRenderingContext2D, color: string )
 {
   const pauseBarWidth = 0.16 * ICON_WIDTH;
@@ -41,6 +46,8 @@ async function setDefaultBrowserAction()
 {
   const manifest = browser.runtime.getManifest();
 
+  lastState = null;
+  lastProgressWidth = null;
   await browser.browserAction.setIcon( {
     path: manifest.browser_action?.default_icon ?? manifest.icons,
   } );
@@ -71,9 +78,18 @@ export async function updateBrowserActionIcon(): Promise<void>
     return;
   }
 
+  const state: PlayState = controller.status.playing ? 'pause' : 'play';
+  const progressWidth = Math.round( controller.status.progress * ICON_WIDTH );
+
+  if( state === lastState
+    && progressWidth === lastProgressWidth )
+  {
+    return;
+  }
+
   const controllerColor = CONTROLLERS[ controller.controllerId ]?.color ?? 'rgb( 33, 150, 243 )';
 
-  if( controller.status.playing )
+  if( state === 'pause' )
   {
     drawPause( context, controllerColor );
   }
@@ -93,7 +109,7 @@ export async function updateBrowserActionIcon(): Promise<void>
   context.strokeStyle = controllerColor;
   context.beginPath();
   context.moveTo( 0, ICON_HEIGHT );
-  context.lineTo( ICON_WIDTH * controller.status.progress, ICON_HEIGHT );
+  context.lineTo( progressWidth, ICON_HEIGHT );
   context.stroke();
 
   const imageData = context.getImageData( 0, 0, ICON_WIDTH, ICON_HEIGHT );
@@ -107,6 +123,9 @@ export async function updateBrowserActionIcon(): Promise<void>
       controller.media.album,
     ].filter( ( s ): s is string => typeof s === 'string' ).join( '\n' ),
   } );
+
+  lastState = state;
+  lastProgressWidth = progressWidth;
 }
 
 export function initBrowserAction(): void
