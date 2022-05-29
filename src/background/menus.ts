@@ -9,6 +9,7 @@ enum ContextMenuId
   AutoPauseEnabled = 'context_menu__auto_pause_enabled',
   AutoPauseEnabledForTab = 'context_menu__auto_pause_enabled_for_tab',
   OpenControls = 'context_menu__open_controls',
+  OpenOptions = 'context_menu__open_options',
 }
 
 async function createMenu( createProperties: browser.Menus.CreateCreatePropertiesType )
@@ -55,6 +56,19 @@ export function initMenus()
     else if( info.menuItemId === ContextMenuId.OpenControls )
     {
       openControlsPopup();
+    }
+    else if( info.menuItemId === ContextMenuId.OpenOptions )
+    {
+      try
+      {
+        await browser.tabs.create( {
+          url: browser.runtime.getURL( 'options.html' ),
+        } );
+      }
+      catch( e )
+      {
+        console.error( 'Failed to open options page:', e );
+      }
     }
     else
     {
@@ -123,6 +137,19 @@ export function initMenus()
     catch( e )
     {
       console.error( 'Failed to create "Open Controls" context menu', e );
+    }
+
+    try
+    {
+      await createMenu( {
+        id: ContextMenuId.OpenOptions,
+        title: 'Options',
+        contexts: [ 'browser_action' ],
+      } );
+    }
+    catch( e )
+    {
+      console.error( 'Failed to create "Options" context menu:', e );
     }
   } );
 
