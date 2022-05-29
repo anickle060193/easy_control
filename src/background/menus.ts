@@ -55,7 +55,7 @@ export function initMenus()
     }
     else if( info.menuItemId === ContextMenuId.OpenControls )
     {
-      openControlsPopup();
+      await openControlsPopup();
     }
     else if( info.menuItemId === ContextMenuId.OpenOptions )
     {

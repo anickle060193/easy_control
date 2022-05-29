@@ -4,37 +4,45 @@ import { BackgroundMessageId, UpdateBackgroundMessage } from '../common/backgrou
 import settings, { SettingKey } from '../common/settings';
 import { DEFAULT_CONTROLLER_CAPABILITIES, DEFAULT_CONTROLLER_MEDIA, DEFAULT_CONTROLLER_STATUS } from '../common/controllers';
 import { ControlsPopupMessage, ControlsPopupMessageId } from '../common/controlsPopupMessages';
+import { getBrowserName } from '../common/util';
 
-let controlsPopupWindow: Window | null = null;
+let controlsPopupWindowId: number | null = null;
+let controlsPort: browser.Runtime.Port | null = null;
 
-export function openControlsPopup(): void
+export async function openControlsPopup(): Promise<void>
 {
-  if( controlsPopupWindow
-    && !controlsPopupWindow.closed )
+  if( typeof controlsPopupWindowId === 'number' )
   {
-    controlsPopupWindow.focus();
-    return;
+    try
+    {
+      await browser.windows.update( controlsPopupWindowId, { focused: true } );
+      return;
+    }
+    catch( e )
+    {
+      console.warn( 'Failed to focus existing controls popup:', e );
+      controlsPopupWindowId = null;
+    }
   }
 
   try
   {
-    const windowFeatures = Object.entries( {
+    const popupOptions: browser.Windows.CreateCreateDataType = {
+      url: browser.runtime.getURL( 'controlsPopup.html' ),
+      type: 'popup',
+      focused: true,
       width: settings.get( SettingKey.Other.ControlsPopupWidth ),
       height: settings.get( SettingKey.Other.ControlsPopupHeight ),
-      dialog: 'yes',
-      minimizable: 'no',
-      maximizable: 'no',
-      resizable: 'no',
-      scrollbars: 'no',
-    } ).map( ( [ key, value ] ) => `${key}=${value}` ).join( ',' );
-    controlsPopupWindow = window.open( browser.runtime.getURL( 'controlsPopup.html' ), 'easy-control--controls-popup', windowFeatures );
+    };
 
-    if( !controlsPopupWindow )
+    if( await getBrowserName() === 'firefox' )
     {
-      throw new Error( 'Unable to open window' );
+      popupOptions.allowScriptsToClose = true;
     }
 
-    controlsPopupWindow.focus();
+    const w = await browser.windows.create( popupOptions );
+
+    controlsPopupWindowId = w.id ?? null;
   }
   catch( e )
   {
@@ -44,14 +52,8 @@ export function openControlsPopup(): void
 
 export function updateControlsPopup(): void
 {
-  if( !controlsPopupWindow )
+  if( !controlsPort )
   {
-    return;
-  }
-  else if( controlsPopupWindow.closed )
-  {
-    console.warn( 'Controls Popup Window was closed.' );
-    controlsPopupWindow = null;
     return;
   }
 
@@ -63,7 +65,7 @@ export function updateControlsPopup(): void
     media: currentController?.media ?? DEFAULT_CONTROLLER_MEDIA,
     capabilities: currentController?.capabilities ?? DEFAULT_CONTROLLER_CAPABILITIES,
   };
-  controlsPopupWindow.postMessage( message, browser.runtime.getURL( 'controlsPopup.html' ) );
+  controlsPort.postMessage( message );
 }
 
 export function initControlsPopup(): void
@@ -96,12 +98,56 @@ export function initControlsPopup(): void
     }
   } );
 
-  browser.windows.onRemoved.addListener( () =>
+  browser.runtime.onConnect.addListener( ( port ) =>
   {
-    if( controlsPopupWindow?.closed === true )
+    if( port.name !== 'controls-popup'
+      || port.sender?.url !== controlsPopupUrl )
+    {
+      return;
+    }
+
+    controlsPort?.disconnect();
+
+    controlsPort = port;
+
+    port.onMessage.addListener( ( message: ControlsPopupMessage ) =>
+    {
+      console.log( 'Message:', message );
+
+      if( message.id === ControlsPopupMessageId.Loaded )
+      {
+        updateControlsPopup();
+      }
+      else if( message.id === ControlsPopupMessageId.Command )
+      {
+        const currentController = getCurrentController();
+        if( !currentController )
+        {
+          console.warn( 'No controller to handle controls popup command:', message );
+          return;
+        }
+
+        currentController.sendCommand( message.command );
+      }
+    } );
+
+    port.onDisconnect.addListener( () =>
+    {
+      console.log( 'Controls Popup port disconnected.' );
+      if( controlsPort === port )
+      {
+        controlsPort = null;
+      }
+    } );
+  } );
+
+  browser.windows.onRemoved.addListener( ( windowId ) =>
+  {
+    if( controlsPopupWindowId === windowId )
     {
       console.log( 'Controls popup window has closed.' );
-      controlsPopupWindow = null;
+      controlsPopupWindowId = null;
+      controlsPort = null;
     }
   } );
 }

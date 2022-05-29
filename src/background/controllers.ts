@@ -133,6 +133,11 @@ export function initControllers(): void
 {
   browser.runtime.onConnect.addListener( async ( port ) =>
   {
+    if( port.name === 'controls-popup' )
+    {
+      return;
+    }
+
     console.log( 'Port connected:', port.name, port );
 
     await onNewController( new BackgroundController( port ) );

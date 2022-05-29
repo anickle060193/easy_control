@@ -7,11 +7,6 @@ import { BackgroundMessage, BackgroundMessageId } from '../common/backgroundMess
 import settings, { SettingKey } from '../common/settings';
 import { ControlsPopupMessage, ControlsPopupMessageId } from '../common/controlsPopupMessages';
 
-async function sendMessageToBackground( message: ControlsPopupMessage )
-{
-  await browser.runtime.sendMessage( message );
-}
-
 interface ControlButtonProps
 {
   label: string;
@@ -24,7 +19,7 @@ interface ControlButtonProps
 const ControlButton: React.FC<ControlButtonProps> = ( { label, icon: IconComponent, command, enabled, onClick } ) =>
 {
   return (
-    <Tooltip title={label}>
+    <Tooltip title={label} disableInteractive={true}>
       <div>
         <IconButton
           onClick={() => onClick( command )}
@@ -68,17 +63,18 @@ export const ControlsPopup: React.FC = () =>
   const [ media, setMedia ] = React.useState( DEFAULT_CONTROLLER_MEDIA );
   const [ capabilities, setCapabilities ] = React.useState( DEFAULT_CONTROLLER_CAPABILITIES );
 
+  const portRef = React.useRef<browser.Runtime.Port>();
+
   React.useEffect( () =>
   {
-    function onMessage( event: MessageEvent )
-    {
-      if( event.origin !== browser.runtime.getURL( '' ).replace( /\/$/, '' ) )
-      {
-        console.warn( 'Unknown origin:', event.origin, event );
-        return;
-      }
+    const port = browser.runtime.connect( {
+      name: 'controls-popup',
+    } );
 
-      const message = event.data as BackgroundMessage;
+    portRef.current = port;
+
+    port.onMessage.addListener( ( message: BackgroundMessage ) =>
+    {
       if( message.id === BackgroundMessageId.Update )
       {
         setStatus( message.status );
@@ -89,17 +85,24 @@ export const ControlsPopup: React.FC = () =>
       {
         console.warn( 'Unhandled message from background:', message, event );
       }
-    }
-
-    window.addEventListener( 'message', onMessage );
-
-    void sendMessageToBackground( {
-      id: ControlsPopupMessageId.Loaded,
     } );
+
+    port.onDisconnect.addListener( () =>
+    {
+      console.warn( 'Port disconnected' );
+      window.close();
+    } );
+
+    const message: ControlsPopupMessage = {
+      id: ControlsPopupMessageId.Loaded,
+    };
+
+    port.postMessage( message );
 
     return () =>
     {
-      window.removeEventListener( 'message', onMessage );
+      console.log( 'Disconnecting port' );
+      port.disconnect();
     };
   }, [] );
 
@@ -133,12 +136,19 @@ export const ControlsPopup: React.FC = () =>
     };
   }, [] );
 
-  async function onCommandClick( command: ControllerCommand )
+  function onCommandClick( command: ControllerCommand )
   {
-    await sendMessageToBackground( {
+    if( !portRef.current )
+    {
+      console.warn( 'Port is not connected' );
+      return;
+    }
+
+    const message: ControlsPopupMessage = {
       id: ControlsPopupMessageId.Command,
       command,
-    } );
+    };
+    portRef.current.postMessage( message );
   }
 
   return (
