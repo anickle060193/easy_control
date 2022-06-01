@@ -1,5 +1,11 @@
 import React from 'react';
 import { colors, createTheme, ThemeProvider, useMediaQuery } from '@mui/material';
+import createCache from '@emotion/cache';
+import { CacheProvider } from '@emotion/react';
+
+const cache = createCache( {
+  key: 'easy-control',
+} );
 
 function getHtmlFontSize()
 {
@@ -45,8 +51,10 @@ export const EasyControlThemeProvider: React.FC<Props> = ( { allowDarkMode = fal
   }, [ darkMode ] );
 
   return (
-    <ThemeProvider theme={theme}>
-      {children}
-    </ThemeProvider>
+    <CacheProvider value={cache}>
+      <ThemeProvider theme={theme}>
+        {children}
+      </ThemeProvider>
+    </CacheProvider>
   );
 };
