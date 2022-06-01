@@ -71,7 +71,7 @@ async function onNewController( controller: BackgroundController )
           continue;
         }
 
-        showAutoPauseNotification( c );
+        await showAutoPauseNotification( c );
 
         c.sendCommand( ControllerCommand.Pause );
       }

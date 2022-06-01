@@ -2,6 +2,7 @@ import { BackgroundController } from './backgroundController';
 
 import settings, { SettingKey } from '../common/settings';
 import { ControllerCommand, CONTROLLERS } from '../common/controllers';
+import { getBrowserName } from '../common/util';
 
 enum StartedPlayingNotificationButtions
 {
@@ -41,29 +42,27 @@ export async function showStartedPlayingNotification( controller: BackgroundCont
 
   try
   {
-    new Notification( controller.media.track, {
-      tag: `notification::started-playing::${controller.id}`,
-      body: [ controller.media.artist, controller.media.artist ].filter( ( s ): s is string => !!s ).join( '\n' ),
-      icon: controller.media.artwork,
-      actions: [
-        { action: 'pause', title: 'Pause' },
-        { action: 'next', title: 'Next' },
-      ],
-    } );
+    const notificationOptions: browser.Notifications.CreateNotificationOptions = {
+      type: 'basic',
+      title: controller.media.track,
+      message: controller.media.artist,
+      contextMessage: controller.media.album ?? undefined,
+      iconUrl: controller.media.artwork,
+    };
 
-    // const buttons: browser.Notifications.ButtonOptions[] = [];
-    // buttons[ StartedPlayingNotificationButtions.Pause ] = { title: 'Pause' };
-    // buttons[ StartedPlayingNotificationButtions.Next ] = { title: 'Next' };
+    if( await getBrowserName() === 'chrome' )
+    {
+      const buttons: chrome.notifications.ButtonOptions[] = [];
+      buttons[ StartedPlayingNotificationButtions.Pause ] = { title: 'Pause' };
+      buttons[ StartedPlayingNotificationButtions.Next ] = { title: 'Next' };
 
-    // const notificationId = await browser.notifications.create( `notification::started-playing::${controller.id}`, {
-    //   type: 'basic',
-    //   title: controller.media.track,
-    //   message: controller.media.artist,
-    //   contextMessage: controller.media.album ?? undefined,
-    //   iconUrl: controller.media.artwork,
-    //   buttons,
-    // } );
-    // startedPlayingNotifications[ notificationId ] = controller;
+      ( notificationOptions as chrome.notifications.NotificationOptions ).buttons = buttons;
+
+      ( notificationOptions as chrome.notifications.NotificationOptions ).silent = true;
+    }
+
+    const notificationId = await browser.notifications.create( `notification::started-playing::${controller.id}`, notificationOptions );
+    startedPlayingNotifications[ notificationId ] = controller;
   }
   catch( e )
   {
@@ -73,7 +72,7 @@ export async function showStartedPlayingNotification( controller: BackgroundCont
   return true;
 }
 
-export function showAutoPauseNotification( controller: BackgroundController ): void
+export async function showAutoPauseNotification( controller: BackgroundController ): Promise<void>
 {
   if( !settings.get( SettingKey.Other.ShowAutoPausedNotification ) )
   {
@@ -82,26 +81,25 @@ export function showAutoPauseNotification( controller: BackgroundController ): v
 
   try
   {
-    new Notification( `${CONTROLLERS[ controller.controllerId ].name} has been auto-paused`, {
-      body: controller.media.track ?? undefined,
-      icon: browser.runtime.getURL( 'assets/icon64.png' ),
-      actions: [
-        { action: 'resume', title: 'Resume' },
-      ],
-    } );
+    const notificationOptions: browser.Notifications.CreateNotificationOptions = {
+      type: 'basic',
+      title: `${CONTROLLERS[ controller.controllerId ].name} has been auto-paused`,
+      message: controller.media.track ?? '',
+      iconUrl: 'assets/icon64.png',
+    };
 
-    // const buttons: browser.Notifications.ButtonOptions[] = [];
-    // buttons[ AutoPauseNotificationButtons.Resume ] = { title: 'Resume' };
+    if( await getBrowserName() === 'chrome' )
+    {
+      const buttons: chrome.notifications.ButtonOptions[] = [];
+      buttons[ AutoPauseNotificationButtons.Resume ] = { title: 'Resume' };
 
-    // const notificationId = await browser.notifications.create( `notification::auto-pause::${controller.id}`, {
-    //   type: 'basic',
-    //   silent: true,
-    //   title: `${CONTROLLERS[ controller.controllerId ].name} has been auto-paused`,
-    //   message: controller.media.track ?? '',
-    //   iconUrl: 'assets/icon64.png',
-    //   buttons,
-    // } );
-    // autoPauseNotifications[ notificationId ] = controller;
+      ( notificationOptions as chrome.notifications.NotificationOptions ).buttons = buttons;
+
+      ( notificationOptions as chrome.notifications.NotificationOptions ).silent = true;
+    }
+
+    const notificationId = await browser.notifications.create( `notification::auto-pause::${controller.id}`, notificationOptions );
+    autoPauseNotifications[ notificationId ] = controller;
   }
   catch( e )
   {
