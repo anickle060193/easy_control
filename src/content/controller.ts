@@ -831,14 +831,14 @@ export default class Controller
     return false;
   };
 
-  public performSkipForward = (): void =>
+  public performSkipForward = ( seconds: number ): void =>
   {
     if( this.options.useMediaForSkipping )
     {
       const media = this.findMediaElement();
       if( media )
       {
-        media.currentTime += 10;
+        media.currentTime += seconds;
         return;
       }
     }
@@ -867,14 +867,14 @@ export default class Controller
     return false;
   };
 
-  public performSkipBackward = (): void =>
+  public performSkipBackward = ( seconds: number ): void =>
   {
     if( this.options.useMediaForSkipping )
     {
       const media = this.findMediaElement();
       if( media )
       {
-        media.currentTime -= 10;
+        media.currentTime -= seconds;
         return;
       }
     }

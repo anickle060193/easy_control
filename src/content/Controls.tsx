@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { Box, Button, IconButton, Paper, Popper, SvgIconProps, Tooltip } from '@mui/material';
-import { Close, Forward, Fullscreen, FullscreenExit, KeyboardArrowLeft, KeyboardArrowRight, KeyboardDoubleArrowLeft, KeyboardDoubleArrowRight, Pause, PlayArrow, Repeat, SkipNext, SkipPrevious } from '@mui/icons-material';
+import { Box, Button, createSvgIcon, IconButton, Paper, Popper, Tooltip } from '@mui/material';
+import { Close, Forward, Fullscreen, FullscreenExit, KeyboardArrowLeft, KeyboardArrowRight, KeyboardDoubleArrowLeft, KeyboardDoubleArrowRight, Pause, PlayArrow, Repeat } from '@mui/icons-material';
 
 import { EasyControlThemeProvider } from '../common/components/EasyControlThemeProvider';
 import { UpdateContentMessage } from '../common/contentMessages';
@@ -9,17 +9,27 @@ import settings, { SettingKey } from '../common/settings';
 
 import Controller from './controller';
 
+const SkipForwardIcon = createSvgIcon(
+  <path d="M18 13c0 3.31-2.69 6-6 6s-6-2.69-6-6 2.69-6 6-6v4l5-5-5-5v4c-4.42 0-8 3.58-8 8s3.58 8 8 8 8-3.58 8-8h-2z" />,
+  'SkipForward'
+);
+
+const SkipBackwardIcon = createSvgIcon(
+  <path d="M6 13c0 3.31 2.69 6 6 6s6-2.69 6-6-2.69-6-6-6v4l-5-5 5-5v4c4.42 0 8 3.58 8 8s-3.58 8-8 8-8-3.58-8-8h2z" />,
+  'SkipBackward'
+);
+
 interface ControlButtonProps
 {
   className?: string;
   label: string;
-  icon: React.ComponentType<SvgIconProps>;
+  icon: React.ReactNode;
   enabled: boolean;
   visible: boolean;
   onClick: () => void;
 }
 
-const ControlButton: React.FC<ControlButtonProps> = ( { className, label, icon: IconComponent, enabled, visible, onClick } ) =>
+const ControlButton: React.FC<ControlButtonProps> = ( { className, label, icon, enabled, visible, onClick } ) =>
 {
   if( !visible )
   {
@@ -34,7 +44,7 @@ const ControlButton: React.FC<ControlButtonProps> = ( { className, label, icon: 
           disabled={!enabled}
           size="small"
         >
-          <IconComponent fontSize="small" />
+          {icon}
         </IconButton>
       </div>
     </Tooltip>
@@ -59,6 +69,8 @@ function getSettingsState()
     alwaysDisplayPlaybackRate: settings.get( SettingKey.ControlsOverlay.Other.AlwaysDisplayPlaybackSpeed ),
     hideControlsWhenIdle: settings.get( SettingKey.ControlsOverlay.Other.HideControlsWhenIdle ),
     hideControlsIdleTime: settings.get( SettingKey.ControlsOverlay.Other.HideControlsIdleTime ),
+    skipBackwardAmount: settings.get( SettingKey.ControlsOverlay.Other.SkipBackwardAmount ),
+    skipForwardAmount: settings.get( SettingKey.ControlsOverlay.Other.SkipForwardAmount ),
     visible: {
       reset: settings.get( SettingKey.ControlsOverlay.Visible.Reset ),
       muchSlower: settings.get( SettingKey.ControlsOverlay.Visible.MuchSlower ),
@@ -205,7 +217,7 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
 
   function onSkipBackward()
   {
-    controller.performSkipBackward();
+    controller.performSkipBackward( controlsSettings.skipBackwardAmount );
   }
 
   function onPlay()
@@ -220,7 +232,7 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
 
   function onSkipForward()
   {
-    controller.performSkipForward();
+    controller.performSkipForward( controlsSettings.skipForwardAmount );
   }
 
   function onFaster()
@@ -345,28 +357,28 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
               alignItems: 'center',
               marginLeft: 1,
             },
-            !hoveringControls && {
-              display: 'none',
-            },
+            // !hoveringControls && {
+            //   display: 'none',
+            // },
           ]}
         >
           <ControlButton
             label="Much Slower"
-            icon={KeyboardDoubleArrowLeft}
+            icon={<KeyboardDoubleArrowLeft fontSize="small" />}
             enabled={true}
             visible={controlsSettings.visible.muchSlower}
             onClick={onMuchSlower}
           />
           <ControlButton
             label="Slower"
-            icon={KeyboardArrowLeft}
+            icon={<KeyboardArrowLeft />}
             enabled={true}
             visible={controlsSettings.visible.slower}
             onClick={onSlower}
           />
           <ControlButton
-            label="Skip Backward"
-            icon={SkipPrevious}
+            label={`Skip Backward ${controlsSettings.skipBackwardAmount.toFixed()} secs`}
+            icon={<SkipBackwardIcon fontSize="small" />}
             enabled={canSkipBackward}
             visible={controlsSettings.visible.skipBackward}
             onClick={onSkipBackward}
@@ -374,7 +386,7 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
           {playing ? (
             <ControlButton
               label="Pause"
-              icon={Pause}
+              icon={<Pause fontSize="small" />}
               enabled={true}
               visible={controlsSettings.visible.playPause}
               onClick={onPause}
@@ -382,29 +394,29 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
           ) : (
             <ControlButton
               label="Play"
-              icon={PlayArrow}
+              icon={<PlayArrow fontSize="small" />}
               enabled={true}
               visible={controlsSettings.visible.playPause}
               onClick={onPlay}
             />
           )}
           <ControlButton
-            label="Skip Forward"
-            icon={SkipNext}
+            label={`Skip Forward ${controlsSettings.skipForwardAmount.toFixed()} secs`}
+            icon={<SkipForwardIcon fontSize="small" />}
             enabled={canSkipForward}
             visible={controlsSettings.visible.skipForward}
             onClick={onSkipForward}
           />
           <ControlButton
             label="Faster"
-            icon={KeyboardArrowRight}
+            icon={<KeyboardArrowRight />}
             enabled={true}
             visible={controlsSettings.visible.faster}
             onClick={onFaster}
           />
           <ControlButton
             label="Much Faster"
-            icon={KeyboardDoubleArrowRight}
+            icon={<KeyboardDoubleArrowRight />}
             enabled={true}
             visible={controlsSettings.visible.muchFaster}
             onClick={onMuchFaster}
@@ -412,7 +424,7 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
           {looping ? (
             <ControlButton
               label="Stop Looping"
-              icon={Forward}
+              icon={<Forward fontSize="small" />}
               enabled={true}
               visible={controlsSettings.visible.loop}
               onClick={onLoop}
@@ -420,7 +432,7 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
           ) : (
             <ControlButton
               label="Loop"
-              icon={Repeat}
+              icon={<Repeat fontSize="small" />}
               enabled={true}
               visible={controlsSettings.visible.loop}
               onClick={onLoop}
@@ -429,7 +441,7 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
           {isFullscreen ? (
             <ControlButton
               label="Exit Fullscreen"
-              icon={FullscreenExit}
+              icon={<FullscreenExit fontSize="small" />}
               enabled={canFullscreen}
               visible={controlsSettings.visible.fullscreen}
               onClick={onFullscreen}
@@ -437,7 +449,7 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
           ) : (
             <ControlButton
               label="Fullscreen"
-              icon={Fullscreen}
+              icon={<Fullscreen fontSize="small" />}
               enabled={canFullscreen}
               visible={controlsSettings.visible.fullscreen}
               onClick={onFullscreen}
@@ -445,7 +457,7 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
           )}
           <ControlButton
             label="Remove Controls"
-            icon={Close}
+            icon={<Close fontSize="small" />}
             enabled={true}
             visible={true}
             onClick={() => setClosed( true )}

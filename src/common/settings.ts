@@ -55,8 +55,8 @@ export enum ControlsOverlayOtherSettingId
   AlwaysDisplayPlaybackSpeed = 'key__controls__always_display_playback_speed',
   HideControlsWhenIdle = 'key__controls__hide_controls_when_idle',
   HideControlsIdleTime = 'key__controls__hide_controls_idle_time',
-  // SkipBackwardAmount = 'keys__controls__skip_backward_amount',
-  // SkipForwardAmount = 'keys__controls__skip_forward_amount',
+  SkipBackwardAmount = 'keys__controls__skip_backward_amount',
+  SkipForwardAmount = 'keys__controls__skip_forward_amount',
   // DefaultPlaybackSpeed = 'key__controls__other__default_playback_speed',
 }
 
@@ -129,9 +129,9 @@ export interface SettingsType
   [ SettingKey.ControlsOverlay.Other.AlwaysDisplayPlaybackSpeed ]: boolean;
   [ SettingKey.ControlsOverlay.Other.HideControlsWhenIdle ]: boolean;
   [ SettingKey.ControlsOverlay.Other.HideControlsIdleTime ]: number;
-  // [ SettingKey.Controls.Other.SkipBackwardAmount ]: number;
-  // [ SettingKey.Controls.Other.SkipForwardAmount ]: number;
-  // [ SettingKey.Controls.Other.DefaultPlaybackSpeed ]: number;
+  [ SettingKey.ControlsOverlay.Other.SkipBackwardAmount ]: number;
+  [ SettingKey.ControlsOverlay.Other.SkipForwardAmount ]: number;
+  // [ SettingKey.ControlsOverlay.Other.DefaultPlaybackSpeed ]: number;
 
   [ SettingKey.ControlsOverlay.Visible.Reset ]: boolean;
   [ SettingKey.ControlsOverlay.Visible.MuchSlower ]: boolean;
@@ -201,9 +201,9 @@ const DEFAULT_SETTINGS: SettingsType = {
   [ SettingKey.ControlsOverlay.Other.AlwaysDisplayPlaybackSpeed ]: true,
   [ SettingKey.ControlsOverlay.Other.HideControlsWhenIdle ]: true,
   [ SettingKey.ControlsOverlay.Other.HideControlsIdleTime ]: 5,
-  // [ SettingKey.Controls.Other.SkipBackwardAmount ]: 10,
-  // [ SettingKey.Controls.Other.SkipForwardAmount ]: 10,
-  // [ SettingKey.Controls.Other.DefaultPlaybackSpeed ]: 1.0,
+  [ SettingKey.ControlsOverlay.Other.SkipBackwardAmount ]: 10,
+  [ SettingKey.ControlsOverlay.Other.SkipForwardAmount ]: 10,
+  // [ SettingKey.ControlsOverlay.Other.DefaultPlaybackSpeed ]: 1.0,
 
   [ SettingKey.ControlsOverlay.Visible.Reset ]: true,
   [ SettingKey.ControlsOverlay.Visible.MuchSlower ]: true,
@@ -228,22 +228,21 @@ class SettingsStorage
 
   constructor()
   {
-    try
-    {
-      const items = browser.storage.sync.get( DEFAULT_SETTINGS );
+    browser.storage.sync.get( DEFAULT_SETTINGS )
+      .then( ( items ) =>
+      {
+        this.cache = {
+          ...this.cache,
+          ...items,
+        };
 
-      this.cache = {
-        ...this.cache,
-        ...items,
-      };
-
-      this.onInitialized.dispatch();
-      this.onChanged.dispatch();
-    }
-    catch( e )
-    {
-      console.error( 'Failed to retrieve settings:', e );
-    }
+        this.onInitialized.dispatch();
+        this.onChanged.dispatch();
+      } )
+      .catch( ( e ) =>
+      {
+        console.error( 'Failed to retrieve settings:', e );
+      } );
 
     browser.storage.onChanged.addListener( ( changes, areaName ) =>
     {

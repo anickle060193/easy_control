@@ -74,11 +74,11 @@ function registerController( controllerId: ControllerId, controller: Controller 
       }
       else if( message.command === ControllerCommand.SkipBackward )
       {
-        controller.performSkipBackward();
+        controller.performSkipBackward( settings.get( SettingKey.ControlsOverlay.Other.SkipBackwardAmount ) );
       }
       else if( message.command === ControllerCommand.SkipForward )
       {
-        controller.performSkipForward();
+        controller.performSkipForward( settings.get( SettingKey.ControlsOverlay.Other.SkipForwardAmount ) );
       }
       else if( message.command === ControllerCommand.Like )
       {

@@ -202,6 +202,22 @@ export const OptionsPage: React.FC = () =>
               minimum={0}
             />
 
+            <NumberSetting
+              sx={INPUT_SX}
+              setting={SettingKey.ControlsOverlay.Other.SkipBackwardAmount}
+              label="Skip Backward Amount"
+              endAdornmentText="seconds"
+              minimum={1}
+            />
+
+            <NumberSetting
+              sx={INPUT_SX}
+              setting={SettingKey.ControlsOverlay.Other.SkipForwardAmount}
+              label="Skip Forward Amount"
+              endAdornmentText="seconds"
+              minimum={1}
+            />
+
             <Table
               sx={{
                 marginTop: 1,
