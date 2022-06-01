@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, AppBar, Box, Button, ButtonGroup, CircularProgress, Divider, Grid, Snackbar, styled, SxProps, Table, TableBody, TableCell, TableHead, TableRow, Toolbar, Typography } from '@mui/material';
+import { Alert, AppBar, Box, Button, ButtonGroup, Checkbox, CircularProgress, Divider, Grid, Snackbar, styled, SxProps, Table, TableBody, TableCell, TableHead, TableRow, Toolbar, Typography } from '@mui/material';
 import { BugReport, ChangeHistory, Keyboard } from '@mui/icons-material';
 
 import { CheckboxSetting } from './components/CheckboxSetting';
@@ -11,17 +11,18 @@ import { useBrowserName } from '../common/hooks/useBrowserName';
 import settings, { ControlsOverlayControlVisibleSettingId, SettingKey } from '../common/settings';
 import { CONTROLLERS } from '../common/controllers';
 
-const FullWidthDivider = styled( Divider )( {
+const FullWidthDivider = styled( Divider )( ( { theme } ) => ( {
   width: '100%',
-  marginTop: 2,
-  marginBottom: 2,
-} );
+  marginTop: theme.spacing( 2 ),
+  marginBottom: theme.spacing( 2 ),
+} ) );
 
-const HeaderCell = styled( TableCell )( {
-  padding: [ 0, 2 ],
+const HeaderCell = styled( TableCell )( ( { theme } ) => ( {
+  paddingLeft: theme.spacing( 0.5 ),
+  paddingRight: theme.spacing( 0.5 ),
   whiteSpace: 'pre',
   textAlign: 'center',
-} );
+} ) );
 
 const INPUT_SX: SxProps = {
   marginTop: 2,
@@ -73,286 +74,6 @@ export const OptionsPage: React.FC = () =>
     };
   }, [] );
 
-  let content: React.ReactNode;
-  if( !initialized )
-  {
-    content = (
-      <Box
-        sx={{
-          position: 'absolute',
-          left: '50%',
-          top: '30%',
-          transform: 'translate( -50%, -50% )',
-        }}
-      >
-        <CircularProgress variant="indeterminate" />
-      </Box>
-    );
-  }
-  else
-  {
-    content = (
-      <Box
-        sx={{
-          position: 'relative',
-          padding: 2,
-          overflowY: 'auto',
-        }}
-      >
-        <Grid container={true}>
-
-          <Grid item={true} xs={false} md={3} />
-
-          <Grid
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-start',
-            }}
-            item={true}
-            xs={12}
-            md={6}
-          >
-
-            <Typography variant="h5">Controller Options</Typography>
-
-            <Typography variant="body2">Changing these settings may require refreshing the tab that includes the media to fully apply.</Typography>
-
-            <div>
-              <Table
-                sx={{
-                  marginTop: 1,
-                }}
-                padding="none"
-              >
-                <TableHead>
-                  <TableRow>
-                    <TableCell></TableCell>
-                    <HeaderCell>Enabled?</HeaderCell>
-                    <HeaderCell>Notifications?</HeaderCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {Object.values( CONTROLLERS ).map( ( { id, name, enabledSetting, notificationsEnabledSetting } ) => (
-                    <TableRow key={id}>
-                      <TableCell>{name}</TableCell>
-                      <TableCell padding="checkbox" align="center">
-                        <CheckboxSetting setting={enabledSetting} />
-                      </TableCell>
-                      <TableCell padding="checkbox" align="center">
-                        <CheckboxSetting setting={notificationsEnabledSetting} />
-                      </TableCell>
-                    </TableRow>
-                  ) )}
-                </TableBody>
-              </Table>
-            </div>
-
-            <NumberSetting
-              sx={INPUT_SX}
-              setting={SettingKey.Other.MaximumGenericAudioVideoControllersPerPage}
-              label="Maximum generic controllers per page"
-              minimum={1}
-              fullWidth={true}
-            />
-
-            <StringArraySetting
-              sx={INPUT_SX}
-              label="Generic Audio/Video Controller Site Blacklist"
-              setting={SettingKey.Other.SiteBlacklist}
-              rows={5}
-            />
-
-            <FullWidthDivider />
-
-            <Typography variant="h5">Notification Options</Typography>
-            <CheckboxSetting
-              setting={SettingKey.Other.NotificationsEnabled}
-              label="Notifications Enabled"
-            />
-            <CheckboxSetting
-              setting={SettingKey.Other.NoActiveWindowNotifications}
-              label="Do not show notifications for active tab"
-            />
-            <CheckboxSetting
-              setting={SettingKey.Other.ShowAutoPausedNotification}
-              label="Show notification when media is auto-paused"
-            />
-
-            <FullWidthDivider />
-
-            <Typography variant="h5">Controls Overlay Options</Typography>
-            <CheckboxSetting
-              setting={SettingKey.ControlsOverlay.Other.DisplayControls}
-              label="Display content controls overlay"
-            />
-            <CheckboxSetting
-              setting={SettingKey.ControlsOverlay.Other.AlwaysDisplayPlaybackSpeed}
-              label="Always display playback speed overlay"
-            />
-            <CheckboxSetting
-              setting={SettingKey.ControlsOverlay.Other.HideControlsWhenIdle}
-              label="Hide controls when mouse goes idle"
-            />
-            <NumberSetting
-              sx={INPUT_SX}
-              setting={SettingKey.ControlsOverlay.Other.HideControlsIdleTime}
-              label="Mouse idle timeout"
-              endAdornmentText="seconds"
-              minimum={0}
-            />
-
-            <NumberSetting
-              sx={INPUT_SX}
-              setting={SettingKey.ControlsOverlay.Other.SkipBackwardAmount}
-              label="Skip Backward Amount"
-              endAdornmentText="seconds"
-              minimum={1}
-            />
-
-            <NumberSetting
-              sx={INPUT_SX}
-              setting={SettingKey.ControlsOverlay.Other.SkipForwardAmount}
-              label="Skip Forward Amount"
-              endAdornmentText="seconds"
-              minimum={1}
-            />
-
-            <Table
-              sx={{
-                marginTop: 1,
-              }}
-              padding="none"
-            >
-              <TableHead>
-                <TableRow>
-                  <TableCell>Control</TableCell>
-                  <TableCell align="center">Display in Overlay?</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {CONTROLS_OVERLAY_SETTINGS.map( ( { visible, description, allowHiding }, i ) => (
-                  <TableRow key={i} hover={true}>
-                    <TableCell>{description}</TableCell>
-                    <TableCell align="center">
-                      {allowHiding && (
-                        <CheckboxSetting setting={visible} />
-                      )}
-                    </TableCell>
-                  </TableRow>
-                ) )}
-              </TableBody>
-            </Table>
-
-            <FullWidthDivider />
-
-            <Typography variant="h5">Idle Options</Typography>
-            <CheckboxSetting
-              setting={SettingKey.Other.PauseOnLock}
-              label="Pause media when computer is locked"
-            />
-            <CheckboxSetting
-              setting={SettingKey.Other.PauseOnInactivity}
-              label="Pause media when computer goes inactive"
-            />
-            <NumberSetting
-              sx={INPUT_SX}
-              setting={SettingKey.Other.InactivityTimeout}
-              label="Inactivity timeout"
-              endAdornmentText="seconds"
-              minimum={15}
-            />
-
-            <FullWidthDivider />
-
-            <Typography variant="h5">Other Options</Typography>
-            <CheckboxSetting
-              label="Show changelog on update"
-              setting={SettingKey.Other.ShowChangeLogOnUpdate}
-            />
-
-            <FullWidthDivider />
-
-            <Typography variant="h5">Import/Export</Typography>
-
-            <Box
-              sx={{
-                width: '100%',
-                display: 'flex',
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                alignItems: 'center',
-                '& > *': {
-                  marginTop: 1,
-                  marginRight: 1,
-                },
-              }}
-            >
-
-              <Button
-                variant="outlined"
-                color="secondary"
-                download="easy_control.json"
-                href={settingsExportUrl}
-                target="_blank"
-                rel="noopener noreferrer nofollower"
-              >
-                Export Settings
-              </Button>
-
-              <input
-                style={{ display: 'none' }}
-                accept="application/json"
-                id="import-settings-input"
-                type="file"
-                onChange={async ( e ) =>
-                {
-                  setShowImportResult( false );
-
-                  const file = e.currentTarget.files?.[ 0 ];
-                  if( !file )
-                  {
-                    return;
-                  }
-
-                  e.currentTarget.value = '';
-
-                  try
-                  {
-                    const content = await file.text();
-                    const data: unknown = JSON.parse( content );
-                    await settings.importSettings( data );
-                    setImportResult( 'Successfully imported settings!' );
-                  }
-                  catch( e )
-                  {
-                    console.warn( 'Failed to import settings:', e );
-                    setImportResult( e as Error );
-                  }
-
-                  setShowImportResult( true );
-                }}
-              />
-              <label htmlFor="import-settings-input">
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  component="span"
-                >
-                  Import Settings
-                </Button>
-              </label>
-
-            </Box>
-
-          </Grid>
-
-        </Grid>
-
-      </Box>
-    );
-  }
-
   return (
     <Box
       sx={{
@@ -367,24 +88,14 @@ export const OptionsPage: React.FC = () =>
           <Typography variant="h6" color="inherit">
             Easy Control Options
           </Typography>
-        </Toolbar>
-      </AppBar>
-      <Box
-        sx={{
-          position: 'relative',
-          padding: 2,
-          overflowY: 'auto',
-        }}
-      >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            marginTop: -1,
-          }}
-        >
-          <ButtonGroup variant="outlined" color="secondary">
+
+          <ButtonGroup
+            variant="outlined"
+            color="secondary"
+            sx={{
+              marginLeft: 'auto',
+            }}
+          >
             {browserName === 'chrome' && (
               <Button
                 href="#!"
@@ -416,8 +127,289 @@ export const OptionsPage: React.FC = () =>
               Suggest Feature/Report Issue
             </Button>
           </ButtonGroup>
-        </Box>
-        {content}
+        </Toolbar>
+      </AppBar>
+      <Box
+        sx={{
+          position: 'relative',
+          padding: 2,
+          overflowY: 'auto',
+          height: '100%',
+        }}
+      >
+        {!initialized ? (
+          <Box
+            sx={{
+              position: 'absolute',
+              left: '50%',
+              top: '30%',
+              transform: 'translate( -50%, -50% )',
+            }}
+          >
+            <CircularProgress variant="indeterminate" />
+          </Box>
+        ) : (
+          <Box
+            sx={{
+              position: 'relative',
+              padding: 2,
+              overflowY: 'auto',
+            }}
+          >
+            <Grid container={true}>
+
+              <Grid item={true} xs={false} md={3} />
+
+              <Grid
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
+                }}
+                item={true}
+                xs={12}
+                md={6}
+              >
+
+                <Typography variant="h5">Controller Options</Typography>
+
+                <Typography variant="body2">Changing these settings may require refreshing the tab that includes the media to fully apply.</Typography>
+
+                <div>
+                  <Table
+                    sx={{
+                      marginTop: 1,
+                    }}
+                    padding="none"
+                  >
+                    <TableHead>
+                      <TableRow>
+                        <TableCell></TableCell>
+                        <HeaderCell>Enabled?</HeaderCell>
+                        <HeaderCell>Notifications?</HeaderCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {Object.values( CONTROLLERS ).map( ( { id, name, enabledSetting, notificationsEnabledSetting } ) => (
+                        <TableRow key={id}>
+                          <TableCell>{name}</TableCell>
+                          <TableCell padding="checkbox" align="center">
+                            <CheckboxSetting setting={enabledSetting} />
+                          </TableCell>
+                          <TableCell padding="checkbox" align="center">
+                            <CheckboxSetting setting={notificationsEnabledSetting} />
+                          </TableCell>
+                        </TableRow>
+                      ) )}
+                    </TableBody>
+                  </Table>
+                </div>
+
+                <NumberSetting
+                  sx={INPUT_SX}
+                  setting={SettingKey.Other.MaximumGenericAudioVideoControllersPerPage}
+                  label="Maximum generic controllers per page"
+                  minimum={1}
+                  fullWidth={true}
+                />
+
+                <StringArraySetting
+                  sx={INPUT_SX}
+                  label="Generic Audio/Video Controller Site Blacklist"
+                  setting={SettingKey.Other.SiteBlacklist}
+                  rows={5}
+                />
+
+                <FullWidthDivider />
+
+                <Typography variant="h5">Notification Options</Typography>
+                <CheckboxSetting
+                  setting={SettingKey.Other.NotificationsEnabled}
+                  label="Notifications Enabled"
+                />
+                <CheckboxSetting
+                  setting={SettingKey.Other.NoActiveWindowNotifications}
+                  label="Do not show notifications for active tab"
+                />
+                <CheckboxSetting
+                  setting={SettingKey.Other.ShowAutoPausedNotification}
+                  label="Show notification when media is auto-paused"
+                />
+
+                <FullWidthDivider />
+
+                <Typography variant="h5">Controls Overlay Options</Typography>
+                <CheckboxSetting
+                  setting={SettingKey.ControlsOverlay.Other.DisplayControls}
+                  label="Display content controls overlay"
+                />
+                <CheckboxSetting
+                  setting={SettingKey.ControlsOverlay.Other.AlwaysDisplayPlaybackSpeed}
+                  label="Always display playback speed overlay"
+                />
+                <CheckboxSetting
+                  setting={SettingKey.ControlsOverlay.Other.HideControlsWhenIdle}
+                  label="Hide controls when mouse goes idle"
+                />
+                <NumberSetting
+                  sx={INPUT_SX}
+                  setting={SettingKey.ControlsOverlay.Other.HideControlsIdleTime}
+                  label="Mouse idle timeout"
+                  endAdornmentText="seconds"
+                  minimum={0}
+                />
+
+                <NumberSetting
+                  sx={INPUT_SX}
+                  setting={SettingKey.ControlsOverlay.Other.SkipBackwardAmount}
+                  label="Skip Backward Amount"
+                  endAdornmentText="seconds"
+                  minimum={1}
+                />
+
+                <NumberSetting
+                  sx={INPUT_SX}
+                  setting={SettingKey.ControlsOverlay.Other.SkipForwardAmount}
+                  label="Skip Forward Amount"
+                  endAdornmentText="seconds"
+                  minimum={1}
+                />
+
+                <Table
+                  sx={{
+                    marginTop: 1,
+                  }}
+                  padding="none"
+                >
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Control</TableCell>
+                      <TableCell align="center">Display in Overlay?</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {CONTROLS_OVERLAY_SETTINGS.map( ( { visible, description, allowHiding }, i ) => (
+                      <TableRow key={i} hover={true}>
+                        <TableCell>{description}</TableCell>
+                        <TableCell align="center">
+                          {allowHiding ? (
+                            <CheckboxSetting setting={visible} />
+                          ) : (
+                            <Checkbox sx={{ visibility: 'hidden' }} disabled={true} />
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ) )}
+                  </TableBody>
+                </Table>
+
+                <FullWidthDivider />
+
+                <Typography variant="h5">Idle Options</Typography>
+                <CheckboxSetting
+                  setting={SettingKey.Other.PauseOnLock}
+                  label="Pause media when computer is locked"
+                />
+                <CheckboxSetting
+                  setting={SettingKey.Other.PauseOnInactivity}
+                  label="Pause media when computer goes inactive"
+                />
+                <NumberSetting
+                  sx={INPUT_SX}
+                  setting={SettingKey.Other.InactivityTimeout}
+                  label="Inactivity timeout"
+                  endAdornmentText="seconds"
+                  minimum={15}
+                />
+
+                <FullWidthDivider />
+
+                <Typography variant="h5">Other Options</Typography>
+                <CheckboxSetting
+                  label="Show changelog on update"
+                  setting={SettingKey.Other.ShowChangeLogOnUpdate}
+                />
+
+                <FullWidthDivider />
+
+                <Typography variant="h5">Import/Export</Typography>
+
+                <Box
+                  sx={{
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    alignItems: 'center',
+                    '& > *': {
+                      marginTop: 1,
+                      marginRight: 1,
+                    },
+                  }}
+                >
+
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    download="easy_control.json"
+                    href={settingsExportUrl}
+                    target="_blank"
+                    rel="noopener noreferrer nofollower"
+                  >
+                    Export Settings
+                  </Button>
+
+                  <input
+                    style={{ display: 'none' }}
+                    accept="application/json"
+                    id="import-settings-input"
+                    type="file"
+                    onChange={async ( e ) =>
+                    {
+                      setShowImportResult( false );
+
+                      const file = e.currentTarget.files?.[ 0 ];
+                      if( !file )
+                      {
+                        return;
+                      }
+
+                      e.currentTarget.value = '';
+
+                      try
+                      {
+                        const content = await file.text();
+                        const data: unknown = JSON.parse( content );
+                        await settings.importSettings( data );
+                        setImportResult( 'Successfully imported settings!' );
+                      }
+                      catch( e )
+                      {
+                        console.warn( 'Failed to import settings:', e );
+                        setImportResult( e as Error );
+                      }
+
+                      setShowImportResult( true );
+                    }}
+                  />
+                  <label htmlFor="import-settings-input">
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      component="span"
+                    >
+                      Import Settings
+                    </Button>
+                  </label>
+
+                </Box>
+
+              </Grid>
+
+            </Grid>
+
+          </Box>
+        )}
       </Box>
       <Snackbar
         open={showImportResult}
