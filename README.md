@@ -33,7 +33,6 @@ Run `yarn run build` to create production build.
 1. Update version in package.json.
 1. Run `yarn run package`.
 1. Run `yarn run package:source`.
-1. Upload extension for Chrome: [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole).
 1. Upload extension for Firefox: [Firefox: Submit New Version](https://addons.mozilla.org/en-US/developers/addon/easy-control/versions/submit/).
 1. Commit version changes.
 1. Place version tag.
