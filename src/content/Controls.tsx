@@ -275,10 +275,12 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
           enabled: false,
         },
         {
-          name: 'inner',
-          enabled: true,
+          name: 'offset',
           options: {
-            order: 1,
+            offset: ( { popper }: { popper: { width: number, height: number } } ) => [
+              0,
+              -popper.height,
+            ],
           },
         },
         {
@@ -329,20 +331,24 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
               minWidth: 'unset',
             }}
             variant="text"
+            color="inherit"
             onClick={onResetPlaybackSpeed}
           >
             {playbackRate.toFixed( 1 )}
           </Button>
         </Tooltip>
         <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            ...( !hoveringControls && {
+          sx={[
+            {
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginLeft: 1,
+            },
+            !hoveringControls && {
               display: 'none',
-            } ),
-          }}
+            },
+          ]}
         >
           <ControlButton
             label="Much Slower"

@@ -11,6 +11,7 @@
   },
   "scripts": {
     "start": "webpack --config ./config/webpack.dev.ts --progress",
+    "start:firefox": "web-ext run",
     "build": "webpack --config ./config/webpack.prod.ts --progress",
     "prepackage": "yarn run build",
     "package": "web-ext build",

@@ -26,7 +26,7 @@ interface Props
 
 export const EasyControlThemeProvider: React.FC<Props> = ( { allowDarkMode = false, forceDarkMode = false, children } ) =>
 {
-  const isDarkMode = useMediaQuery( '(prefers-color-scheme: dark)', { matchMedia: window.matchMedia } );
+  const isDarkMode = useMediaQuery( '(prefers-color-scheme: dark)', { matchMedia: window.matchMedia.bind( window ) } );
 
   const darkMode = forceDarkMode || ( allowDarkMode && isDarkMode );
 
