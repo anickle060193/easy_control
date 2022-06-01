@@ -70,6 +70,14 @@ export const ChangelogPage: React.FC = () =>
           overflowY: 'auto',
         }}
       >
+        <ChangelogVersion version="4.0.0">
+          <ChangelogEntry changeType="bug" text="Fix controls overlay not showing." />
+          <ChangelogEntry changeType="enhancement" text="Improve controls overlay display." />
+          <ChangelogEntry changeType="enhancement" text="Add custom skip forward/backward amounts." />
+          <ChangelogEntry changeType="enhancement" text="Improve options page display." />
+          <ChangelogEntry changeType="bug" text="Re-add notifications support." />
+        </ChangelogVersion>
+
         <ChangelogVersion version="3.1.0">
           <ChangelogEntry changeType="bug" text="Fix Pandora selectors." />
           <ChangelogEntry changeType="bug" text="Fix Spotify selectors." />
