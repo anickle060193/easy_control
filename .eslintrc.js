@@ -146,6 +146,9 @@ module.exports = {
             allowNullish: true,
           },
         ],
+        '@typescript-eslint/no-floating-promises': [
+          'error',
+        ],
       },
     },
   ],
