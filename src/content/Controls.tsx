@@ -21,7 +21,6 @@ const SkipBackwardIcon = createSvgIcon(
 
 interface ControlButtonProps
 {
-  className?: string;
   label: string;
   icon: React.ReactNode;
   enabled: boolean;
@@ -29,7 +28,7 @@ interface ControlButtonProps
   onClick: () => void;
 }
 
-const ControlButton: React.FC<ControlButtonProps> = ( { className, label, icon, enabled, visible, onClick } ) =>
+const ControlButton: React.FC<ControlButtonProps> = ( { label, icon, enabled, visible, onClick } ) =>
 {
   if( !visible )
   {
@@ -38,7 +37,7 @@ const ControlButton: React.FC<ControlButtonProps> = ( { className, label, icon, 
 
   return (
     <Tooltip title={label}>
-      <div className={className}>
+      <div>
         <IconButton
           onClick={onClick}
           disabled={!enabled}
@@ -306,15 +305,18 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
       ]}
     >
       <Paper
-        sx={{
-          padding: [ 0.5, 1 ],
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          ...( !hoveringControls && {
+        sx={[
+          {
+            paddingX: 1,
+            paddingY: 0.5,
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+          },
+          !hoveringControls && {
             opacity: 0.2,
-          } ),
-        }}
+          },
+        ]}
         onMouseEnter={() => setHoveringControls( true )}
         onMouseLeave={() => setHoveringControls( false )}
         onClick={( e ) =>
@@ -357,21 +359,21 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
               alignItems: 'center',
               marginLeft: 1,
             },
-            // !hoveringControls && {
-            //   display: 'none',
-            // },
+            !hoveringControls && {
+              display: 'none',
+            },
           ]}
         >
           <ControlButton
             label="Much Slower"
-            icon={<KeyboardDoubleArrowLeft fontSize="small" />}
+            icon={<KeyboardDoubleArrowLeft sx={{ margin: -0.25 }} />}
             enabled={true}
             visible={controlsSettings.visible.muchSlower}
             onClick={onMuchSlower}
           />
           <ControlButton
             label="Slower"
-            icon={<KeyboardArrowLeft />}
+            icon={<KeyboardArrowLeft sx={{ margin: -0.25 }} />}
             enabled={true}
             visible={controlsSettings.visible.slower}
             onClick={onSlower}
@@ -409,14 +411,14 @@ export const ControlsOverlay: React.FC<Props> = React.memo( ( { controller, vide
           />
           <ControlButton
             label="Faster"
-            icon={<KeyboardArrowRight />}
+            icon={<KeyboardArrowRight sx={{ margin: -0.25 }} />}
             enabled={true}
             visible={controlsSettings.visible.faster}
             onClick={onFaster}
           />
           <ControlButton
             label="Much Faster"
-            icon={<KeyboardDoubleArrowRight />}
+            icon={<KeyboardDoubleArrowRight sx={{ margin: -0.25 }} />}
             enabled={true}
             visible={controlsSettings.visible.muchFaster}
             onClick={onMuchFaster}
