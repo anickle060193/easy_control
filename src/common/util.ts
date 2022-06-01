@@ -11,7 +11,7 @@ export async function getBrowserName(): Promise<BrowserName>
   try
   {
     const info = await browser.runtime.getBrowserInfo();
-    if( info.name === 'Mozilla' )
+    if( info.name === 'Firefox' )
     {
       return 'firefox';
     }
