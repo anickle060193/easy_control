@@ -1,7 +1,9 @@
 import Controller from '../controller';
 
-const PLAY_BUTTON_ICON_PATH = 'M3 1.713a.7.7 0 011.05-.607l10.89 6.288a.7.7 0 010 1.212L4.05 14.894A.7.7 0 013 14.288V1.713z';
-const PAUSE_BUTTON_ICON_PATH = 'M2.7 1a.7.7 0 00-.7.7v12.6a.7.7 0 00.7.7h2.6a.7.7 0 00.7-.7V1.7a.7.7 0 00-.7-.7H2.7zm8 0a.7.7 0 00-.7.7v12.6a.7.7 0 00.7.7h2.6a.7.7 0 00.7-.7V1.7a.7.7 0 00-.7-.7h-2.6z';
+const OLD_PLAY_BUTTON_ICON_PATH = 'M3 1.713a.7.7 0 011.05-.607l10.89 6.288a.7.7 0 010 1.212L4.05 14.894A.7.7 0 013 14.288V1.713z';
+const NEW_PLAY_BUTTON_ICON_PATH = 'M3 1.713a.7.7 0 0 1 1.05-.607l10.89 6.288a.7.7 0 0 1 0 1.212L4.05 14.894A.7.7 0 0 1 3 14.288V1.713z';
+const OLD_PAUSE_BUTTON_ICON_PATH = 'M2.7 1a.7.7 0 00-.7.7v12.6a.7.7 0 00.7.7h2.6a.7.7 0 00.7-.7V1.7a.7.7 0 00-.7-.7H2.7zm8 0a.7.7 0 00-.7.7v12.6a.7.7 0 00.7.7h2.6a.7.7 0 00.7-.7V1.7a.7.7 0 00-.7-.7h-2.6z';
+const NEW_PAUSE_BUTTON_ICON_PATH = 'M2.7 1a.7.7 0 0 0-.7.7v12.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7H2.7zm8 0a.7.7 0 0 0-.7.7v12.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7h-2.6z';
 
 export const controller = new Controller( {
   isEnabledElementSelector: null,
@@ -10,8 +12,14 @@ export const controller = new Controller( {
 
   mediaSelector: null,
 
-  playButtonSelector: `.Root__now-playing-bar button[data-testid="control-button-playpause"]:has( > svg > path[d="${PLAY_BUTTON_ICON_PATH}"] )`,
-  pauseButtonSelector: `.Root__now-playing-bar button[data-testid="control-button-playpause"]:has( > svg > path[d="${PAUSE_BUTTON_ICON_PATH}"] )`,
+  playButtonSelector: [
+    `.Root__now-playing-bar button[data-testid="control-button-playpause"]:has( > svg > path[d="${OLD_PLAY_BUTTON_ICON_PATH}"] ):not( [disabled] )`,
+    `.Root__now-playing-bar button[data-testid="control-button-playpause"]:has( > svg > path[d="${NEW_PLAY_BUTTON_ICON_PATH}"] ):not( [disabled] )`,
+  ],
+  pauseButtonSelector: [
+    `.Root__now-playing-bar button[data-testid="control-button-playpause"]:has( > svg > path[d="${OLD_PAUSE_BUTTON_ICON_PATH}"] ):not( [disabled] )`,
+    `.Root__now-playing-bar button[data-testid="control-button-playpause"]:has( > svg > path[d="${NEW_PAUSE_BUTTON_ICON_PATH}"] ):not( [disabled] )`,
+  ],
 
   useMediaForIsPlaying: false,
   useMediaSessionForIsPlaying: false,
