@@ -70,6 +70,10 @@ export const ChangelogPage: React.FC = () =>
           overflowY: 'auto',
         }}
       >
+        <ChangelogVersion version="4.0.1">
+          <ChangelogEntry changeType="bug" text="Fix Spotify controller." />
+        </ChangelogVersion>
+
         <ChangelogVersion version="4.0.0">
           <ChangelogEntry changeType="bug" text="Fix controls overlay not showing." />
           <ChangelogEntry changeType="enhancement" text="Improve controls overlay display." />
