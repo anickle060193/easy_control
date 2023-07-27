@@ -17,6 +17,7 @@
     "package": "web-ext build",
     "package:source": "yarn pack"
   },
+  "packageManager": "yarn@3.6.1",
   "dependencies": {
     "@babel/cli": "^7.17.6",
     "@babel/core": "^7.17.9",

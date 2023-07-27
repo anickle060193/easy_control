@@ -8,13 +8,15 @@
     "**/.git": true,
     "**/node_modules": true,
     "**/build": true,
-    "**/dist": true
+    "**/dist": true,
+    "**/.yarn": true,
   },
   "search.exclude": {
     "**/.git": true,
     "**/node_modules": true,
     "**/build": true,
-    "**/dist": true
+    "**/dist": true,
+    "**/.yarn": true,
   },
   "files.trimFinalNewlines": true,
   "files.insertFinalNewline": true,
