@@ -7,6 +7,8 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import EslintWebpackPlugin from 'eslint-webpack-plugin';
 
+import packageJson from '../package.json';
+
 const root = path.resolve( __dirname, '..' );
 const build = path.resolve( root, 'build' );
 const src = path.resolve( root, 'src' );
@@ -92,9 +94,9 @@ const config: Configuration = {
           to: build,
           toType: 'dir',
           transform: ( content ) => JSON.stringify( {
-            name: process.env[ 'npm_package_displayName' ],
-            description: process.env[ 'npm_package_description' ],
-            version: process.env[ 'npm_package_version' ],
+            name: packageJson.displayName,
+            description: packageJson.description,
+            version: packageJson.version,
             ...JSON.parse( content.toString() ),
           }, null, 2 ),
         },
