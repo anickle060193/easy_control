@@ -1,7 +1,7 @@
 {
   "name": "easy_control",
   "displayName": "Easy Control",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "An extension that allows easy control of various media streaming websites.",
   "private": true,
   "repository": "https://github.com/anickle060193/easy_control.git",
@@ -13,8 +13,7 @@
     "start": "webpack --config ./config/webpack.dev.ts --progress",
     "start:firefox": "web-ext run",
     "build": "webpack --config ./config/webpack.prod.ts --progress",
-    "prepackage": "yarn run build",
-    "package": "web-ext build",
+    "package": "yarn run build && web-ext build",
     "package:source": "yarn pack"
   },
   "packageManager": "yarn@3.6.1",
