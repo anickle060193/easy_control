@@ -41,3 +41,20 @@ export function querySelector( selector: Selector | null ): HTMLElement | null
     throw assertNever( selector );
   }
 }
+
+export function expandSelectors( ...selectors: ( string | string[] )[] ): string[]
+{
+  return selectors
+    .reduce<string[][]>( ( prev, curr ) =>
+    {
+      if( Array.isArray( curr ) )
+      {
+        return prev.flatMap( ( s ) => curr.map( ( s2 ) => [ ...s, s2 ] ) );
+      }
+      else
+      {
+        return prev.map( ( s ) => [ ...s, curr ] );
+      }
+    }, [ [] ] )
+    .map( ( s ) => s.join( ' ' ) );
+}
