@@ -1,27 +1,57 @@
 import { BackgroundMessage, BackgroundMessageId } from '../common/backgroundMessages';
 import settings, { SettingKey } from '../common/settings';
 import { ControllerCommand, ControllerId, CONTROLLERS } from '../common/controllers';
+import { UpdateContentMessage } from '../common/contentMessages';
 
 import { GenericAudioVideoController } from './controllers/genericAudioVideo';
 import { findMatchingController } from './config';
 import { onReady } from './util';
 import Controller from './controller';
 
+const PREVENT_DISCONNECT_INTERVAL = 20e3;
+
 const controllerPorts = new Map<Controller, browser.Runtime.Port>();
 
-function registerController( controllerId: ControllerId, controller: Controller )
+function connectController( controllerId: ControllerId, controller: Controller )
 {
   const port = browser.runtime.connect( { name: controllerId } );
+  if( port.error )
+  {
+    throw port.error;
+  }
   console.log( 'Connected port for', controllerId, ':', port );
 
   controllerPorts.set( controller, port );
 
-  controller.onUpdate.addEventListener( ( updateMessage ) =>
+  let preventDisconnectTimeout: number | undefined = undefined;
+
+  function preventDisconnect()
+  {
+    window.clearTimeout( preventDisconnectTimeout );
+
+    preventDisconnectTimeout = window.setTimeout( () =>
+    {
+      controller.triggerUpdate();
+
+      preventDisconnect();
+    }, PREVENT_DISCONNECT_INTERVAL );
+  }
+
+  function onControllerUpdate( updateMessage: UpdateContentMessage )
   {
     port.postMessage( updateMessage );
-  } );
 
-  controller.start();
+    preventDisconnect();
+  }
+
+  controller.onUpdate.addEventListener( onControllerUpdate );
+
+  if( !controller.isRunning )
+  {
+    controller.start();
+  }
+
+  controller.triggerUpdate();
 
   port.onMessage.addListener( ( message: BackgroundMessage ) =>
   {
@@ -117,10 +147,26 @@ function registerController( controllerId: ControllerId, controller: Controller 
 
   port.onDisconnect.addListener( ( p ) =>
   {
-    console.log( 'Port disconnected for', controllerId, p );
-    controller.stop();
-
+    window.clearTimeout( preventDisconnectTimeout );
     controllerPorts.delete( controller );
+    controller.onUpdate.removeEventListener( onControllerUpdate );
+
+    if( p.error )
+    {
+      console.error( 'Error caused controller port disonnection:', controllerId, controller, p );
+      controller.stop();
+      return;
+    }
+
+    try
+    {
+      console.log( 'Attempting to re-connect controller port:', controllerId, controller );
+      connectController( controllerId, controller );
+    }
+    catch( e )
+    {
+      console.error( 'Failed to re-connect controller port:', controllerId, controller, e );
+    }
   } );
 }
 
@@ -134,7 +180,7 @@ function onControllerUrlMatch( controllerId: ControllerId, controller: Controlle
     return;
   }
 
-  registerController( controllerId, controller );
+  connectController( controllerId, controller );
 }
 
 function onNoControllerUrlMatch()
@@ -194,7 +240,7 @@ function onNoControllerUrlMatch()
       const controller = new GenericAudioVideoController( newMedia );
       mediaControllers.set( newMedia, controller );
 
-      registerController( ControllerId.GenericAudioVideo, controller );
+      connectController( ControllerId.GenericAudioVideo, controller );
     }
   }
 

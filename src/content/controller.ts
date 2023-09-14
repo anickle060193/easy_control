@@ -163,6 +163,13 @@ export default class Controller
 
   private stopCallback: ( () => void ) | null = null;
 
+  private lastPlayingTime = 0;
+
+  public get isRunning(): boolean
+  {
+    return !!this.stopCallback;
+  }
+
   public constructor(
     public options: ControllerOptions
   )
@@ -196,11 +203,19 @@ export default class Controller
         mediaChangedIndication = indication.join( '::' );
       }
 
+      const playing = this.isPlaying();
+
+      if( playing )
+      {
+        this.lastPlayingTime = Date.now();
+      }
+
       const message: UpdateContentMessage = {
         id: ContentMessageId.Update,
         status: {
           enabled: true,
-          playing: this.isPlaying(),
+          playing: playing,
+          lastPlayingTime: this.lastPlayingTime,
           progress: this.getProgress(),
           volume: this.getVolume(),
         },
@@ -230,6 +245,11 @@ export default class Controller
       return message;
     }
   };
+
+  public triggerUpdate()
+  {
+    this.onUpdateCallback();
+  }
 
   private onUpdateCallback = () =>
   {

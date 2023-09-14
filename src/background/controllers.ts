@@ -18,7 +18,7 @@ export function getCurrentController(): BackgroundController | null
   for( const controller of controllers )
   {
     if( controller.status.enabled
-      && controller.lastOnPlayedTime > ( currentController?.lastOnPlayedTime ?? 0 ) )
+      && controller.status.lastPlayingTime > ( currentController?.status.lastPlayingTime ?? -1 ) )
     {
       currentController = controller;
     }

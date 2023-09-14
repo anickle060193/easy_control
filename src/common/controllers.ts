@@ -48,6 +48,7 @@ export interface ControllerStatus
 {
   enabled: boolean;
   playing: boolean;
+  lastPlayingTime: number;
   progress: number;
   volume: number;
 }
@@ -55,6 +56,7 @@ export interface ControllerStatus
 export const DEFAULT_CONTROLLER_STATUS: Readonly<ControllerStatus> = {
   enabled: false,
   playing: false,
+  lastPlayingTime: 0,
   progress: 0.0,
   volume: 0.0,
 };
