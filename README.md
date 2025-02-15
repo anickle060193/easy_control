@@ -19,20 +19,20 @@ Firefox Add-Ons: [Easy Control](https://addons.mozilla.org/en-US/firefox/addon/e
 
 
 ## Building
-Run `yarn install` to install dependencies.
+Run `pnpm install` to install dependencies.
 
 ### Development
-Run `yarn run start` to start developmental build.
+Run `pnpm run start` to start developmental build.
 
 ### Production
-Run `yarn run build` to create production build.
+Run `pnpm run build` to create production build.
 
 ## Releasing an Update
 1. Update changelog.
 1. Commit changelog updates.
 1. Update version in package.json.
-1. Run `yarn run package`.
-1. Run `yarn run package:source`.
+1. Run `pnpm run package`.
+1. Run `pnpm run package:source`.
 1. Upload extension for Firefox: [Firefox: Submit New Version](https://addons.mozilla.org/en-US/developers/addon/easy-control/versions/submit/).
 1. Commit version changes.
 1. Place version tag.

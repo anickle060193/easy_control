@@ -9,14 +9,14 @@
     "**/node_modules": true,
     "**/build": true,
     "**/dist": true,
-    "**/.yarn": true,
+    "**/pnpm-lock.yaml": true,
   },
   "search.exclude": {
     "**/.git": true,
     "**/node_modules": true,
     "**/build": true,
     "**/dist": true,
-    "**/.yarn": true,
+    "**/pnpm-lock.yaml": true,
   },
   "files.trimFinalNewlines": true,
   "files.insertFinalNewline": true,
@@ -57,10 +57,8 @@
     "typescript",
     "typescriptreact"
   ],
-  "eslint.packageManager": "yarn",
-  "npm.packageManager": "yarn",
   "editor.codeActionsOnSave": {
-    "source.fixAll": true
+    "source.fixAll": "explicit"
   },
   "javascript.preferences.importModuleSpecifier": "relative",
   "typescript.preferences.importModuleSpecifier": "relative",
