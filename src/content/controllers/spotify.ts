@@ -4,6 +4,7 @@ import { expandSelectors } from '../selector';
 const CONTROLS_ROOT_SELECTORS = [
   '.Root__now-playing-bar',
   '.player-controls',
+  '[data-testid="player-controls"]',
 ];
 
 const PLAY_BUTTON_ICON_PATHS = [
@@ -12,7 +13,6 @@ const PLAY_BUTTON_ICON_PATHS = [
 ];
 const PAUSE_BUTTON_ICON_PATHS = [
   'M2.7 1a.7.7 0 00-.7.7v12.6a.7.7 0 00.7.7h2.6a.7.7 0 00.7-.7V1.7a.7.7 0 00-.7-.7H2.7zm8 0a.7.7 0 00-.7.7v12.6a.7.7 0 00.7.7h2.6a.7.7 0 00.7-.7V1.7a.7.7 0 00-.7-.7h-2.6z',
-  'M2.7 1a.7.7 0 0 0-.7.7v12.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7H2.7zm8 0a.7.7 0 0 0-.7.7v12.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7h-2.6z',
   'M2.7 1a.7.7 0 0 0-.7.7v12.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7H2.7zm8 0a.7.7 0 0 0-.7.7v12.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7h-2.6z',
 ];
 
@@ -26,13 +26,13 @@ export const controller = new Controller( {
   playButtonSelector: [
     ...expandSelectors(
       CONTROLS_ROOT_SELECTORS,
-      PLAY_BUTTON_ICON_PATHS.map( ( p ) => `button[data-testid="control-button-playpause"]:has( > svg > path[d="${p}"] ):not( [disabled] )` )
+      PLAY_BUTTON_ICON_PATHS.map( ( p ) => `button[data-testid="control-button-playpause"]:has( svg > path[d="${p}"] ):not( [disabled] )` )
     ),
   ],
   pauseButtonSelector: [
     ...expandSelectors(
       CONTROLS_ROOT_SELECTORS,
-      PAUSE_BUTTON_ICON_PATHS.map( ( p ) => `button[data-testid="control-button-playpause"]:has( > svg > path[d="${p}"] ):not( [disabled] )` )
+      PAUSE_BUTTON_ICON_PATHS.map( ( p ) => `button[data-testid="control-button-playpause"]:has( svg > path[d="${p}"] ):not( [disabled] )` )
     ),
   ],
 
@@ -66,7 +66,7 @@ export const controller = new Controller( {
   useMediaForPolling: false,
   useMutationObserverForPolling: true,
 
-  playerSelector: expandSelectors( CONTROLS_ROOT_SELECTORS, '.playback-bar' ),
+  playerSelector: expandSelectors( CONTROLS_ROOT_SELECTORS, [ '.playback-bar', '[data-testid="progress-bar"]' ] ),
 
   useMediaSessionForTrack: true,
   useMediaSessionForAlbum: true,
@@ -85,10 +85,12 @@ export const controller = new Controller( {
   currentTimeSelector: [
     '.playback-bar .playback-bar__progress-time-elapsed',
     '.playback-bar [data-testid="playback-position"]',
+    '[data-testid="player-controls"] [data-testid="playback-position"]',
   ],
   remainingTimeSelector: null,
   durationSelector: [
     '.playback-bar [data-testid="playback-duration"]',
+    '[data-testid="player-controls"] [data-testid="playback-duration"]',
   ],
 
   currentTimeFormat: null,

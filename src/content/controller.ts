@@ -155,6 +155,8 @@ export const DEFAULT_OPTIONS: ControllerOptions = {
 
 export const DEFAULT_TIME_FORMAT = /(\d+):(\d+)/;
 
+const DEBUG = false as boolean;
+
 export default class Controller
 {
   public readonly onUpdate = new EventEmitter<[ UpdateContentMessage ]>();
@@ -187,6 +189,11 @@ export default class Controller
         media: DEFAULT_CONTROLLER_MEDIA,
         capabilities: DEFAULT_CONTROLLER_CAPABILITIES,
       };
+
+      if( DEBUG )
+      {
+        console.log( 'UPDATE MESSAGE - NOT ENABLED:', message );
+      }
 
       return message;
     }
@@ -242,6 +249,11 @@ export default class Controller
         },
       };
 
+      if( DEBUG )
+      {
+        console.log( 'UPDATE MESSAGE:', message );
+      }
+
       return message;
     }
   };
@@ -264,6 +276,11 @@ export default class Controller
   {
     if( this.options.useDocumentMediaEventsForPolling )
     {
+      if( DEBUG )
+      {
+        console.log( 'Using document media events for polling' );
+      }
+
       document.addEventListener( 'timeupdate', this.onUpdateCallback, { capture: true } );
       document.addEventListener( 'play', this.onUpdateCallback, { capture: true } );
       document.addEventListener( 'pause', this.onUpdateCallback, { capture: true } );
@@ -281,6 +298,11 @@ export default class Controller
       const media = this.findMediaElement();
       if( media )
       {
+        if( DEBUG )
+        {
+          console.log( 'Using media element for polling' );
+        }
+
         media.addEventListener( 'timeupdate', this.onUpdateCallback );
         media.addEventListener( 'play', this.onUpdateCallback );
         media.addEventListener( 'pause', this.onUpdateCallback );
@@ -292,6 +314,11 @@ export default class Controller
           media.removeEventListener( 'pause', this.onUpdateCallback );
         };
       }
+
+      if( DEBUG )
+      {
+        console.warn( 'Failed to find media element for polling' );
+      }
     }
 
     if( this.options.useMutationObserverForPolling )
@@ -299,6 +326,11 @@ export default class Controller
       const player = this.findPlayer();
       if( player )
       {
+        if( DEBUG )
+        {
+          console.log( 'Using player for polling' );
+        }
+
         const observer = new MutationObserver( this.onUpdateCallback );
         observer.observe( player, { subtree: true, childList: true, attributes: true } );
 
@@ -307,12 +339,22 @@ export default class Controller
           observer.disconnect();
         };
       }
+
+      if( DEBUG )
+      {
+        console.warn( 'Failed to find player for polling' );
+      }
     }
 
     const intervalId = window.setInterval( () =>
     {
       this.onUpdateCallback();
     }, 500 );
+
+    if( DEBUG )
+    {
+      console.log( 'Using interval for polling' );
+    }
 
     return () =>
     {
@@ -346,6 +388,11 @@ export default class Controller
       {
         return true;
       }
+
+      if( DEBUG )
+      {
+        console.warn( 'Failed to find media element for enabled check' );
+      }
     }
 
     if( this.options.usePlayPauseButtonsForIsEnabled )
@@ -354,6 +401,11 @@ export default class Controller
       {
         return true;
       }
+
+      if( DEBUG )
+      {
+        console.warn( 'Failed to find play or pause button for enabled check' );
+      }
     }
 
     if( this.options.isEnabledElementSelector !== null )
@@ -361,6 +413,11 @@ export default class Controller
       if( querySelector( this.options.isEnabledElementSelector ) )
       {
         return true;
+      }
+
+      if( DEBUG )
+      {
+        console.warn( 'Failed to find enabled element for enabled check' );
       }
     }
 
