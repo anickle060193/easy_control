@@ -70,6 +70,10 @@ export const ChangelogPage: React.FC = () =>
           overflowY: 'auto',
         }}
       >
+        <ChangelogVersion version="4.0.4">
+          <ChangelogEntry changeType="bug" text="Fixed Spotify controller." />
+        </ChangelogVersion>
+
         <ChangelogVersion version="4.0.3">
           <ChangelogEntry changeType="bug" text="Prevent background controller from being unloaded while any media controllers are active." />
         </ChangelogVersion>
