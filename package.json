@@ -1,7 +1,7 @@
 {
   "name": "easy_control",
   "displayName": "Easy Control",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "description": "An extension that allows easy control of various media streaming websites.",
   "private": true,
   "repository": "https://github.com/anickle060193/easy_control.git",
